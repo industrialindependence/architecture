@@ -2,9 +2,9 @@
 
 **An architectural principle for industrial infrastructure.**
 
-IIA is not a product. It is not a framework. It is a named description of a convergence pattern that has never been abstracted or deliberately applied to automation and control systems.
+IIA is the deliberate abstraction of a convergence pattern that exists in adjacent domains, named and applied for the first time to automation and control systems. It is not a product. It is not a framework. It is the architectural principle, claimed by name.
 
-Created by ***REMOVED***, ISA-99 (IEC 62443) committee member and founder of Fathom.
+Authored by ***REMOVED***, ISA-99 (IEC 62443) committee member and founder of Fathom.
 
 ## The Principle
 
@@ -12,7 +12,7 @@ Deploy a single self-contained unit at every zone of an industrial network. The 
 
 The unit works with no upstream connectivity. No cloud. No corporate network. No internet. It is the complete system for its zone. If connectivity exists, it composes upward. If connectivity drops, nothing changes on site.
 
-The cloud is a viewport into the federation of units. It is not the platform. It is not the brain. It is an optional window into something that is already complete without it.
+The cloud is a viewport into the mesh of units. It is not the platform. It is not the brain. It is an optional window into something that is already complete without it.
 
 ## The Domain Boundary
 
@@ -57,6 +57,8 @@ Each box meshes with adjacent boxes. If a box can see another box, data routes t
 
 Add a production zone, add a box. Add a site, add a box. Add a region, add a cloud aggregator. The unit of scaling is always the same self-contained block. Scales nearly infinitely by design.
 
+The hard problems are distributed systems problems. When a box reconnects after thirty days off the mesh, the parent has thirty days of state from other paths — convergence at the boundary is conflict resolution, not transport. Schema evolution happens across boxes running different firmware with no coordinated maintenance window. Collection profiles differ by level: a production zone box and a site box are the same unit, not the same configuration. The architecture makes these problems tractable. It does not eliminate them.
+
 ## Design Constraints
 
 IIA is shaped by the realities of automation and control system environments, not by enterprise computing assumptions.
@@ -83,7 +85,9 @@ The pattern exists elsewhere. It has never been named or applied deliberately to
 
 **Integrated NAS (Synology):** One box does storage, backup, containers, VPN, surveillance, media. Complete system, works offline, scales by adding another unit.
 
-These are expressions of the same architecture: self-contained sovereign unit, identical at every deployment point, scales by composition, works without upstream dependency. IIA applies that principle to the full ACS stack: collection, processing, storage, visualization, security, and API. One unit. Every zone. Identical.
+These are expressions of the same convergence pattern: self-contained sovereign unit, identical at every deployment point, scales by composition, works without upstream dependency. IIA inherits that pattern and extends it. The new claim is not convergence — convergence is precedented. The new claim is that the unit enforces two different governance models across a single boundary: SRP inside the automation cell, CIA outside. None of the prior art does this because none of it sits at a boundary where data classification and governance flip.
+
+IIA applies the convergence to the full ACS stack — collection, processing, storage, visualization, security, API — and applies the boundary enforcement at the seam between ACS and IT. One unit. Every zone. Identical.
 
 ## Who This Is For
 
@@ -133,15 +137,15 @@ Data classification on the bus:
 - `ot.mrp.*` -- work orders, execution status, ERP API events (IT domain, inbound reference only)
 - `ot.health.*` -- collector heartbeats, box diagnostics, uptime (infrastructure)
 
-## Standards Alignment
+## Standards
 
-IIA does not derive from any single standard. It aligns with multiple standards because they share the same first principles: sovereign, independent, autonomous operation in safe and reliable efforts to achieve a shared goal.
+IIA does not derive from any single standard. It is the physical instantiation of what multiple standards describe abstractly, because they share the same first principles: sovereign, independent, autonomous operation in safe and reliable efforts to achieve a shared goal.
 
 **PERA+** (pera.net) defines the reference architecture for industrial enterprise organization, including the hierarchical levels, zone boundaries, and functional requirements that IIA implements physically at every level. The PERA+ Network Design update, incorporating Bode/Nyquist-constrained response latency requirements across levels, directly informs where the domain boundary falls for any given process.
 
 **IEC 62443** defines the cybersecurity management system, security levels, and component requirements that the box satisfies at the zone level, ordered by SRP priority: zone segmentation enforcement protecting safety-critical process boundaries, continuous passive asset inventory and network monitoring preserving operational reliability, and role-based access control with full audit logging (all data time-series, all access logged, session recording) without degrading system performance.
 
-The alignment is not coincidental. These standards converge because they are built on the same observation: the unit of industrial operation is the zone, the zone must be self-sufficient, and any dependency on external systems for basic function is an architectural failure. IIA is the physical expression of that observation. The standards are the formal description of it.
+The convergence is not coincidental. These standards arrive at the same place because they are built on the same observation: the unit of industrial operation is the zone, the zone must be self-sufficient, and any dependency on external systems for basic function is an architectural failure. IIA is the first deliberate physical instantiation of that observation. The standards are the formal description of it.
 
 ## Product Family
 
@@ -163,6 +167,12 @@ IIA provides the architectural pattern that makes sovereignty the default rather
 
 - LinkedIn: [***REMOVED***](***REMOVED***)
 
+## Trademarks
+
+Industrial Independence Architecture, IIA, Fathom, Marlinspike, and WirePilot are trademarks of ***REMOVED***. The license below covers the text of this document. It does not grant rights to use these marks. Use of the marks to refer to derivative articulations, products, or services requires written permission.
+
 ## License
 
-© 2025-2026 ***REMOVED***. All rights reserved.
+This work is licensed under a [Creative Commons Attribution-ShareAlike 4.0 International License (CC BY-SA 4.0)](https://creativecommons.org/licenses/by-sa/4.0/).
+
+© 2025-2026 ***REMOVED***.
