@@ -44,7 +44,7 @@ A plant gets a box. Same unit, broader scope. Aggregates the production zone box
 
 A site gets a box. Same unit, broader scope. Aggregates the plant boxes.
 
-The cloud aggregates all boxes. Optional.
+The cloud aggregates all boxes. Optional. Centralized collection — corporate, regional, or cloud — is not a different architecture; it is the same unit at broader scope. The fractal does not collapse at the top.
 
 ```
 Production zone: [box]  -- sovereign, complete
@@ -54,6 +54,8 @@ Cloud:           viewport into all boxes, optional
 ```
 
 Each box meshes with adjacent boxes. If a box can see another box, data routes through. If a box can see a box that can see a box that can see the cloud, data gets there. The mesh finds the path. If no path exists, the box keeps running locally with 30 days of buffered data.
+
+Sovereignty does not mean isolation. Historians on adjacent boxes can know about each other without becoming dependent on each other. Awareness is mutual. Dependency is not.
 
 Add a production zone, add a box. Add a site, add a box. Add a region, add a cloud aggregator. The unit of scaling is always the same self-contained block. Scales nearly infinitely by design.
 
