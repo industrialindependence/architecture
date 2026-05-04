@@ -1,0 +1,474 @@
+# Internal Architecture
+
+This document describes what runs inside an IIA box: the role inventory, the partitioning, the boundary invariants, the workload identity model, the audit posture, the deployment modes that map to IEC 62443 security levels, and the candidate implementations operators might select.
+
+The architecture spec names **roles** and the **contracts** they satisfy. It does not name products. Operators select implementations to fit their operational requirements (license posture, resource envelope, vendor relationships, audit evidence). The non-normative *Reference Implementations* appendix at the end lists candidate software per role.
+
+For the architectural principle this document implements, see the project [README](../README.md). For the two-box deployment that reaches Security Level 4, see [The Two-Box Method](../README.md#the-two-box-method) in the same.
+
+## Invariants
+
+These are the hard architecture rules. Implementation choices must respect all of them.
+
+1. **No HTTP at the box's external boundary, in either direction, at runtime.** No HTTP listener on the ACS or IT NICs. No outbound HTTP/HTTPS from any component — no registry pulls, no rule-feed updates, no telemetry, no CRL/OCSP. Updates and deltas come via signed bundles in OS updates or mTLS-tunneled deltas pulled by the box's outbound channels. The optional local management UI on the management NIC is the only HTTPS listener anywhere in the architecture, and it is local-network only.
+2. **Minimum runtime surface.** Every listener, daemon, and outbound connection exists because it was designed and engineered for a specific operational purpose. There is no default-on service. There is no convenience listener. There is no runtime debug interface. The OS image is built so disabled services cannot be turned on at runtime — only by rebuilding the image.
+3. **ACS-facing interface is passive.** No IP stack TX, no listeners ever, on the ACS NIC.
+4. **All inter-zone traffic transits the internal DMZ.** Inbound zones cannot conduit directly to outbound zones.
+5. **Roles, not products.** This document names the role each component fills. Specific software belongs in the *Reference Implementations* appendix, never in the normative sections.
+6. **Standards and protocols stay named.** Interface contracts (MQTT, Sparkplug B, OPC UA, OIDC, FIDO2, SPIFFE SVID, OCI image format, TPM 2.0, UEFI Secure Boot, TLS 1.3, IEC 62443, ISA-95, PERA+) belong in the spec because they are interoperability surface.
+7. **Every communication is contracted.** Inter-container, inter-zone, cross-side, and external — every conduit, every mTLS pairing, every device exchange must be backed by an explicit data contract in the deployment's contract catalog. Communication without a contract is **prevented** where the architecture can enforce it (kernel firewall + workload identity + admission control cooperate to refuse uncontracted traffic), and **flagged** where prevention is not possible (passive observation on the ACS NIC, broadcast). Contractlessness is a deployment defect.
+
+## Alignment with PERA+
+
+The architecture aligns with PERA+ (pera.net, Gary Rathwell, Entercon, CC BY-SA 4.0). Specifically:
+
+- **The 4Rs** — Response, Resolution, Reliability, Resilience — determine which functions belong on the box (high-resolution, low-latency, high-reliability) and which belong at broader scope (downsampled, latency-tolerant, lower-reliability acceptable).
+- **"Secure interfaces, not integration."** The box is an interface between ACS and IT, not a merger of the two. PERA's framing applied directly.
+- **Zero Trust ↔ Managed Trust transition.** The box terminates the IT-side Zero Trust environment and begins the ACS-side Managed Trust environment.
+- **L3/L4 canonical placement.** The box's archetypal scope is the PERA L3/L4 boundary (Plant Firewall placement). The architecture deploys at any adjacent-level boundary; only scope changes.
+- **CIAD and CIND diagram conventions** are used for IIA reference deployments. CIAD for conceptual block diagrams during Conceptual Engineering; CIND for network detail with SL1–SL4 annotations during Preliminary Engineering.
+
+## Physical Realizations
+
+The architecture is logical. "The box" is a role-aggregate at a zone boundary, realizable at any scale the operator's scope demands:
+
+- **Commodity-hardware appliance** (the small-shop reference). 4 GB / 2 cores at the architectural floor; 8 GB / 4 cores at the SL3 reference. Single chassis, less power than a monitor.
+- **Multi-host stack.** Broker on its own machine, capture and lake on another, IDS on another. Useful at plant or site scope.
+- **Virtualized infrastructure.** Same logical zones realized as VMs across hypervisor hosts.
+- **Kubernetes cluster** (k3s through full k8s). Reasonable at site, regional, or corporate scope where the control-plane overhead is justified.
+- **Hyperscale data-center deployment.** Same architecture realized across a fleet, for regional or corporate-scope role-aggregates.
+
+The invariants travel across realizations: no HTTP at the external boundary, minimum runtime surface, ACS-facing passive, all cross-side traffic via DMZ, mTLS at every internal hop, audit chain integrity. The hardware envelope and the orchestrator choice are realization concerns.
+
+The commodity-hardware appliance is positioned the way it is because IIA's accessibility for the underserved triangle depends on it running on inexpensive hardware. The architecture itself does not require it. Same principle for a single SCADA site as for a regional data-center management deployment.
+
+## Security Level Targets
+
+| Mode | SL Target | Topology |
+|---|---|---|
+| Software-only | SL3 | Single IIA box at the cell boundary. ACS-facing NIC passive. Internal three-side partitioning (inbound / DMZ / outbound) with default-deny conduits, mTLS at every internal hop. Push-only outbound on operator-selected edge profile, structured query API on mTLS for pull. No HTTP at the boundary. |
+| Two-box + diode | SL4 | One IIA box ACS-side, hardware data diode, one IIA box IT-side, physical one-way separation from the external consumer. Same software, same configuration model. |
+
+SL3 does not promise unidirectional flow. SL3 promises a hardened, segmented, authenticated, audited boundary. Bidirectional channels exist at SL3 (the structured query API listener on the IT NIC, the outbound mTLS tunnel reverse-dial) — they are firewalled, identified, and recorded.
+
+SL4 is reachable only with hardware diode and physical separation. No software-only deployment claims SL4. Anyone who claims otherwise is wrong.
+
+SL1 and SL2 are not separate products. They are SL3 with controls relaxed by deployment policy. The architecture does not change.
+
+## Hardware Reference (Appliance SKU)
+
+The numbers below describe the **commodity-hardware appliance realization** of the box at SL3. They are deliberately specified to be runnable on inexpensive hardware so the architecture is accessible at the small-shop / underserved-triangle scope. Multi-host, virtualized, clustered, and hyperscale realizations have correspondingly different envelopes; the architecture is the same.
+
+| Component | SL3 baseline | Notes |
+|---|---|---|
+| CPU | 4 cores, x86_64 with AES-NI | ARM64 viable on platforms with TPM 2.0 + Secure Boot. |
+| RAM | 8 GB | The 4 GB target in the README is the architectural floor / SL2 reference; SL3 controls (continuous capture, IDS, attestation toolchain, scan engine) push the floor up. |
+| Storage | 1 TB SSD with self-encrypting drive (SED) support | Full-disk encryption with hardware-trust-anchor-sealed key. |
+| Trust anchor | TPM 2.0 | Mandatory. UEFI Secure Boot, measured boot, PCR-sealed secrets. |
+| Network | **3× 1GbE ideal — ACS / IT / Management.** **2× 1GbE + VLAN acceptable on commodity hardware** (ACS physical, IT and Management VLAN-separated on the second NIC with strict ingress filtering). | Two-box mode requires fiber TX-only on ACS-side, fiber RX-only on IT-side, paired with the hardware diode. |
+| Power | <40W typical | |
+
+The 3-NIC physical topology is preferred because it provides hard physical separation between the data plane (IT) and the local management plane. The 2-NIC + VLAN variant accepts a software-only separation between IT and Management for cost reasons; this is supported but requires disciplined VLAN configuration, source-IP filtering, and auditable evidence of both.
+
+## External Surfaces
+
+The box has, at most, three external network interfaces plus a console:
+
+| Interface | Listeners | Outbound | Notes |
+|---|---|---|---|
+| ACS NIC | none, ever | none | Passive capture only. RX-only at the kernel level. |
+| IT NIC | structured query API on mTLS only (non-HTTP transport — operator-selected) | edge publisher (push, operator-selected profile), outbound mTLS tunnel agent, signed-bundle pull on mTLS for rule/CRL deltas | Where the data plane lives. **No HTTP/HTTPS listener, ever.** |
+| Management NIC | local UI (HTTPS, OIDC + 2FA, identical auth model to remote-access broker), on only when operator enables it | none | Local-network only. Source-IP-restricted. Not routed to WAN. |
+| Console | TPM-bound serial, last-resort | none | No network listener, ever. |
+
+## Internal Partitioning
+
+The box is internally three-partitioned plus a management interface. Each partition is a kernel-firewalled zone with explicit conduit policy.
+
+```
++---------------------------------------------------------------+
+|                            BOX                                |
+|                                                               |
+|  INBOUND (ACS-FACING)        DMZ           OUTBOUND (IT)      |
+|                                                               |
+|  ot.acs.collect ─┐                                            |
+|  ot.acs.witness ─┤                                            |
+|                  ├──► ot.dmz.bus ────┬──► ot.it.publish ────► (edge profile north)
+|                  │   (transient)    │                         |
+|  ot.acs.lake ◄───┘                  ├──► ot.it.api ─────────► (structured query, mTLS)
+|  (durable, source                    │                        |
+|   of truth)                          └──► ot.it.tunnel ─────► (mTLS dial-out, broker)
+|                                                               |
+|                       ot.dmz.audit ──► (chain head north)     |
+|                                                               |
+|  Management:  ot.mgmt.ui (management NIC only, on-demand)     |
++---------------------------------------------------------------+
+```
+
+**Zones:**
+
+| Zone | Purpose | Side | Inbound conduits | Outbound conduits |
+|---|---|---|---|---|
+| `ot.acs.collect` | Protocol-aware collectors (OPC UA, Modbus, EtherNet/IP, MQTT-SN, fieldbus) | Inbound | ACS NIC (passive) | `ot.dmz.bus`, `ot.acs.lake` |
+| `ot.acs.witness` | Continuous capture, network IDS, scan engine, enrichment | Inbound | ACS NIC (passive, mirror port) | `ot.acs.lake`, `ot.dmz.audit` |
+| `ot.acs.lake` | Local data lake — durable, append-only, source of truth | Inbound | `ot.acs.collect`, `ot.acs.witness`, `ot.dmz.bus` | `ot.it.publish` (siphon), `ot.it.api` (read), `ot.dmz.audit` |
+| `ot.dmz.bus` | In-flight message bus; transient, no durable raw data | DMZ | `ot.acs.*`, `ot.it.*` | `ot.acs.lake` (write-through), `ot.it.publish`, `ot.it.api` |
+| `ot.dmz.audit` | Audit chain head publisher (full chain on inbound side) | DMZ | All zones (write) | `ot.it.publish` (north replication) |
+| `ot.it.publish` | Edge publisher; reads lake, pushes on configured profile | Outbound | `ot.acs.lake`, `ot.dmz.bus`, `ot.dmz.audit` | IT NIC |
+| `ot.it.api` | Structured query API; mTLS, non-HTTP | Outbound | `ot.acs.lake`, `ot.dmz.bus` | IT NIC |
+| `ot.it.tunnel` | Outbound mTLS tunnel agent for the remote-access broker | Outbound | (none — initiates only) | IT NIC (dial-out only) |
+| `ot.mgmt.ui` | Local management UI; on-demand HTTPS listener | Management | Management NIC (operator browsers, source-IP-restricted) | `ot.acs.lake` (read-only), `ot.it.api` (read-only) |
+
+**Conduit policy.** Inter-zone traffic is enforced at three layers, in order:
+
+1. **Per-zone container networks** — separate bridges per zone; no direct routing between bridges.
+2. **Kernel firewall** — allowlist conduits between bridges by source zone, destination zone, port. Default policy: drop.
+3. **mTLS at the application layer** — every inter-zone connection authenticates both ends via SPIFFE IDs (see *Workload Identity*).
+
+A connection that fails any layer is rejected and logged to the audit chain.
+
+**Cross-side enforcement.** Inbound zones (`ot.acs.*`) and outbound zones (`ot.it.*`) cannot conduit to each other directly. All cross-side traffic transits a DMZ zone (`ot.dmz.bus`, `ot.dmz.audit`). This is the structural property that makes the boundary auditable — every inbound→outbound message exists as a DMZ event.
+
+## Data Plane
+
+**The local data lake is the source of truth.** All inbound capture, classification output, audit, events, and time-series land in `ot.acs.lake`. The lake is durable, append-only, and the only place raw data persists on the box. Outbound publishers siphon from the lake.
+
+**The in-flight bus (`ot.dmz.bus`) is transient.** It exists for low-latency event delivery between zones. It does not retain durable data. Subscribers tail it for live events; consumers expecting historical state read from the lake.
+
+**High fidelity at the edge, downsampled centrally.** The lake stores at native resolution (subsecond, full PCAP segments). Broader-scope BI lakes downstream (open table format on object storage — fed by `ot.it.publish` when the operator selects that profile) hold downsampled, modeled data for analytics. Full-fidelity slices are pulled on demand from the on-box lake via the structured query API.
+
+**Schema is observed, not enforced, at the edge.** The box publishes typed-but-flexible records. Schema modeling, knowledge-graph audit, microservices observation over broker payloads, and ISA-95 conformance happen at broader scope — by design. Type-safety is the platform's job, not the publisher's. Sequence numbers and service IDs are emitted alongside every record so downstream observability can stitch traces without negotiating with the edge.
+
+**Data contracts are the integration unit at the L2↔L3 boundary.** Contracts specify what data the box exposes, which triggers fire, what fault codes are emitted, and what return semantics apply. Contracts are versioned; the architecture treats contract evolution as a first-class concern, not an afterthought. Operators define contracts per deployment; the architecture does not pick.
+
+## Outbound Edge Profile
+
+The edge profile is **operator-selectable per deployment**. The architecture is profile-agnostic. Candidate profiles, with notes on where each fits:
+
+| Profile | Where it fits | Notes |
+|---|---|---|
+| MQTT + Sparkplug B | Controller↔area-broker (PERA L1/L2) | Field-validated at this scope. Above L2/L3 the rebirth-storm and QoS pathologies become liabilities; do not use as a default at higher levels. |
+| OPC UA pub/sub | Cell↔site, site↔enterprise | ACS-native, deterministic message ordering, schema-aware. |
+| Structured query API on mTLS | Pull-mode consumers, on-demand high-fidelity | The box always exposes this for direct consumer queries; transport is operator-selected (gRPC, NATS req/reply, OPC UA req/reply, MCP-over-mTLS, etc.). |
+| Iceberg / Delta / DuckLake batch write to object store | BI / analytics consumers at broader scope | Versioned, downsampled. Separate from the real-time pipeline. |
+
+The operator picks one or more profiles per deployment. The architecture does not specify a default.
+
+**Orchestrate transactions, choreograph telemetry.** Telemetry flows (time-series, events, asset state changes) are *choreographed* — fire-and-forget on the edge profile, no acknowledgment expected at the publisher. Transactional flows (MES/MOM operations, work-order acks, recipe downloads) are *orchestrated* — synchronous, acknowledged, traceable end-to-end. The box's edge publisher handles telemetry. Transactional flows go through the structured query API or a dedicated transactional channel; mixing the two in one pipeline is a recurring failure mode.
+
+## Data Contracts
+
+**Every communication on the box and across its boundaries is governed by an explicit data contract.** This is universal — inter-container exchanges within a zone, inter-zone conduits across partitions, cross-side traffic at the internal DMZ, external traffic at the box's boundary, and device-level exchanges with PLCs, sensors, actuators, and HMIs. Communication without a contract is prevented or flagged; either is a deployment defect to reconcile.
+
+Defensibility is the reason. When a system asks "did this happen, and was it allowed?" the answer must trace to a contract. When a communication occurs that is not described by a contract, that is itself an event — observable, attributable, and evidence of an unreconciled deviation.
+
+### The contract catalog
+
+The deployment's full set of contracts is the **contract catalog**, a versioned artifact accessible via the structured query API at a well-known endpoint. Every conduit referenced by the kernel firewall, every mTLS pairing brokered by the workload identity issuer, every external endpoint, every device exchange must be backed by a catalog entry. The catalog is operator-published, and the architecture requires that it be machine-readable, version-controlled, and discoverable.
+
+### Enforcement: prevention and flagging
+
+Two modes operate together. Both are required.
+
+**Prevention** is the default for all box-internal traffic and all explicitly-allowed external paths. The kernel firewall, the workload identity issuer (SPIFFE), and the container-runtime admission policy cooperate: no contract entry → no SVID → no mTLS → no firewall conduit → no traffic. A workload attempting to communicate without a contract cannot establish a session. The attempt is dropped at the firewall and logged.
+
+**Flagging** is the fallback for communication paths the architecture observes but cannot pre-empt — passive collection on the ACS NIC, broadcast traffic on the local network, legacy protocols that cannot authenticate. The continuous-capture pipeline records every observed exchange. The contract catalog is consulted; uncontracted exchanges are emitted as `ot.contract.violation` events. Operator policy decides whether the violation is alarmable, alerting, or merely cataloged for review.
+
+The default posture is prevention. Flagging is a concession to physics, not a substitute.
+
+### Internal contracts (intra-box)
+
+Internal contracts govern communication between containers and zones within a single box. They are simpler than boundary contracts — both ends are operator-controlled, the trust model is uniform, the failure modes are bounded. Each internal contract specifies:
+
+| Field | What it specifies |
+|---|---|
+| Source workload | SPIFFE ID of the publishing or initiating workload. |
+| Destination workload | SPIFFE ID of the receiving workload. |
+| Allowed operations | Message types, RPC methods, query patterns. Not "any TCP." |
+| Transport | mTLS over a specific bus topic, gRPC method, lake read/write path. |
+| Cardinality | One-to-one, fan-out, fan-in, broadcast. |
+| Failure semantics | Drop, retry with bounded backoff, fail-closed, fail-open with alarm. |
+
+The kernel firewall conduits, the SPIFFE-based mTLS broker, and the bus subscription policy enforce internal contracts. An attempted connection between workloads not described by a catalog entry is dropped at the firewall and logged as `ot.contract.violation` with source and destination identities, attempted operation, and timestamp.
+
+### Boundary contracts (cross-domain)
+
+Boundary contracts govern every connection that exits the ACS — to enterprise IT, BI lake, broker box at broader scope, MES, OEM consumer, AI agent, regulator-facing dashboard, or any other external consumer. Boundary contracts are **bilateral**: both sides commit; both sides are accountable; both sides are observable. The architecture specifies the shape; operators publish deployment-specific values as a discoverable, versioned artifact alongside the structured query API.
+
+#### ACS-side obligations (what the box commits to producing)
+
+| Dimension | What the box commits to |
+|---|---|
+| Data inventory | Records the box exposes — namespaces, identifiers, types. Loose schema; observation-friendly. |
+| Edge profiles and endpoints | Which profile(s) carry which records (MQTT+Sparkplug B / OPC UA pub/sub / structured query on mTLS / batch BI feed). Endpoints, identities, transport semantics per profile. |
+| Freshness and resolution | Native resolution on the box (typically subsecond). What is downsampled before publication. What the consumer can pull at full fidelity from the on-box lake via the structured query API. |
+| Retention | On-box retention floor (30 days, matching the disconnected-operation buffer). Aging behavior. How the consumer compensates for gaps. |
+| Order and sequencing | Records carry sequence numbers and service IDs. Box guarantees monotonic sequence per service; cross-service ordering is the consumer's problem. |
+| Delivery semantics | Per profile. Telemetry (choreographed): fire-and-forget at-most-once on the wire, at-least-once at the on-box lake. Transactional (orchestrated): at-least-once with deduplication via service ID; consumer dedupes. |
+| Reconnect and gap behavior | During disconnected operation the box buffers locally and replays on reconnect. Consumer detects gaps via sequence-number discontinuity; box exposes a watermark on the structured query API. |
+| Contract version and evolution | Every contract is versioned. Schema changes are additive within a major version; breaking changes require a major-version bump, deprecation period, and overlap window. |
+| Authentication and authorization | Box authorizes consumers by SPIFFE-format identity over mTLS. Box's own credentials rotate on a documented cadence. |
+| Audit binding | Consumer can fetch the audit chain head and verify it independently. When operator enables audit binding, records carry signed checkpoints traceable to the chain. |
+| Quota and fair use | Per-profile rate limits and payload caps, where applicable. |
+
+#### Upstream obligations (what the consumer commits to providing)
+
+| Dimension | What the consumer commits to |
+|---|---|
+| Connectivity | Bandwidth, latency, uptime, redundancy, routing path. Stated in concrete numbers, not adjectives. |
+| Authentication | Credential issuance, rotation cadence, key custody, identity continuity across operator changes. |
+| Acknowledgment | Ack semantics where the profile requires them (transactional flows, audit chain head signing). Time bounds on ack. |
+| Query response | For pull-mode interactions, the consumer's response window when the box queries the consumer (health check, contract negotiation, watermark request). |
+| Schema accommodation | Consumer accepts loose schema and observes; does not enforce at the boundary. Modeling lives at consumer scope. |
+| Incident response | Named on-call path, response time, escalation route. Not "we'll get to it" — a clock starts. |
+| Capacity and quota | Consumer commits to absorbing the agreed throughput. If the consumer cannot keep up, that is the consumer's failure mode, not the box's. |
+| Audit verification | Consumer commits to validating the audit chain head it receives, on the cadence specified. Failure to validate is a contract violation visible to ACS. |
+
+#### RACI matrix
+
+For each named failure mode the contract specifies who from each side is **R**esponsible (does the work), **A**ccountable (single role on the hook), **C**onsulted (weighs in), and **I**nformed (told what happened). A skeleton — operators populate per deployment:
+
+| Event | ACS Responsible | ACS Accountable | Upstream Responsible | Upstream Accountable | Consulted | Informed |
+|---|---|---|---|---|---|---|
+| Connectivity loss | | | | | | |
+| Box outage | | | | | | |
+| Schema/version mismatch | | | | | | |
+| Authentication failure / cert expiry | | | | | | |
+| Audit chain mismatch | | | | | | |
+| Rate limit exceeded | | | | | | |
+| Contract evolution / deprecation | | | | | | |
+| Consumer-side capacity exhaustion | | | | | | |
+| Suspected data integrity event | | | | | | |
+| Compliance / regulator request | | | | | | |
+
+The architecture requires the matrix to exist, to be specific (named roles, not "the IT team"), and to be reachable by the box for incident-time decision support (e.g., the box can surface "the on-call accountable for this event is X, contact path is Y" via the structured query API).
+
+### Adherence telemetry
+
+The box catalogs and emits its own observations of contract performance — for both internal and boundary contracts. This data class is the authoritative record of who held up which side, and of every uncontracted communication observed. It is published under `ot.contract.*` and lands in the local lake alongside operational data and the audit chain.
+
+| Telemetry stream | What it records |
+|---|---|
+| `ot.contract.violation` | Any communication attempt without a corresponding catalog entry — internal (workload-to-workload firewall drops) or external (uncontracted external session). Includes source, destination, attempted operation, timestamp. |
+| `ot.contract.connectivity` | Upstream uptime, downtime, latency distribution, throughput, route changes. |
+| `ot.contract.delivery` | Per-profile messages sent, acknowledged, retransmitted, dropped, rejected. |
+| `ot.contract.auth` | Cert expiry warnings, rotation events, failed authentication attempts (internal mTLS and external). |
+| `ot.contract.schema` | Consumer attempted to use deprecated version, schema mismatch detected, contract version pulled by consumer. |
+| `ot.contract.quota` | Rate limit hit, payload size exceeded, fair-use violations. |
+| `ot.contract.reconciliation` | Sequence-number gaps observed by consumer, watermark queries, replay requests. |
+| `ot.contract.audit_verify` | Consumer-side audit chain head validation events; failures here are bilateral (either consumer didn't validate, or chain didn't validate). |
+| `ot.contract.sla_breach` | Any of the above that crossed an SLA threshold defined in the contract. |
+
+When a counterparty fails to perform, the ACS produces concrete evidence: *"we sent N records on profile X at rate R between timestamps T1 and T2; consumer acknowledged N−K; here is the per-record log; the SLA threshold for ack latency is 500 ms and the observed p99 was 4.2 s."* Adherence telemetry exists so ACS is never the side without receipts.
+
+### Discoverability and ownership
+
+The contract catalog and every entry within it are **published, not implicit**. A consumer must be able to fetch any contract before subscribing or querying. Catalog publication is itself part of the structured query API — a well-known endpoint that returns the current and previous catalog versions, the per-contract RACI matrices, and the SLA thresholds against which adherence is measured.
+
+The contract is the **operator's commitment**, not the architecture's. IIA specifies that contracts exist, that the catalog is universal, that boundary contracts are bilateral and discoverable, and that adherence is recorded. The values are operator policy.
+
+## Workload Identity
+
+**Role: workload identity issuer producing SPIFFE-format SVIDs bound to attestation evidence.**
+
+Each container has a SPIFFE ID of the form `spiffe://iia.local/zone/<zone>/workload/<name>`. SVIDs are short-lived (1 hour or less) and issued via the SPIFFE Workload API. Identity is bound to the workload's TPM-attested image hash via the issuer's node attestor. A workload that boots from an unsigned image cannot get an SVID and cannot speak mTLS to any peer.
+
+This implements FR1 (Identification & Authentication Control) at the component layer required by SR 1.2 at SL3.
+
+## Image Provenance
+
+**Role: cryptographic image signature verification at admission.**
+
+All container images are:
+
+1. Built reproducibly from source.
+2. Signed at build against a transparency-logged trust root (Sigstore-class infrastructure compliant with the OCI image-signature spec).
+3. **Bundled into the appliance OS image at build time.** No registry pulls at runtime, ever.
+4. Verified at admission by container-runtime policy that requires a valid signature for every image.
+
+A workload whose image fails signature verification is refused before the supervisor can start the unit. The failure is logged to the audit chain and surfaces as an asset-integrity event.
+
+This implements FR3 (System Integrity) SR 3.4 (mobile code restrictions) and SR 3.1 (communication integrity) at SL3.
+
+## Secrets
+
+**Role: encrypted-at-rest secret store, sealed by hardware trust anchor, short-lived issuance to workloads.**
+
+- Secrets are encrypted with operator-chosen tooling that supports hardware-trust-anchor sealing.
+- The unsealing key is sealed against TPM PCR values matching the measured-boot expected state.
+- At boot, after Secure Boot and rootfs verification succeed, the TPM unseals the secret store key.
+- Workloads receive only the secrets they need, mounted as tmpfs files at startup.
+
+Secrets are never written to durable storage in plaintext. A box that has been physically tampered with (PCR mismatch on next boot) cannot unseal the secret store.
+
+This implements FR4 (Data Confidentiality) SR 4.1 at SL3 and provides a credible path to FR4 SR 4.3 (cryptographic key management) when paired with an external HSM in two-box mode.
+
+## Audit Logging
+
+**Role: hash-chained, append-only, replicated north before deletion is possible.**
+
+- Every security-relevant event (authentication, authorization, container lifecycle, conduit rejection, signature failure, SVID issuance, session open/close) is emitted as a structured record.
+- Records flow into `ot.dmz.audit` and are written to an append-only log on the inbound side with a hash chain: each record carries `H(prev_hash || record)`.
+- The audit chain head is published every minute via `ot.it.publish` as `ot.security.audit.head`. The next box up signs it and re-publishes north. Tampering with the on-box log is detectable from any box that has seen a prior chain head.
+- Retention on-box: 30 days minimum (matches the disconnected-operation buffer). Replication north happens as soon as connectivity exists. Off-box retention is governed by the receiving box's policy.
+
+This implements FR3 SR 3.9 (audit data integrity) at SL3.
+
+## Remote Access
+
+**Role: clientless, browser-mediated remote-access gateway with native session recording, located at broader scope (broker), reached by the box via outbound-only mTLS tunnel.**
+
+```
+                                              broker
+                                             (another box at
+                                              broader scope)
+
+                                            +-----------------+
+   +------------------+                     |                 |
+   |   IIA box        |  reverse mTLS       | remote-access   |  ◄── operator
+   |                  | ◄────────────────►  | gateway         |    (browser, HTTPS)
+   |  ot.it.tunnel    |                     | (clientless,    |
+   |  (mTLS dial-out, |                     |  session        |
+   |   no listener)   |                     |  recording)     |
+   |                  |                     |                 |
+   |  ot.mgmt.ui      |                     | JIT credential  |
+   |  (mgmt NIC only, |                     | broker          |
+   |   on-demand)     |                     |                 |
+   +------------------+                     | append-only     |
+                                            | recording store |
+                                            +-----------------+
+                                                     │
+                                                     ▼
+                                          external IdP (OIDC + FIDO2)
+```
+
+**Properties:**
+
+- **Zero inbound on the IT NIC.** The tunnel agent in `ot.it.tunnel` dials out to the broker over mTLS. The box exposes no remote-access listener on the IT NIC.
+- **The broker is just another box at broader scope.** No new architecture; the fractal holds.
+- **Operator authentication at the broker.** External IdP via OIDC, with FIDO2 / WebAuthn / PIV as second factor. The box has no permanent operator accounts.
+- **Just-in-time credentials.** Operator authorization at the broker triggers issuance of a short-lived credential for the on-box target. The credential is injected into the remote session and expires at session end.
+- **Session recording.** Every session records keystrokes and screen. Recordings are written to an append-only / object-locked store on the broker, replicated to the next box up.
+- **Local management UI** runs on the management NIC only, when the operator enables it. Same auth model (OIDC + 2FA) as the broker tunnel path. Source-IP-restricted, never routed to WAN. The local UI is the same role as the remote gateway, with a different topology.
+
+## Local Last-Resort Access
+
+A serial console (RS-232 or USB-serial) is present on every box. It is the only path that requires neither the broker nor the management network. It is used when both are unreachable and the box needs hands-on intervention.
+
+- Console authentication is local with TPM-bound hardware token.
+- Every console session is logged to the audit chain via the kernel audit subsystem.
+- The console has no network listener. There is no SSH on the IT NIC, ever.
+
+## Updates
+
+**Role: immutable host OS with atomic A/B updates and rollback.**
+
+- The OS image is composed at build, signed against the same transparency-logged trust root as the container images, and published to the operator's distribution channel.
+- The box pulls and stages a new deployment but does not activate it until the operator authorizes a reboot.
+- The update either fully applies or fully does not. No in-place mutation of the running rootfs.
+- A failed boot of the new deployment automatically rolls back to the previous one.
+
+**Container image updates** ride along with OS updates. New container images are bundled into the OS image at build time. There is no live registry pull from the box; the only way a container changes is by an OS update.
+
+This implements FR3 SR 3.4 (deterministic update behavior — the box never enters an in-between state during update) and FR7 SR 7.1 (resource availability).
+
+## SL3 Foundational Requirements Mapping
+
+| FR | Requirement | Implementation |
+|---|---|---|
+| FR1 | Identification & Authentication Control | SPIFFE workload identity (component); external IdP + FIDO2 (operator); TPM-bound console (last-resort); no permanent operator accounts on box. |
+| FR2 | Use Control | Rootless containers + capability drops; broker RBAC; JIT credentials; supervisor approval workflow for risky actions (TBD — see *Open Questions*). |
+| FR3 | System Integrity | UEFI Secure Boot + measured boot + PCR-sealed secrets; signed-image admission; hash-chained audit log; atomic A/B updates. |
+| FR4 | Data Confidentiality | Full-disk encryption with TPM-sealed key; mTLS between every zone; secret store sealed by TPM; TLS 1.3 minimum on every external conduit. |
+| FR5 | Restricted Data Flow | Per-zone container networks; default-deny kernel-firewall conduits; ACS NIC passive; **no HTTP at the boundary in either direction**; all inbound→outbound traffic transits the DMZ; hardware diode in two-box mode. |
+| FR6 | Timely Response to Events | Network IDS with current rule sets; audit chain head publishes every minute; alerts as `ot.security.*`; broker-side runbook automation (TBD). |
+| FR7 | Resource Availability | Per-zone resource limits; supervisor dependency graph; atomic update rollback; 30-day local buffer for disconnected operation; redundant broker at broader scope. |
+
+## SL4 Two-Box Deployment
+
+**Topology:**
+
+```
+   ACS-side IIA box ───► hardware data diode ───► IT-side IIA box ───► external consumer
+   (passive collection,     (TX-only fiber,           (publishes north,    (with physical
+    capture, witness,        RX-only fiber,            no return path        one-way separation)
+    lake, audit)             no return path)           to ACS side)
+```
+
+**Configuration delta from SL3:**
+
+- ACS-side box: `ot.it.publish` configured to send over a diode-friendly transport (typically UDP with FEC; TCP cannot survive a diode); no inbound conduits on the IT-side NIC; `ot.it.tunnel` and `ot.mgmt.ui` removed (no remote access into the ACS-side box; all operator access lands on the IT-side box).
+- IT-side box: `ot.acs.*` zones are empty or minimal (no PLCs to collect from; observation already happened on the ACS side); receives the diode stream into `ot.acs.diode_in`; passes through to `ot.dmz.bus` and `ot.acs.lake`.
+- The diode appliance is not part of the IIA software stack; IIA configures itself to operate correctly across one. (See *Open Questions* for diode product evaluation.)
+
+The architecture does not change. The same workload definitions, the same partitioning, the same audit chain. Only the network configuration and the absence of a few zones change between the two boxes.
+
+## Resource Budget (SL3, 8 GB SKU)
+
+Estimates only — actual consumption depends on selected implementations. Validate at the prototype.
+
+| Role / Component | RAM (MB) | Notes |
+|---|---|---|
+| Immutable host OS (headless) | 250 | |
+| Process supervisor + container runtime | 100 | |
+| Workload identity issuer | 30 | |
+| Kernel firewall + audit subsystem | 20 | |
+| In-flight message bus | 50 | Transient. |
+| Local data lake | 600 | Largest single component. |
+| Outbound publishers (edge + structured API) | 130 | Combined. |
+| Continuous capture | 200 | Implementation-dependent. |
+| Network IDS | 500 | Rule-set dependent. |
+| Scan engine + enrichment | 250 | Worker pool, tunable. |
+| Local management UI | 100 | Off when not in use. |
+| Outbound tunnel agent | 20 | |
+| Audit chain writer | 50 | |
+| Health / metrics | 30 | |
+| **Estimated floor** | **~2330 MB** | Out of 8 GB SKU. |
+| Available headroom | ~5670 MB | For collectors, query bursts, transient scan-engine spikes. |
+
+The floor leaves roughly 5.7 GB for workload bursts. Adequate for the underserved-triangle target but tight enough that adding a heavyweight component (e.g., a full ELK-class log analytics stack) requires a higher-spec SKU.
+
+## Reference Implementations (non-normative)
+
+This section lists candidate software for each role. **None of these are part of the architecture spec.** Operators choose implementations to fit their requirements.
+
+| Role | Candidate implementations | Notes |
+|---|---|---|
+| Immutable host OS (atomic A/B) | Fedora IoT (rpm-ostree), CentOS Stream Image Mode, Ubuntu Core, Talos Linux | rpm-ostree is the in-house default. |
+| Process supervisor | systemd, runit, OpenRC | systemd is the in-house default. |
+| Container runtime | Podman + Quadlets, containerd, CRI-O | Podman + Quadlets is the in-house default; rootless and daemonless are mandatory at SL3. |
+| OCI runtime | crun, runc | crun is the in-house default. |
+| Workload identity issuer (SPIFFE) | SPIRE, smallstep CA with SPIFFE plugin | SPIRE is the in-house default. |
+| Image signature verification | cosign + Sigstore TUF, notation | cosign is the in-house default. |
+| Secret store | sops + age, HashiCorp Vault, Mozilla Trousseau | sops + age sealed by TPM is the in-house default. |
+| Continuous capture | Eris Witness `_continuous_capture.py` (tshark ring buffer), Zeek, Arkime | Eris Witness is the in-house default. |
+| Network IDS | Suricata, Snort, Zeek (in IDS mode) | Suricata is the in-house default. |
+| Scan engine | Eris Witness `_ew_engine.py` | In-house engine; alternative is a custom analyzer. |
+| Enrichment plugins | Marlinspike (`marlinspike-mitre`, `marlinspike-malware`) | In-house plugin family. |
+| Local data lake | DuckLake, Apache Iceberg (local), Delta Lake (local), TimescaleDB | DuckLake is the in-house default. |
+| In-flight message bus | NATS JetStream, Apache Pulsar, Redis Streams | NATS is the in-house default. |
+| Edge publisher (MQTT profile) | Mosquitto, EMQX, HiveMQ | Mosquitto is the in-house default. |
+| Edge publisher (OPC UA profile) | open62541, FreeOpcUa, Eclipse Milo | |
+| Structured query API | gRPC, i3X, MT Connect, Zenoh, MCP-over-mTLS | i3X is the in-house default. **i3X v1 is bounded to L2 time-series and static-state queries; transactional / method semantics are punted to v2.** **MT Connect: spec exists but OEM conformance is unreliable in the field — verify per-OEM before adopting.** Use a separate transactional channel for MES/MOM-class flows. |
+| Outbound tunnel agent | frp, WireGuard userspace, custom mTLS | |
+| Remote-access gateway (broker side) | Apache Guacamole, Teleport, HashiCorp Boundary | Guacamole is the in-house default; Teleport remains a fallback SKU. |
+| JIT credential broker (broker side) | HashiCorp Vault, Boundary, Teleport | Vault is the in-house default. |
+| External IdP | Keycloak, FreeIPA, Auth0, Okta | Operator-chosen. |
+| Visualization / local UI | Grafana, custom UI, Apache Superset (broker side) | Operator-chosen; if on-box, must respect the local-network-only rule. |
+| Off-box UNS aggregation / broker-side stack (multi-host or cluster scope) | United Manufacturing Hub (UMH), Apache StreamPipes, custom HiveMQ + Kafka + TimescaleDB | Runs at site / regional / corporate scope as the broader-scope realization of "the box." UMH is opinionated UNS-first and Helm/k8s-shaped — appropriate at L1/L2 and L2/L3 boundaries when the box is realized as a cluster, not as the appliance SKU. |
+| Consumer contract description format | OpenAPI (REST + i3X), AsyncAPI (event-driven), JSON Schema / Avro / Protobuf (record schemas), Smithy, CUE | Operator-chosen per deployment. The architecture requires the contract be discoverable, versioned, and machine-readable; the format is operator policy. |
+
+These choices are recorded in the project's `project_iia_reference_implementations.md` memory. Updates here should match the in-house reference build but must preserve the role-not-product framing in the normative sections.
+
+## Open Questions
+
+1. **Supervisor approval workflow.** FR2 SR 2.4 at SL3 wants supervisor approval for risky actions. Implementation TBD — broker-side workflow with two-person integrity, or logged "second factor" run out-of-band?
+2. **IDS rule sourcing.** Emerging Threats? Custom for ACS protocols? The IDS is only as good as the rules; sourcing is its own engineering problem.
+3. **Diode product evaluation.** Owl Cyber Defense, Waterfall, Fox-IT, Siemens — different protocol support and integration costs for the IT-side reception. To be evaluated against price points the underserved triangle can absorb.
+4. **HSM integration for two-box mode.** SL4 reasonably calls for an HSM-backed key hierarchy on the IT-side box.
+5. **Vault HA on the broker.** Single-instance by default; for high-availability brokers, a real engineering problem.
+6. **Distributed-systems engineering surface.** State convergence on long reconnect, schema evolution across firmware versions, profile differentiation per level. Acknowledged in the README; not solved here.
+7. **VLAN-only network deployment audit posture.** When the 2-NIC + VLAN variant is used (in place of 3 physical NICs), source-IP filtering on the management VLAN must be auditable. How is this evidence generated on commodity NICs?
+8. **CIAD / CIND publication.** When IIA reference deployments are documented as CIADs and CINDs, where do they live (this repo, a separate `deployments/` repo, the operator's own docs)?
+
+This document has been re-aligned with PERA+ and the architectural decisions taken through 2026-05-04. Expect revisions as the prototype shapes the answers.

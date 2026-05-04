@@ -28,6 +28,24 @@ Everything outside the automation cell is IT. Application data, demand planning,
 
 The box sits at this boundary. Inside the automation cell, it observes and protects ACS data under SRP rules. At the boundary, it transforms ACS data into information and publishes it north under IT rules. It does not allow IT governance to reach back into the cell. The boundary is enforced by architecture, not by policy.
 
+This boundary maps directly to PERA's articulation: it is where the IT *Zero Trust* environment changes to the ACS *Managed Trust* environment. On the IT side, every action is unauthenticated until proven. On the ACS side, every device and process is known, identified, and accountable to the operational manager. The box terminates one and begins the other.
+
+## The Two-Box Method
+
+The canonical articulation of physically enforced ACS/IT segmentation predates IIA. John Rinaldi and Gary Workman documented it in *[The Everyman's Guide to EtherNet/IP Network Design](https://www.amazon.com/EVERYMANS-GUIDE-ETHERNET-NETWORK-DESIGN/dp/B0B7PSHK7J)* (Real Time Automation, 2022), drawn from Workman's experience architecting EtherNet/IP networks at General Motors.
+
+The pattern is two boxes and a hardware data diode. Box 1 sits in the ACS zone, collects from PLCs and SCADA, produces data. A hardware data diode — a unidirectional optical link with no return path — sits between. Box 2 sits in the IT zone, receives over the diode, and forwards to historians and dashboards. Compromise of Box 2 cannot reach Box 1. Compromise of the IT network cannot reach the ACS network. The boundary is enforced by physics, not by policy.
+
+IIA inherits the method and extends it into two deployment modes governed by the same architecture.
+
+**Software-only mode (SL3).** A single IIA box at the boundary. The ACS-facing interface is passive — no IP stack transmit, no listeners. The box is internally partitioned into inbound, internal DMZ, and outbound; default-deny kernel firewall conduits between zones, mTLS authentication at every internal hop. Outbound is push-only on an operator-selected edge profile, plus a structured query API on mTLS for pull. No HTTP listener at the external boundary in any direction. Reaches Security Level 3 against motivated adversaries with ACS-specific skills.
+
+**Two-box mode (SL4).** One IIA box on the ACS side, hardware data diode between, one IIA box on the IT side with physical one-way separation from the external consumer. Same software, same configuration model, same operator experience. The architecture does not change. Only the physical topology does.
+
+SL3 does not promise unidirectional flow. SL3 promises a hardened, segmented, authenticated, audited boundary. Unidirectional flow is the SL4 property, reached only via hardware data diode and physical one-way separation. The software architecture is invariant across both modes; the physical topology is what determines the security level achieved.
+
+IIA is fractal across security levels in the same way it is fractal across organizational scope.
+
 ## The Unit
 
 One box. Runs the complete ACS infrastructure stack: data collection, historian, security monitoring, asset inventory, intrusion detection, visualization, API, remote access, VPN, message brokering, protocol translation. Everything needed to operate, monitor, and secure a zone.
@@ -43,6 +61,8 @@ A production zone gets a box. That box IS the zone's entire infrastructure: hist
 A plant gets a box. Same unit, broader scope. Aggregates the production zone boxes.
 
 A site gets a box. Same unit, broader scope. Aggregates the plant boxes.
+
+In PERA terms, IIA boxes deploy at any adjacent-level boundary across Levels 0–5. The L3/L4 boundary is the canonical *Plant Firewall* placement; IIA generalizes the same role across every level boundary.
 
 The cloud aggregates all boxes. Optional. Centralized collection — corporate, regional, or cloud — is not a different architecture; it is the same unit at broader scope. The fractal does not collapse at the top.
 
@@ -67,7 +87,9 @@ IIA is shaped by the realities of automation and control system environments, no
 
 **Connectivity is a luxury, not a given.** Production floors, wellheads, substations, feed lots, and remote facilities operate on cellular, satellite, or no backhaul at all. The unit must be the complete system indefinitely, not a thin client waiting for a cloud to come back.
 
-**Safety, Reliability, Performance over Confidentiality, Integrity, Availability.** ACS environments do not operate under the CIA triad. The correct priority ordering, as articulated by Infracritical, is SRP: Safety first, then Reliability, then Performance. A security tool that compromises any of these is not a security tool. Every function on the box must degrade gracefully and never interfere with the process it monitors.
+**Safety, Reliability, Performance, not Confidentiality, Integrity, Availability.** The issue is not ordering, it is category. CIA, AIC, and their derivatives describe properties of *information* — and information is historical by nature, a record of what already happened. ACS does not operate on records. ACS operates on action and physics: a valve that moves, an interlock that latches, a loop that closes within its required time. Reliability and Performance in SRP are properties of the physical system. Safety is the property the physical system protects. The correct priority ordering for ACS, as articulated by Infracritical, is SRP: Safety first, then Reliability, then Performance. A security tool that compromises any of these is not a security tool. Every function on the box must degrade gracefully and never interfere with the process it monitors.
+
+PERA's SAIC (Safety, Availability, Integrity, Confidentiality) extends CIA by prepending Safety. It is the right frame for IT systems that touch safety-critical *information* — historians, audit stores, regulator-facing dashboards. SAIC does not extend down to govern the ACS itself. The ACS is upstream of SAIC, governed by SRP. What crosses the domain boundary is the moment data becomes information.
 
 **The edge is where value is physically created.** The PLC closing a loop, the VFD controlling a motor, the sensor reading a level. Intelligence belongs at the point of production, not centralized upstream.
 
@@ -89,6 +111,8 @@ The pattern exists elsewhere. It has never been named or applied deliberately to
 
 These are expressions of the same convergence pattern: self-contained sovereign unit, identical at every deployment point, scales by composition, works without upstream dependency. IIA inherits that pattern and extends it. The new claim is not convergence — convergence is precedented. The new claim is that the unit enforces two different governance models across a single boundary: SRP inside the automation cell, CIA outside. None of the prior art does this because none of it sits at a boundary where data classification and governance flip.
 
+PERA+ articulates the same first principle from the standards side: *"creating secure interfaces rather than attempting to merge or integrate IT and Industrial Automation and Control Systems."* IIA inherits this stance and operationalizes it as a single appliance.
+
 IIA applies the convergence to the full ACS stack — collection, processing, storage, visualization, security, API — and applies the boundary enforcement at the seam between ACS and IT. One unit. Every zone. Identical.
 
 ## Who This Is For
@@ -103,59 +127,87 @@ The alternatives (Claroty, Nozomi) start at $50-100K/year with $100-150K profess
 
 ## Data Architecture
 
-Data flows unidirectionally. The box receives. It does not command. Marlinspike's passive capture enforces the same principle in software that an optical data diode enforces in hardware: data flows out, nothing flows back in.
-
-Inside the automation cell, data is ACS: time-critical, process-relevant, governed by SRP. The box observes this data passively and stores it locally. At the cell boundary, the box transforms process data into information and publishes it north. Once published, IT rules apply. Nothing from the IT domain flows back into the cell.
+The box is internally partitioned into three sides plus a management interface.
 
 ```
-[ACS domain: automation cell]
-[OT devices] --OPC UA/Modbus/etc--> [collectors]
-                                         |
-                                  [NATS JetStream]
-                                    /     |     \
-                              security  process  MRP
-                                 |        |       |
-                          [Marlinspike] [SpB enc] [i3X server]
-                                        |              |
-- - - - - - - - - - - - domain boundary - - - - - - - - -
-                                        |              |
-[IT domain: information consumers]
-                                  [Mosquitto]       REST API
-                                        |              |
-                               MQTT+SpB north     i3X queries
-                                        |              |
-                                  [next box up / cloud]
+                    ACS DOMAIN  (Managed Trust, SRP)
+                                 │
+                                 │ OPC UA / Modbus / EtherNet/IP / fieldbus
+                                 ▼
+              ┌────── INBOUND ──────────────────────────────┐
+              │ passive collectors                          │
+              │ continuous capture                          │
+              │ network IDS                                 │
+              │ scan engine + enrichment                    │
+              │ local data lake  ◄── source of truth        │
+              └─────────────────────┬───────────────────────┘
+                                    │
+              ┌────── INTERNAL DMZ ─┼───────────────────────┐
+              │ in-flight message bus (transient, no raw)   │
+              │ audit chain head publisher                  │
+              └─────────────────────┬───────────────────────┘
+                                    │
+- - - - - - - - DOMAIN BOUNDARY  (Zero Trust ↔ Managed Trust) - - - - -
+                                    │
+              ┌────── OUTBOUND ─────┼───────────────────────┐
+              │ edge publisher  (push, operator-selected    │
+              │                  profile)                   │
+              │ structured query API  (pull, mTLS,          │
+              │                        non-HTTP)            │
+              │ outbound tunnel agent  (mTLS dial out,      │
+              │                         no listener)        │
+              └─────────────────────┬───────────────────────┘
+                                    │
+                                    ▼
+                       [next box at broader scope /
+                        BI lake / remote-access broker]
+
+                    IT DOMAIN  (Zero Trust, CIA)
+
+
+              [management NIC: local-network only.
+               Optional HTTPS UI, OIDC + 2FA.
+               Never routed to WAN.]
 ```
 
-Push (real-time): Sparkplug B over MQTT for event-driven consumers (Ignition, AWS IoT SiteWise, AVEVA, Fathom).
+The box's external surface is engineered for minimum runtime exposure:
 
-Pull (query): i3X REST API for analytical consumers (AI pipelines, custom dashboards, compliance reporting).
+- **No HTTP at the boundary, in either direction.** No HTTP listener on the ACS or IT NICs. No outbound HTTP/HTTPS from any component — no registry pulls, no rule-feed updates, no telemetry, no CRL/OCSP. Updates and deltas arrive via signed bundles in OS updates or mTLS-tunneled deltas.
+- **Edge profile is operator-selectable per deployment.** The architecture is profile-agnostic. MQTT + Sparkplug B is appropriate at the controller↔area-broker level (PERA L1/L2). Above L2, OPC UA pub/sub, structured query on mTLS, or batch-write to a BI lake (Iceberg / Delta / DuckLake on object store) are typically the better fit. The architecture spec does not pick.
+- **The local data lake is the source of truth on the box.** All inbound capture, classification output, audit, events, and time-series land there. Outbound publishers siphon from the lake; the in-flight bus is transient and holds no durable raw data. Broader-scope BI lakes are downstream of the on-box lake, not a substitute for it.
+- **Minimum runtime surface.** Every listener, daemon, and outbound connection exists because it was designed and engineered for a specific operational purpose. Anything not in this document is off, and the OS image is built so disabled services cannot be turned on at runtime.
 
-Both read from the same NATS/DuckDB/TimescaleDB backing store. Both work locally when disconnected.
+Inside the automation cell, data is ACS: time-critical, process-relevant, governed by SRP. The box observes passively and stores locally. At the boundary, the box transforms process data into information and publishes it north under IT rules. Outbound is bidirectional only when authenticated, identified, audited, and minimized — and never via HTTP.
 
-Data classification on the bus:
-- `ot.process.*` -- tag values, historian data, analog/digital IO (ACS origin, becomes information at boundary)
-- `ot.security.*` -- Marlinspike alerts, asset inventory changes, network events (ACS origin)
-- `ot.mrp.*` -- work orders, execution status, ERP API events (IT domain, inbound reference only)
-- `ot.health.*` -- collector heartbeats, box diagnostics, uptime (infrastructure)
+**Every communication is governed by an explicit data contract** — internal (between containers, between zones, between layers within the box) and external (every connection that exits the ACS, including device-level exchanges with PLCs, sensors, actuators, and HMIs). Communication without a contract is **prevented** where the architecture can enforce it (kernel firewall + workload identity + admission policy refuse uncontracted traffic) and **flagged** where prevention is not possible (passive observation on the ACS NIC, broadcast, legacy protocols). The deployment's full set of contracts is the **contract catalog** — a versioned, discoverable artifact. Contractlessness at any layer is a deployment defect.
+
+Boundary contracts — at every connection that exits the ACS — are **bilateral**. The ACS side commits to data inventory, freshness, resolution, retention, ordering, delivery, reconnect, version evolution, authentication, and audit binding. The upstream side commits to connectivity, authentication, acknowledgment, query response time, schema accommodation, capacity, and incident response. A **RACI matrix** names accountable parties for every failure mode. The box catalogs its own **adherence telemetry** — connectivity, delivery, auth, schema, quota, reconciliation, audit verification, SLA breaches, and contract violations — so ACS is never the side without receipts.
 
 ## Standards
 
 IIA does not derive from any single standard. It is the physical instantiation of what multiple standards describe abstractly, because they share the same first principles: sovereign, independent, autonomous operation in safe and reliable efforts to achieve a shared goal.
 
-**PERA+** (pera.net) defines the reference architecture for industrial enterprise organization, including the hierarchical levels, zone boundaries, and functional requirements that IIA implements physically at every level. The PERA+ Network Design update, incorporating Bode/Nyquist-constrained response latency requirements across levels, directly informs where the domain boundary falls for any given process.
+**PERA+** (pera.net), maintained by Gary Rathwell at Entercon, defines the reference architecture for industrial enterprise organization: hierarchical levels (typically L0 through L5 or higher), zone boundaries, and the **4Rs** — Response, Resolution, Reliability, Resilience — that determine where applications belong in the architecture. IIA implements physically at every level what PERA+ describes structurally. The 4Rs are why the box buffers high-fidelity data locally and aggregates downsampled data centrally; response time tolerances loosen and resolution requirements coarsen as data moves up the levels.
 
-**IEC 62443** defines the cybersecurity management system, security levels, and component requirements that the box satisfies at the zone level, ordered by SRP priority: zone segmentation enforcement protecting safety-critical process boundaries, continuous passive asset inventory and network monitoring preserving operational reliability, and role-based access control with full audit logging (all data time-series, all access logged, session recording) without degrading system performance.
+**ISA-95** is the canonical IT↔ACS interface model, particularly for process industries. Where the box transforms ACS data into information and publishes it north, ISA-95 describes the data model the broader-scope consumer expects. IIA does not enforce ISA-95 at the edge — schema modeling lives at broader scope — but the box is engineered to feed ISA-95-modeled consumers without friction.
+
+**IEC 62443** defines the cybersecurity management system, security levels, and component requirements the box satisfies at the zone level, ordered by SRP priority: zone segmentation enforcement protecting safety-critical process boundaries, continuous passive asset inventory and network monitoring preserving operational reliability, and role-based access control with full audit logging (all data time-series, all access logged, session recording) without degrading system performance.
+
+IIA documentation uses PERA+'s **CIAD** (Control and Information Architecture Diagram, conceptual block diagram, drawn during Conceptual Engineering) and **CIND** (Control and Information Network Diagram, network detail with SL1–SL4 annotations, drawn during Preliminary Engineering) conventions for reference deployments. This makes IIA deployments legible to any control engineer working within the PERA framework.
 
 The convergence is not coincidental. These standards arrive at the same place because they are built on the same observation: the unit of industrial operation is the zone, the zone must be self-sufficient, and any dependency on external systems for basic function is an architectural failure. IIA is the first deliberate physical instantiation of that observation. The standards are the formal description of it.
 
 ## Product Family
 
-**Fathom** is the enterprise platform. The cloud viewport, multi-site aggregation, the commercial offering.
+The IIA architecture names roles. The product family below is the author's reference implementation of those roles. Each product is one valid choice an operator could make; the architecture survives substitution.
 
-**Marlinspike** is the open-source core. Passive protocol-aware network capture, asset inventory, security monitoring. The engine inside the box. Named for the nautical tool used to open tightly-wound rope structures.
+**Eris Witness** is the open-source scan engine. Continuous passive capture, protocol-aware classification, asset inventory, finding generation. Fills the inbound-side roles inside the box: continuous capture, scan engine, classifier pipeline, and local data lake.
 
-**WirePilot** is the portable appliance. One box, one SPAN port or tap, live protocol-aware capture, no network footprint, no collectors phoning home. Carry it in, plug it in, see everything, pull it out. No IP stack on the capture side means no attack surface on the monitored network. Electrically present, logically invisible. Same engine as Fathom, different form factor.
+**Marlinspike** is the open-source enrichment plugin family layered on Eris Witness output. `marlinspike-mitre` maps observed events to MITRE ATT&CK; `marlinspike-malware` matches against IOC and malware rule packs. Named for the nautical tool used to open tightly-wound rope structures.
+
+**Fathom** is the commercial enterprise platform. The cloud viewport, multi-site aggregation, broker-side services operating at broader scope above the box.
+
+**WirePilot** is the portable appliance form factor. One box, one SPAN port or tap, live protocol-aware capture, no network footprint, no collectors phoning home. Carry it in, plug it in, see everything, pull it out. No IP stack on the capture side means no attack surface on the monitored network. Electrically present, logically invisible.
 
 ## The Thesis
 
@@ -171,7 +223,7 @@ IIA provides the architectural pattern that makes sovereignty the default rather
 
 ## Trademarks
 
-Industrial Independence Architecture, IIA, Fathom, Marlinspike, and WirePilot are trademarks of ***REMOVED***. The license below covers the text of this document. It does not grant rights to use these marks. Use of the marks to refer to derivative articulations, products, or services requires written permission.
+Industrial Independence Architecture, IIA, Eris Witness, Marlinspike, Fathom, and WirePilot are trademarks of ***REMOVED***. The license below covers the text of this document. It does not grant rights to use these marks. Use of the marks to refer to derivative articulations, products, or services requires written permission.
 
 ## License
 
