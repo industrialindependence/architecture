@@ -16,7 +16,8 @@ These are the hard architecture rules. Implementation choices must respect all o
 4. **All inter-zone traffic transits the internal DMZ.** Inbound zones cannot conduit directly to outbound zones.
 5. **Roles, not products.** This document names the role each component fills. Specific software belongs in the *Reference Implementations* appendix, never in the normative sections.
 6. **Standards and protocols stay named.** Interface contracts (MQTT, Sparkplug B, OPC UA, OIDC, FIDO2, SPIFFE SVID, OCI image format, TPM 2.0, UEFI Secure Boot, TLS 1.3, IEC 62443, ISA-95, PERA+) belong in the spec because they are interoperability surface.
-7. **Every communication is contracted.** Inter-container, inter-zone, cross-side, and external — every conduit, every mTLS pairing, every device exchange must be backed by an explicit data contract in the deployment's contract catalog. Communication without a contract is **prevented** where the architecture can enforce it (kernel firewall + workload identity + admission control cooperate to refuse uncontracted traffic), and **flagged** where prevention is not possible (passive observation on the ACS NIC, broadcast). Contractlessness is a deployment defect.
+7. **Every communication is contracted.** Inter-container, inter-zone, cross-side, and external — every conduit, every mTLS pairing, every device exchange must be backed by an explicit data contract in the deployment's contract catalog. Communication without a contract is **prevented** where the architecture can enforce it (kernel firewall + workload identity + admission control + mTLS cooperate to refuse uncontracted traffic; SDN policy strengthens this on the network fabric where deployed), and **flagged** where prevention is not possible (passive observation on the ACS NIC, broadcast). Contractlessness is a deployment defect.
+8. **Attestation observes prevention.** Every prevention mechanism may leak. The architecture assumes this. Independent attestation observers (network IDS for the policy plane, IO master for the physical substrate) cross-check what actually happened against what the contract catalog said should happen, and emit attestation flags when they diverge. **The network IDS attestation observer is required regardless of whether SDN is deployed; in non-SDN deployments it is the only network-plane attestation, and it must be able to alert.**
 
 ## Alignment with PERA+
 
@@ -110,22 +111,25 @@ The box is internally three-partitioned plus a management interface. Each partit
 | Zone | Purpose | Side | Inbound conduits | Outbound conduits |
 |---|---|---|---|---|
 | `ot.acs.collect` | Protocol-aware collectors (OPC UA, Modbus, EtherNet/IP, MQTT-SN, fieldbus) | Inbound | ACS NIC (passive) | `ot.dmz.bus`, `ot.acs.lake` |
-| `ot.acs.witness` | Continuous capture, network IDS, scan engine, enrichment | Inbound | ACS NIC (passive, mirror port) | `ot.acs.lake`, `ot.dmz.audit` |
+| `ot.acs.witness` | Continuous capture, network IDS (signature + contract-attestation observer), scan engine, enrichment | Inbound | ACS NIC (passive, mirror port) | `ot.acs.lake`, `ot.dmz.audit`, `ot.dmz.attest` |
+| `ot.acs.io_master` | Independent IO substrate observation (IO and industrial Ethernet); cross-checks primary capture | Inbound | Independent NIC tap / IO interface (separate from `ot.acs.collect`) | `ot.dmz.attest` |
 | `ot.acs.lake` | Local data lake — durable, append-only, source of truth | Inbound | `ot.acs.collect`, `ot.acs.witness`, `ot.dmz.bus` | `ot.it.publish` (siphon), `ot.it.api` (read), `ot.dmz.audit` |
 | `ot.dmz.bus` | In-flight message bus; transient, no durable raw data | DMZ | `ot.acs.*`, `ot.it.*` | `ot.acs.lake` (write-through), `ot.it.publish`, `ot.it.api` |
 | `ot.dmz.audit` | Audit chain head publisher (full chain on inbound side) | DMZ | All zones (write) | `ot.it.publish` (north replication) |
+| `ot.dmz.attest` | Attestation aggregator and SDN-policy / catalog correlator; emits `ot.attestation.*` | DMZ | `ot.acs.witness`, `ot.acs.io_master`, SDN controller, SPIFFE issuer | `ot.acs.lake`, `ot.dmz.audit`, `ot.it.publish` |
 | `ot.it.publish` | Edge publisher; reads lake, pushes on configured profile | Outbound | `ot.acs.lake`, `ot.dmz.bus`, `ot.dmz.audit` | IT NIC |
 | `ot.it.api` | Structured query API; mTLS, non-HTTP | Outbound | `ot.acs.lake`, `ot.dmz.bus` | IT NIC |
 | `ot.it.tunnel` | Outbound mTLS tunnel agent for the remote-access broker | Outbound | (none — initiates only) | IT NIC (dial-out only) |
 | `ot.mgmt.ui` | Local management UI; on-demand HTTPS listener | Management | Management NIC (operator browsers, source-IP-restricted) | `ot.acs.lake` (read-only), `ot.it.api` (read-only) |
 
-**Conduit policy.** Inter-zone traffic is enforced at three layers, in order:
+**Conduit policy.** Inter-zone traffic is enforced by host-layer mechanisms in order, with an optional SDN layer where the operator has deployed it:
 
-1. **Per-zone container networks** — separate bridges per zone; no direct routing between bridges.
-2. **Kernel firewall** — allowlist conduits between bridges by source zone, destination zone, port. Default policy: drop.
-3. **mTLS at the application layer** — every inter-zone connection authenticates both ends via SPIFFE IDs (see *Workload Identity*).
+1. **(Optional) SDN policy plane** — programmable network policy compiled from the contract catalog where the operator has deployed SDN. Conduits exist on the fabric only where the catalog authorizes them.
+2. **Per-zone container networks** — separate bridges per zone; no direct routing between bridges.
+3. **Kernel firewall** — allowlist conduits between bridges by source zone, destination zone, port. Default policy: drop.
+4. **mTLS at the application layer** — every inter-zone connection authenticates both ends via SPIFFE IDs (see *Workload Identity*).
 
-A connection that fails any layer is rejected and logged to the audit chain.
+A connection that fails any active layer is rejected and logged to the audit chain. The attestation observer (`ot.dmz.attest`) cross-correlates events from all active layers and emits `ot.attestation.policy_drift` when they disagree. Non-SDN deployments have three layers; the IDS attestation observer compensates by being the only network-plane observer and must be able to alert.
 
 **Cross-side enforcement.** Inbound zones (`ot.acs.*`) and outbound zones (`ot.it.*`) cannot conduit to each other directly. All cross-side traffic transits a DMZ zone (`ot.dmz.bus`, `ot.dmz.audit`). This is the structural property that makes the boundary auditable — every inbound→outbound message exists as a DMZ event.
 
@@ -166,15 +170,26 @@ Defensibility is the reason. When a system asks "did this happen, and was it all
 
 The deployment's full set of contracts is the **contract catalog**, a versioned artifact accessible via the structured query API at a well-known endpoint. Every conduit referenced by the kernel firewall, every mTLS pairing brokered by the workload identity issuer, every external endpoint, every device exchange must be backed by a catalog entry. The catalog is operator-published, and the architecture requires that it be machine-readable, version-controlled, and discoverable.
 
-### Enforcement: prevention and flagging
+### Enforcement: prevention, flagging, attestation
 
-Two modes operate together. Both are required.
+Three modes operate together. All three are required.
 
-**Prevention** is the default for all box-internal traffic and all explicitly-allowed external paths. The kernel firewall, the workload identity issuer (SPIFFE), and the container-runtime admission policy cooperate: no contract entry → no SVID → no mTLS → no firewall conduit → no traffic. A workload attempting to communicate without a contract cannot establish a session. The attempt is dropped at the firewall and logged.
+**Prevention** is the default for all box-internal traffic and all explicitly-allowed external paths. The required layers compile from the contract catalog as a single source of truth:
 
-**Flagging** is the fallback for communication paths the architecture observes but cannot pre-empt — passive collection on the ACS NIC, broadcast traffic on the local network, legacy protocols that cannot authenticate. The continuous-capture pipeline records every observed exchange. The contract catalog is consulted; uncontracted exchanges are emitted as `ot.contract.violation` events. Operator policy decides whether the violation is alarmable, alerting, or merely cataloged for review.
+- **Kernel firewall** — per-zone allowlist conduits enforcing the catalog at the host. Default policy: drop.
+- **Workload identity issuer (SPIFFE)** — SVIDs are only issued for workloads with contract entries. No contract → no SVID.
+- **Container-runtime admission** — refuses to start workloads without a contract entry and image-signature verification.
+- **mTLS** — every inter-zone connection authenticates both ends; an unauthenticated peer is refused.
 
-The default posture is prevention. Flagging is a concession to physics, not a substitute.
+An **SDN policy plane** is a recommended additional layer where the operator has it: software-defined network policy compiled from the same catalog and enforced on the fabric, so uncontracted flows have no path on the wire before reaching a host. SDN strengthens prevention but is not required by the architecture. **Non-SDN deployments are fine** — they rely on the four required host-layer mechanisms above plus the IDS attestation observer (see *Attestation*) to catch what host-layer prevention misses.
+
+A workload attempting to communicate without a contract is blocked at multiple layers — by SDN (where deployed) before traffic reaches the host, by kernel firewall, by SPIFFE if firewall is bypassed, by mTLS if SVID is forged. Each active layer emits an event when it acts.
+
+**Flagging** is the fallback for paths the architecture observes but cannot pre-empt — passive collection on the ACS NIC, broadcast traffic on the local network, legacy protocols that cannot authenticate. The continuous-capture pipeline records every observed exchange and consults the contract catalog; uncontracted exchanges are emitted as `ot.contract.violation` events.
+
+**Attestation** is the independent-observation layer that catches what prevention misses. See the *Attestation* section below.
+
+The default posture is prevention. Flagging is a concession to physics. Attestation is the assumption-of-leakage made operational.
 
 ### Internal contracts (intra-box)
 
@@ -266,6 +281,57 @@ When a counterparty fails to perform, the ACS produces concrete evidence: *"we s
 The contract catalog and every entry within it are **published, not implicit**. A consumer must be able to fetch any contract before subscribing or querying. Catalog publication is itself part of the structured query API — a well-known endpoint that returns the current and previous catalog versions, the per-contract RACI matrices, and the SLA thresholds against which adherence is measured.
 
 The contract is the **operator's commitment**, not the architecture's. IIA specifies that contracts exist, that the catalog is universal, that boundary contracts are bilateral and discoverable, and that adherence is recorded. The values are operator policy.
+
+## Attestation
+
+Every prevention mechanism may leak. SDN policy may drift from the contract catalog. Firewall rules may be misconfigured. mTLS sessions may be misissued. Image-admission may be bypassed by a sufficiently-capable adversary. The contract layer assumes none of these failure modes are inconceivable — and runs **independent observation** in parallel to validate that prevention is actually working.
+
+Attestation is not a replacement for prevention. It is the architecture's answer to *"how do you know prevention is actually working?"* When attestation and prevention agree, the operator has cryptographic-grade evidence of policy compliance. When they disagree, the operator has evidence of policy leakage.
+
+### Network attestation (IDS as policy-leak observer)
+
+The network IDS in `ot.acs.witness` runs two roles, not one:
+
+- **Signature-based threat detection** — the conventional IDS function. Flags known attack patterns observed on the mirrored ACS-side traffic.
+- **Contract attestation observer** — independently observes traffic on every internal and external link, compares observed flows against the contract catalog and the SDN policy compilation, and emits attestation flags when reality and policy diverge.
+
+The IDS attestation observer flags:
+
+- Traffic that no contract authorizes (in SDN deployments, the policy plane should have dropped this; in non-SDN deployments, the host-layer prevention should have refused the session — either way, attestation caught it).
+- Expected traffic that does not appear within an SLA window (a contract said this should flow — it didn't).
+- mTLS sessions that terminate or fail outside the contract's tolerance.
+- SDN policy compilation drift, where SDN is deployed — the policy actually loaded on the fabric does not match the policy derived from the current catalog.
+- Identity issuance events without a corresponding catalog entry — SVID issued for an unknown workload.
+
+The IDS observer is independent of the SDN policy plane; the policy plane and the observer are derived from the same catalog but enforced/observed by different mechanisms. A leak in one does not silence the other.
+
+**In non-SDN deployments, the IDS attestation observer is the only network-plane evidence of contract compliance.** It must be able to alert — without that capability the architecture has no observability into whether non-host-layer leakage is occurring, and the deployment loses its standing answer to *"how do we know prevention is actually working at the network level?"*
+
+### IO attestation (redundant IO master)
+
+An **IO master** runs an independent observation channel for the physical substrate. It maintains its own readings of the IO surface — analog values (4-20 mA, thermocouple, RTD, voltage), digital IO, fieldbus traffic (Modbus RTU, Profibus, HART, IO-Link), and industrial Ethernet (EtherNet/IP, Profinet, Modbus TCP, EtherCAT) — and cross-checks against what the box's primary observation pipeline reports.
+
+The IO master is independently authenticated (its own SPIFFE identity, its own attestation key) and runs in its own zone. Its observations land in the audit chain with their own signature, distinct from the primary capture pipeline.
+
+Discrepancies between the IO master's reading and the box's reading indicate **substrate-level deviation**: a tampered wire, a man-in-the-middle on the fieldbus, a misreporting device, a frame dropped or modified on the wire, a clock skew exceeding contract tolerance, a value scaled differently than the contract specifies. The IO master emits attestation flags when readings diverge beyond contract-specified tolerance.
+
+When the box's data and the IO master's data agree, the operator has cryptographic-grade attestation that what was reported was on the wire. When they disagree, the operator has evidence of substrate compromise — at the wire, at the device, or in one of the two observation pipelines. Either is consequential.
+
+The IO master is a **role**, not a product. It can be realized as a separate process on the box with its own NIC tap or IO interface, a separate hardware module (USB-attached, embedded), or a separate physical unit feeding into the box. Multi-host realizations may run the IO master on dedicated hardware. The architecture requires the master's observation path to be **independent** of the primary capture path; sharing a NIC, a switch port, or a software stack would defeat the attestation.
+
+### The attestation data class
+
+All attestation findings are emitted under `ot.attestation.*` and route to the same audit chain as security events:
+
+| Stream | Observer | What it records |
+|---|---|---|
+| `ot.attestation.network` | IDS attestation observer | Contract violations observed on the network plane that did not match the catalog or SDN compilation. |
+| `ot.attestation.io` | IO master | IO substrate reading discrepancies between IO master and primary capture, beyond contract tolerance. |
+| `ot.attestation.policy_drift` | SDN controller + catalog correlator | SDN policy actually loaded vs catalog-derived policy expected. Firewall rule mismatch with policy compilation. Admission policy mismatch with image trust root. |
+| `ot.attestation.identity` | SPIFFE issuer + correlator | SVID issuance events vs contract catalog entries. Identity continuity across rotation. Unknown-identity sessions. |
+| `ot.attestation.audit_chain` | Audit chain verifier | On-box audit chain integrity vs replicated chain head at broker. Detects on-box tampering from any peer that has seen a prior head. |
+
+An attestation flag is the architecture's standing answer to whether prevention is actually working. The architecture treats attestation findings with the same severity as signature-based threat detections — they are not "informational logs," they are policy-failure evidence.
 
 ## Workload Identity
 
@@ -417,16 +483,19 @@ Estimates only — actual consumption depends on selected implementations. Valid
 | Local data lake | 600 | Largest single component. |
 | Outbound publishers (edge + structured API) | 130 | Combined. |
 | Continuous capture | 200 | Implementation-dependent. |
-| Network IDS | 500 | Rule-set dependent. |
+| Network IDS (signature + attestation observer) | 500 | Rule-set dependent. |
+| IO master | 150 | Independent observation channel; runs in `ot.acs.io_master`. |
+| SDN policy plane (data + control on appliance) | 100 | eBPF-class on appliance SKU; OVN-class on multi-host. |
+| Attestation aggregator (`ot.dmz.attest`) | 50 | Correlates IDS + IO master + SDN + SPIFFE. |
 | Scan engine + enrichment | 250 | Worker pool, tunable. |
 | Local management UI | 100 | Off when not in use. |
 | Outbound tunnel agent | 20 | |
 | Audit chain writer | 50 | |
 | Health / metrics | 30 | |
-| **Estimated floor** | **~2330 MB** | Out of 8 GB SKU. |
-| Available headroom | ~5670 MB | For collectors, query bursts, transient scan-engine spikes. |
+| **Estimated floor** | **~2630 MB** | Out of 8 GB SKU. |
+| Available headroom | ~5370 MB | For collectors, query bursts, transient scan-engine spikes. |
 
-The floor leaves roughly 5.7 GB for workload bursts. Adequate for the underserved-triangle target but tight enough that adding a heavyweight component (e.g., a full ELK-class log analytics stack) requires a higher-spec SKU.
+The floor leaves roughly 5.4 GB for workload bursts. Adequate for the underserved-triangle target but tight enough that adding a heavyweight component (e.g., a full ELK-class log analytics stack) requires a higher-spec SKU.
 
 ## Reference Implementations (non-normative)
 
@@ -455,6 +524,8 @@ This section lists candidate software for each role. **None of these are part of
 | JIT credential broker (broker side) | HashiCorp Vault, Boundary, Teleport | Vault is the in-house default. |
 | External IdP | Keycloak, FreeIPA, Auth0, Okta | Operator-chosen. |
 | Visualization / local UI | Grafana, custom UI, Apache Superset (broker side) | Operator-chosen; if on-box, must respect the local-network-only rule. |
+| SDN policy plane (optional) | Cilium (eBPF), Open vSwitch + OVN, Tigera Calico, Antrea, custom eBPF | Recommended where available; compiles contract catalog → fabric policy. Cilium / eBPF is appliance-friendly; OVN suits multi-host realizations. **Non-SDN deployments are supported** — they rely on the host-layer prevention triad + mTLS + the IDS attestation observer being able to alert. |
+| IO master (redundant IO observation) | Custom firmware on independent SoC (RP2040/STM32-class) with NIC tap, dedicated process with independent NIC + capture stack, separate hardware module | Must observe the IO substrate independently of the primary capture path. Sharing a NIC, switch port, or software stack with the primary defeats the attestation. |
 | Off-box UNS aggregation / broker-side stack (multi-host or cluster scope) | United Manufacturing Hub (UMH), Apache StreamPipes, custom HiveMQ + Kafka + TimescaleDB | Runs at site / regional / corporate scope as the broader-scope realization of "the box." UMH is opinionated UNS-first and Helm/k8s-shaped — appropriate at L1/L2 and L2/L3 boundaries when the box is realized as a cluster, not as the appliance SKU. |
 | Consumer contract description format | OpenAPI (REST + i3X), AsyncAPI (event-driven), JSON Schema / Avro / Protobuf (record schemas), Smithy, CUE | Operator-chosen per deployment. The architecture requires the contract be discoverable, versioned, and machine-readable; the format is operator policy. |
 
