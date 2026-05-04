@@ -6,6 +6,10 @@ The architecture spec names **roles** and the **contracts** they satisfy. It doe
 
 For the architectural principle this document implements, see the project [README](../README.md). For the two-box deployment that reaches Security Level 4, see [The Two-Box Method](../README.md#the-two-box-method) in the same.
 
+A CIAD-style conceptual diagram of the box and its external surfaces is at [`box-architecture.png`](box-architecture.png) (source: [`box-architecture.dot`](box-architecture.dot)).
+
+![Box architecture](box-architecture.png)
+
 ## Invariants
 
 These are the hard architecture rules. Implementation choices must respect all of them.
@@ -111,7 +115,7 @@ The box is internally three-partitioned plus a management interface. Each partit
 
 | Zone | Purpose | Side | Inbound conduits | Outbound conduits |
 |---|---|---|---|---|
-| `ot.acs.collect` | Protocol-aware collectors (OPC UA, Modbus, EtherNet/IP, MQTT-SN, fieldbus) | Inbound | ACS NIC (passive) | `ot.dmz.bus`, `ot.acs.lake` |
+| `ot.acs.collect` | Protocol-aware collectors (OPC UA, Modbus, EtherNet/IP, Profinet, MQTT-SN, fieldbus, IO-Link); LoRaWAN / LPWAN ingest via on-box radio or external LoRaWAN gateway publishing MQTT (IO-class data only — never control) | Inbound | ACS NIC (passive); on-box LoRaWAN radio if equipped | `ot.dmz.bus`, `ot.acs.lake` |
 | `ot.acs.witness` | Continuous capture, network IDS (signature + contract-attestation observer), scan engine, enrichment | Inbound | ACS NIC (passive, mirror port) | `ot.acs.lake`, `ot.dmz.audit`, `ot.dmz.attest` |
 | `ot.acs.io_master` | Independent IO substrate observation (IO and industrial Ethernet); cross-checks primary capture | Inbound | Independent NIC tap / IO interface (separate from `ot.acs.collect`) | `ot.dmz.attest` |
 | `ot.acs.lake` | Local data lake — durable, append-only, source of truth | Inbound | `ot.acs.collect`, `ot.acs.witness`, `ot.dmz.bus` | `ot.it.publish` (siphon), `ot.it.api` (read), `ot.dmz.audit` |
@@ -577,6 +581,7 @@ This section lists candidate software for each role. **None of these are part of
 | Image signature verification | cosign + Sigstore TUF, notation | cosign is the in-house default. |
 | Secret store | sops + age, HashiCorp Vault, Mozilla Trousseau | sops + age sealed by TPM is the in-house default. |
 | Continuous capture | Eris Witness `_continuous_capture.py` (tshark ring buffer), Zeek, Arkime | Eris Witness is the in-house default. |
+| LoRaWAN / LPWAN ingest | ChirpStack (LoRaWAN network server), The Things Stack (community / open source), Lorabasics, Semtech reference packet forwarder | Operator-chosen. Per the field rule, LoRaWAN is acceptable for IO-class telemetry, never for control. The network server may run on-box (small footprint) or off-box with the box subscribing via MQTT. |
 | Network IDS | Suricata, Snort, Zeek (in IDS mode) | Suricata is the in-house default. |
 | Scan engine | Eris Witness `_ew_engine.py` | In-house engine; alternative is a custom analyzer. |
 | Enrichment plugins | Marlinspike (`marlinspike-mitre`, `marlinspike-malware`) | In-house plugin family. |
