@@ -18,6 +18,7 @@ These are the hard architecture rules. Implementation choices must respect all o
 6. **Standards and protocols stay named.** Interface contracts (MQTT, Sparkplug B, OPC UA, OIDC, FIDO2, SPIFFE SVID, OCI image format, TPM 2.0, UEFI Secure Boot, TLS 1.3, IEC 62443, ISA-95, PERA+) belong in the spec because they are interoperability surface.
 7. **Every communication is contracted.** Inter-container, inter-zone, cross-side, and external — every conduit, every mTLS pairing, every device exchange must be backed by an explicit data contract in the deployment's contract catalog. Communication without a contract is **prevented** where the architecture can enforce it (kernel firewall + workload identity + admission control + mTLS cooperate to refuse uncontracted traffic; SDN policy strengthens this on the network fabric where deployed), and **flagged** where prevention is not possible (passive observation on the ACS NIC, broadcast). Contractlessness is a deployment defect.
 8. **Attestation observes prevention.** Every prevention mechanism may leak. The architecture assumes this. Independent attestation observers (network IDS for the policy plane, IO master for the physical substrate) cross-check what actually happened against what the contract catalog said should happen, and emit attestation flags when they diverge. **The network IDS attestation observer is required regardless of whether SDN is deployed; in non-SDN deployments it is the only network-plane attestation, and it must be able to alert.**
+9. **Configuration is a signed artifact, not a live API.** The box accepts configuration as a signed text document consumed by a constrained-grammar parser, never as a REST endpoint that mutates running state. Image admission, OS updates, and configuration are the same pattern: artifact-in, verify, validate, apply-or-reject. The box has no live mutation channels. The management UI is a text generator with no privileged access; the parser is the trust boundary for configuration the way container-runtime admission is the trust boundary for workloads.
 
 ## Alignment with PERA+
 
@@ -120,7 +121,8 @@ The box is internally three-partitioned plus a management interface. Each partit
 | `ot.it.publish` | Edge publisher; reads lake, pushes on configured profile | Outbound | `ot.acs.lake`, `ot.dmz.bus`, `ot.dmz.audit` | IT NIC |
 | `ot.it.api` | Structured query API; mTLS, non-HTTP | Outbound | `ot.acs.lake`, `ot.dmz.bus` | IT NIC |
 | `ot.it.tunnel` | Outbound mTLS tunnel agent for the remote-access broker | Outbound | (none — initiates only) | IT NIC (dial-out only) |
-| `ot.mgmt.ui` | Local management UI; on-demand HTTPS listener | Management | Management NIC (operator browsers, source-IP-restricted) | `ot.acs.lake` (read-only), `ot.it.api` (read-only) |
+| `ot.mgmt.ui` | Local management UI — **text generator only**, produces candidate configuration artifacts. No privileged access. | Management | Management NIC (operator browsers, source-IP-restricted) | `ot.acs.lake` (read-only), `ot.it.api` (read-only), `ot.mgmt.cfg` (artifact submission) |
+| `ot.mgmt.cfg` | Configuration parser, validator, staged-state holder, configuration attestation observer | Management | `ot.mgmt.ui` (artifact submission), outbound update channel (artifact pull) | Privileged applier (on-demand, gated), `ot.dmz.audit`, `ot.dmz.attest` |
 
 **Conduit policy.** Inter-zone traffic is enforced by host-layer mechanisms in order, with an optional SDN layer where the operator has deployed it:
 
@@ -330,6 +332,7 @@ All attestation findings are emitted under `ot.attestation.*` and route to the s
 | `ot.attestation.policy_drift` | SDN controller + catalog correlator | SDN policy actually loaded vs catalog-derived policy expected. Firewall rule mismatch with policy compilation. Admission policy mismatch with image trust root. |
 | `ot.attestation.identity` | SPIFFE issuer + correlator | SVID issuance events vs contract catalog entries. Identity continuity across rotation. Unknown-identity sessions. |
 | `ot.attestation.audit_chain` | Audit chain verifier | On-box audit chain integrity vs replicated chain head at broker. Detects on-box tampering from any peer that has seen a prior head. |
+| `ot.attestation.config` | Configuration attestation observer | Running state vs staged configuration artifact. Confirmation events when convergent; divergence events with delta when not (applier bug, partial-apply failure, or out-of-band mutation). |
 
 An attestation flag is the architecture's standing answer to whether prevention is actually working. The architecture treats attestation findings with the same severity as signature-based threat detections — they are not "informational logs," they are policy-failure evidence.
 
@@ -438,6 +441,68 @@ A serial console (RS-232 or USB-serial) is present on every box. It is the only 
 
 This implements FR3 SR 3.4 (deterministic update behavior — the box never enters an in-between state during update) and FR7 SR 7.1 (resource availability).
 
+## Configuration
+
+The box accepts configuration as a **signed text artifact**, never as a live API. The pattern matches image admission and OS updates: artifact-in, verify, validate, apply-or-reject. There is no REST endpoint that mutates running state. The box has no live mutation channels at all.
+
+### Why no configuration API
+
+A configuration API is a live mutation surface. Every endpoint is an authentication decision, an authorization decision, an input validation decision, and a state mutation, all happening in real time under adversarial conditions. The attack surface is the cartesian product of endpoints × auth states × input shapes. That surface is large even when implemented well, and almost nobody implements it well.
+
+A text artifact consumed by a parser collapses the entire surface into two questions: *can the attacker modify the artifact, and can the attacker trick the parser*. Artifact integrity is a solved problem — signatures, hashes, filesystem permissions, TPM-sealed write paths. Parser correctness against a constrained declarative grammar is a much smaller verification surface than "is every endpoint of a 40-endpoint API correctly implemented." A small parser can be formally reasoned about. A REST API cannot.
+
+The deeper property is the air gap between the management UI and the running system. The UI generates text; it has no privileged access. If the UI is compromised, the attacker gets the ability to produce a configuration artifact that still has to survive the signature check, the parser, the validator, and the gated internal call set. The UI never touches the system. The artifact is the interface.
+
+### The configuration artifact
+
+The artifact is a flat declarative document in a **constrained, non-Turing-complete grammar**. If the grammar requires a Turing-complete interpreter, the security property is lost; the architecture requires the grammar be small enough that the parser is auditable. The artifact covers:
+
+- Zone definitions and conduit policy
+- Contract catalog entries (internal and boundary)
+- Edge profile selection per consumer endpoint
+- Workload identity bindings
+- IdP and credential references
+- Edge publisher / structured query API endpoint configuration
+- IDS and scan-engine rule-set bindings
+- IO master tolerance thresholds
+- Operator trust roots and signing-key references
+
+### Lifecycle
+
+```
+edit (off-box) → sign (operator key) → submit → verify → parse → validate → stage → apply
+```
+
+1. **Edit.** Operator or operator's tooling (the local management UI is one option, an off-box config repo / Git is another) produces a candidate artifact. The management UI is a text generator only — it cannot apply.
+2. **Sign.** The artifact is signed with an operator credential against the configured operator trust root.
+3. **Submit.** The artifact arrives via the management interface (`ot.mgmt.ui` → `ot.mgmt.cfg`) or via the same outbound update channel used for OS images (signed-bundle pull on mTLS).
+4. **Verify.** Signature checked. Failure → rejection, audit event, no further processing.
+5. **Parse.** The constrained-grammar parser in `ot.mgmt.cfg` produces a structured intermediate representation. Parse failure → rejection, audit event.
+6. **Validate.** Semantic validation — references resolve, contracts well-formed, identities exist, profiles coherent, conduits do not violate invariants. Validation failure → rejection, audit event.
+7. **Stage.** The validated configuration becomes the staged desired state, retained alongside the current applied state.
+8. **Apply.** A gated internal call set, executed by a privileged applier activated on demand by the parser, transitions current state to staged. Each internal call is itself audited.
+
+The applier is the only component with privileged access to the box's mutable state. It executes only when a verified, parsed, validated artifact is staged for application. It never executes unrelated requests. It exits when the transition completes.
+
+### Gated internal calls
+
+The narrow set of internal calls the applier makes — load nftables policy, register SPIFFE bindings, update SDN policy where deployed, install IdP credentials, register contract catalog entries, configure edge publisher endpoints — are **first-class audit events**. Each call lands in the hash-chained audit log with: before-state, after-state, the configuration artifact hash that authorized it, the parser's validation result, and the operator identity that signed the artifact.
+
+A forensic investigation can reconstruct exactly which configuration change caused which state transition, signed by whom, at which time, with cryptographic evidence at every step.
+
+### Configuration attestation
+
+A configuration attestation observer cross-checks **running state against the staged configuration artifact**, emitting `ot.attestation.config`:
+
+- Running state matches staged configuration → confirmation event, on a periodic cadence.
+- Running state diverges → divergence event with delta. Indicates either an applier bug, a partial-apply failure, or an out-of-band mutation.
+
+Configuration attestation closes the loop on the management plane the same way the IDS contract-attestation observer closes it on the data plane: independent observation, cross-checking running reality against the declared catalog.
+
+### GitOps for an air-gapped industrial appliance
+
+The pattern is GitOps adapted to the constraints of an industrial appliance: declarative configuration is the source of truth, signed artifacts are the propagation mechanism, the parser is the admission boundary, running state converges to declared state, divergence is observable. The box never accepts a mutation that isn't a signed artifact. The management UI never has privileged access. The configuration plane has no live API surface.
+
 ## SL3 Foundational Requirements Mapping
 
 | FR | Requirement | Implementation |
@@ -488,14 +553,15 @@ Estimates only — actual consumption depends on selected implementations. Valid
 | SDN policy plane (data + control on appliance) | 100 | eBPF-class on appliance SKU; OVN-class on multi-host. |
 | Attestation aggregator (`ot.dmz.attest`) | 50 | Correlates IDS + IO master + SDN + SPIFFE. |
 | Scan engine + enrichment | 250 | Worker pool, tunable. |
-| Local management UI | 100 | Off when not in use. |
+| Local management UI | 100 | Off when not in use. Text generator only; no privileged access. |
+| Configuration parser + validator + staged-state holder (`ot.mgmt.cfg`) | 80 | Plus configuration attestation observer; idle most of the time, brief peaks when an artifact is processed. |
 | Outbound tunnel agent | 20 | |
 | Audit chain writer | 50 | |
 | Health / metrics | 30 | |
-| **Estimated floor** | **~2630 MB** | Out of 8 GB SKU. |
-| Available headroom | ~5370 MB | For collectors, query bursts, transient scan-engine spikes. |
+| **Estimated floor** | **~2710 MB** | Out of 8 GB SKU. |
+| Available headroom | ~5290 MB | For collectors, query bursts, transient scan-engine spikes. |
 
-The floor leaves roughly 5.4 GB for workload bursts. Adequate for the underserved-triangle target but tight enough that adding a heavyweight component (e.g., a full ELK-class log analytics stack) requires a higher-spec SKU.
+The floor leaves roughly 5.3 GB for workload bursts. Adequate for the underserved-triangle target but tight enough that adding a heavyweight component (e.g., a full ELK-class log analytics stack) requires a higher-spec SKU.
 
 ## Reference Implementations (non-normative)
 
@@ -528,6 +594,8 @@ This section lists candidate software for each role. **None of these are part of
 | IO master (redundant IO observation) | Custom firmware on independent SoC (RP2040/STM32-class) with NIC tap, dedicated process with independent NIC + capture stack, separate hardware module | Must observe the IO substrate independently of the primary capture path. Sharing a NIC, switch port, or software stack with the primary defeats the attestation. |
 | Off-box UNS aggregation / broker-side stack (multi-host or cluster scope) | United Manufacturing Hub (UMH), Apache StreamPipes, custom HiveMQ + Kafka + TimescaleDB | Runs at site / regional / corporate scope as the broader-scope realization of "the box." UMH is opinionated UNS-first and Helm/k8s-shaped — appropriate at L1/L2 and L2/L3 boundaries when the box is realized as a cluster, not as the appliance SKU. |
 | Consumer contract description format | OpenAPI (REST + i3X), AsyncAPI (event-driven), JSON Schema / Avro / Protobuf (record schemas), Smithy, CUE | Operator-chosen per deployment. The architecture requires the contract be discoverable, versioned, and machine-readable; the format is operator policy. |
+| Configuration grammar (constrained, non-Turing-complete) | CUE, KCL, Dhall, JSON-Schema-validated JSON, TOML (validated), Jsonnet (with strict-mode constraints), HCL (parsed-only) | Must be small enough that the parser is auditable. Avoid Turing-complete templating in the on-box parser. Operator-chosen per deployment. |
+| Configuration signing | cosign (artifact signing, same trust root as images), age, minisign, GPG | Same operator trust root as OS image and container image signatures preferred — single trust anchor per deployment. |
 
 These choices are recorded in the project's `project_iia_reference_implementations.md` memory. Updates here should match the in-house reference build but must preserve the role-not-product framing in the normative sections.
 
