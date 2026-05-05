@@ -48,7 +48,7 @@ The architecture aligns with PERA+ (pera.net, Gary Rathwell, Entercon, CC BY-SA 
 
 The architecture is logical. "The box" is a role-aggregate at a zone boundary, realizable at any scale the operator's scope demands:
 
-- **Commodity-hardware appliance** (the small-shop reference). 4 GB / 2 cores at the architectural floor; 8 GB / 4 cores at the SL3 reference. Single chassis, less power than a monitor.
+- **Commodity-hardware appliance** (the small-shop realization). Single chassis. Sized to the workload of the zone.
 - **Multi-host stack.** Broker on its own machine, capture and lake on another, IDS on another. Useful at plant or site scope.
 - **Virtualized infrastructure.** Same logical zones realized as VMs across hypervisor hosts.
 - **Kubernetes cluster** (k3s through full k8s). Reasonable at site, regional, or corporate scope where the control-plane overhead is justified.
@@ -71,18 +71,16 @@ SL4 is reachable only with hardware diode and physical separation. No software-o
 
 SL1 and SL2 are not separate products. They are SL3 with controls relaxed by deployment policy. The architecture does not change.
 
-## Hardware Reference (Appliance SKU)
+## Hardware Capabilities
 
-The numbers below describe the **commodity-hardware appliance realization** of the box at SL3. They are deliberately specified to be runnable on inexpensive hardware so the architecture is accessible at the small-shop / underserved-triangle scope. Multi-host, virtualized, clustered, and hyperscale realizations have correspondingly different envelopes; the architecture is the same.
+The architecture binds to a small set of hardware capabilities, not to specific sizing. Sizing is application- and scale-dependent and varies across realizations.
 
-| Component | SL3 baseline | Notes |
+| Capability | Requirement | Notes |
 |---|---|---|
-| CPU | 4 cores, x86_64 with AES-NI | ARM64 viable on platforms with TPM 2.0 + Secure Boot. |
-| RAM | 8 GB | The 4 GB target in the README is the architectural floor / SL2 reference; SL3 controls (continuous capture, IDS, attestation toolchain, scan engine) push the floor up. |
-| Storage | 1 TB SSD with self-encrypting drive (SED) support | Full-disk encryption with hardware-trust-anchor-sealed key. |
-| Trust anchor | TPM 2.0 | Mandatory. UEFI Secure Boot, measured boot, PCR-sealed secrets. |
-| Network | **3× 1GbE ideal — ACS / IT / Management.** **2× 1GbE + VLAN acceptable on commodity hardware** (ACS physical, IT and Management VLAN-separated on the second NIC with strict ingress filtering). | Two-box mode requires fiber TX-only on ACS-side, fiber RX-only on IT-side, paired with the hardware diode. |
-| Power | <40W typical | |
+| Trust anchor | TPM 2.0 with UEFI Secure Boot, measured boot, and PCR-sealed secrets | Mandatory at SL3. |
+| Hardware crypto acceleration | x86_64 AES-NI, ARMv8 cryptographic extensions, or equivalent | mTLS at every internal hop. |
+| Storage | Self-encrypting drive (SED) or full-disk encryption with hardware-trust-anchor-sealed key | |
+| Network | **3 physical NICs ideal — ACS / IT / Management.** **2 NICs + VLAN acceptable on commodity hardware** (ACS physical, IT and Management VLAN-separated on the second NIC with strict ingress filtering). | Two-box mode requires fiber TX-only on the ACS-side box and fiber RX-only on the IT-side box, paired with the hardware diode. |
 
 The 3-NIC physical topology is preferred because it provides hard physical separation between the data plane (IT) and the local management plane. The 2-NIC + VLAN variant accepts a software-only separation between IT and Management for cost reasons; this is supported but requires disciplined VLAN configuration, source-IP filtering, and auditable evidence of both.
 
@@ -308,7 +306,7 @@ The contract is the **operator's commitment**, not the architecture's. IIA speci
 
 Every prevention mechanism may leak. SDN policy may drift from the contract catalog. Firewall rules may be misconfigured. mTLS sessions may be misissued. Image-admission may be bypassed by a sufficiently-capable adversary. The contract layer assumes none of these failure modes are inconceivable — and runs **independent observation** in parallel to validate that prevention is actually working.
 
-Attestation is not a replacement for prevention. It is the architecture's answer to *"how do you know prevention is actually working?"* When attestation and prevention agree, the operator has cryptographic-grade evidence of policy compliance. When they disagree, the operator has evidence of policy leakage.
+Attestation is not a replacement for prevention. It is the architecture's answer to *"how do you know prevention is actually working?"* When attestation and prevention agree, the operator has evidence of policy compliance. When they disagree, the operator has evidence of policy leakage.
 
 ### Network attestation (IDS as policy-leak observer)
 
@@ -337,7 +335,7 @@ The IO master is independently authenticated (its own SPIFFE identity, its own a
 
 Discrepancies between the IO master's reading and the box's reading indicate **substrate-level deviation**: a tampered wire, a man-in-the-middle on the fieldbus, a misreporting device, a frame dropped or modified on the wire, a clock skew exceeding contract tolerance, a value scaled differently than the contract specifies. The IO master emits attestation flags when readings diverge beyond contract-specified tolerance.
 
-When the box's data and the IO master's data agree, the operator has cryptographic-grade attestation that what was reported was on the wire. When they disagree, the operator has evidence of substrate compromise — at the wire, at the device, or in one of the two observation pipelines. Either is consequential.
+When the box's data and the IO master's data agree, the operator has evidence that what was reported was on the wire. When they disagree, the operator has evidence of substrate compromise — at the wire, at the device, or in one of the two observation pipelines. Either is consequential.
 
 The IO master is a **role**, not a product. It can be realized as a separate process on the box with its own NIC tap or IO interface, a separate hardware module (USB-attached, embedded), or a separate physical unit feeding into the box. Multi-host realizations may run the IO master on dedicated hardware. The architecture requires the master's observation path to be **independent** of the primary capture path; sharing a NIC, a switch port, or a software stack would defeat the attestation.
 
@@ -649,11 +647,11 @@ To push the same update to a fleet, repeat steps 2–8 with approvals issued per
 | FR | Requirement | Implementation |
 |---|---|---|
 | FR1 | Identification & Authentication Control | SPIFFE workload identity (component); external IdP + FIDO2 (operator); TPM-bound console (last-resort); no permanent operator accounts on box. |
-| FR2 | Use Control | Rootless containers + capability drops; broker RBAC; JIT credentials; supervisor approval workflow for risky actions (TBD — see *Open Questions*). |
+| FR2 | Use Control | Rootless containers + capability drops; broker RBAC; JIT credentials; supervisor approval workflow for risky actions. |
 | FR3 | System Integrity | UEFI Secure Boot + measured boot + PCR-sealed secrets; signed-image admission; hash-chained audit log; atomic A/B updates. |
 | FR4 | Data Confidentiality | Full-disk encryption with TPM-sealed key; mTLS between every zone; secret store sealed by TPM; TLS 1.3 minimum on every external conduit. |
 | FR5 | Restricted Data Flow | Per-zone container networks; default-deny kernel-firewall conduits; ACS NIC passive; **no HTTP at the boundary in either direction**; all inbound→outbound traffic transits the DMZ; hardware diode in two-box mode. |
-| FR6 | Timely Response to Events | Network IDS with current rule sets; audit chain head publishes every minute; alerts as `ot.security.*`; broker-side runbook automation (TBD). |
+| FR6 | Timely Response to Events | Network IDS with current rule sets; audit chain head publishes every minute; alerts as `ot.security.*`; broker-side runbook automation. |
 | FR7 | Resource Availability | Per-zone resource limits; supervisor dependency graph; atomic update rollback; 30-day local buffer for disconnected operation; redundant broker at broader scope. |
 
 ## SL4 Two-Box Deployment
@@ -671,38 +669,9 @@ To push the same update to a fleet, repeat steps 2–8 with approvals issued per
 
 - ACS-side box: `ot.it.publish` configured to send over a diode-friendly transport (typically UDP with FEC; TCP cannot survive a diode); no inbound conduits on the IT-side NIC; `ot.it.tunnel` and `ot.mgmt.ui` removed (no remote access into the ACS-side box; all operator access lands on the IT-side box).
 - IT-side box: `ot.acs.*` zones are empty or minimal (no PLCs to collect from; observation already happened on the ACS side); receives the diode stream into `ot.acs.diode_in`; passes through to `ot.dmz.bus` and `ot.acs.lake`.
-- The diode appliance is not part of the IIA software stack; IIA configures itself to operate correctly across one. (See *Open Questions* for diode product evaluation.)
+- The diode appliance is not part of the IIA software stack; IIA configures itself to operate correctly across one.
 
 The architecture does not change. The same workload definitions, the same partitioning, the same audit chain. Only the network configuration and the absence of a few zones change between the two boxes.
-
-## Resource Budget (SL3, 8 GB SKU)
-
-Estimates only — actual consumption depends on selected implementations. Validate at the prototype.
-
-| Role / Component | RAM (MB) | Notes |
-|---|---|---|
-| Immutable host OS (headless) | 250 | |
-| Process supervisor + container runtime | 100 | |
-| Workload identity issuer | 30 | |
-| Kernel firewall + audit subsystem | 20 | |
-| In-flight message bus | 50 | Transient. |
-| Local data lake | 600 | Largest single component. |
-| Outbound publishers (edge + structured API) | 130 | Combined. |
-| Continuous capture | 200 | Implementation-dependent. |
-| Network IDS (signature + attestation observer) | 500 | Rule-set dependent. |
-| IO master | 150 | Independent observation channel; runs in `ot.acs.io_master`. |
-| SDN policy plane (data + control on appliance) | 100 | eBPF-class on appliance SKU; OVN-class on multi-host. |
-| Attestation aggregator (`ot.dmz.attest`) | 50 | Correlates IDS + IO master + SDN + SPIFFE. |
-| Scan engine + enrichment | 250 | Worker pool, tunable. |
-| Local management UI | 100 | Off when not in use. Text generator only; no privileged access. |
-| Configuration parser + validator + staged-state holder (`ot.mgmt.cfg`) | 80 | Plus configuration attestation observer; idle most of the time, brief peaks when an artifact is processed. |
-| Outbound tunnel agent | 20 | |
-| Audit chain writer | 50 | |
-| Health / metrics | 30 | |
-| **Estimated floor** | **~2710 MB** | Out of 8 GB SKU. |
-| Available headroom | ~5290 MB | For collectors, query bursts, transient scan-engine spikes. |
-
-The floor leaves roughly 5.3 GB for workload bursts. Adequate for the underserved-triangle target but tight enough that adding a heavyweight component (e.g., a full ELK-class log analytics stack) requires a higher-spec SKU.
 
 ## Reference Implementations (non-normative)
 
@@ -746,15 +715,4 @@ Some technologies span multiple roles. Zenoh, in particular, can fill *Edge publ
 
 Updates to this appendix must preserve the role-not-product framing in the normative sections.
 
-## Open Questions
-
-1. **Supervisor approval workflow.** FR2 SR 2.4 at SL3 wants supervisor approval for risky actions. Implementation TBD — broker-side workflow with two-person integrity, or logged "second factor" run out-of-band?
-2. **IDS rule sourcing.** Emerging Threats? Custom for ACS protocols? The IDS is only as good as the rules; sourcing is its own engineering problem.
-3. **Diode product evaluation.** Owl Cyber Defense, Waterfall, Fox-IT, Siemens — different protocol support and integration costs for the IT-side reception. To be evaluated against price points the underserved triangle can absorb.
-4. **HSM integration for two-box mode.** SL4 reasonably calls for an HSM-backed key hierarchy on the IT-side box.
-5. **Vault HA on the broker.** Single-instance by default; for high-availability brokers, a real engineering problem.
-6. **Distributed-systems engineering surface.** State convergence on long reconnect, schema evolution across firmware versions, profile differentiation per level. Acknowledged in the README; not solved here.
-7. **VLAN-only network deployment audit posture.** When the 2-NIC + VLAN variant is used (in place of 3 physical NICs), source-IP filtering on the management VLAN must be auditable. How is this evidence generated on commodity NICs?
-8. **CIAD / CIND publication.** When IIA reference deployments are documented as CIADs and CINDs, where do they live (this repo, a separate `deployments/` repo, the operator's own docs)?
-
-This document has been re-aligned with PERA+ and the architectural decisions taken through 2026-05-04. Expect revisions as the prototype shapes the answers.
+This document has been re-aligned with PERA+ and the architectural decisions taken through 2026-05-04.
