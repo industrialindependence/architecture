@@ -690,42 +690,40 @@ The floor leaves roughly 5.3 GB for workload bursts. Adequate for the underserve
 
 ## Reference Implementations (non-normative)
 
-This section lists candidate software for each role. **None of these are part of the architecture spec.** Operators choose implementations to fit their requirements.
-
-The in-house defaults marked below — Eris Witness for capture and scan engine, Marlinspike for enrichment plugins, plus the open-source infrastructure stack — will be packaged together and published as **the first signed open-source IIA reference implementation**: a turnkey bundle (signed OS image + bundled container set + reference configuration) that operators can pull and deploy directly. The reference build is OSS end-to-end; the commercial Fathom platform is not part of it (Fathom layers above the box as a downstream consumer at broader scope, not as a substrate the box runs on). WirePilot is one hardware form factor of the reference build, not a separate stack. Piecing together a different combination per role from this appendix is the other supported path; the contract catalog makes implementations interoperable across substitutions, so operators can mix the reference build at one box scope with a custom implementation at another. The architecture is not bound to the reference build; the reference build is bound to the architecture.
+This section lists candidate software for each role. **None of these are part of the architecture spec.** Operators choose implementations to fit their requirements (license posture, resource envelope, vendor relationships, audit evidence). The architecture survives substitution; the contract catalog makes implementations interoperable.
 
 | Role | Candidate implementations | Notes |
 |---|---|---|
-| Immutable host OS (atomic A/B) | Fedora IoT (rpm-ostree), CentOS Stream Image Mode, Ubuntu Core, Talos Linux | rpm-ostree is the in-house default. |
-| Process supervisor | systemd, runit, OpenRC | systemd is the in-house default. |
-| Container runtime | Podman + Quadlets, containerd, CRI-O | Podman + Quadlets is the in-house default; rootless and daemonless are mandatory at SL3. |
-| OCI runtime | crun, runc | crun is the in-house default. |
-| Workload identity issuer (SPIFFE) | SPIRE, smallstep CA with SPIFFE plugin | SPIRE is the in-house default. |
-| Image signature verification | cosign + Sigstore TUF, notation | cosign is the in-house default. |
-| Secret store | sops + age, HashiCorp Vault, Mozilla Trousseau | sops + age sealed by TPM is the in-house default. |
-| Continuous capture | Eris Witness `_continuous_capture.py` (tshark ring buffer), Zeek, Arkime | Eris Witness is the in-house default. |
-| LoRaWAN / LPWAN ingest | ChirpStack (LoRaWAN network server), The Things Stack (community / open source), Lorabasics, Semtech reference packet forwarder | Operator-chosen. Per the field rule, LoRaWAN is acceptable for IO-class telemetry, never for control. The network server may run on-box (small footprint) or off-box with the box subscribing via MQTT. |
-| Network IDS | Suricata, Snort, Zeek (in IDS mode) | Suricata is the in-house default. |
-| Scan engine | Eris Witness `_ew_engine.py` | In-house engine; alternative is a custom analyzer. |
-| Enrichment plugins | Marlinspike (`marlinspike-mitre`, `marlinspike-malware`) | In-house plugin family. |
-| Local data lake | DuckLake, Apache Iceberg (local), Delta Lake (local), TimescaleDB | DuckLake is the in-house default. |
-| In-flight message bus | NATS JetStream, Apache Pulsar, Redis Streams | NATS is the in-house default. |
-| Edge publisher (MQTT profile) | Mosquitto, EMQX, HiveMQ | Mosquitto is the in-house default. |
+| Immutable host OS (atomic A/B) | Fedora IoT (rpm-ostree), CentOS Stream Image Mode, Ubuntu Core, Talos Linux | |
+| Process supervisor | systemd, runit, OpenRC | |
+| Container runtime | Podman + Quadlets, containerd, CRI-O | Rootless and daemonless are mandatory at SL3. |
+| OCI runtime | crun, runc | |
+| Workload identity issuer (SPIFFE) | SPIRE, smallstep CA with SPIFFE plugin | |
+| Image signature verification | cosign + Sigstore TUF, notation | |
+| Secret store | sops + age, HashiCorp Vault, Mozilla Trousseau | TPM-sealed unseal key required. |
+| Continuous capture | Zeek, Arkime, custom tshark ring buffer | |
+| LoRaWAN / LPWAN ingest | ChirpStack (LoRaWAN network server), The Things Stack (community / open source), Lorabasics, Semtech reference packet forwarder | Per the field rule, LoRaWAN is acceptable for IO-class telemetry, never for control. The network server may run on-box (small footprint) or off-box with the box subscribing via MQTT. |
+| Network IDS | Suricata, Snort, Zeek (in IDS mode) | |
+| Scan engine | Custom protocol-aware analyzer; existing OSS scan platforms | |
+| Enrichment plugins | MITRE ATT&CK matchers (custom or community), IOC / YARA / malware rule engines | |
+| Local data lake | DuckLake, Apache Iceberg (local), Delta Lake (local), TimescaleDB | |
+| In-flight message bus | NATS JetStream, Apache Pulsar, Redis Streams | |
+| Edge publisher (MQTT profile) | Mosquitto, EMQX, HiveMQ | |
 | Edge publisher (OPC UA profile) | open62541, FreeOpcUa, Eclipse Milo | |
-| Structured query API | gRPC, i3X, MT Connect, Zenoh, MCP-over-mTLS | i3X is the in-house default. **i3X v1 is bounded to L2 time-series and static-state queries; transactional / method semantics are punted to v2.** **MT Connect: spec exists but OEM conformance is unreliable in the field — verify per-OEM before adopting.** Use a separate transactional channel for MES/MOM-class flows. |
+| Structured query API | gRPC, i3X, MT Connect, Zenoh, MCP-over-mTLS | **i3X v1 is bounded to L2 time-series and static-state queries; transactional / method semantics are punted to v2.** **MT Connect: spec exists but OEM conformance is unreliable in the field — verify per-OEM before adopting.** Use a separate transactional channel for MES/MOM-class flows. |
 | Outbound tunnel agent | frp, WireGuard userspace, custom mTLS | |
-| Remote-access gateway (broker side) | Apache Guacamole, Teleport, HashiCorp Boundary | Guacamole is the in-house default; Teleport remains a fallback SKU. |
-| JIT credential broker (broker side) | HashiCorp Vault, Boundary, Teleport | Vault is the in-house default. |
-| External IdP | Keycloak, FreeIPA, Auth0, Okta | Operator-chosen. |
+| Remote-access gateway (broker side) | Apache Guacamole, Teleport, HashiCorp Boundary | |
+| JIT credential broker (broker side) | HashiCorp Vault, Boundary, Teleport | |
+| External IdP | Keycloak, FreeIPA, Auth0, Okta | |
 | Visualization / local UI | Grafana, custom UI, Apache Superset (broker side) | Operator-chosen; if on-box, must respect the local-network-only rule. |
 | SDN policy plane (optional) | Cilium (eBPF), Open vSwitch + OVN, Tigera Calico, Antrea, custom eBPF | Recommended where available; compiles contract catalog → fabric policy. Cilium / eBPF is appliance-friendly; OVN suits multi-host realizations. **Non-SDN deployments are supported** — they rely on the host-layer prevention triad + mTLS + the IDS attestation observer being able to alert. |
 | IO master (redundant IO observation) | Custom firmware on independent SoC (RP2040/STM32-class) with NIC tap, dedicated process with independent NIC + capture stack, separate hardware module | Must observe the IO substrate independently of the primary capture path. Sharing a NIC, switch port, or software stack with the primary defeats the attestation. |
 | Off-box UNS aggregation / broker-side stack (multi-host or cluster scope) | United Manufacturing Hub (UMH), Apache StreamPipes, custom HiveMQ + Kafka + TimescaleDB | Runs at site / regional / corporate scope as the broader-scope realization of "the box." UMH is opinionated UNS-first and Helm/k8s-shaped — appropriate at L1/L2 and L2/L3 boundaries when the box is realized as a cluster, not as the appliance SKU. |
-| Consumer contract description format | OpenAPI (REST + i3X), AsyncAPI (event-driven), JSON Schema / Avro / Protobuf (record schemas), Smithy, CUE | Operator-chosen per deployment. The architecture requires the contract be discoverable, versioned, and machine-readable; the format is operator policy. |
-| Configuration grammar (constrained, non-Turing-complete) | CUE, KCL, Dhall, JSON-Schema-validated JSON, TOML (validated), Jsonnet (with strict-mode constraints), HCL (parsed-only) | Must be small enough that the parser is auditable. Avoid Turing-complete templating in the on-box parser. Operator-chosen per deployment. |
+| Consumer contract description format | OpenAPI (REST + i3X), AsyncAPI (event-driven), JSON Schema / Avro / Protobuf (record schemas), Smithy, CUE | The architecture requires the contract be discoverable, versioned, and machine-readable; the format is operator policy. |
+| Configuration grammar (constrained, non-Turing-complete) | CUE, KCL, Dhall, JSON-Schema-validated JSON, TOML (validated), Jsonnet (with strict-mode constraints), HCL (parsed-only) | Must be small enough that the parser is auditable. Avoid Turing-complete templating in the on-box parser. |
 | Configuration signing | cosign (artifact signing, same trust root as images), age, minisign, GPG | Same operator trust root as OS image and container image signatures preferred — single trust anchor per deployment. |
 
-These choices are recorded in the project's `project_iia_reference_implementations.md` memory. Updates here should match the in-house reference build but must preserve the role-not-product framing in the normative sections.
+Updates to this appendix must preserve the role-not-product framing in the normative sections.
 
 ## Open Questions
 

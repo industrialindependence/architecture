@@ -200,20 +200,6 @@ IIA documentation uses PERA+'s **CIAD** (Control and Information Architecture Di
 
 The convergence is not coincidental. These standards arrive at the same place because they are built on the same observation: the unit of industrial operation is the zone, the zone must be self-sufficient, and any dependency on external systems for basic function is an architectural failure. IIA is the first deliberate physical instantiation of that observation. The standards are the formal description of it.
 
-## Product Family
-
-The IIA architecture names roles. The product family below is the author's set of trademarks; each fills a different role in the broader system. They are not all the same kind of thing.
-
-The first **signed open-source IIA reference implementation** is **Eris Witness** + **Marlinspike** plus the chosen open-source infrastructure stack (container runtime, identity issuer, image-signature verifier, message bus, lake, audit chain, remote-access broker, etc. — listed non-normatively in `docs/internal-architecture.md`). It will ship as a turnkey bundle: signed OS image, bundled container set, reference configuration. Operators can deploy it as-is or piece together their own implementation per role from the catalog. The contract layer makes both paths interoperable. The architecture is not bound to the reference implementation; the reference implementation is bound to the architecture.
-
-**Eris Witness** is the open-source scan engine. Continuous passive capture, protocol-aware classification, asset inventory, finding generation. Fills the inbound-side roles inside the box: continuous capture, scan engine, classifier pipeline, and local data lake.
-
-**Marlinspike** is the open-source enrichment plugin family layered on Eris Witness output. `marlinspike-mitre` maps observed events to MITRE ATT&CK; `marlinspike-malware` matches against IOC and malware rule packs. Named for the nautical tool used to open tightly-wound rope structures.
-
-**Fathom** is the commercial enterprise platform layered *above* the box, not part of the OSS reference implementation. Cloud viewport, multi-site aggregation, broker-side services operating at broader scope. Fathom consumes the box's structured query API and edge profile output as a downstream consumer; it is not a substrate the box runs on.
-
-**WirePilot** is a hardware form factor of the reference implementation — a portable appliance that carries the same OSS bundle in a carry-in chassis with one SPAN port or tap, no IP stack on the capture side, no collectors phoning home. Carry it in, plug it in, see everything, pull it out. Electrically present, logically invisible. WirePilot is not a separate software stack; it is one way to physically realize the reference implementation.
-
 ## The Thesis
 
 Industrial independence is not a technology position. It is an operational sovereignty position. The entity that controls the automation infrastructure controls the operation. The facility that depends on external connectivity for basic process visibility, historian access, or security monitoring is not sovereign.
