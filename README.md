@@ -6,6 +6,24 @@ IIA is the deliberate abstraction of a convergence pattern that exists in adjace
 
 Authored by ***REMOVED***, ISA-99 (IEC 62443) committee member.
 
+## Contents
+
+- [The Principle](#the-principle)
+- [The Domain Boundary](#the-domain-boundary)
+- [The Two-Box Method](#the-two-box-method)
+- [The Unit](#the-unit)
+- [The Fractal](#the-fractal)
+- [Design Constraints](#design-constraints)
+- [Prior Art](#prior-art)
+- [Who This Is For](#who-this-is-for)
+- [Data Architecture](#data-architecture)
+- [Standards](#standards)
+- [The Thesis](#the-thesis)
+- [Further Reading](#further-reading)
+- [Contact](#contact)
+- [Trademarks](#trademarks)
+- [License](#license)
+
 ## The Principle
 
 Deploy a single self-contained unit at every zone of an industrial network. The unit is identical at every level. The only thing that changes is scope.
@@ -44,6 +62,8 @@ IIA inherits the method and extends it into two deployment modes governed by the
 
 SL3 does not promise unidirectional flow. SL3 promises a hardened, segmented, authenticated, audited boundary. Unidirectional flow is the SL4 property, reached only via hardware data diode and physical one-way separation. The software architecture is invariant across both modes; the physical topology is what determines the security level achieved.
 
+![Two-Box Method: SL3 software-only mode and SL4 two-box mode with hardware data diode](docs/two-box-method.png)
+
 IIA is fractal across security levels in the same way it is fractal across organizational scope.
 
 ## The Unit
@@ -72,6 +92,8 @@ Plant zone:      [box]  -- aggregates zone boxes, also sovereign
 Site:            [box]  -- aggregates plant boxes, also sovereign
 Cloud:           viewport into all boxes, optional
 ```
+
+![The Fractal: identical units deployed at every PERA level boundary, with broader scope as the only thing that changes](docs/fractal.png)
 
 Each box meshes with adjacent boxes. If a box can see another box, data routes through. If a box can see a box that can see a box that can see the cloud, data gets there. The mesh finds the path. If no path exists, the box keeps running locally with 30 days of buffered data.
 
@@ -128,6 +150,8 @@ The alternatives (Claroty, Nozomi) start at $50-100K/year with $100-150K profess
 ## Data Architecture
 
 The box is internally partitioned into three sides plus a management interface.
+
+![The Box: CIAD-style conceptual diagram of internal partitioning, zones, and external surfaces](docs/box-architecture.png)
 
 ```
                     ACS DOMAIN  (Managed Trust, SRP)
@@ -207,6 +231,13 @@ Industrial independence is not a technology position. It is an operational sover
 The domain boundary between ACS and IT is not a negotiation. Data that acts on the process is governed by SRP. Data that reports on the process is governed by CIA. The box enforces this boundary by architecture, not by policy, and ensures that IT governance never reaches back into the automation cell.
 
 IIA provides the architectural pattern that makes sovereignty the default rather than the aspiration.
+
+## Further Reading
+
+- [`docs/internal-architecture.md`](docs/internal-architecture.md) — the canonical implementation specification: invariants, partitioning, contracts, attestation, configuration, updates, and the SL3 / SL4 mappings to IEC 62443 foundational requirements. Names roles, not products.
+- [`docs/sample-contracts.md`](docs/sample-contracts.md) — six worked data contracts spanning internal flows, boundary contracts (batch and query), device-level contracts, wireless IO, and AI-agent consumption. Demonstrates the contract grammar and adherence telemetry.
+- [`docs/mcp-single-box.md`](docs/mcp-single-box.md) — operator quickstart for the smallest AI-agent consumption deployment: one box, one MCP server off-box, one AI client. Topology, identity, contract, and config-artifact pipeline.
+- [`docs/glossary.md`](docs/glossary.md) — vocabulary used across the documentation. Domain terms (ACS, IT, SRP, CIA, SAIC), architectural terms (the box, fractal, contract catalog, attestation, IO master), and the standards IIA aligns with (PERA+, IEC 62443, ISA-95, CESMII i3X, MCP, Zenoh).
 
 ## Contact
 
