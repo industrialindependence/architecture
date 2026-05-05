@@ -6,6 +6,8 @@ The architecture spec names **roles** and the **contracts** they satisfy. It doe
 
 For the architectural principle this document implements, see the project [README](../README.md). For the two-box deployment that reaches Security Level 4, see [The Two-Box Method](../README.md#the-two-box-method) in the same.
 
+Worked examples of contracts in operator-deployed catalogs are at [`sample-contracts.md`](sample-contracts.md) — internal / boundary / device / inbound scopes with concrete YAML.
+
 CIAD-style diagrams (rendered from Graphviz `.dot` sources alongside):
 
 - The box and its external surfaces — [`box-architecture.png`](box-architecture.png) (source: [`box-architecture.dot`](box-architecture.dot))
