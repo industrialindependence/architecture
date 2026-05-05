@@ -202,15 +202,17 @@ The convergence is not coincidental. These standards arrive at the same place be
 
 ## Product Family
 
-The IIA architecture names roles. The product family below is the author's reference implementation of those roles, packaged together as **the first signed IIA reference implementation** — a turnkey, distributable bundle (signed OS image + container set + reference configuration) that an operator can deploy as-is. Operators who want different choices can piece together their own implementation by selecting per role from the catalog in `docs/internal-architecture.md`. Either path is supported by the architecture; the contract catalog makes implementations interoperable across substitutions. Each product below is one valid choice; the architecture survives substitution.
+The IIA architecture names roles. The product family below is the author's set of trademarks; each fills a different role in the broader system. They are not all the same kind of thing.
+
+The first **signed open-source IIA reference implementation** is **Eris Witness** + **Marlinspike** plus the chosen open-source infrastructure stack (container runtime, identity issuer, image-signature verifier, message bus, lake, audit chain, remote-access broker, etc. — listed non-normatively in `docs/internal-architecture.md`). It will ship as a turnkey bundle: signed OS image, bundled container set, reference configuration. Operators can deploy it as-is or piece together their own implementation per role from the catalog. The contract layer makes both paths interoperable. The architecture is not bound to the reference implementation; the reference implementation is bound to the architecture.
 
 **Eris Witness** is the open-source scan engine. Continuous passive capture, protocol-aware classification, asset inventory, finding generation. Fills the inbound-side roles inside the box: continuous capture, scan engine, classifier pipeline, and local data lake.
 
 **Marlinspike** is the open-source enrichment plugin family layered on Eris Witness output. `marlinspike-mitre` maps observed events to MITRE ATT&CK; `marlinspike-malware` matches against IOC and malware rule packs. Named for the nautical tool used to open tightly-wound rope structures.
 
-**Fathom** is the commercial enterprise platform. The cloud viewport, multi-site aggregation, broker-side services operating at broader scope above the box.
+**Fathom** is the commercial enterprise platform layered *above* the box, not part of the OSS reference implementation. Cloud viewport, multi-site aggregation, broker-side services operating at broader scope. Fathom consumes the box's structured query API and edge profile output as a downstream consumer; it is not a substrate the box runs on.
 
-**WirePilot** is the portable appliance form factor. One box, one SPAN port or tap, live protocol-aware capture, no network footprint, no collectors phoning home. Carry it in, plug it in, see everything, pull it out. No IP stack on the capture side means no attack surface on the monitored network. Electrically present, logically invisible.
+**WirePilot** is a hardware form factor of the reference implementation — a portable appliance that carries the same OSS bundle in a carry-in chassis with one SPAN port or tap, no IP stack on the capture side, no collectors phoning home. Carry it in, plug it in, see everything, pull it out. Electrically present, logically invisible. WirePilot is not a separate software stack; it is one way to physically realize the reference implementation.
 
 ## The Thesis
 
