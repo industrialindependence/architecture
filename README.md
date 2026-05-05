@@ -4,8 +4,6 @@
 
 IIA is the deliberate abstraction of a convergence pattern that exists in adjacent domains, named and applied for the first time to automation and control systems. It is not a product. It is not a framework. It is the architectural principle, claimed by name.
 
-Authored by ***REMOVED***, ISA-99 (IEC 62443) committee member.
-
 ## Contents
 
 - [The Principle](#the-principle)
@@ -20,7 +18,6 @@ Authored by ***REMOVED***, ISA-99 (IEC 62443) committee member.
 - [Standards](#standards)
 - [The Thesis](#the-thesis)
 - [Further Reading](#further-reading)
-- [Contact](#contact)
 - [Trademarks](#trademarks)
 - [License](#license)
 
@@ -239,16 +236,10 @@ IIA provides the architectural pattern that makes sovereignty the default rather
 - [`docs/mcp-single-box.md`](docs/mcp-single-box.md) — operator quickstart for the smallest AI-agent consumption deployment: one box, one MCP server off-box, one AI client. Topology, identity, contract, and config-artifact pipeline.
 - [`docs/glossary.md`](docs/glossary.md) — vocabulary used across the documentation. Domain terms (ACS, IT, SRP, CIA, SAIC), architectural terms (the box, fractal, contract catalog, attestation, IO master), and the standards IIA aligns with (PERA+, IEC 62443, ISA-95, CESMII i3X, MCP, Zenoh).
 
-## Contact
-
-- LinkedIn: [***REMOVED***](***REMOVED***)
-
 ## Trademarks
 
-Industrial Independence Architecture and IIA are trademarks of ***REMOVED***. The license below covers the text of this document. It does not grant rights to use these marks. Use of the marks to refer to derivative articulations, products, or services requires written permission.
+Industrial Independence Architecture and IIA are trademarks. The license below covers the text of this document. It does not grant rights to use these marks. Use of the marks to refer to derivative articulations, products, or services requires written permission from the trademark holder.
 
 ## License
 
 This work is licensed under a [Creative Commons Attribution-ShareAlike 4.0 International License (CC BY-SA 4.0)](https://creativecommons.org/licenses/by-sa/4.0/).
-
-© 2025-2026 ***REMOVED***.
