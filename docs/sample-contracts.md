@@ -335,7 +335,107 @@ Notes:
 
 ---
 
-## Sample 5 — Inbound contract: configuration pull
+## Sample 5 — Boundary contract: MCP server consuming i3X (AI-agent pathway)
+
+External boundary contract between the box's structured query API (speaking CESMII i3X) and a downstream MCP server running at broader scope. The MCP server wraps i3X and exposes it as MCP tools / resources to AI agents. The MCP server lives off-box because MCP's canonical Streamable HTTP transport conflicts with the box's no-HTTP-at-boundary rule.
+
+```yaml
+contract:
+  id: iia.contract.boundary.mcp_server.i3x_query
+  version: 1.0.0
+  scope: boundary
+
+  publisher:
+    role: ot.it.api
+    spiffe_id: spiffe://iia.local/zone/ot.it.api/workload/i3x_query_server
+
+  consumer:
+    organization: enterprise-ai
+    role: mcp_server
+    spiffe_id: spiffe://enterprise.example/iia/consumer/mcp_bridge
+    contact_path: oncall://enterprise-ai/mcp-bridge
+
+  edge_profile:
+    type: structured_query_api
+    standard: cesmii_i3x
+    standard_version: v1
+    transport:
+      protocol: mtls
+      endpoint: api://this-box/i3x/v1
+      mTLS_trust_root: enterprise-trust-root-v3
+
+  data_inventory:
+    namespaces:
+      - ot.process.*
+      - ot.health.*
+    excludes:
+      - ot.security.*       # do not expose security data through AI consumption pathway
+      - ot.audit.*
+      - ot.contract.*
+
+  freshness:
+    native_resolution_ms: 100
+    query_latency_max_p99_ms: 500
+
+  delivery_semantics:
+    mode: query_response
+    consistency: eventual_with_watermark
+
+  query_constraints:
+    max_query_complexity: 100      # i3X complexity score
+    max_response_rows: 100000
+    rate_limit_qps: 50
+    timeout_seconds: 30
+
+  authentication:
+    mtls_required: true
+    consumer_credentials_rotation: 7d
+
+  use_constraints:
+    consumer_must_attribute_data_to_box: true
+    consumer_may_relay_to_ai_agents: true     # this is the contract's purpose
+    consumer_must_log_queries_for_audit: true
+    not_for_control: true                     # AI consumption is advisory, not control
+
+  upstream_obligations:
+    response:
+      ack_window_max_seconds: 5
+      query_response_max_seconds: 5
+    incident_response:
+      on_call_path: oncall://enterprise-ai/mcp-bridge
+      response_time_max: 8h
+
+  raci:
+    query_failure:
+      acs_responsible: site-data-engineering
+      acs_accountable: site-ops-manager
+      upstream_responsible: enterprise-ai-engineering
+      upstream_accountable: enterprise-data-director
+      consulted: []
+      informed: [audit-team]
+    rate_limit_exceeded:
+      acs_accountable: site-ops-manager
+      upstream_responsible: enterprise-ai-engineering
+      upstream_accountable: enterprise-data-director
+    ai_agent_misuse:
+      acs_responsible: site-security-team
+      acs_accountable: site-security-manager
+      upstream_responsible: enterprise-ai-trust-and-safety
+      upstream_accountable: enterprise-ciso
+      consulted: [legal, regulator-liaison]
+      informed: [audit-team]
+```
+
+Notes:
+
+- The MCP server is the consumer; AI agents are downstream of the MCP server, not direct consumers of the box. The architecture's no-HTTP-at-boundary rule is preserved because the box only exposes i3X over mTLS.
+- `use_constraints.consumer_may_relay_to_ai_agents: true` makes the AI consumption pathway explicit in the contract, not implicit.
+- `not_for_control: true` constrains downstream use — the MCP server (and by extension AI agents) can read but cannot use this data class for control-loop decisions.
+- The `ai_agent_misuse` RACI row names trust-and-safety as the upstream responsible party. AI-driven access is novel enough that it warrants its own named failure mode.
+
+---
+
+## Sample 6 — Inbound contract: configuration pull
 
 The box's own configuration intake, framed as a contract under the universality rule. The box pulls signed configuration artifacts from upstream; the contract specifies trust roots, grammar, validation behavior, and approval semantics.
 
