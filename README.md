@@ -202,7 +202,7 @@ The convergence is not coincidental. These standards arrive at the same place be
 
 ## Product Family
 
-The IIA architecture names roles. The product family below is the author's reference implementation of those roles. Each product is one valid choice an operator could make; the architecture survives substitution.
+The IIA architecture names roles. The product family below is the author's reference implementation of those roles, packaged together as **the first signed IIA reference implementation** — a turnkey, distributable bundle (signed OS image + container set + reference configuration) that an operator can deploy as-is. Operators who want different choices can piece together their own implementation by selecting per role from the catalog in `docs/internal-architecture.md`. Either path is supported by the architecture; the contract catalog makes implementations interoperable across substitutions. Each product below is one valid choice; the architecture survives substitution.
 
 **Eris Witness** is the open-source scan engine. Continuous passive capture, protocol-aware classification, asset inventory, finding generation. Fills the inbound-side roles inside the box: continuous capture, scan engine, classifier pipeline, and local data lake.
 

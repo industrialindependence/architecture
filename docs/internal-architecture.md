@@ -692,6 +692,8 @@ The floor leaves roughly 5.3 GB for workload bursts. Adequate for the underserve
 
 This section lists candidate software for each role. **None of these are part of the architecture spec.** Operators choose implementations to fit their requirements.
 
+The in-house defaults marked below will be packaged together and published as **the first signed IIA reference implementation** — a turnkey bundle (signed OS image + bundled container set + reference configuration) that operators can pull and deploy directly. The reference build is one valid path; piecing together a different combination per role is the other. The contract catalog makes implementations interoperable across substitutions, so operators can mix the reference build at one box scope with a custom implementation at another. The architecture is not bound to the reference build; the reference build is bound to the architecture.
+
 | Role | Candidate implementations | Notes |
 |---|---|---|
 | Immutable host OS (atomic A/B) | Fedora IoT (rpm-ostree), CentOS Stream Image Mode, Ubuntu Core, Talos Linux | rpm-ostree is the in-house default. |
