@@ -337,6 +337,7 @@ All attestation findings are emitted under `ot.attestation.*` and route to the s
 | `ot.attestation.identity` | SPIFFE issuer + correlator | SVID issuance events vs contract catalog entries. Identity continuity across rotation. Unknown-identity sessions. |
 | `ot.attestation.audit_chain` | Audit chain verifier | On-box audit chain integrity vs replicated chain head at broker. Detects on-box tampering from any peer that has seen a prior head. |
 | `ot.attestation.config` | Configuration attestation observer | Running state vs staged configuration artifact. Confirmation events when convergent; divergence events with delta when not (applier bug, partial-apply failure, or out-of-band mutation). |
+| `ot.attestation.image` | TPM-bound image attester | TPM-attested running OS-image hash vs intended hash declared by the upstream manager. Bound to measured boot — measurement tampering breaks the TPM signature. Closes the post-update reconciliation loop. |
 
 An attestation flag is the architecture's standing answer to whether prevention is actually working. The architecture treats attestation findings with the same severity as signature-based threat detections — they are not "informational logs," they are policy-failure evidence.
 
@@ -506,6 +507,126 @@ Configuration attestation closes the loop on the management plane the same way t
 ### GitOps for an air-gapped industrial appliance
 
 The pattern is GitOps adapted to the constraints of an industrial appliance: declarative configuration is the source of truth, signed artifacts are the propagation mechanism, the parser is the admission boundary, running state converges to declared state, divergence is observable. The box never accepts a mutation that isn't a signed artifact. The management UI never has privileged access. The configuration plane has no live API surface.
+
+## Update Orchestration
+
+The local update lifecycle (above) is half the picture. The other half is how a fleet of boxes — a plant's worth, a site's worth, a region's worth — gets coordinated. The architecture is the same artifact-in pattern at fleet scope, recursed through the fractal.
+
+### What gets updated
+
+Every mutable aspect of the box is a signed artifact:
+
+| Artifact class | What it carries | Cadence |
+|---|---|---|
+| OS image | Host OS + bundled container images | Slow (weeks / months) |
+| Configuration | Zones, conduit policy, contract catalog, edge profiles, identity bindings, IdP refs | Operational (days / weeks) |
+| IDS / scan / enrichment rule sets | Detection content | Faster (daily / hourly) |
+| Operator trust roots | Signing-key references | Rare |
+| Approval artifacts | Operator authorization to apply a staged change | Per-update |
+
+All five flow through the same pipeline: **verify signature → parse / validate → stage → authorize → apply → report**. There is no out-of-band path.
+
+### Distribution: pull, never push
+
+A box never accepts an inbound mutation. Every artifact arrives by box-initiated outbound mTLS pull from its upstream manager (which is just another box at broader scope, or a designated artifact mirror). The pull channel is the same one the box already uses for outbound publishing — no new listener, no new outbound mechanism. No HTTP, in either direction, ever.
+
+The upstream publishes a *manifest* per box (or per zone of boxes): the intended OS-image hash, intended configuration hash, intended rule-set hash, and any approval artifacts that have been issued. The box pulls the manifest on a configured cadence and on connectivity-restore events.
+
+### The fleet is a fractal
+
+```
+[corporate / regional box]      manages →   [site boxes]
+       ↓                                          ↓
+  publishes intended state                 reconcile to declared state
+       ↑                                          ↑
+  receives reported state                   report current state
+                                                  ↓
+                                          [plant boxes]
+                                                  ↓
+                                          [zone boxes]
+```
+
+Each box at broader scope acts as the orchestrator for its children. Children pull intended state from their parent and report their actual state back. The orchestrator is not architecturally distinct — it is just another box, with `ot.it.publish` and `ot.it.api` configured to publish and serve fleet-orchestration artifacts to its children.
+
+This means there is no global "update server." The fleet's source of truth lives at whatever scope the operator manages from — and that scope can move (the corporate box manages site boxes; the site box manages plant boxes; the plant box manages zone boxes), with each level only seeing its direct descendants.
+
+### Authorization
+
+Staged updates do not auto-apply. An **approval artifact** — itself signed, itself versioned, itself in the contract catalog — authorizes a specific box to apply a specific staged update within a specific time window. The architecture supports:
+
+- **Per-box approvals** — one operator signs an approval for one box, valid for a window.
+- **Per-fleet approvals** — one approval covers a named set of boxes; the box checks its identity against the set.
+- **Two-person integrity** — approval artifact requires two distinct operator signatures; either alone is invalid. (FR2 SR 2.4 control.)
+- **Time-windowed** — approvals are valid for an operator-defined window (24 h, 1 week, etc.); after which they expire.
+- **Maintenance windows** — approvals may be conditionally valid only within a declared window.
+
+The applier refuses to act without a valid, current approval artifact. Verification happens at the same trust root as the update artifact itself.
+
+### Rollout strategy is operator policy
+
+The architecture does not pick a rollout strategy. Operators implement what fits their environment by choosing which boxes get which approvals at which times:
+
+- **Canary** — approve one box; observe attestation for N hours; expand.
+- **Percentage** — approve X% of the fleet; observe; approve the rest.
+- **Per-zone** — non-critical zones first, safety-critical zones last.
+- **Per-plant maintenance window** — approve all of plant A during its window; plant B never affected.
+- **Hold for cause** — withhold approval from boxes flagged by attestation, by audit, or by operator review.
+
+Each strategy is encoded in *which approval artifacts get issued, to which boxes, with which time windows*. The architecture provides the substrate; the operator provides the policy.
+
+### Reconciliation
+
+After an update applies, the box reports its current state — running OS-image hash, running configuration hash, running rule-set hashes, attestation results — back to its upstream manager. The manager compares against the intended state it published. Three outcomes:
+
+- **Convergent** — running state matches intended. Box is healthy and up to date.
+- **Pending** — staged but not yet applied (no approval, or approval expired). Manager surfaces this so the operator knows what is sitting and waiting.
+- **Divergent** — running state does not match intended, despite an apparent application. Manager flags this and the box's `ot.attestation.image` and `ot.attestation.config` will already be emitting divergence events.
+
+A divergent box is not assumed to be healthy. The manager treats it as a candidate for forensic review, not for further updates.
+
+### Disconnected reconciliation
+
+A box may be offline for thirty days (the disconnected-operation buffer). When it reconnects:
+
+1. Box reports the state it has been holding — current running hashes, accumulated audit chain, accumulated `ot.contract.*` and `ot.attestation.*` adherence telemetry — to upstream.
+2. Box pulls the current intended state manifest.
+3. Box pulls any approval artifacts addressed to it that are still within their validity windows.
+4. If staged updates and current approvals exist, the box applies and reports.
+5. If approvals have expired, the box waits for fresh approvals; nothing is auto-applied past its expiration.
+
+The result is that a long-disconnected box converges on its intended state when reconnected, **at operator pace**, not whatever rollout was current during its outage.
+
+### Image attestation
+
+After an update applies, the box's TPM-attested image hash is published as `ot.attestation.image` for the manager to verify. The hash is bound to measured boot — if the box reports an image hash that does not match what is actually running (because of measurement tampering), the TPM signature would not verify. Image attestation closes the loop the same way configuration attestation does: prevention applies, attestation observes, divergence is a flag.
+
+| Attestation stream | What it records |
+|---|---|
+| `ot.attestation.image` | TPM-attested running image hash vs intended image hash declared by upstream. |
+
+### Emergency rollback
+
+Two paths:
+
+- **Remote rollback** — operator issues a *revert approval artifact* identifying the previous image hash as the intended state. The box pulls, verifies, applies. Atomic A/B and rpm-ostree-class rollback semantics make this one reboot.
+- **Local last-resort rollback** — via the TPM-bound serial console. Operator authenticates locally, issues a rollback command. Logged to the audit chain. Used when the box is unreachable from the manager (network failure, partial brick, etc.).
+
+A failed boot after applying a staged image automatically rolls back to the previous deployment without operator action. The architecture's worst case for an update is one failed boot followed by automatic restoration.
+
+### Putting it together
+
+To push an update to one box:
+
+1. Build new OS image; sign with operator key against the configured trust root.
+2. Publish the image to the upstream manager box's distribution channel.
+3. Update the manifest at the manager: intended image hash for box X is now `<new hash>`.
+4. Issue a signed approval artifact: box X is authorized to apply `<new hash>`, valid until T+24h.
+5. Box X pulls the manifest on its next cycle; sees new intended image; pulls the image; verifies; stages.
+6. Box X pulls the approval artifact; verifies; applies the staged image at the next operator-configured window.
+7. Box X reboots into the new image; TPM-attested hash published as `ot.attestation.image`.
+8. Manager compares reported hash to intended; reconciliation closes; the box is now confirmed convergent.
+
+To push the same update to a fleet, repeat steps 2–8 with approvals issued per the chosen rollout strategy.
 
 ## SL3 Foundational Requirements Mapping
 
