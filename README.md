@@ -4,7 +4,7 @@
 
 IIA is the deliberate abstraction of a convergence pattern that exists in adjacent domains, named and applied for the first time to automation and control systems. It is not a product. It is not a framework. It is the architectural principle, claimed by name.
 
-Authored by ***REMOVED***, ISA-99 (IEC 62443) committee member and founder of Fathom.
+Authored by ***REMOVED***, ISA-99 (IEC 62443) committee member.
 
 ## The Principle
 
@@ -214,7 +214,7 @@ IIA provides the architectural pattern that makes sovereignty the default rather
 
 ## Trademarks
 
-Industrial Independence Architecture, IIA, Eris Witness, Marlinspike, Fathom, and WirePilot are trademarks of ***REMOVED***. The license below covers the text of this document. It does not grant rights to use these marks. Use of the marks to refer to derivative articulations, products, or services requires written permission.
+Industrial Independence Architecture and IIA are trademarks of ***REMOVED***. The license below covers the text of this document. It does not grant rights to use these marks. Use of the marks to refer to derivative articulations, products, or services requires written permission.
 
 ## License
 
