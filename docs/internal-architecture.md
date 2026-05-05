@@ -6,9 +6,17 @@ The architecture spec names **roles** and the **contracts** they satisfy. It doe
 
 For the architectural principle this document implements, see the project [README](../README.md). For the two-box deployment that reaches Security Level 4, see [The Two-Box Method](../README.md#the-two-box-method) in the same.
 
-A CIAD-style conceptual diagram of the box and its external surfaces is at [`box-architecture.png`](box-architecture.png) (source: [`box-architecture.dot`](box-architecture.dot)).
+CIAD-style diagrams (rendered from Graphviz `.dot` sources alongside):
+
+- The box and its external surfaces — [`box-architecture.png`](box-architecture.png) (source: [`box-architecture.dot`](box-architecture.dot))
+- The Two-Box Method, SL3 vs SL4 — [`two-box-method.png`](two-box-method.png) (source: [`two-box-method.dot`](two-box-method.dot))
+- The Fractal — same unit at every PERA scope — [`fractal.png`](fractal.png) (source: [`fractal.dot`](fractal.dot))
 
 ![Box architecture](box-architecture.png)
+
+![The Two-Box Method](two-box-method.png)
+
+![The Fractal](fractal.png)
 
 ## Invariants
 
