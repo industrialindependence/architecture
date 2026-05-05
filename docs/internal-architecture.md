@@ -178,6 +178,8 @@ The operator picks one or more profiles per deployment. The architecture does no
 
 **AI-agent consumption pathway.** When the deployment needs AI-agent access to box data, the path is: box exposes a structured query API speaking **CESMII i3X** over mTLS; an **MCP server** (Model Context Protocol) runs at broader scope on a broker box, pulls from i3X, and exposes the data as MCP tools / resources to AI agents. The MCP server lives off-box because MCP's canonical Streamable HTTP transport conflicts with the box's no-HTTP-at-boundary rule; the box's role is to publish a clean i3X surface that any MCP server can consume. This is the *connect-first → model-second → AI-third* pattern from the field consensus made concrete: i3X is the connection layer; the consumer's modeling and AI agency live one or more scopes up.
 
+For single-box deployments where there is no broker box at broader scope, the MCP server typically runs on the **operator's workstation or a small adjunct host on the local network**. The architecture invariants are unchanged — it is still off-box and still consumes i3X over mTLS. See [`mcp-single-box.md`](mcp-single-box.md) for the operator-facing quickstart.
+
 **Orchestrate transactions, choreograph telemetry.** Telemetry flows (time-series, events, asset state changes) are *choreographed* — fire-and-forget on the edge profile, no acknowledgment expected at the publisher. Transactional flows (MES/MOM operations, work-order acks, recipe downloads) are *orchestrated* — synchronous, acknowledged, traceable end-to-end. The box's edge publisher handles telemetry. Transactional flows go through the structured query API or a dedicated transactional channel; mixing the two in one pipeline is a recurring failure mode.
 
 ## Data Contracts
