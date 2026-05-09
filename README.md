@@ -2,6 +2,8 @@
 
 **An architectural principle for industrial infrastructure.**
 
+*New to industrial automation, ICS, or operational technology? Start with [docs/introduction.md](docs/introduction.md) — it builds the vocabulary used here.*
+
 IIA is the deliberate abstraction of a convergence pattern that exists in adjacent domains, named and applied for the first time to automation and control systems. It is not a product. It is not a framework. It is the architectural principle, claimed by name.
 
 ## Contents
@@ -231,6 +233,7 @@ IIA provides the architectural pattern that makes sovereignty the default rather
 
 ## Further Reading
 
+- [`docs/introduction.md`](docs/introduction.md) — concept-first introduction for readers new to industrial automation, ICS, or operational technology. Builds the vocabulary the rest of this documentation assumes.
 - [`docs/internal-architecture.md`](docs/internal-architecture.md) — the canonical implementation specification: invariants, partitioning, contracts, attestation, configuration, updates, and the SL3 / SL4 mappings to IEC 62443 foundational requirements. Names roles, not products.
 - [`docs/sample-contracts.md`](docs/sample-contracts.md) — six worked data contracts spanning internal flows, boundary contracts (batch and query), device-level contracts, wireless IO, and AI-agent consumption. Demonstrates the contract grammar and adherence telemetry.
 - [`docs/mcp-single-box.md`](docs/mcp-single-box.md) — operator quickstart for the smallest AI-agent consumption deployment: one box, one MCP server off-box, one AI client. Topology, identity, contract, and config-artifact pipeline.
