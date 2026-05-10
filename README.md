@@ -2,6 +2,8 @@
 
 **An architectural principle for industrial infrastructure.**
 
+*Published by the [Industrial Independence Alliance](https://industrialindependence.org/). The Architecture (this repo) is the consequence of [the Philosophy](https://industrialindependence.org/philosophy/) — read that first if you want the why.*
+
 *New to industrial automation, ICS, or operational technology? Start with [docs/introduction.md](docs/introduction.md) — it builds the vocabulary used here.*
 
 IIA is the deliberate abstraction of a convergence pattern that exists in adjacent domains, named and applied for the first time to automation and control systems. It is not a product. It is not a framework. It is the architectural principle, claimed by name.
@@ -35,6 +37,8 @@ The cloud is a viewport into the mesh of units. It is not the platform. It is no
 
 The line between ACS and IT is not drawn by network topology, org chart, or vendor label. It is drawn by the criticality of the data, which is determined by its time sensitivity and its relationship to the physical process.
 
+This distinction is what was lost when CIA-style information-domain models were imported from enterprise IT and applied to systems that operate on physical processes. Architecture got fragile. Security got performative. The vendor-driven model promised seamless integration; what it delivered was extractive complexity and unnecessary attack surface. The correction is upstream of the architecture: get the substrate right, and the rest follows. (Alliance Philosophy #00: physics overrides information.)
+
 If the purpose of the data is to act on or control the process, it is ACS data. SRP governs it. The system that carries it must meet the safety, reliability, and performance requirements of the process it serves.
 
 If the purpose of the data is to report on the process, it is information. CIA governs it. IT rules, IT infrastructure, and IT governance apply.
@@ -67,7 +71,7 @@ IIA is fractal across security levels in the same way it is fractal across organ
 
 ## The Unit
 
-One box. Runs the complete ACS infrastructure stack: data collection, historian, security monitoring, asset inventory, intrusion detection, visualization, API, remote access, VPN, message brokering, protocol translation. Everything needed to operate, monitor, and secure a zone.
+One box. Runs the complete ACS infrastructure stack: data collection, the zone's **decentralized historian**, security monitoring, asset inventory, intrusion detection, visualization, API, remote access, VPN, message brokering, protocol translation. Everything needed to operate, monitor, and secure a zone.
 
 The architecture is hardware-independent and scale-invariant. The box is a logical unit, realizable as an appliance, a server, a cluster, or a virtualized stack. Sizing is application- and scale-dependent — the box has run on less than 1GB of RAM with capability tradeoffs and scales up as the workload demands.
 
@@ -96,7 +100,7 @@ Cloud:           viewport into all boxes, optional
 
 Each box meshes with adjacent boxes. If a box can see another box, data routes through. If a box can see a box that can see a box that can see the cloud, data gets there. The mesh finds the path. If no path exists, the box keeps running locally with 30 days of buffered data.
 
-Sovereignty does not mean isolation. Historians on adjacent boxes can know about each other without becoming dependent on each other. Awareness is mutual. Dependency is not.
+Sovereignty does not mean isolation. Each box's historian is the *decentralized historian* for its zone — the operator's data, on the operator's substrate, working complete without the cloud. Historians on adjacent boxes can know about each other without becoming dependent on each other. Awareness is mutual. Dependency is not. The centralized-historian pattern that came before — vendor-owned, off-site, reachable only when the WAN is up — is a sovereignty failure by design.
 
 Add a production zone, add a box. Add a site, add a box. Add a region, add a cloud aggregator. The unit of scaling is always the same self-contained block. Scales nearly infinitely by design.
 
@@ -108,7 +112,7 @@ IIA is shaped by the realities of automation and control system environments, no
 
 **Connectivity is a luxury, not a given.** Production floors, wellheads, substations, feed lots, and remote facilities operate on cellular, satellite, or no backhaul at all. The unit must be the complete system indefinitely, not a thin client waiting for a cloud to come back.
 
-**Safety, Reliability, Performance, not Confidentiality, Integrity, Availability.** The issue is not ordering, it is category. CIA, AIC, and their derivatives describe properties of *information* — and information is historical by nature, a record of what already happened. ACS does not operate on records. ACS operates on action and physics: a valve that moves, an interlock that latches, a loop that closes within its required time. Reliability and Performance in SRP are properties of the physical system. Safety is the property the physical system protects. The correct priority ordering for ACS, as articulated by Infracritical, is SRP: Safety first, then Reliability, then Performance. A security tool that compromises any of these is not a security tool. Every function on the box must degrade gracefully and never interfere with the process it monitors.
+**Safety, Reliability, Performance, not Confidentiality, Integrity, Availability.** The issue is not ordering, it is category. CIA, AIC, and their derivatives describe properties of *information* — and information is historical by nature, a record of what already happened. ACS does not operate on records. ACS operates on action and physics: a valve that moves, an interlock that latches, a loop that closes within its required time. Reliability and Performance in SRP are properties of the physical system. Safety is the property the physical system protects. The correct priority ordering for ACS, as articulated by Robert Radvanovsky at Infracritical ([srpmodel.infracritical.com](https://srpmodel.infracritical.com/srpmodel.php)), is SRP: Safety first, then Reliability, then Performance. A security tool that compromises any of these is not a security tool. Every function on the box must degrade gracefully and never interfere with the process it monitors.
 
 PERA's SAIC (Safety, Availability, Integrity, Confidentiality) extends CIA by prepending Safety. It is the right frame for IT systems that touch safety-critical *information* — historians, audit stores, regulator-facing dashboards. SAIC does not extend down to govern the ACS itself. The ACS is upstream of SAIC, governed by SRP. What crosses the domain boundary is the moment data becomes information.
 
@@ -146,7 +150,7 @@ Their network person, if they have one, knows IP and maybe subnetting. They do n
 
 The alternatives (Claroty, Nozomi) are IT security tools retroactively pointed at OT networks — $50-100K/year, $100-150K professional services. They give an IT security team partial visibility into an ACS environment they do not operate. They are not what OT is supposed to have. They are what gets deployed because the thing OT is supposed to have does not exist.
 
-IIA is that thing. Asset inventory, network monitoring, audit, historian, secure interfaces — operator-owned, zone-deployed, operational rather than overlaid. Affordable because the architecture does not depend on a cloud subscription, a permanent integrator, or a single-vendor stack.
+IIA is that thing. Asset inventory, network monitoring, audit, historian, secure interfaces — operator-owned, zone-deployed, operational rather than overlaid. Affordable because the architecture does not depend on a cloud subscription, a permanent integrator, or a single-vendor stack. And legible: the architecture restores standards like IEC 62443 to the practitioners who actually operate the plant — field-ready, not vendor-mediated.
 
 ## Data Architecture
 
@@ -231,7 +235,7 @@ The convergence is not coincidental. These standards arrive at the same place be
 
 Industrial independence is not a technology position. It is an operational sovereignty position. The entity that controls the automation infrastructure controls the operation. The facility that depends on external connectivity for basic process visibility, historian access, or security monitoring is not sovereign.
 
-The domain boundary between ACS and IT is not a negotiation. Data that acts on the process is governed by SRP. Data that reports on the process is governed by CIA. The box enforces this boundary by architecture, not by policy, and ensures that IT governance never reaches back into the automation cell.
+The domain boundary between ACS and IT is not a negotiation. Data that acts on the process is governed by SRP. Data that reports on the process is governed by CIA. The box enforces this boundary by architecture, not by policy, and ensures that IT governance never reaches back into the automation cell. Security here is built in, not bolted on, and never bought. (Alliance Philosophy #04: security is an architectural property.)
 
 IIA provides the architectural pattern that makes sovereignty the default rather than the aspiration.
 

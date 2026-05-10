@@ -14,7 +14,7 @@ Industrial Independence Architecture (IIA) is the architectural answer. It defin
 
 Inside any industrial site there are two domains, and they are different in kind, not just in degree.
 
-**Automation and Control Systems (ACS)** — the substrate of physical action. Sensors that read pressure, flow, temperature, vibration, position. Programmable Logic Controllers (PLCs) that decide what to do about those readings on a millisecond-scale loop. Actuators that open valves, drive motors, adjust setpoints. Safety systems that intervene when a process exceeds a tolerance. Human-Machine Interfaces (HMIs) that operators use to watch and steer. ACS is governed by **SRP — Safety, Reliability, Performance.** A control loop that arrives a hundred milliseconds late is a safety problem. A historian that loses records is a recordkeeping problem.
+**Automation and Control Systems (ACS)** — the substrate of physical action. Sensors that read pressure, flow, temperature, vibration, position. Programmable Logic Controllers (PLCs) that decide what to do about those readings on a millisecond-scale loop. Actuators that open valves, drive motors, adjust setpoints. Safety systems that intervene when a process exceeds a tolerance. Human-Machine Interfaces (HMIs) that operators use to watch and steer. ACS is governed by **SRP — Safety, Reliability, Performance** — the triad articulated by Robert Radvanovsky at Infracritical ([srpmodel.infracritical.com](https://srpmodel.infracritical.com/srpmodel.php)). A control loop that arrives a hundred milliseconds late is a safety problem. A historian that loses records is a recordkeeping problem.
 
 **Information Technology (IT)** — the substrate of information. Production schedules, work orders, quality records, regulator-facing reports, business intelligence, machine-learning models. IT is governed by **CIA — Confidentiality, Integrity, Availability.** (Some standards prepend Safety for IT systems that touch safety-relevant records: **SAIC.**) A leaked record is a compliance problem. A late report is a coordination problem.
 
@@ -49,7 +49,7 @@ Each unit has four sides:
 - An **outbound side** that faces IT. It publishes only what a contract authorizes, only to consumers who have authenticated. It does not accept inbound HTTP. It does not call out over HTTP.
 - A **management side** for the operator who runs the unit. The only place a human or a configuration artifact reaches in.
 
-Inside the unit, a local data lake is the source of truth. Capture lands there. Classification lands there. Audit lands there. Outbound publishers siphon from the lake. The lake is owned by the operator and governed by the unit, not by any vendor consuming from it.
+Inside the unit, a local data lake is the source of truth. Capture lands there. Classification lands there. Audit lands there. Outbound publishers siphon from the lake. The lake is owned by the operator and governed by the unit, not by any vendor consuming from it. This is the **decentralized historian**: a per-zone, operator-owned record, working complete without the cloud. The centralized-historian pattern that came before — vendor-owned, off-site, reachable only when the WAN is up — is a sovereignty failure by design.
 
 ## Data contracts
 

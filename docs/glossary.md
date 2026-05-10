@@ -76,7 +76,7 @@ Standards and protocols are listed where they carry architectural weight in IIA.
 
 **Sparkplug B.** Schema and session-state layer on top of MQTT. Appropriate at controller↔area-broker (PERA L1/L2). Carries process variables and rebirth semantics for known publishers. Not the right edge profile above L2; rebirth-storm and QoS-degraded-integrity behavior outside its design envelope.
 
-**SRP.** Safety, Reliability, Performance. The vocabulary for *physical action and physics*. Governs the ACS substrate. Reliability and Performance are properties of the physical system; Safety is what the system protects. The correct priority ordering for ACS, as articulated by Infracritical. A security tool that compromises any of the three is not a security tool.
+**SRP.** Safety, Reliability, Performance. The vocabulary for *physical action and physics*. Governs the ACS substrate. Reliability and Performance are properties of the physical system; Safety is what the system protects. The correct priority ordering for ACS, as articulated by Robert Radvanovsky at Infracritical ([srpmodel.infracritical.com](https://srpmodel.infracritical.com/srpmodel.php)). A security tool that compromises any of the three is not a security tool.
 
 **Structured query API.** The box's pull-mode interface. mTLS-authenticated, non-HTTP. Candidates per deployment include CESMII i3X (preferred industrial standard at L2↔L3), gRPC, NATS req/reply, OPC UA req/reply, Zenoh queryables, and MCP-over-mTLS. The contract catalog is one of the resources discoverable via this API.
 
