@@ -130,9 +130,9 @@ The pattern exists elsewhere. It has never been named or applied deliberately to
 
 **Integrated NAS (Synology):** One box does storage, backup, containers, VPN, surveillance, media. Complete system, works offline, scales by adding another unit.
 
-These are expressions of the same convergence pattern: self-contained sovereign unit, identical at every deployment point, scales by composition, works without upstream dependency. IIA inherits that pattern and extends it. The new claim is not convergence — convergence is precedented. The new claim is that the unit enforces two different governance models across a single boundary: SRP inside the automation cell, CIA outside. None of the prior art does this because none of it sits at a boundary where data classification and governance flip.
+These are expressions of the same convergence pattern: self-contained sovereign unit, identical at every deployment point, scales by composition, works without upstream dependency. IIA inherits that pattern and extends it. The new claim is not convergence — convergence is precedented. The pattern is *appliance* convergence, not IT/OT convergence — IIA rejects the IT/OT convergence frame in agreement with PERA+'s "secure interfaces, not integration." The new claim is that the unit enforces two different governance models across a single boundary: SRP inside the automation cell, CIA outside. None of the prior art does this because none of it sits at a boundary where data classification and governance flip.
 
-PERA+ articulates the same first principle from the standards side: *"creating secure interfaces rather than attempting to merge or integrate IT and Industrial Automation and Control Systems."* IIA inherits this stance and operationalizes it as a single appliance.
+PERA+ articulates the same first principle from the standards side: *"creating secure interfaces rather than attempting to merge or integrate IT and Industrial Automation and Control Systems."* IIA inherits this stance and operationalizes it as a single appliance. The historical wound this addresses: integration escalated when networks were linked through shared infrastructure — switches and L3 routers spanning the IT/ACS boundary — instead of through gateways. A gateway is an end device with one owner. Shared infrastructure has two owners and one reality. IIA is the gateway promoted to the unit of architecture.
 
 IIA applies the convergence to the full ACS stack — collection, processing, storage, visualization, security, API — and applies the boundary enforcement at the seam between ACS and IT. One unit. Every zone. Identical.
 
@@ -142,13 +142,17 @@ The underserved triangle. Every manufacturer below the top of the demand curve. 
 
 They are also the ones without stable internet. Rural. Remote. Satellite or cellular backhaul at best. Any architecture that assumes connectivity is an architecture that does not work for them.
 
-Their network person, if they have one, knows IP and maybe subnetting. They do not know packets. They do not know CVEs. They do not care about CVEs.
+Their network person, if they have one, knows IP and maybe subnetting. They do not know packets. They do not know CVEs. They do not care about CVEs — and they are right not to. Those are not OT's responsibilities. OT's responsibilities are an accurate asset inventory, a network it can see, an audit trail of what happened, and a process that runs reliably. The tools to do those things, *as OT operational tools owned and operated by OT*, do not exist.
 
-The alternatives (Claroty, Nozomi) start at $50-100K/year with $100-150K professional services engagements. There is no other tool in the market that provides zone-level ACS visibility, audit logging, and monitoring at a price point accessible to this population.
+The alternatives (Claroty, Nozomi) are IT security tools retroactively pointed at OT networks — $50-100K/year, $100-150K professional services. They give an IT security team partial visibility into an ACS environment they do not operate. They are not what OT is supposed to have. They are what gets deployed because the thing OT is supposed to have does not exist.
+
+IIA is that thing. Asset inventory, network monitoring, audit, historian, secure interfaces — operator-owned, zone-deployed, operational rather than overlaid. Affordable because the architecture does not depend on a cloud subscription, a permanent integrator, or a single-vendor stack.
 
 ## Data Architecture
 
 The box is internally partitioned into three sides plus a management interface.
+
+The "internal DMZ" here is a partition inside the box. It is not the conventional IT-OT DMZ at PERA L3.5 — that one separates IT-touching-control from IT-not-touching-control, governed end-to-end by IT. IIA's DMZ is the boundary between SRP-governed inbound capture and CIA-governed outbound publishing, inside one operator-owned unit.
 
 ![The Box: CIAD-style conceptual diagram of internal partitioning, zones, and external surfaces](docs/box-architecture.png)
 

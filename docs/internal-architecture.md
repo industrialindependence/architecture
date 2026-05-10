@@ -99,6 +99,8 @@ The box has, at most, three external network interfaces plus a console:
 
 The box is internally three-partitioned plus a management interface. Each partition is a kernel-firewalled zone with explicit conduit policy.
 
+The term "DMZ" in "internal DMZ" refers to the box's middle partition, not the conventional IT-OT DMZ at PERA L3.5. The conventional DMZ separates IT-touching-control from IT-not-touching-control under unified IT governance; IIA's internal DMZ separates inbound capture from outbound publishing across the SRP / CIA boundary, inside one operator-owned unit.
+
 ```
 +---------------------------------------------------------------+
 |                            BOX                                |
@@ -123,7 +125,7 @@ The box is internally three-partitioned plus a management interface. Each partit
 
 | Zone | Purpose | Side | Inbound conduits | Outbound conduits |
 |---|---|---|---|---|
-| `ot.acs.collect` | Protocol-aware collectors (OPC UA, Modbus, EtherNet/IP, Profinet, MQTT-SN, fieldbus, IO-Link); LoRaWAN / LPWAN ingest via on-box radio or external LoRaWAN gateway publishing MQTT (IO-class data only — never control) | Inbound | ACS NIC (passive); on-box LoRaWAN radio if equipped | `ot.dmz.bus`, `ot.acs.lake` |
+| `ot.acs.collect` | Protocol-aware collectors for horizontal (controller↔controller) and vertical (controller↔IO) network traffic — OPC UA, EtherNet/IP, Profinet, Modbus (TCP and RTU), MQTT-SN, fieldbus. Device-level digital interfaces (IO-Link, HART) are observed at the substrate by `ot.acs.io_master`, not at the network by collectors. LoRaWAN / LPWAN ingest via on-box radio or external LoRaWAN gateway publishing MQTT (IO-class data only — never control). | Inbound | ACS NIC (passive); on-box LoRaWAN radio if equipped | `ot.dmz.bus`, `ot.acs.lake` |
 | `ot.acs.witness` | Continuous capture, network IDS (signature + contract-attestation observer), scan engine, enrichment | Inbound | ACS NIC (passive, mirror port) | `ot.acs.lake`, `ot.dmz.audit`, `ot.dmz.attest` |
 | `ot.acs.io_master` | Independent IO substrate observation (IO and industrial Ethernet); cross-checks primary capture | Inbound | Independent NIC tap / IO interface (separate from `ot.acs.collect`) | `ot.dmz.attest` |
 | `ot.acs.lake` | Local data lake — durable, append-only, source of truth | Inbound | `ot.acs.collect`, `ot.acs.witness`, `ot.dmz.bus` | `ot.it.publish` (siphon), `ot.it.api` (read), `ot.dmz.audit` |
@@ -329,7 +331,7 @@ The IDS observer is independent of the SDN policy plane; the policy plane and th
 
 ### IO attestation (redundant IO master)
 
-An **IO master** runs an independent observation channel for the physical substrate. It maintains its own readings of the IO surface — analog values (4-20 mA, thermocouple, RTD, voltage), digital IO, fieldbus traffic (Modbus RTU, Profibus, HART, IO-Link), and industrial Ethernet (EtherNet/IP, Profinet, Modbus TCP, EtherCAT) — and cross-checks against what the box's primary observation pipeline reports.
+An **IO master** runs an independent observation channel for the physical substrate. It maintains its own readings of the IO surface — analog values (4-20 mA, thermocouple, RTD, voltage), digital IO, device-level digital interfaces (IO-Link, HART — point-to-point links to a sensor or actuator, not networks), fieldbus traffic (Modbus RTU, Profibus), and industrial Ethernet (EtherNet/IP, Profinet, Modbus TCP, EtherCAT) — and cross-checks against what the box's primary observation pipeline reports.
 
 The IO master is independently authenticated (its own SPIFFE identity, its own attestation key) and runs in its own zone. Its observations land in the audit chain with their own signature, distinct from the primary capture pipeline.
 

@@ -20,6 +20,8 @@ Inside any industrial site there are two domains, and they are different in kind
 
 SRP and CIA are not the same kind of vocabulary, and they are not two priority orderings of the same list. They describe different substrates. SRP describes physics — what the system does, how reliably, how fast, how safely. CIA describes records — whether they are kept secret, accurate, and reachable. Using CIA for ACS is a category error, not a priority mistake. The thirty-year industry habit of treating ACS as "IT with extra availability" is the source of most of the problems IIA addresses.
 
+A note on vocabulary. "OT" (operational technology) treats the substrate as singular. It isn't. An automotive plant has stamping, body, paint, general assembly, powertrain — each with its own control networks and its own management entity. The same multiplicity holds in food processing, water treatment, oil and gas, and the other industries IIA addresses. There is no executive director of OT. ACS names the substrate without pretending it is one thing.
+
 ## Where the boundary actually sits
 
 Most attempts to describe the IT/ACS boundary point at a network diagram and draw a line. That works until somebody plugs a laptop into the wrong switch.
