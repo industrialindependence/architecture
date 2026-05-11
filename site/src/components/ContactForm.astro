@@ -1,0 +1,196 @@
+---
+interface Props {
+  compact?: boolean;
+  id?: string;
+}
+const { compact = false, id = 'contact-form' } = Astro.props;
+---
+
+<form class:list={["contact-form", { compact }]} data-contact-form id={id} novalidate>
+  <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" class="honey" />
+
+  <div class="row">
+    <div class="field">
+      <label for={`${id}-name`}>Name</label>
+      <input type="text" id={`${id}-name`} name="name" required maxlength="120" autocomplete="name" />
+    </div>
+    <div class="field">
+      <label for={`${id}-email`}>Email</label>
+      <input type="email" id={`${id}-email`} name="email" required maxlength="200" autocomplete="email" />
+    </div>
+  </div>
+
+  {!compact && (
+    <div class="field">
+      <label for={`${id}-subject`}>Subject <span class="hint">(optional)</span></label>
+      <input type="text" id={`${id}-subject`} name="subject" maxlength="160" />
+    </div>
+  )}
+
+  <div class="field">
+    <label for={`${id}-message`}>Message</label>
+    <textarea id={`${id}-message`} name="message" rows={compact ? 3 : 6} required minlength="4" maxlength="5000"></textarea>
+  </div>
+
+  <div class="actions">
+    <button type="submit" class="submit mono">Send &rarr;</button>
+    <p class="status mono" role="status" aria-live="polite"></p>
+  </div>
+</form>
+
+<script>
+  document.querySelectorAll<HTMLFormElement>('[data-contact-form]').forEach((form) => {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const status = form.querySelector('.status') as HTMLElement;
+      const button = form.querySelector('button.submit') as HTMLButtonElement;
+
+      const data = Object.fromEntries(new FormData(form));
+      button.disabled = true;
+      const originalLabel = button.textContent;
+      button.textContent = 'Sending...';
+      status.textContent = '';
+      status.removeAttribute('data-tone');
+
+      try {
+        const res = await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        });
+        const body = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(body.error || 'Send failed. Please try again.');
+
+        status.textContent = 'Sent. We will reply soon.';
+        status.dataset.tone = 'ok';
+        form.reset();
+      } catch (err) {
+        status.textContent = (err as Error).message || 'Send failed. Please try again.';
+        status.dataset.tone = 'error';
+      } finally {
+        button.disabled = false;
+        button.textContent = originalLabel;
+      }
+    });
+  });
+</script>
+
+<style>
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 100%;
+  }
+  .contact-form.compact {
+    gap: 0.7rem;
+  }
+  .honey {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+  .compact .row {
+    grid-template-columns: 1fr;
+    gap: 0.7rem;
+  }
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+  .field label {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-mute);
+  }
+  .field .hint {
+    text-transform: none;
+    letter-spacing: 0;
+    color: var(--ink-mute);
+    opacity: 0.7;
+  }
+  .field input,
+  .field textarea {
+    font-family: inherit;
+    font-size: 0.96rem;
+    color: var(--ink);
+    background: var(--bg);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    padding: 0.6rem 0.7rem;
+    transition: border-color 120ms ease, box-shadow 120ms ease;
+    width: 100%;
+    box-sizing: border-box;
+    line-height: 1.5;
+  }
+  .compact .field input,
+  .compact .field textarea {
+    font-size: 0.88rem;
+    padding: 0.5rem 0.6rem;
+  }
+  .field textarea {
+    resize: vertical;
+    min-height: 4.5rem;
+  }
+  .field input:focus,
+  .field textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-soft);
+  }
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 0.2rem;
+  }
+  .submit {
+    background: var(--ink);
+    color: var(--bg);
+    border: 1px solid var(--ink);
+    padding: 0.65rem 1.1rem;
+    border-radius: 3px;
+    font-size: 0.84rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    transition: background 120ms ease, border-color 120ms ease, color 120ms ease;
+  }
+  .submit:hover:not([disabled]) {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+  .submit[disabled] {
+    opacity: 0.55;
+    cursor: progress;
+  }
+  .status {
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    margin: 0;
+    color: var(--ink-mute);
+    min-height: 1.2em;
+  }
+  .status[data-tone="ok"] {
+    color: var(--accent);
+  }
+  .status[data-tone="error"] {
+    color: var(--ink);
+  }
+
+  @media (max-width: 560px) {
+    .row { grid-template-columns: 1fr; gap: 0.7rem; }
+  }
+</style>

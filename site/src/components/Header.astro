@@ -3,7 +3,8 @@ const { current = '' } = Astro.props as { current?: string };
 const links = [
   { href: '/philosophy/', label: 'The Philosophy', key: 'philosophy' },
   { href: '/architecture/', label: 'The Architecture', key: 'architecture' },
-  { href: '/architecture/docs/', label: 'Documentation', key: 'docs' }
+  { href: '/architecture/docs/', label: 'Documentation', key: 'docs' },
+  { href: '/contact/', label: 'Contact', key: 'contact' }
 ];
 ---
 
@@ -31,7 +32,8 @@ const links = [
           l.key === current ||
           (l.key === 'architecture' && current.startsWith('architecture')) ||
           (l.key === 'docs' && current === 'docs') ||
-          (l.key === 'philosophy' && current.startsWith('philosophy'));
+          (l.key === 'philosophy' && current.startsWith('philosophy')) ||
+          (l.key === 'contact' && current === 'contact');
         return (
           <a href={l.href} class={active ? 'is-active' : ''}>{l.label}</a>
         );

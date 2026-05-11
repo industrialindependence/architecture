@@ -2,6 +2,8 @@
 import Base from '../../../layouts/Base.astro';
 import { getCollection } from 'astro:content';
 
+export const prerender = true;
+
 const titleMap: Record<string, string> = {
   'introduction': 'Introduction',
   'internal-architecture': 'Internal Architecture',
