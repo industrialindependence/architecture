@@ -1,5 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
+import DomainBoundaryDiagram from '../../components/diagrams/DomainBoundaryDiagram.astro';
+import HistorianDiagram from '../../components/diagrams/HistorianDiagram.astro';
 
 const principles = [
   {
@@ -122,6 +124,9 @@ const principles = [
         </dl>
       </aside>
     </div>
+    <div class="container substrate-diagram">
+      <DomainBoundaryDiagram />
+    </div>
   </section>
 
   <section class="saic-callout" id="saic">
@@ -217,6 +222,7 @@ const principles = [
         IIA provides the architectural pattern that makes
         sovereignty the default rather than the aspiration.
       </p>
+      <HistorianDiagram />
       <a href="/architecture/" class="thesis-cta mono">
         Read The Architecture &rarr;
       </a>
@@ -304,6 +310,9 @@ const principles = [
   .substrate {
     padding: 5rem 0 4rem;
     border-bottom: 1px solid var(--rule-soft);
+  }
+  .substrate-diagram {
+    margin-top: 2.8rem;
   }
   .substrate-grid {
     display: grid;

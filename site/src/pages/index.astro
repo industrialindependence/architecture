@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import FractalDiagram from '../components/diagrams/FractalDiagram.astro';
 ---
 
 <Base
@@ -64,6 +65,17 @@ import Base from '../layouts/Base.astro';
         </ul>
         <span class="door-cta mono">Read The Architecture &rarr;</span>
       </a>
+    </div>
+  </section>
+
+  <section class="fractal-section">
+    <div class="container fractal-inner">
+      <p class="fractal-eyebrow mono">&sect; The fractal</p>
+      <p class="fractal-intro">
+        The same unit deploys at every PERA scope &mdash; from a single production cell
+        to a regional aggregate. Scope changes. The architecture does not.
+      </p>
+      <FractalDiagram />
     </div>
   </section>
 
@@ -223,6 +235,29 @@ import Base from '../layouts/Base.astro';
     transition: color 180ms ease;
   }
 
+  .fractal-section {
+    padding: 4.5rem 0 4rem;
+    border-bottom: 1px solid var(--rule-soft);
+    background: var(--bg);
+  }
+  .fractal-inner {
+    max-width: var(--max-wide);
+  }
+  .fractal-eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 0.72rem;
+    color: var(--ink-mute);
+    margin: 0 0 0.8rem;
+  }
+  .fractal-intro {
+    font-size: 1.04rem;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    max-width: 64ch;
+    margin: 0 0 1.6rem;
+  }
+
   .bridge {
     padding: 4rem 0 5rem;
     background: var(--bg-elev);
@@ -253,6 +288,7 @@ import Base from '../layouts/Base.astro';
     }
     .door:last-child { border-bottom: 0; }
     .landing-hero { padding: 3.5rem 0 2rem; }
+    .fractal-section { padding: 2.8rem 0 2.6rem; }
     .bridge { padding: 2.6rem 0 3rem; }
     .bridge-line { font-size: 1.12rem; }
   }

@@ -1,6 +1,9 @@
 ---
 import Base from '../../layouts/Base.astro';
 import { Content } from '../../content-src/principle/README.md';
+import FractalDiagram from '../../components/diagrams/FractalDiagram.astro';
+import BoxDiagram from '../../components/diagrams/BoxDiagram.astro';
+import TwoBoxDiagram from '../../components/diagrams/TwoBoxDiagram.astro';
 ---
 
 <Base title="The Architecture" description="Industrial Independence Architecture (IIA) — the architectural principle for industrial infrastructure. Published by the Industrial Independence Alliance." current="architecture">
@@ -60,6 +63,43 @@ import { Content } from '../../content-src/principle/README.md';
           The boundary is enforced <strong>by architecture, not by policy</strong>.
         </p>
       </div>
+    </div>
+  </section>
+
+  <hr class="rule" />
+
+  <section class="diagrams-section">
+    <div class="container">
+
+      <div class="diagram-block">
+        <p class="diag-eyebrow mono">&sect; The fractal</p>
+        <p class="diag-intro">
+          The same unit at every PERA scope. Scope is the only thing that changes.
+          The fractal does not collapse at the top &mdash; the cloud is just another box at broader scope.
+        </p>
+        <FractalDiagram />
+      </div>
+
+      <div class="diagram-block">
+        <p class="diag-eyebrow mono">&sect; The box (CIAD)</p>
+        <p class="diag-intro">
+          Internal partitioning of the IIA box.
+          Inbound (ACS-facing), DMZ, and outbound (IT-facing) zones.
+          All cross-side traffic transits the DMZ. ACS NIC is passive, RX-only.
+        </p>
+        <BoxDiagram />
+      </div>
+
+      <div class="diagram-block">
+        <p class="diag-eyebrow mono">&sect; The two-box method</p>
+        <p class="diag-intro">
+          SL3: one box, software segmentation. SL4: two boxes with a hardware data diode.
+          Same software architecture in both modes. Only the physical topology changes.
+          Credited: Rinaldi &amp; Workman, <em>The Everyman's Guide to EtherNet/IP Network Design</em> (RTA, 2022).
+        </p>
+        <TwoBoxDiagram />
+      </div>
+
     </div>
   </section>
 
@@ -204,6 +244,32 @@ import { Content } from '../../content-src/principle/README.md';
     border-top: 1px solid var(--rule-soft);
   }
 
+  .diagrams-section {
+    padding: 4.5rem 0 4rem;
+    border-bottom: 1px solid var(--rule-soft);
+    background: var(--bg);
+  }
+  .diagram-block {
+    margin-bottom: 4rem;
+  }
+  .diagram-block:last-child {
+    margin-bottom: 0;
+  }
+  .diag-eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-size: 0.72rem;
+    color: var(--ink-mute);
+    margin: 0 0 0.7rem;
+  }
+  .diag-intro {
+    font-size: 1.02rem;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    max-width: 72ch;
+    margin: 0 0 1.4rem;
+  }
+
   .readme-body {
     padding-top: 4rem;
   }
@@ -235,6 +301,8 @@ import { Content } from '../../content-src/principle/README.md';
     .thesis-card { padding: 1.6rem 0; border-right: 0; border-bottom: 1px solid var(--rule-soft); }
     .thesis-card:not(:first-child) { padding-left: 0; }
     .thesis-card:last-child { border-bottom: 0; }
+    .diagrams-section { padding: 2.8rem 0 2.4rem; }
+    .diagram-block { margin-bottom: 2.8rem; }
   }
   @media (max-width: 480px) {
     .hero-meta div { grid-template-columns: 1fr; gap: 0.1rem; padding: 0.7rem 0; }
