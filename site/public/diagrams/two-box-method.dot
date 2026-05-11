@@ -1,0 +1,94 @@
+// IIA — Two-Box Method: SL3 (software-only) vs SL4 (two-box with hardware diode)
+// Render: dot -Tpng two-box-method.dot -o two-box-method.png
+
+digraph TwoBoxMethod {
+  graph [
+    rankdir=LR,
+    splines=true,
+    nodesep=0.45,
+    ranksep=0.7,
+    fontname="Helvetica",
+    labelloc=t,
+    label=<<b>The Two-Box Method — SL3 vs SL4</b><br/><font point-size="11">same architecture, different physical topology</font>>,
+    fontsize=18,
+    bgcolor="white"
+  ];
+  node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=10, margin="0.15,0.08"];
+  edge [fontname="Helvetica", fontsize=9, color="#444"];
+
+  // ============= SL3 =============
+  subgraph cluster_sl3 {
+    label=<<b>SL3 — software-only mode</b><br/><font point-size="9">single box at the boundary</font>>;
+    style="rounded,filled";
+    fillcolor="#f3f8f3";
+    color="#5a8a5a";
+    fontsize=14;
+    margin=14;
+
+    plc_sl3 [
+      label=<<b>ACS</b><br/><font point-size="9">PLC · SCADA · sensors</font>>,
+      fillcolor="#f5d99c"
+    ];
+    box_sl3 [
+      label=<<b>IIA box</b><br/><font point-size="9">INBOUND · DMZ · OUTBOUND · MGMT<br/>passive ACS NIC<br/>kernel firewall + SPIFFE + mTLS<br/>no HTTP at boundary</font>>,
+      fillcolor="#fef3e0",
+      width=2.6
+    ];
+    it_sl3 [
+      label=<<b>IT consumer</b><br/><font point-size="9">next box · BI lake · MES</font>>,
+      fillcolor="#a8c8e8"
+    ];
+
+    plc_sl3 -> box_sl3 [label="passive\nRX-only", fontcolor="#a07020"];
+    box_sl3 -> it_sl3 [label="push / mTLS\n(operator-selected\nedge profile)", fontcolor="#3060a0"];
+    it_sl3 -> box_sl3 [label="pull / mTLS\nstructured query", fontcolor="#3060a0", style=dashed];
+  }
+
+  // ============= SL4 =============
+  subgraph cluster_sl4 {
+    label=<<b>SL4 — two-box with hardware data diode</b><br/><font point-size="9">physical one-way separation</font>>;
+    style="rounded,filled";
+    fillcolor="#f3f3f8";
+    color="#5a5a8a";
+    fontsize=14;
+    margin=14;
+
+    plc_sl4 [
+      label=<<b>ACS</b><br/><font point-size="9">PLC · SCADA · sensors</font>>,
+      fillcolor="#f5d99c"
+    ];
+    box_acs [
+      label=<<b>ACS-side box</b><br/><font point-size="9">passive collection<br/>capture · witness · lake<br/>audit chain</font>>,
+      fillcolor="#fef3e0",
+      width=2.0
+    ];
+    diode [
+      label=<<b>Hardware data diode</b><br/><font point-size="9">TX-only fiber out<br/>RX-only fiber in<br/>physically unidirectional</font>>,
+      fillcolor="#cfcfd6",
+      shape=hexagon,
+      width=2.0
+    ];
+    box_it [
+      label=<<b>IT-side box</b><br/><font point-size="9">diode receiver<br/>publish · query API · tunnel<br/>physical one-way<br/>separation downstream</font>>,
+      fillcolor="#e3edf9",
+      width=2.0
+    ];
+    it_sl4 [
+      label=<<b>IT consumer</b><br/><font point-size="9">next box · BI lake · MES</font>>,
+      fillcolor="#a8c8e8"
+    ];
+
+    plc_sl4 -> box_acs [label="passive\nRX-only", fontcolor="#a07020"];
+    box_acs -> diode [label="TX-only", fontcolor="#5a5a8a", style=bold];
+    diode -> box_it [label="RX-only", fontcolor="#5a5a8a", style=bold];
+    box_it -> it_sl4 [label="push", fontcolor="#3060a0"];
+  }
+
+  // Annotation
+  note [
+    label=<<i>The IIA software architecture is the same in both modes.<br/>Only the physical topology changes.<br/>Bidirectional channels exist at SL3; SL4 enforces unidirectional flow in hardware.</i>>,
+    shape=note,
+    fillcolor="#fffceb",
+    fontsize=10
+  ];
+}

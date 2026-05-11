@@ -1,0 +1,130 @@
+---
+import Base from '../../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+const titleMap: Record<string, string> = {
+  'introduction': 'Introduction',
+  'internal-architecture': 'Internal Architecture',
+  'glossary': 'Glossary',
+  'sample-contracts': 'Sample Data Contracts',
+  'mcp-single-box': 'MCP — Single Box Quickstart'
+};
+
+const descMap: Record<string, string> = {
+  'introduction': 'Concept-first introduction for readers new to industrial automation, ICS, or operational technology. Builds the vocabulary the rest of the documentation assumes.',
+  'internal-architecture': 'The canonical implementation specification. Invariants, partitioning, contracts, attestation, configuration, updates, SL3 / SL4 mappings to IEC 62443 foundational requirements. Names roles, not products.',
+  'glossary': 'Vocabulary used across IIA documentation. Domain terms, architectural terms, and the standards IIA aligns with.',
+  'sample-contracts': 'Six worked data contracts spanning internal flows, boundary contracts (batch and query), device-level contracts, wireless IO, and AI-agent consumption.',
+  'mcp-single-box': 'Operator quickstart for the smallest AI-agent consumption deployment: one box, one MCP server off-box, one AI client. Topology, identity, contract, and config-artifact pipeline.'
+};
+
+const orderMap: Record<string, number> = {
+  'introduction': 1,
+  'internal-architecture': 2,
+  'sample-contracts': 3,
+  'mcp-single-box': 4,
+  'glossary': 5
+};
+
+const entries = (await getCollection('docs'))
+  .map((d) => ({
+    id: d.id,
+    title: titleMap[d.id] ?? d.id,
+    description: descMap[d.id] ?? '',
+    order: orderMap[d.id] ?? 99
+  }))
+  .sort((a, b) => a.order - b.order);
+---
+
+<Base title="Documentation" description="Documentation for Industrial Independence Architecture." current="docs">
+  <div class="container docs-index">
+    <header class="page-header">
+      <p class="eyebrow mono">The Architecture &middot; Documentation</p>
+      <h1>The full set</h1>
+      <p class="lede">
+        Every IIA document. The principle in the <a href="/architecture/">README</a> is the canonical statement;
+        the documents below extend it without contradicting it.
+      </p>
+    </header>
+
+    <ol class="doc-grid">
+      {entries.map((d) => (
+        <li class="doc-card">
+          <a href={`/architecture/docs/${d.id}/`} class="card-link">
+            <span class="doc-num mono">{String(d.order).padStart(2, '0')}</span>
+            <h2>{d.title}</h2>
+            <p>{d.description}</p>
+            <span class="read mono">Read &rarr;</span>
+          </a>
+        </li>
+      ))}
+    </ol>
+  </div>
+</Base>
+
+<style>
+  .docs-index { padding-top: 3.5rem; }
+  .page-header { max-width: 60ch; margin-bottom: 3rem; }
+  .page-header h1 { margin: 0.3rem 0 1rem; }
+  .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 0.72rem;
+    color: var(--accent);
+  }
+  .lede { font-size: 1.06rem; color: var(--ink-soft); }
+
+  .doc-grid {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+    gap: 0;
+    border-top: 1px solid var(--rule);
+  }
+  .doc-card {
+    border-bottom: 1px solid var(--rule-soft);
+    border-right: 1px solid var(--rule-soft);
+  }
+  .doc-card:last-child { border-right: 0; }
+  .card-link {
+    display: block;
+    padding: 1.8rem 1.6rem 2rem;
+    text-decoration: none;
+    color: var(--ink);
+    height: 100%;
+    transition: background 120ms ease;
+  }
+  .card-link:hover {
+    background: var(--accent-soft);
+  }
+  .card-link:hover .read { color: var(--accent); }
+  .doc-num {
+    display: inline-block;
+    font-size: 0.74rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.6rem;
+  }
+  .card-link h2 {
+    font-size: 1.3rem;
+    margin: 0 0 0.6rem;
+  }
+  .card-link p {
+    color: var(--ink-soft);
+    font-size: 0.94rem;
+    line-height: 1.55;
+    margin: 0 0 1.2rem;
+  }
+  .read {
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-mute);
+  }
+
+  @media (max-width: 720px) {
+    .doc-card { border-right: 0; }
+  }
+</style>

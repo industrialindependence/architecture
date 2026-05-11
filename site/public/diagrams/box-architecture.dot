@@ -1,0 +1,167 @@
+// Industrial Independence Architecture — The Box
+// CIAD-style conceptual diagram of internal partitioning, zones, and external surfaces.
+// Render: dot -Tpng box-architecture.dot -o box-architecture.png
+
+digraph IIA {
+  graph [
+    rankdir=BT,
+    splines=true,
+    nodesep=0.45,
+    ranksep=0.75,
+    fontname="Helvetica",
+    labelloc=t,
+    label=<<b>Industrial Independence Architecture — The Box</b><br/><font point-size="11">CIAD-style conceptual diagram</font>>,
+    fontsize=18,
+    bgcolor="white"
+  ];
+  node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=10, margin="0.15,0.08"];
+  edge [fontname="Helvetica", fontsize=9, color="#444"];
+
+  // ============= ACS DOMAIN (bottom) =============
+  subgraph cluster_acs_external {
+    label=<<b>ACS DOMAIN</b>  ·  Managed Trust  ·  SRP>;
+    style="rounded,dashed";
+    color="#a07020";
+    bgcolor="#fdf3e0";
+    fontsize=12;
+
+    plc [
+      label=<<b>Wired control &amp; sensing</b><br/><font point-size="9">PLCs · SCADA · sensors · actuators · HMIs<br/>OPC UA · Modbus · EtherNet/IP · Profinet · fieldbus · IO-Link</font>>,
+      fillcolor="#f5d99c",
+      width=4.0
+    ];
+
+    lorawan [
+      label=<<b>Wireless IO sensing</b><br/><font point-size="9">LoRaWAN sensors · LPWAN<br/>via LoRaWAN gateway / network server<br/><i>IO-class data only — never control</i></font>>,
+      fillcolor="#f0e0a0",
+      width=4.0
+    ];
+  }
+
+  // ============= THE BOX =============
+  subgraph cluster_box {
+    label=<<b>THE BOX</b>>;
+    style="rounded,bold";
+    color="#222";
+    fontsize=16;
+    bgcolor="#fafafa";
+    margin=16;
+
+    // ----- INBOUND -----
+    subgraph cluster_inbound {
+      label=<<b>INBOUND</b>  (ACS-facing)>;
+      style="rounded,filled";
+      fillcolor="#fef3e0";
+      color="#d4a060";
+      fontsize=11;
+
+      collect    [label=<<b>ot.acs.collect</b><br/><font point-size="9">protocol-aware<br/>collectors</font>>];
+      witness    [label=<<b>ot.acs.witness</b><br/><font point-size="9">continuous capture<br/>IDS · scan engine<br/>enrichment</font>>];
+      io_master  [label=<<b>ot.acs.io_master</b><br/><font point-size="9">independent IO<br/>observation<br/>(attestation)</font>>, fillcolor="#fce0a3"];
+      lake       [label=<<b>ot.acs.lake</b><br/><font point-size="9">local data lake<br/>source of truth</font>>, fillcolor="#fbc874"];
+    }
+
+    // ----- DMZ -----
+    subgraph cluster_dmz {
+      label=<<b>INTERNAL DMZ</b>>;
+      style="rounded,filled";
+      fillcolor="#ececec";
+      color="#888";
+      fontsize=11;
+
+      bus    [label=<<b>ot.dmz.bus</b><br/><font point-size="9">in-flight bus<br/>(transient)</font>>];
+      audit  [label=<<b>ot.dmz.audit</b><br/><font point-size="9">audit chain<br/>head publisher</font>>];
+      attest [label=<<b>ot.dmz.attest</b><br/><font point-size="9">attestation<br/>aggregator</font>>, fillcolor="#dad0e6"];
+    }
+
+    // ----- OUTBOUND -----
+    subgraph cluster_outbound {
+      label=<<b>OUTBOUND</b>  (IT-facing)>;
+      style="rounded,filled";
+      fillcolor="#e3edf9";
+      color="#5080b0";
+      fontsize=11;
+
+      publish [label=<<b>ot.it.publish</b><br/><font point-size="9">edge publisher<br/>(operator-selected<br/>profile)</font>>];
+      api     [label=<<b>ot.it.api</b><br/><font point-size="9">structured query<br/>mTLS · non-HTTP</font>>];
+      tunnel  [label=<<b>ot.it.tunnel</b><br/><font point-size="9">outbound mTLS<br/>dial-out<br/>(no listener)</font>>];
+    }
+
+    // ----- MGMT -----
+    subgraph cluster_mgmt {
+      label=<<b>MANAGEMENT</b>  (mgmt NIC, local-net only)>;
+      style="rounded,filled";
+      fillcolor="#ede1f4";
+      color="#8060a0";
+      fontsize=11;
+
+      ui  [label=<<b>ot.mgmt.ui</b><br/><font point-size="9">text generator<br/>(no privileged access)</font>>];
+      cfg [label=<<b>ot.mgmt.cfg</b><br/><font point-size="9">config parser ·<br/>validator · staged state<br/>(GitOps-style)</font>>];
+    }
+  }
+
+  // ============= IT DOMAIN (top) =============
+  subgraph cluster_it_external {
+    label=<<b>IT DOMAIN</b>  ·  Zero Trust  ·  CIA  (records / information)>;
+    style="rounded,dashed";
+    color="#3060a0";
+    bgcolor="#e0ecf8";
+    fontsize=12;
+
+    upstream [
+      label=<<b>Next box at broader scope · BI lake · broker · MES · OEM · AI agent · regulator</b><br/><font point-size="9">Edge profiles: MQTT+Sparkplug B · OPC UA pub/sub · structured-query mTLS · Iceberg/Delta/DuckLake batch</font>>,
+      fillcolor="#a8c8e8",
+      width=6.5
+    ];
+  }
+
+  // ============= EXTERNAL ACTORS =============
+  operator [
+    label=<<b>Operator</b><br/><font point-size="9">browser · OIDC<br/>+ FIDO2 / WebAuthn / PIV</font>>,
+    shape=ellipse, fillcolor="#cdb8e0", fontsize=10
+  ];
+  console [
+    label=<<b>Last-resort console</b><br/><font point-size="9">serial · TPM-bound<br/>(never networked)</font>>,
+    shape=ellipse, fillcolor="#cccccc", fontsize=10
+  ];
+
+  // ============= EDGES =============
+
+  // ACS NIC — passive (wired)
+  plc -> collect    [label="ACS NIC\npassive · RX-only", fontcolor="#a07020"];
+  plc -> witness    [label="mirror port", fontcolor="#a07020"];
+  plc -> io_master  [label="independent\ntap / interface", fontcolor="#a07020", style=bold];
+
+  // LoRaWAN ingest (wireless IO, IO-class only)
+  lorawan -> collect [label="LoRaWAN gateway →\nMQTT / decoded payload\n(IO-class only)", fontcolor="#a07020"];
+  lorawan -> io_master [label="independent\nradio / capture\n(attestation)", fontcolor="#a07020", style=bold];
+
+  // Inbound -> Lake / DMZ
+  collect   -> lake;
+  collect   -> bus;
+  witness   -> lake;
+  witness   -> attest;
+  io_master -> attest;
+
+  // DMZ flows
+  lake   -> publish [label="siphon"];
+  lake   -> api     [label="query"];
+  bus    -> publish;
+  bus    -> api;
+  attest -> audit;
+  audit  -> publish [label="chain head"];
+
+  // IT NIC outbound
+  publish -> upstream [label="IT NIC\npush\n(no HTTP)", fontcolor="#3060a0"];
+  api     -> upstream [label="IT NIC\npull · mTLS\n(no HTTP)", fontcolor="#3060a0"];
+  tunnel  -> upstream [label="IT NIC\nmTLS dial-out\n(no listener)", fontcolor="#3060a0"];
+
+  // Management plane
+  operator -> ui      [label="Mgmt NIC\nHTTPS · local-net only", fontcolor="#8060a0"];
+  ui       -> cfg     [label="signed artifact"];
+  cfg      -> attest  [label="config attestation\n(running vs staged)"];
+
+  // Console (last-resort)
+  console -> witness [label="serial\nTPM-bound", style=dashed, fontcolor="#666"];
+
+}

@@ -1,0 +1,129 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div class="footer-brand">
+      <p class="brand-line mono">Industrial Independence Alliance</p>
+      <p class="tagline">
+        Operational sovereignty for industrial infrastructure.
+        Not a product. Not a framework. The architectural principle, claimed by name.
+      </p>
+    </div>
+
+    <div class="footer-block">
+      <p class="block-label mono">Sections</p>
+      <ul>
+        <li><a href="/philosophy/">The Philosophy</a></li>
+        <li><a href="/architecture/">The Architecture</a></li>
+        <li><a href="/architecture/docs/">Documentation</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-block">
+      <p class="block-label mono">Lineage</p>
+      <ul>
+        <li><a href="https://srpmodel.infracritical.com/srpmodel.php" rel="noopener">SRP Triad &mdash; Infracritical</a></li>
+        <li><a href="https://www.pera.net" rel="noopener">PERA+ &mdash; Entercon</a></li>
+        <li>IEC&nbsp;62443 &middot; ISA-95</li>
+      </ul>
+    </div>
+
+    <div class="footer-block">
+      <p class="block-label mono">Publisher</p>
+      <ul>
+        <li>The Industrial Independence Alliance</li>
+        <li><a href="https://github.com/industrialindependence/architecture" rel="noopener">github &rarr;</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="container footer-rule">
+    <p class="mono small dim">
+      &copy; {year} Industrial Independence Alliance &middot;
+      <a href="https://creativecommons.org/licenses/by-sa/4.0/" rel="noopener">CC&nbsp;BY-SA&nbsp;4.0</a> &middot;
+      "Industrial Independence Architecture" and "IIA" are trademarks
+    </p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    margin-top: 6rem;
+    border-top: 1px solid var(--rule);
+    background: var(--bg-elev);
+    padding: 3rem 0 1.4rem;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 2.4rem;
+    align-items: start;
+  }
+  .footer-brand { max-width: 32ch; }
+  .brand-line {
+    font-size: 0.84rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    margin: 0 0 0.7rem;
+  }
+  .tagline {
+    font-size: 0.92rem;
+    color: var(--ink-soft);
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  .block-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--ink-mute);
+    margin: 0 0 0.7rem;
+  }
+  .footer-block ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .footer-block li {
+    font-size: 0.86rem;
+    color: var(--ink-soft);
+    line-height: 1.6;
+    margin: 0;
+  }
+  .footer-block a {
+    color: var(--ink-soft);
+    text-decoration: none;
+  }
+  .footer-block a:hover {
+    color: var(--accent);
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
+  }
+
+  .footer-rule {
+    margin-top: 2.4rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid var(--rule-soft);
+  }
+  .small {
+    font-size: 0.74rem;
+    color: var(--ink-mute);
+    letter-spacing: 0.04em;
+    margin: 0;
+  }
+  .small.dim a { color: var(--ink-mute); }
+  .small.dim a:hover { color: var(--accent); }
+
+  @media (max-width: 820px) {
+    .footer-grid { grid-template-columns: 1fr 1fr; gap: 2rem; }
+    .footer-brand { grid-column: span 2; }
+  }
+  @media (max-width: 480px) {
+    .footer-grid { grid-template-columns: 1fr; }
+    .footer-brand { grid-column: auto; }
+  }
+</style>

@@ -1,0 +1,109 @@
+// IIA — The Fractal: same unit at every scope
+// Render: dot -Tpng fractal.dot -o fractal.png
+
+digraph Fractal {
+  graph [
+    rankdir=BT,
+    splines=true,
+    nodesep=0.4,
+    ranksep=0.9,
+    fontname="Helvetica",
+    labelloc=t,
+    label=<<b>The Fractal — same unit, different scope</b><br/><font point-size="11">boxes deploy at any adjacent-level PERA boundary</font>>,
+    fontsize=18,
+    bgcolor="white"
+  ];
+  node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=10, margin="0.15,0.08"];
+  edge [fontname="Helvetica", fontsize=9];
+
+  // ============= L0 / L1 — Field & Control =============
+  subgraph cluster_field {
+    label=<<b>PERA L0 / L1</b>  ·  Field &amp; Control>;
+    style="rounded,dashed";
+    color="#a07020";
+    bgcolor="#fdf3e0";
+
+    f1 [label=<<b>Field</b><br/><font point-size="9">sensors · drives · I/O</font>>, fillcolor="#f5d99c", shape=cylinder, height=0.5];
+    c1 [label=<<b>Control</b><br/><font point-size="9">PLC · DCS · vPLC</font>>, fillcolor="#f5d99c"];
+  }
+
+  // ============= L2 — Production Zone Boxes =============
+  subgraph cluster_zones {
+    label=<<b>PERA L2</b>  ·  Production Zone Boxes>;
+    style="rounded,filled";
+    fillcolor="#fef3e0";
+    color="#d4a060";
+
+    zoneA [label=<<b>box</b><br/><font point-size="9">zone A</font>>, fillcolor="#fbd394"];
+    zoneB [label=<<b>box</b><br/><font point-size="9">zone B</font>>, fillcolor="#fbd394"];
+    zoneC [label=<<b>box</b><br/><font point-size="9">zone C</font>>, fillcolor="#fbd394"];
+  }
+
+  // ============= L3 — Plant Box =============
+  subgraph cluster_plant {
+    label=<<b>PERA L3</b>  ·  Plant Box>;
+    style="rounded,filled";
+    fillcolor="#fef0d0";
+    color="#c08040";
+
+    plant [
+      label=<<b>box</b><br/><font point-size="9">plant<br/>aggregates zone boxes</font>>,
+      fillcolor="#fbc874", width=2.0
+    ];
+  }
+
+  // ============= L4 — Site Box =============
+  subgraph cluster_site {
+    label=<<b>PERA L4</b>  ·  Site Box  ·  L3↔L4 = canonical Plant Firewall>;
+    style="rounded,filled";
+    fillcolor="#ececec";
+    color="#888";
+
+    site [
+      label=<<b>box</b><br/><font point-size="9">site<br/>aggregates plant boxes</font>>,
+      fillcolor="#dad0e6", width=2.0
+    ];
+  }
+
+  // ============= L5 — Regional / Corporate / Cloud =============
+  subgraph cluster_corp {
+    label=<<b>PERA L5</b>  ·  Regional / Corporate / Cloud Box>;
+    style="rounded,dashed";
+    color="#3060a0";
+    bgcolor="#e0ecf8";
+
+    corp [
+      label=<<b>box</b><br/><font point-size="9">regional / corporate / cloud<br/>aggregates site boxes<br/>(viewport, optional)</font>>,
+      fillcolor="#a8c8e8", width=2.6
+    ];
+  }
+
+  // ============= EDGES =============
+
+  f1 -> c1 [label="analog · fieldbus", color="#a07020"];
+  c1 -> zoneA [label="OPC UA / Modbus / EtherNet/IP\n(passive RX-only at zone box)", color="#a07020"];
+  c1 -> zoneB [color="#a07020"];
+  c1 -> zoneC [color="#a07020"];
+
+  zoneA -> plant [label="data + contract\n(north)", color="#3060a0"];
+  zoneB -> plant [color="#3060a0"];
+  zoneC -> plant [color="#3060a0"];
+
+  plant -> site [label="data + contract", color="#3060a0"];
+  site  -> corp [label="data + contract", color="#3060a0"];
+
+  // Manifests + approvals (back direction)
+  corp  -> site  [label="manifests · approvals\n(intended state)", color="#8060a0", style=dashed, dir=back];
+  site  -> plant [color="#8060a0", style=dashed, dir=back];
+  plant -> zoneA [color="#8060a0", style=dashed, dir=back];
+  plant -> zoneB [color="#8060a0", style=dashed, dir=back];
+  plant -> zoneC [color="#8060a0", style=dashed, dir=back];
+
+  // Annotations
+  note [
+    label=<<i>Same unit at every level. Only scope changes.<br/>Each box is sovereign — works alone with no link.<br/>Centralization is just a box at broader scope, not a different architecture.</i>>,
+    shape=note,
+    fillcolor="#fffceb",
+    fontsize=10
+  ];
+}

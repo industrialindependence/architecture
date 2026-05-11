@@ -1,0 +1,222 @@
+---
+import Base from '../../../layouts/Base.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('docs');
+  return entries.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry }
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content, headings } = await render(entry);
+
+const titleMap: Record<string, string> = {
+  'introduction': 'Introduction',
+  'internal-architecture': 'Internal Architecture',
+  'glossary': 'Glossary',
+  'sample-contracts': 'Sample Data Contracts',
+  'mcp-single-box': 'MCP — Single Box Quickstart'
+};
+
+const descMap: Record<string, string> = {
+  'introduction': 'A concept-first introduction to industrial automation, ICS, operational technology, and the architectural problems they create.',
+  'internal-architecture': 'The canonical implementation specification: invariants, partitioning, contracts, attestation, configuration, updates, SL3 / SL4 mappings.',
+  'glossary': 'Vocabulary used across IIA documentation. Domain, architecture, and standards terms with normative definitions.',
+  'sample-contracts': 'Six worked data contracts spanning internal flows, boundary contracts, device-level contracts, wireless IO, and AI-agent consumption.',
+  'mcp-single-box': 'Operator quickstart for the smallest AI-agent consumption deployment — one box, one MCP server off-box, one AI client.'
+};
+
+const orderMap: Record<string, number> = {
+  'introduction': 1,
+  'internal-architecture': 2,
+  'sample-contracts': 3,
+  'mcp-single-box': 4,
+  'glossary': 5
+};
+
+const title = entry.data.title ?? titleMap[entry.id] ?? entry.id;
+const description = entry.data.description ?? descMap[entry.id];
+
+const allDocs = (await getCollection('docs'))
+  .map((d) => ({ id: d.id, title: titleMap[d.id] ?? d.id, order: orderMap[d.id] ?? 99 }))
+  .sort((a, b) => a.order - b.order);
+
+const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
+---
+
+<Base title={title} description={description} current="docs">
+  <div class="doc-shell container">
+    <aside class="doc-side">
+      <p class="side-label mono">Documentation</p>
+      <nav class="doc-list" aria-label="Documents">
+        {allDocs.map((d) => (
+          <a
+            href={`/architecture/docs/${d.id}/`}
+            class={`doc-link ${d.id === entry.id ? 'is-active' : ''}`}
+          >
+            <span class="doc-num mono">{String(d.order).padStart(2, '0')}</span>
+            <span class="doc-title">{d.title}</span>
+          </a>
+        ))}
+      </nav>
+
+      {tocHeadings.length > 0 && (
+        <>
+          <p class="side-label mono toc-label">On this page</p>
+          <nav class="toc" aria-label="Table of contents">
+            {tocHeadings.map((h) => (
+              <a
+                href={`#${h.slug}`}
+                class={`toc-link depth-${h.depth}`}
+              >
+                {h.text}
+              </a>
+            ))}
+          </nav>
+        </>
+      )}
+    </aside>
+
+    <article class="doc-body prose">
+      <header class="doc-header">
+        <p class="eyebrow mono">Documentation &middot; {String(orderMap[entry.id] ?? '').padStart(2, '0')}</p>
+        <h1>{title}</h1>
+        {description && <p class="doc-lede">{description}</p>}
+      </header>
+      <Content />
+    </article>
+  </div>
+</Base>
+
+<style>
+  .doc-shell {
+    display: grid;
+    grid-template-columns: 18rem minmax(0, 1fr);
+    gap: 3.5rem;
+    padding-top: 3rem;
+    align-items: start;
+  }
+  .doc-side {
+    position: sticky;
+    top: 5rem;
+    align-self: start;
+    border-right: 1px solid var(--rule-soft);
+    padding-right: 1.4rem;
+    max-height: calc(100vh - 6rem);
+    overflow-y: auto;
+  }
+  .side-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--ink-mute);
+    margin: 0 0 0.7rem;
+  }
+  .toc-label { margin-top: 2.4rem; }
+  .doc-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.05rem;
+    margin-bottom: 0.4rem;
+  }
+  .doc-link {
+    display: grid;
+    grid-template-columns: 2rem 1fr;
+    gap: 0.4rem;
+    align-items: baseline;
+    padding: 0.55rem 0.6rem;
+    text-decoration: none;
+    color: var(--ink-soft);
+    border-radius: 2px;
+    border-left: 2px solid transparent;
+    font-size: 0.92rem;
+  }
+  .doc-link:hover { color: var(--ink); background: var(--accent-soft); }
+  .doc-link.is-active {
+    color: var(--ink);
+    border-left-color: var(--accent);
+    background: var(--accent-soft);
+  }
+  .doc-num {
+    font-size: 0.7rem;
+    color: var(--ink-mute);
+    letter-spacing: 0.06em;
+  }
+  .doc-link.is-active .doc-num { color: var(--accent); }
+
+  .toc {
+    display: flex;
+    flex-direction: column;
+    gap: 0.05rem;
+  }
+  .toc-link {
+    display: block;
+    text-decoration: none;
+    color: var(--ink-mute);
+    font-size: 0.84rem;
+    padding: 0.32rem 0;
+    border-left: 2px solid transparent;
+    padding-left: 0.7rem;
+    transition: color 100ms ease, border-color 100ms ease;
+    line-height: 1.35;
+  }
+  .toc-link:hover { color: var(--ink); border-left-color: var(--accent); }
+  .toc-link.depth-3 { padding-left: 1.6rem; font-size: 0.78rem; }
+
+  .doc-body {
+    max-width: 70ch;
+    margin: 0;
+    padding-bottom: 4rem;
+  }
+  .doc-header {
+    margin-bottom: 2.6rem;
+    padding-bottom: 1.6rem;
+    border-bottom: 1px solid var(--rule-soft);
+  }
+  .doc-header h1 {
+    font-size: clamp(2rem, 3.6vw + 0.5rem, 3rem);
+    margin: 0.4rem 0 0.8rem;
+  }
+  .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 0.72rem;
+    color: var(--accent);
+    margin: 0;
+  }
+  .doc-lede {
+    font-size: 1.05rem;
+    color: var(--ink-soft);
+    max-width: 60ch;
+    margin: 0;
+    line-height: 1.55;
+  }
+
+  .doc-body :global(h1:first-of-type) { display: none; }
+  .doc-body :global(img) {
+    margin: 2rem auto;
+    border: 1px solid var(--rule-soft);
+    border-radius: 3px;
+    background: var(--bg-elev);
+    padding: 0.5rem;
+  }
+  .doc-body :global(h2) {
+    border-bottom: 1px solid var(--rule-soft);
+    padding-bottom: 0.5rem;
+  }
+
+  @media (max-width: 1020px) {
+    .doc-shell { grid-template-columns: 1fr; gap: 2rem; }
+    .doc-side {
+      position: static;
+      max-height: none;
+      border-right: 0;
+      border-bottom: 1px solid var(--rule-soft);
+      padding-right: 0;
+      padding-bottom: 1.2rem;
+    }
+  }
+</style>

@@ -1,0 +1,264 @@
+---
+// HistorianDiagram.astro
+// Centralized vs decentralized historian — side-by-side sovereignty visual.
+// Responsive SVG, CSS variables, accessible.
+---
+
+<figure class="historian-diagram" aria-label="Centralized versus decentralized historian comparison">
+  <svg
+    viewBox="0 0 840 400"
+    xmlns="http://www.w3.org/2000/svg"
+    role="img"
+    aria-labelledby="hist-title hist-desc"
+    class="historian-svg"
+    preserveAspectRatio="xMidYMid meet"
+  >
+    <title id="hist-title">Centralized vs decentralized historian</title>
+    <desc id="hist-desc">
+      Side-by-side comparison. Left panel: centralized historian — one server upstream,
+      every plant zone a thin client, WAN-dependent, single point of failure, vendor lock-in.
+      Right panel: decentralized historian — one historian per zone on each IIA box,
+      sovereign and complete, awareness without dependency.
+    </desc>
+
+    <defs>
+      <marker id="h-arrow" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto">
+        <path d="M0,0 L0,7 L7,3.5 z" fill="var(--ink-soft)" />
+      </marker>
+      <marker id="h-arrow-accent" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto">
+        <path d="M0,0 L0,7 L7,3.5 z" fill="var(--accent)" />
+      </marker>
+      <marker id="h-arrow-warn" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto">
+        <path d="M0,0 L0,7 L7,3.5 z" fill="var(--ink-mute)" />
+      </marker>
+    </defs>
+
+    <!-- ===== DIVIDER ===== -->
+    <line x1="420" y1="24" x2="420" y2="388" stroke="var(--rule-soft)" stroke-width="1" stroke-dasharray="5,4" />
+
+    <!-- ============================================================ -->
+    <!-- LEFT PANEL: Centralized                                       -->
+    <!-- ============================================================ -->
+    <g transform="translate(0,0)">
+
+      <!-- Panel label -->
+      <text x="210" y="22" class="panel-eyebrow" text-anchor="middle">Centralized historian</text>
+
+      <!-- Central server (upstream, top) -->
+      <rect x="100" y="40" width="220" height="54" rx="2"
+        fill="var(--bg-elev)" stroke="var(--rule-soft)" stroke-width="1.5" />
+      <text x="210" y="64" class="node-label" text-anchor="middle">Vendor-hosted historian</text>
+      <text x="210" y="80" class="node-sub" text-anchor="middle">off-site · WAN-dependent</text>
+
+      <!-- WAN annotation -->
+      <rect x="168" y="112" width="84" height="22" rx="2"
+        fill="var(--bg)" stroke="var(--rule-soft)" stroke-width="1" stroke-dasharray="3,2" />
+      <text x="210" y="128" class="warn-label" text-anchor="middle">WAN</text>
+
+      <!-- Downward lines from server to WAN, WAN to plants -->
+      <line x1="210" y1="94" x2="210" y2="112" stroke="var(--ink-soft)" stroke-width="1.2" stroke-dasharray="3,2" marker-end="url(#h-arrow)" />
+      <line x1="210" y1="134" x2="140" y2="192" stroke="var(--ink-soft)" stroke-width="1.2" stroke-dasharray="3,2" marker-end="url(#h-arrow)" />
+      <line x1="210" y1="134" x2="210" y2="192" stroke="var(--ink-soft)" stroke-width="1.2" stroke-dasharray="3,2" marker-end="url(#h-arrow)" />
+      <line x1="210" y1="134" x2="280" y2="192" stroke="var(--ink-soft)" stroke-width="1.2" stroke-dasharray="3,2" marker-end="url(#h-arrow)" />
+
+      <!-- Three thin-client plant zones -->
+      <rect x="90" y="192" width="96" height="46" rx="2"
+        fill="var(--bg-elev)" stroke="var(--rule-soft)" stroke-width="1" />
+      <text x="138" y="211" class="node-label-sm" text-anchor="middle">Zone A</text>
+      <text x="138" y="226" class="node-sub" text-anchor="middle">thin client</text>
+
+      <rect x="162" y="192" width="96" height="46" rx="2"
+        fill="var(--bg-elev)" stroke="var(--rule-soft)" stroke-width="1" />
+      <text x="210" y="211" class="node-label-sm" text-anchor="middle">Zone B</text>
+      <text x="210" y="226" class="node-sub" text-anchor="middle">thin client</text>
+
+      <rect x="234" y="192" width="96" height="46" rx="2"
+        fill="var(--bg-elev)" stroke="var(--rule-soft)" stroke-width="1" />
+      <text x="282" y="211" class="node-label-sm" text-anchor="middle">Zone C</text>
+      <text x="282" y="226" class="node-sub" text-anchor="middle">thin client</text>
+
+      <!-- Failure-mode callouts -->
+      <text x="210" y="270" class="failure-label" text-anchor="middle">WAN down &rarr; no historian</text>
+      <text x="210" y="288" class="failure-label" text-anchor="middle">Vendor removed &rarr; data held hostage</text>
+      <text x="210" y="306" class="failure-label" text-anchor="middle">Single point of failure by design</text>
+      <text x="210" y="324" class="failure-label" text-anchor="middle">Vendor wedge between operator and own data</text>
+
+      <!-- X badge -->
+      <circle cx="210" cy="356" r="18" fill="none" stroke="var(--ink-soft)" stroke-width="1.5" />
+      <text x="210" y="362" class="badge-x" text-anchor="middle">&#xD7;</text>
+
+    </g>
+
+    <!-- ============================================================ -->
+    <!-- RIGHT PANEL: Decentralized                                    -->
+    <!-- ============================================================ -->
+    <g transform="translate(420,0)">
+
+      <!-- Panel label -->
+      <text x="210" y="22" class="panel-eyebrow-good" text-anchor="middle">Decentralized historian</text>
+
+      <!-- Three sovereign boxes with embedded historians -->
+      <rect x="54" y="40" width="112" height="86" rx="2"
+        fill="var(--bg-elev)" stroke="var(--accent)" stroke-width="1.5" />
+      <text x="110" y="62" class="box-label" text-anchor="middle">box</text>
+      <text x="110" y="78" class="node-sub" text-anchor="middle">zone A</text>
+      <rect x="70" y="84" width="80" height="26" rx="2"
+        fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="0.8" />
+      <text x="110" y="101" class="hist-label" text-anchor="middle">historian</text>
+
+      <rect x="194" y="40" width="112" height="86" rx="2"
+        fill="var(--bg-elev)" stroke="var(--accent)" stroke-width="1.5" />
+      <text x="250" y="62" class="box-label" text-anchor="middle">box</text>
+      <text x="250" y="78" class="node-sub" text-anchor="middle">zone B</text>
+      <rect x="210" y="84" width="80" height="26" rx="2"
+        fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="0.8" />
+      <text x="250" y="101" class="hist-label" text-anchor="middle">historian</text>
+
+      <rect x="334" y="40" width="112" height="86" rx="2"
+        fill="var(--bg-elev)" stroke="var(--accent)" stroke-width="1.5" />
+      <text x="390" y="62" class="box-label" text-anchor="middle">box</text>
+      <text x="390" y="78" class="node-sub" text-anchor="middle">zone C</text>
+      <rect x="350" y="84" width="80" height="26" rx="2"
+        fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="0.8" />
+      <text x="390" y="101" class="hist-label" text-anchor="middle">historian</text>
+
+      <!-- Optional aggregation arrow (awareness, not dependency) -->
+      <line x1="166" y1="84" x2="194" y2="84" stroke="var(--rule-soft)" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#h-arrow-warn)" />
+      <line x1="306" y1="84" x2="334" y2="84" stroke="var(--rule-soft)" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#h-arrow-warn)" />
+
+      <!-- Awareness note -->
+      <text x="250" y="158" class="aware-label" text-anchor="middle">optional awareness &middot; no dependency</text>
+
+      <!-- Properties -->
+      <text x="250" y="192" class="prop-label" text-anchor="middle">Operator owns substrate</text>
+      <text x="250" y="210" class="prop-label" text-anchor="middle">WAN down &rarr; historian still runs</text>
+      <text x="250" y="228" class="prop-label" text-anchor="middle">Vendor removed &rarr; data stays</text>
+      <text x="250" y="246" class="prop-label" text-anchor="middle">Sovereignty at every zone, by default</text>
+
+      <!-- Check badge -->
+      <circle cx="250" cy="356" r="18" fill="none" stroke="var(--accent)" stroke-width="1.5" />
+      <text x="250" y="362" class="badge-check" text-anchor="middle">&#x2713;</text>
+
+    </g>
+
+    <!-- ===== BOTTOM AXIS ===== -->
+    <text x="420" y="398" class="axiom" text-anchor="middle">
+      The historian is the load-bearing case for operational sovereignty.
+    </text>
+
+  </svg>
+  <figcaption class="diagram-caption mono">
+    Centralized vs decentralized historian &mdash; sovereignty by architecture, not by policy
+  </figcaption>
+</figure>
+
+<style>
+  .historian-diagram {
+    margin: 2.4rem 0;
+  }
+  .historian-svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    background: var(--bg-elev);
+    border: 1px solid var(--rule-soft);
+    border-radius: 4px;
+  }
+
+  .historian-svg .panel-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+    fill: var(--ink-mute);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+  .historian-svg .panel-eyebrow-good {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+    fill: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+  .historian-svg .node-label {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 500;
+    fill: var(--ink);
+  }
+  .historian-svg .node-label-sm {
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 500;
+    fill: var(--ink);
+  }
+  .historian-svg .node-sub {
+    font-family: var(--font-mono);
+    font-size: 8.5px;
+    fill: var(--ink-mute);
+  }
+  .historian-svg .box-label {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    fill: var(--ink);
+    letter-spacing: 0.04em;
+  }
+  .historian-svg .hist-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: 600;
+    fill: var(--accent);
+    letter-spacing: 0.04em;
+  }
+  .historian-svg .warn-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: 600;
+    fill: var(--ink-mute);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .historian-svg .failure-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    fill: var(--ink-mute);
+  }
+  .historian-svg .prop-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    fill: var(--ink-soft);
+  }
+  .historian-svg .aware-label {
+    font-family: var(--font-mono);
+    font-size: 8.5px;
+    fill: var(--ink-mute);
+    font-style: italic;
+  }
+  .historian-svg .badge-x {
+    font-family: var(--font-sans);
+    font-size: 20px;
+    fill: var(--ink-mute);
+  }
+  .historian-svg .badge-check {
+    font-family: var(--font-sans);
+    font-size: 20px;
+    fill: var(--accent);
+  }
+  .historian-svg .axiom {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    fill: var(--ink-mute);
+    font-style: italic;
+  }
+
+  .diagram-caption {
+    font-family: var(--font-mono);
+    font-size: 0.78em;
+    color: var(--ink-mute);
+    margin-top: 0.6rem;
+    text-align: center;
+    letter-spacing: 0.02em;
+  }
+</style>

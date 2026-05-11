@@ -1,0 +1,259 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base
+  title="Industrial Independence Alliance"
+  description="Operational sovereignty for industrial infrastructure. The Industrial Independence Alliance publishes The Philosophy and The Architecture (IIA)."
+  current="home"
+>
+  <section class="landing-hero">
+    <div class="container landing-hero-inner">
+      <p class="eyebrow mono">Industrial Independence Alliance</p>
+      <h1 class="display">
+        Operational sovereignty<br />for industrial infrastructure<span class="dot">.</span>
+      </h1>
+      <p class="lede">
+        Control systems act on physics, not on information.
+        The Alliance publishes the principles that follow from that distinction
+        and the architecture that operationalizes them.
+      </p>
+      <p class="onramp mono">
+        New to industrial automation, ICS, or operational technology?
+        <a href="/architecture/docs/introduction/">Start here &rarr;</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="doors">
+    <div class="container doors-grid">
+      <a href="/philosophy/" class="door">
+        <div class="door-row">
+          <p class="door-label mono">The Philosophy</p>
+          <span class="door-arrow mono" aria-hidden="true">&rarr;</span>
+        </div>
+        <h2 class="door-title">Why we build it this way<span class="dot">.</span></h2>
+        <p class="door-blurb">
+          The substrate distinction. The SRP Triad — Safety, Reliability, Performance —
+          governs the ACS substrate. Information is governed by CIA.
+          Six principles follow.
+        </p>
+        <ul class="door-meta mono">
+          <li>SRP Triad &middot; <span class="dim">after Robert Radvanovsky / Infracritical</span></li>
+          <li>PERA+ alignment &middot; <span class="dim">Gary Rathwell / Entercon</span></li>
+          <li>Six principles, plus the substrate principle</li>
+        </ul>
+        <span class="door-cta mono">Read The Philosophy &rarr;</span>
+      </a>
+
+      <a href="/architecture/" class="door">
+        <div class="door-row">
+          <p class="door-label mono">The Architecture</p>
+          <span class="door-arrow mono" aria-hidden="true">&rarr;</span>
+        </div>
+        <h2 class="door-title">How it deploys<span class="dot">.</span></h2>
+        <p class="door-blurb">
+          Industrial Independence Architecture (IIA).
+          One self-contained unit at every zone of an industrial network.
+          Identical at every level. Scope is the only thing that changes.
+        </p>
+        <ul class="door-meta mono">
+          <li>The box &middot; the fractal &middot; data contracts</li>
+          <li>SL3 floor &middot; SL4 via hardware diode</li>
+          <li>IEC&nbsp;62443 &middot; ISA-95 &middot; CESMII&nbsp;i3X</li>
+        </ul>
+        <span class="door-cta mono">Read The Architecture &rarr;</span>
+      </a>
+    </div>
+  </section>
+
+  <section class="bridge">
+    <div class="container bridge-inner">
+      <p class="bridge-eyebrow mono">Sovereignty bridges the two</p>
+      <p class="bridge-line">
+        Industrial independence is not a technology position.
+        It is an <strong>operational sovereignty</strong> position.
+        The entity that controls the automation infrastructure controls the operation.
+      </p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .landing-hero {
+    padding: 5.5rem 0 3.5rem;
+    background:
+      radial-gradient(ellipse 80% 60% at 25% 10%, var(--accent-soft), transparent 60%),
+      var(--bg);
+    border-bottom: 1px solid var(--rule-soft);
+  }
+  .landing-hero-inner { max-width: 60rem; }
+  .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 0.74rem;
+    color: var(--accent);
+    margin: 0 0 1.4rem;
+    font-weight: 500;
+  }
+  .display {
+    font-size: clamp(2.2rem, 5vw + 0.4rem, 4.1rem);
+    line-height: 0.96;
+    letter-spacing: -0.034em;
+    font-weight: 700;
+    margin: 0 0 1.6rem;
+    font-family: var(--font-display);
+    text-wrap: balance;
+  }
+  .display .dot { color: var(--accent); }
+  .lede {
+    font-size: 1.18rem;
+    line-height: 1.55;
+    max-width: 60ch;
+    color: var(--ink);
+    margin: 0 0 1.6rem;
+  }
+
+  .onramp {
+    font-size: 0.84rem;
+    color: var(--ink-mute);
+    letter-spacing: 0.02em;
+    margin: 0;
+    padding: 0.6rem 0.9rem;
+    border: 1px solid var(--rule-soft);
+    border-radius: 3px;
+    display: inline-block;
+    background: var(--bg-elev);
+  }
+  .onramp a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-left: 0.3rem;
+  }
+  .onramp a:hover { text-decoration: underline; }
+
+  .doors {
+    padding: 0;
+    border-bottom: 1px solid var(--rule-soft);
+  }
+  .doors-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    padding: 0 !important;
+    max-width: var(--max-wide);
+  }
+  .door {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    padding: 4rem clamp(1.4rem, 4vw, 3rem);
+    text-decoration: none;
+    color: var(--ink);
+    background: var(--bg);
+    border-right: 1px solid var(--rule-soft);
+    transition: background 180ms ease, color 180ms ease;
+    min-height: 32rem;
+  }
+  .door:last-child { border-right: 0; }
+  .door:hover {
+    background: var(--accent-soft);
+  }
+  .door:hover .door-arrow {
+    transform: translateX(0.4rem);
+    color: var(--accent);
+  }
+  .door:hover .door-cta { color: var(--accent); }
+  .door-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .door-label {
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 0.78rem;
+    color: var(--accent);
+    margin: 0;
+  }
+  .door-arrow {
+    font-size: 1.4rem;
+    color: var(--ink-mute);
+    transition: transform 200ms ease, color 200ms ease;
+  }
+  .door-title {
+    font-size: clamp(1.8rem, 2.6vw + 0.5rem, 2.4rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin: 0.4rem 0 0;
+    font-weight: 600;
+    max-width: 22ch;
+  }
+  .door-title .dot { color: var(--accent); }
+  .door-blurb {
+    font-size: 1.02rem;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    max-width: 42ch;
+    margin: 0;
+  }
+  .door-meta {
+    list-style: none;
+    padding: 0;
+    margin: 0.8rem 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    font-size: 0.78rem;
+    color: var(--ink-mute);
+  }
+  .door-meta li { padding: 0.4rem 0; border-top: 1px solid var(--rule-soft); }
+  .door-meta li:last-child {
+    border-bottom: 1px solid var(--rule-soft);
+  }
+  .door-meta .dim { color: var(--ink-mute); opacity: 0.8; }
+  .door-cta {
+    font-size: 0.86rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--ink);
+    margin-top: 0.4rem;
+    transition: color 180ms ease;
+  }
+
+  .bridge {
+    padding: 4rem 0 5rem;
+    background: var(--bg-elev);
+    border-bottom: 1px solid var(--rule-soft);
+  }
+  .bridge-inner { max-width: 70ch; }
+  .bridge-eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 0.72rem;
+    color: var(--accent);
+    margin: 0 0 1rem;
+  }
+  .bridge-line {
+    font-size: 1.32rem;
+    line-height: 1.5;
+    color: var(--ink);
+    margin: 0;
+  }
+
+  @media (max-width: 820px) {
+    .doors-grid { grid-template-columns: 1fr; }
+    .door {
+      border-right: 0;
+      border-bottom: 1px solid var(--rule-soft);
+      min-height: auto;
+      padding: 2.6rem clamp(1.2rem, 4vw, 2.4rem);
+    }
+    .door:last-child { border-bottom: 0; }
+    .landing-hero { padding: 3.5rem 0 2rem; }
+    .bridge { padding: 2.6rem 0 3rem; }
+    .bridge-line { font-size: 1.12rem; }
+  }
+</style>

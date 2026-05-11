@@ -1,0 +1,282 @@
+---
+// TwoBoxDiagram.astro
+// The Two-Box Method — SL3 (one box) vs SL4 (two boxes + hardware diode).
+// Responsive SVG, CSS variables, accessible.
+---
+
+<figure class="twobox-diagram" aria-label="Two-Box Method: SL3 versus SL4 diagram">
+  <svg
+    viewBox="0 0 860 330"
+    xmlns="http://www.w3.org/2000/svg"
+    role="img"
+    aria-labelledby="tb-title tb-desc"
+    class="twobox-svg"
+    preserveAspectRatio="xMidYMid meet"
+  >
+    <title id="tb-title">The Two-Box Method — SL3 vs SL4</title>
+    <desc id="tb-desc">
+      Side-by-side comparison of SL3 and SL4 deployment modes.
+      SL3 (left): a single IIA box at the boundary, software-only segmentation,
+      passive ACS NIC, bidirectional channels firewalled and authenticated.
+      SL4 (right): two IIA boxes with a hardware data diode between them —
+      fiber TX-only in one direction, fiber RX-only in the other,
+      physically enforced unidirectional flow.
+      The software architecture is identical in both modes; only the physical topology changes.
+    </desc>
+
+    <defs>
+      <marker id="t-arrow" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto">
+        <path d="M0,0 L0,7 L7,3.5 z" fill="var(--ink-soft)" />
+      </marker>
+      <marker id="t-arrow-accent" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto">
+        <path d="M0,0 L0,7 L7,3.5 z" fill="var(--accent)" />
+      </marker>
+      <marker id="t-arrow-rev" markerWidth="7" markerHeight="7" refX="2" refY="3.5" orient="auto">
+        <path d="M7,0 L7,7 L0,3.5 z" fill="var(--ink-mute)" />
+      </marker>
+    </defs>
+
+    <!-- ===== DIVIDER ===== -->
+    <line x1="430" y1="16" x2="430" y2="318" stroke="var(--rule-soft)" stroke-width="1" stroke-dasharray="5,4" />
+
+    <!-- ========================================== -->
+    <!-- LEFT: SL3                                  -->
+    <!-- ========================================== -->
+    <g transform="translate(0,0)">
+
+      <text x="215" y="20" class="panel-sl3" text-anchor="middle">SL3 &mdash; software-only segmentation</text>
+
+      <!-- ACS -->
+      <rect x="30" y="36" width="116" height="60" rx="2"
+        fill="var(--bg-elev)" stroke="var(--rule-soft)" stroke-width="1.5" />
+      <text x="88" y="58" class="node-label" text-anchor="middle">ACS</text>
+      <text x="88" y="72" class="node-sub" text-anchor="middle">PLC · SCADA · sensors</text>
+      <text x="88" y="86" class="node-sub" text-anchor="middle">Managed Trust · SRP</text>
+
+      <!-- IIA box -->
+      <rect x="168" y="36" width="160" height="120" rx="3"
+        fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5" />
+      <text x="248" y="56" class="box-label" text-anchor="middle">IIA box</text>
+      <text x="248" y="70" class="node-sub" text-anchor="middle">inbound · DMZ · outbound · mgmt</text>
+
+      <!-- Internal zones indicator -->
+      <rect x="178" y="78" width="60" height="22" rx="1"
+        fill="var(--bg-elev)" stroke="var(--rule-soft)" stroke-width="0.8" />
+      <text x="208" y="93" class="zone-mini" text-anchor="middle">inbound</text>
+
+      <rect x="248" y="78" width="60" height="22" rx="1"
+        fill="var(--bg-elev)" stroke="var(--rule-soft)" stroke-width="0.8" />
+      <text x="278" y="93" class="zone-mini" text-anchor="middle">DMZ</text>
+
+      <rect x="178" y="108" width="130" height="22" rx="1"
+        fill="var(--bg-elev)" stroke="var(--rule-soft)" stroke-width="0.8" />
+      <text x="243" y="123" class="zone-mini" text-anchor="middle">outbound · mTLS · no HTTP</text>
+
+      <!-- IT consumer -->
+      <rect x="350" y="36" width="68" height="60" rx="2"
+        fill="var(--bg-elev)" stroke="var(--rule-soft)" stroke-width="1" />
+      <text x="384" y="58" class="node-label" text-anchor="middle">IT</text>
+      <text x="384" y="72" class="node-sub" text-anchor="middle">next box</text>
+      <text x="384" y="86" class="node-sub" text-anchor="middle">Zero Trust · CIA</text>
+
+      <!-- ACS -> box -->
+      <line x1="146" y1="66" x2="168" y2="80" stroke="var(--ink-soft)" stroke-width="1.5" marker-end="url(#t-arrow)" />
+      <text x="100" y="61" class="flow-label">passive · RX-only</text>
+
+      <!-- box -> IT (push) -->
+      <line x1="328" y1="70" x2="350" y2="70" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#t-arrow-accent)" />
+      <text x="334" y="64" class="flow-label-sm">push</text>
+
+      <!-- IT -> box (pull, dashed) -->
+      <line x1="350" y1="80" x2="328" y2="80" stroke="var(--ink-mute)" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#t-arrow-rev)" />
+      <text x="330" y="94" class="flow-label-sm">pull query</text>
+
+      <!-- SL3 properties -->
+      <text x="215" y="182" class="prop-label" text-anchor="middle">segmentation + authentication + audit</text>
+      <text x="215" y="198" class="prop-label" text-anchor="middle">bidirectional channels &nbsp;·&nbsp; firewalled + authenticated</text>
+      <text x="215" y="214" class="prop-label" text-anchor="middle">passive ACS NIC &nbsp;·&nbsp; no HTTP at boundary</text>
+      <text x="215" y="230" class="prop-label" text-anchor="middle">IEC 62443 SL3 floor</text>
+
+    </g>
+
+    <!-- ========================================== -->
+    <!-- RIGHT: SL4                                 -->
+    <!-- ========================================== -->
+    <g transform="translate(440,0)">
+
+      <text x="200" y="20" class="panel-sl4" text-anchor="middle">SL4 &mdash; two boxes &plus; hardware diode</text>
+
+      <!-- ACS -->
+      <rect x="10" y="36" width="96" height="60" rx="2"
+        fill="var(--bg-elev)" stroke="var(--rule-soft)" stroke-width="1.5" />
+      <text x="58" y="58" class="node-label" text-anchor="middle">ACS</text>
+      <text x="58" y="72" class="node-sub" text-anchor="middle">PLC · SCADA</text>
+      <text x="58" y="86" class="node-sub" text-anchor="middle">Managed Trust</text>
+
+      <!-- ACS-side box -->
+      <rect x="118" y="28" width="116" height="76" rx="3"
+        fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5" />
+      <text x="176" y="50" class="box-label" text-anchor="middle">ACS-side box</text>
+      <text x="176" y="64" class="node-sub" text-anchor="middle">passive collection</text>
+      <text x="176" y="76" class="node-sub" text-anchor="middle">capture · witness · lake</text>
+      <text x="176" y="88" class="node-sub" text-anchor="middle">audit chain</text>
+
+      <!-- Diode (hexagon-ish) -->
+      <polygon points="254,48 274,36 294,48 294,76 274,88 254,76"
+        fill="var(--bg-elev)" stroke="var(--ink)" stroke-width="2" />
+      <text x="274" y="59" class="diode-label" text-anchor="middle">diode</text>
+      <text x="274" y="71" class="diode-sub" text-anchor="middle">HW</text>
+
+      <!-- IT-side box -->
+      <rect x="306" y="28" width="116" height="76" rx="3"
+        fill="var(--bg-elev)" stroke="var(--rule-soft)" stroke-width="1.5" />
+      <text x="364" y="50" class="box-label" text-anchor="middle">IT-side box</text>
+      <text x="364" y="64" class="node-sub" text-anchor="middle">diode receiver</text>
+      <text x="364" y="76" class="node-sub" text-anchor="middle">publish · query API</text>
+      <text x="364" y="88" class="node-sub" text-anchor="middle">tunnel</text>
+
+      <!-- IT consumer -->
+      <rect x="340" y="120" width="80" height="46" rx="2"
+        fill="var(--bg-elev)" stroke="var(--rule-soft)" stroke-width="1" />
+      <text x="380" y="140" class="node-label" text-anchor="middle">IT</text>
+      <text x="380" y="154" class="node-sub" text-anchor="middle">Zero Trust · CIA</text>
+
+      <!-- ACS -> ACS-side box -->
+      <line x1="106" y1="66" x2="118" y2="66" stroke="var(--ink-soft)" stroke-width="1.5" marker-end="url(#t-arrow)" />
+      <text x="70" y="60" class="flow-label-sm">passive</text>
+
+      <!-- ACS-side -> diode (TX-only fiber) -->
+      <line x1="234" y1="62" x2="254" y2="62" stroke="var(--accent)" stroke-width="2" marker-end="url(#t-arrow-accent)" />
+      <text x="236" y="56" class="flow-label-sm">TX only</text>
+
+      <!-- diode -> IT-side (RX-only fiber) -->
+      <line x1="294" y1="62" x2="306" y2="62" stroke="var(--accent)" stroke-width="2" marker-end="url(#t-arrow-accent)" />
+      <text x="296" y="56" class="flow-label-sm">RX only</text>
+
+      <!-- No return path annotation -->
+      <text x="274" y="105" class="no-return" text-anchor="middle">no return path</text>
+
+      <!-- IT-side -> IT -->
+      <line x1="380" y1="104" x2="380" y2="120" stroke="var(--ink-soft)" stroke-width="1.5" marker-end="url(#t-arrow)" />
+
+      <!-- SL4 properties -->
+      <text x="200" y="190" class="prop-label" text-anchor="middle">physically enforced unidirectional flow</text>
+      <text x="200" y="206" class="prop-label" text-anchor="middle">fiber TX-only out &middot; RX-only path impossible in hardware</text>
+      <text x="200" y="222" class="prop-label" text-anchor="middle">same software architecture in both boxes</text>
+      <text x="200" y="238" class="prop-label" text-anchor="middle">IEC 62443 SL4 via diode</text>
+
+    </g>
+
+    <!-- ===== AXIOM ===== -->
+    <text x="430" y="310" class="axiom" text-anchor="middle">
+      Same software architecture in both modes. Only the physical topology changes.
+    </text>
+
+  </svg>
+  <figcaption class="diagram-caption mono">
+    The Two-Box Method &mdash; SL3 (software segmentation) vs SL4 (hardware diode) &middot; credited: Rinaldi &amp; Workman, RTA 2022
+  </figcaption>
+</figure>
+
+<style>
+  .twobox-diagram {
+    margin: 2.4rem 0;
+  }
+  .twobox-svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    background: var(--bg-elev);
+    border: 1px solid var(--rule-soft);
+    border-radius: 4px;
+  }
+
+  .twobox-svg .panel-sl3 {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+    fill: var(--ink-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .twobox-svg .panel-sl4 {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+    fill: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .twobox-svg .node-label {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 600;
+    fill: var(--ink);
+  }
+  .twobox-svg .node-sub {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    fill: var(--ink-mute);
+  }
+  .twobox-svg .box-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    fill: var(--ink);
+    letter-spacing: 0.02em;
+  }
+  .twobox-svg .zone-mini {
+    font-family: var(--font-mono);
+    font-size: 7.5px;
+    fill: var(--ink-mute);
+  }
+  .twobox-svg .diode-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: 700;
+    fill: var(--ink);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .twobox-svg .diode-sub {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    fill: var(--ink-mute);
+  }
+  .twobox-svg .flow-label {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    fill: var(--ink-mute);
+  }
+  .twobox-svg .flow-label-sm {
+    font-family: var(--font-mono);
+    font-size: 7.5px;
+    fill: var(--ink-mute);
+  }
+  .twobox-svg .no-return {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    fill: var(--accent);
+    font-style: italic;
+  }
+  .twobox-svg .prop-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    fill: var(--ink-soft);
+  }
+  .twobox-svg .axiom {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    fill: var(--ink-mute);
+    font-style: italic;
+  }
+
+  .diagram-caption {
+    font-family: var(--font-mono);
+    font-size: 0.78em;
+    color: var(--ink-mute);
+    margin-top: 0.6rem;
+    text-align: center;
+    letter-spacing: 0.02em;
+  }
+</style>

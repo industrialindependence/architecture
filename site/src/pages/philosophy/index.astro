@@ -1,0 +1,524 @@
+---
+import Base from '../../layouts/Base.astro';
+
+const principles = [
+  {
+    n: '00',
+    title: 'Physics overrides information',
+    body: 'Control systems act on physics. Information is the record that follows. Treating ACS as information is the wrong starting point — every architectural decision downstream inherits the mistake.'
+  },
+  {
+    n: '01',
+    title: 'Safety. Reliability. Performance. In that order.',
+    body: 'SRP governs the ACS substrate. Safety is not an addendum; it is what the physical system protects. Reliability and Performance are properties of that system. Information-centric models — CIA, AIC, SAIC — are the wrong tools for what acts on physics. After Robert Radvanovsky, Infracritical.',
+    cite: { label: 'srpmodel.infracritical.com', href: 'https://srpmodel.infracritical.com/srpmodel.php' }
+  },
+  {
+    n: '02',
+    title: 'Operational reality dictates design',
+    body: 'Industrial environments are not data centers. There is no singular OT network — a manufacturing site has many control networks (stamping, body, paint, general assembly; the equivalents in food, water, oil and gas), each with its own management entity. There is no executive director of OT. PERA+\'s 4Rs — Response, Resolution, Reliability, Resilience — determine where applications belong. Network designs, hardware, software, historians, and zone IP services (DHCP, DNS, NTP, file) must be decentralized to match the substrate they serve. After Gary Workman, Two-Box Method (RTA, 2022).',
+    cite: { label: 'pera.net', href: 'https://www.pera.net' }
+  },
+  {
+    n: '03',
+    title: 'Complexity is the enemy of Reliability',
+    body: 'Robust OT is simple, predictable, deterministic. Every additional dependency, feature, or communication path introduces fragility and increases attack surface. The goal is systems that are easy to understand, easy to maintain, and easy to secure — by virtue of having less to understand, maintain, and secure.'
+  },
+  {
+    n: '04',
+    title: 'Security is an architectural property',
+    body: 'The most effective posture for OT is deliberate, managed separation from untrusted networks, especially the enterprise IT environment. PERA+ articulates this as "secure interfaces, not integration." IIA rejects "IT/OT convergence" as a frame entirely — there is no merger to design, only an interface to enforce. Cultural rupture escalated when networks were linked through shared infrastructure (switches, L3 routers spanning the boundary) instead of through gateways; a gateway is an end device with one owner. True security is built in, not bolted on, and never bought.'
+  },
+  {
+    n: '05',
+    title: 'Every boundary is formalized',
+    body: 'Data flows that exit the ACS are documented, limited, and governed by bilateral contracts with explicit RACI matrices for every failure mode. These conduits are security perimeters requiring the same rigor as external interfaces. Informal "visibility" requests that bypass this process are attacks on the architecture, intentional or not.'
+  },
+  {
+    n: '06',
+    title: 'Empower the practitioner',
+    body: 'The most valuable asset is the knowledge of practitioners who design, implement, and maintain these systems. Standards must be field-ready. Practical experience over vendor certifications. The Alliance exists to make standards like IEC 62443 accessible — to restore them to the people who actually operate the plant.'
+  }
+];
+---
+
+<Base
+  title="The Philosophy"
+  description="The Industrial Independence Alliance's philosophy of operational technology. SRP governs the ACS substrate; CIA governs information. Six principles, plus the substrate principle they all depend on."
+  current="philosophy"
+>
+  <section class="phil-hero">
+    <div class="container">
+      <p class="eyebrow mono">The Philosophy &middot; the Industrial Independence Alliance</p>
+      <h1 class="display">
+        Control systems<br />act on physics<span class="dot">.</span>
+      </h1>
+      <p class="lede">
+        Not on information. The architecture follows from that distinction.
+      </p>
+      <p class="lede dim">
+        The Alliance publishes the principles that follow from this fact,
+        and the architecture that operationalizes them.
+        Read this page first; <a href="/architecture/">The Architecture</a> reads as the consequence.
+      </p>
+    </div>
+  </section>
+
+  <section class="substrate">
+    <div class="container substrate-grid">
+      <div class="substrate-prose">
+        <p class="section-eyebrow mono">&sect; The substrate distinction</p>
+        <h2>The mistake of the last decade.</h2>
+        <p>
+          Information-domain models &mdash; <strong>CIA</strong> and its derivatives &mdash;
+          were imported from enterprise IT and applied to systems that operate on physical processes.
+          Architecture got fragile. Security got performative.
+          The vendor-driven model promised seamless integration; what it delivered was
+          extractive complexity and unnecessary attack surface.
+        </p>
+        <p>
+          The correction is upstream of the architecture: get the substrate right,
+          and the rest follows.
+        </p>
+      </div>
+      <aside class="vocab-panel">
+        <p class="section-eyebrow mono">&sect; The vocabulary</p>
+        <dl class="vocab">
+          <div class="vocab-row">
+            <dt>SRP</dt>
+            <dd>
+              <strong>Safety, Reliability, Performance.</strong>
+              Governs the ACS substrate.
+              <a href="https://srpmodel.infracritical.com/srpmodel.php" rel="noopener" class="vocab-cite">
+                Robert Radvanovsky / Infracritical &rarr;
+              </a>
+            </dd>
+          </div>
+          <div class="vocab-row">
+            <dt>CIA</dt>
+            <dd>
+              <strong>Confidentiality, Integrity, Availability.</strong>
+              Governs information &mdash; records, historical by nature.
+            </dd>
+          </div>
+          <div class="vocab-row">
+            <dt>SAIC</dt>
+            <dd>
+              <strong>Safety prepended to AIC.</strong>
+              Right for IT systems handling safety-critical information.
+              Wrong if extended downward to govern the ACS itself.
+              <a href="#saic" class="vocab-cite">See callout &rarr;</a>
+            </dd>
+          </div>
+          <div class="vocab-row">
+            <dt>Zero&nbsp;Trust&nbsp;&harr;<br />Managed&nbsp;Trust</dt>
+            <dd>
+              PERA+'s framing for the IT/ACS boundary transition.
+              <a href="https://www.pera.net" rel="noopener" class="vocab-cite">
+                Gary Rathwell / Entercon &rarr;
+              </a>
+            </dd>
+          </div>
+        </dl>
+      </aside>
+    </div>
+  </section>
+
+  <section class="saic-callout" id="saic">
+    <div class="container saic-inner">
+      <p class="section-eyebrow mono accent">&sect; Why SAIC fails as an OT model</p>
+      <h2>Safety is not an addendum.</h2>
+      <div class="saic-grid">
+        <div class="saic-prose">
+          <p>
+            SAIC takes the information-domain triad &mdash; Availability, Integrity, Confidentiality &mdash;
+            and prepends Safety. The structure betrays the move:
+            Safety is bolted on, not foundational.
+            The model is right for IT systems that touch safety-critical
+            <em>information</em> &mdash; historians, audit stores, regulator-facing dashboards.
+            For those, SAIC is the correct frame.
+          </p>
+          <p>
+            Extended downward to govern the ACS itself, it fails.
+            The ACS does not operate on records.
+            It operates on action and physics &mdash; a valve that moves, an interlock that latches,
+            a loop that closes within its required time.
+            <strong>Reliability and Performance are properties of the physical system.
+            Safety is what the physical system protects.</strong>
+            That is a different substrate than information.
+            It needs a different model.
+          </p>
+        </div>
+        <div class="saic-card">
+          <p class="saic-quote">
+            &ldquo;Safety comes first. Always.&rdquo;
+          </p>
+          <p class="saic-attrib mono">
+            &mdash; The SRP Triad,<br />Robert Radvanovsky, Infracritical
+          </p>
+          <a href="https://srpmodel.infracritical.com/srpmodel.php" rel="noopener" class="saic-link mono">
+            Read the source &rarr;
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="principles">
+    <div class="container">
+      <header class="principles-header">
+        <p class="section-eyebrow mono">&sect; The principles</p>
+        <h2>Seven principles. Not negotiable.</h2>
+        <p class="principles-lede">
+          Derived from the realities of controlling physical processes.
+          Principle 00 names the substrate. Principles 01&ndash;06 follow from it.
+        </p>
+      </header>
+
+      <ol class="principle-list">
+        {principles.map((p) => (
+          <li class="principle">
+            <div class="principle-row">
+              <span class="principle-num mono">{p.n}</span>
+              <div class="principle-body">
+                <h3>{p.title}</h3>
+                <p>{p.body}</p>
+                {p.cite && (
+                  <p class="principle-cite mono">
+                    &darr; <a href={p.cite.href} rel="noopener">{p.cite.label}</a>
+                  </p>
+                )}
+              </div>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="thesis-close">
+    <div class="container thesis-close-inner">
+      <p class="section-eyebrow mono">&sect; The thesis</p>
+      <p class="thesis-line">
+        Industrial independence is not a technology position.
+        It is an <strong>operational sovereignty</strong> position.
+        The entity that controls the automation infrastructure controls the operation.
+      </p>
+      <p class="thesis-line dim">
+        The facility that depends on external connectivity for basic process visibility,
+        historian access, security monitoring, or the IP infrastructure of the cell network
+        itself (DHCP, DNS, NTP, file) is not sovereign.
+        The historian is the load-bearing case: a centralized historian &mdash;
+        vendor-owned, off-site, reachable only when the WAN is up &mdash;
+        is a sovereignty failure by design.
+        IIA places a <strong>decentralized historian</strong> at every zone:
+        the operator's data, the operator's substrate, the operator's audit,
+        working complete without the cloud.
+        IIA provides the architectural pattern that makes
+        sovereignty the default rather than the aspiration.
+      </p>
+      <a href="/architecture/" class="thesis-cta mono">
+        Read The Architecture &rarr;
+      </a>
+    </div>
+  </section>
+
+  <section class="lineage">
+    <div class="container">
+      <p class="section-eyebrow mono">&sect; Lineage &amp; standards</p>
+      <ul class="lineage-list">
+        <li>
+          <strong>SRP Triad</strong> &mdash; Robert Radvanovsky / Infracritical.
+          The foundation of the ACS substrate model.
+          <a href="https://srpmodel.infracritical.com/srpmodel.php" rel="noopener">srpmodel.infracritical.com</a>
+        </li>
+        <li>
+          <strong>PERA+</strong> &mdash; Gary Rathwell / Entercon.
+          The reference architecture for industrial enterprise organization;
+          source of the 4Rs, the CIAD/CIND diagram conventions,
+          and the "secure interfaces, not integration" stance.
+          <a href="https://www.pera.net" rel="noopener">pera.net</a>
+        </li>
+        <li>
+          <strong>The Two-Box Method</strong> &mdash; John Rinaldi &amp; Gary Workman.
+          The canonical articulation of physically enforced ACS/IT segmentation.
+          <em>The Everyman's Guide to EtherNet/IP Network Design</em> (RTA, 2022).
+        </li>
+        <li>
+          <strong>IEC&nbsp;62443</strong> &mdash; cybersecurity for industrial automation.
+          SL1&ndash;SL4, FR1&ndash;FR7. The Architecture targets SL3 floor / SL4 via diode.
+        </li>
+        <li>
+          <strong>ISA-95</strong> &mdash; the canonical IT&harr;ACS data-modeling backbone.
+        </li>
+      </ul>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .phil-hero {
+    padding: 5.5rem 0 3.5rem;
+    background:
+      radial-gradient(ellipse 60% 50% at 75% 20%, var(--accent-soft), transparent 60%),
+      var(--bg);
+    border-bottom: 1px solid var(--rule-soft);
+  }
+  .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 0.74rem;
+    color: var(--accent);
+    margin: 0 0 1.6rem;
+    font-weight: 500;
+  }
+  .display {
+    font-size: clamp(2.2rem, 5vw + 0.4rem, 4.1rem);
+    line-height: 0.96;
+    letter-spacing: -0.034em;
+    font-weight: 700;
+    margin: 0 0 1.4rem;
+    font-family: var(--font-display);
+    text-wrap: balance;
+  }
+  .display .dot { color: var(--accent); }
+  .lede {
+    font-size: 1.18rem;
+    line-height: 1.55;
+    max-width: 60ch;
+    color: var(--ink);
+    margin: 0 0 0.9rem;
+  }
+  .lede.dim { color: var(--ink-soft); font-size: 1.04rem; }
+
+  .section-eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-size: 0.74rem;
+    color: var(--ink-mute);
+    margin: 0 0 0.8rem;
+  }
+  .section-eyebrow.accent { color: var(--accent); }
+
+  /* substrate */
+  .substrate {
+    padding: 5rem 0 4rem;
+    border-bottom: 1px solid var(--rule-soft);
+  }
+  .substrate-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+    gap: 4rem;
+    align-items: start;
+  }
+  .substrate-prose h2 {
+    font-size: clamp(1.6rem, 2.4vw + 0.5rem, 2.2rem);
+    margin: 0 0 1rem;
+    letter-spacing: -0.018em;
+  }
+  .substrate-prose p { font-size: 1.04rem; line-height: 1.65; max-width: 56ch; }
+  .vocab-panel {
+    border: 1px solid var(--rule-soft);
+    background: var(--bg-elev);
+    padding: 1.6rem 1.6rem 0.6rem;
+    border-radius: 3px;
+    position: sticky;
+    top: 5rem;
+  }
+  .vocab { margin: 0; }
+  .vocab-row {
+    display: grid;
+    grid-template-columns: 7rem 1fr;
+    gap: 1rem;
+    padding: 0.9rem 0;
+    border-bottom: 1px solid var(--rule-soft);
+    align-items: baseline;
+  }
+  .vocab-row:last-child { border-bottom: 0; }
+  .vocab-row dt {
+    font-family: var(--font-mono);
+    font-size: 0.84rem;
+    color: var(--accent);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+  .vocab-row dd {
+    margin: 0;
+    font-size: 0.92rem;
+    line-height: 1.55;
+    color: var(--ink);
+  }
+  .vocab-cite {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    color: var(--ink-mute);
+    text-decoration: none;
+    margin-top: 0.4rem;
+    letter-spacing: 0.04em;
+  }
+  .vocab-cite:hover { color: var(--accent); }
+
+  /* SAIC callout */
+  .saic-callout {
+    padding: 5rem 0;
+    background: var(--bg-elev);
+    border-bottom: 1px solid var(--rule-soft);
+    scroll-margin-top: 5rem;
+  }
+  .saic-inner h2 {
+    font-size: clamp(1.8rem, 3vw + 0.5rem, 2.6rem);
+    letter-spacing: -0.02em;
+    margin: 0 0 2.4rem;
+  }
+  .saic-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+    gap: 3.5rem;
+    align-items: start;
+  }
+  .saic-prose p { font-size: 1.04rem; line-height: 1.65; max-width: 60ch; margin: 0 0 1.1rem; }
+  .saic-card {
+    border-left: 3px solid var(--accent);
+    padding: 1.4rem 1.6rem 1.4rem 1.6rem;
+    background: var(--bg);
+  }
+  .saic-quote {
+    font-size: 1.6rem;
+    line-height: 1.2;
+    color: var(--ink);
+    font-weight: 600;
+    margin: 0 0 1.2rem;
+    letter-spacing: -0.012em;
+  }
+  .saic-attrib {
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    margin: 0 0 1.4rem;
+    line-height: 1.5;
+  }
+  .saic-link {
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .saic-link:hover { text-decoration: underline; }
+
+  /* principles */
+  .principles {
+    padding: 5rem 0 4rem;
+    border-bottom: 1px solid var(--rule-soft);
+  }
+  .principles-header { max-width: 64ch; margin-bottom: 3rem; }
+  .principles-header h2 {
+    font-size: clamp(1.8rem, 3vw + 0.5rem, 2.6rem);
+    letter-spacing: -0.02em;
+    margin: 0 0 1rem;
+  }
+  .principles-lede { font-size: 1.04rem; color: var(--ink-soft); margin: 0; }
+  .principle-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-top: 1px solid var(--rule);
+  }
+  .principle {
+    border-bottom: 1px solid var(--rule-soft);
+  }
+  .principle-row {
+    display: grid;
+    grid-template-columns: 8rem 1fr;
+    gap: 2rem;
+    padding: 2.4rem 0;
+    align-items: start;
+  }
+  .principle-num {
+    font-size: 1.6rem;
+    color: var(--accent);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    line-height: 1;
+    padding-top: 0.3rem;
+  }
+  .principle-body h3 {
+    font-size: 1.32rem;
+    margin: 0 0 0.7rem;
+    letter-spacing: -0.012em;
+  }
+  .principle-body p {
+    font-size: 1.02rem;
+    line-height: 1.65;
+    color: var(--ink);
+    margin: 0 0 0.6rem;
+    max-width: 64ch;
+  }
+  .principle-cite {
+    font-size: 0.74rem;
+    color: var(--ink-mute);
+    margin: 0.4rem 0 0;
+    letter-spacing: 0.04em;
+  }
+  .principle-cite a { color: var(--ink-mute); text-decoration: none; }
+  .principle-cite a:hover { color: var(--accent); }
+
+  /* thesis close */
+  .thesis-close {
+    padding: 5rem 0;
+    background: var(--bg-elev);
+    border-bottom: 1px solid var(--rule-soft);
+  }
+  .thesis-close-inner { max-width: 70ch; }
+  .thesis-line {
+    font-size: 1.32rem;
+    line-height: 1.5;
+    color: var(--ink);
+    margin: 0 0 1.4rem;
+  }
+  .thesis-line.dim { color: var(--ink-soft); font-size: 1.1rem; }
+  .thesis-cta {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.7rem 1.1rem;
+    background: var(--ink);
+    color: var(--bg);
+    text-decoration: none;
+    font-size: 0.86rem;
+    letter-spacing: 0.06em;
+    border-radius: 3px;
+    transition: background 120ms ease;
+  }
+  .thesis-cta:hover { background: var(--accent); }
+
+  /* lineage */
+  .lineage { padding: 4rem 0 5rem; }
+  .lineage-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 1rem;
+    max-width: 80ch;
+  }
+  .lineage-list li {
+    padding: 1rem 0;
+    border-top: 1px solid var(--rule-soft);
+    font-size: 0.96rem;
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+  .lineage-list li:last-child { border-bottom: 1px solid var(--rule-soft); }
+  .lineage-list strong { color: var(--ink); }
+  .lineage-list a { color: var(--ink); }
+  .lineage-list a:hover { color: var(--accent); }
+
+  @media (max-width: 920px) {
+    .substrate-grid, .saic-grid { grid-template-columns: 1fr; gap: 2.4rem; }
+    .vocab-panel { position: static; }
+    .principle-row { grid-template-columns: 4rem 1fr; gap: 1.2rem; }
+    .principle-num { font-size: 1.2rem; }
+    .phil-hero { padding: 3.5rem 0 2.4rem; }
+    .substrate, .saic-callout, .principles, .thesis-close, .lineage { padding: 3rem 0; }
+  }
+</style>

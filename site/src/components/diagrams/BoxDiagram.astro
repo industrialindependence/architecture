@@ -1,0 +1,349 @@
+---
+// BoxDiagram.astro
+// The Box (CIAD) — internal partitioning: Inbound, DMZ, Outbound, Management.
+// Responsive SVG, CSS variables, accessible.
+---
+
+<figure class="box-diagram" aria-label="IIA Box internal architecture diagram">
+  <svg
+    viewBox="0 0 860 600"
+    xmlns="http://www.w3.org/2000/svg"
+    role="img"
+    aria-labelledby="box-title box-desc"
+    class="box-svg"
+    preserveAspectRatio="xMidYMid meet"
+  >
+    <title id="box-title">The Box — CIAD internal partitioning</title>
+    <desc id="box-desc">
+      Control and Information Architecture Diagram of the IIA box.
+      Bottom: ACS domain (Managed Trust, SRP). Above that: the inbound zone with collectors,
+      witness/IDS, IO master, and local data lake. Center: internal DMZ with in-flight bus,
+      audit chain, and attestation aggregator. Right: outbound zone with edge publisher,
+      structured query API, and mTLS tunnel. Top: IT domain (Zero Trust, CIA).
+      Management interface on its own NIC, local-network only.
+      All cross-side traffic transits the DMZ. ACS NIC is passive, RX-only.
+    </desc>
+
+    <defs>
+      <marker id="b-arrow" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto">
+        <path d="M0,0 L0,7 L7,3.5 z" fill="var(--ink-soft)" />
+      </marker>
+      <marker id="b-arrow-accent" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto">
+        <path d="M0,0 L0,7 L7,3.5 z" fill="var(--accent)" />
+      </marker>
+      <marker id="b-arrow-it" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto">
+        <path d="M0,0 L0,7 L7,3.5 z" fill="var(--ink-mute)" />
+      </marker>
+    </defs>
+
+    <!-- ===== ACS DOMAIN — bottom ===== -->
+    <g transform="translate(0,510)">
+      <rect x="40" y="0" width="780" height="76" rx="3"
+        fill="var(--bg-elev)" stroke="var(--rule-soft)" stroke-width="1" stroke-dasharray="5,3" />
+      <text x="56" y="18" class="domain-eyebrow">ACS DOMAIN &nbsp;&middot;&nbsp; Managed Trust &nbsp;&middot;&nbsp; SRP</text>
+      <rect x="80" y="24" width="280" height="36" rx="2"
+        fill="var(--bg)" stroke="var(--rule-soft)" stroke-width="1" />
+      <text x="220" y="39" class="node-label" text-anchor="middle">Wired control &amp; sensing</text>
+      <text x="220" y="52" class="node-sub" text-anchor="middle">PLC · SCADA · sensors · OPC UA · Modbus · EtherNet/IP</text>
+
+      <rect x="400" y="24" width="220" height="36" rx="2"
+        fill="var(--bg)" stroke="var(--rule-soft)" stroke-width="1" />
+      <text x="510" y="39" class="node-label" text-anchor="middle">Wireless IO sensing</text>
+      <text x="510" y="52" class="node-sub" text-anchor="middle">LoRaWAN · LPWAN &nbsp;·&nbsp; IO-class only, never control</text>
+    </g>
+
+    <!-- ===== THE BOX outer border ===== -->
+    <rect x="40" y="30" width="780" height="464" rx="4"
+      fill="none" stroke="var(--ink)" stroke-width="2" />
+    <text x="56" y="50" class="box-outer-label">THE BOX</text>
+
+    <!-- ===== INBOUND ZONE ===== -->
+    <g transform="translate(54,60)">
+      <rect x="0" y="0" width="340" height="200" rx="3"
+        fill="var(--accent-soft)" stroke="var(--rule-soft)" stroke-width="1" />
+      <text x="10" y="16" class="zone-eyebrow">INBOUND &nbsp;(ACS-facing)</text>
+
+      <!-- collect -->
+      <rect x="10" y="24" width="150" height="50" rx="2"
+        fill="var(--bg-elev)" stroke="var(--rule-soft)" stroke-width="1" />
+      <text x="85" y="44" class="service-label" text-anchor="middle">ot.acs.collect</text>
+      <text x="85" y="58" class="service-sub" text-anchor="middle">protocol-aware collectors</text>
+
+      <!-- witness -->
+      <rect x="180" y="24" width="150" height="50" rx="2"
+        fill="var(--bg-elev)" stroke="var(--rule-soft)" stroke-width="1" />
+      <text x="255" y="44" class="service-label" text-anchor="middle">ot.acs.witness</text>
+      <text x="255" y="58" class="service-sub" text-anchor="middle">IDS · scan · enrichment</text>
+
+      <!-- io_master -->
+      <rect x="10" y="88" width="150" height="50" rx="2"
+        fill="var(--bg-elev)" stroke="var(--accent)" stroke-width="1" />
+      <text x="85" y="108" class="service-label" text-anchor="middle">ot.acs.io_master</text>
+      <text x="85" y="122" class="service-sub" text-anchor="middle">independent IO observation</text>
+      <text x="85" y="132" class="service-sub" text-anchor="middle">(attestation)</text>
+
+      <!-- lake -->
+      <rect x="10" y="152" width="320" height="38" rx="2"
+        fill="var(--bg-elev)" stroke="var(--accent)" stroke-width="1.5" />
+      <text x="170" y="169" class="service-label-bold" text-anchor="middle">ot.acs.lake</text>
+      <text x="170" y="182" class="service-sub" text-anchor="middle">local data lake &nbsp;·&nbsp; source of truth on the box</text>
+    </g>
+
+    <!-- ===== DMZ ===== -->
+    <g transform="translate(54,278)">
+      <rect x="0" y="0" width="340" height="126" rx="3"
+        fill="var(--bg-elev)" stroke="var(--rule-soft)" stroke-width="1" />
+      <text x="10" y="16" class="zone-eyebrow-dmz">INTERNAL DMZ</text>
+
+      <!-- bus -->
+      <rect x="10" y="24" width="96" height="44" rx="2"
+        fill="var(--bg)" stroke="var(--rule-soft)" stroke-width="1" />
+      <text x="58" y="44" class="service-label" text-anchor="middle">ot.dmz.bus</text>
+      <text x="58" y="57" class="service-sub" text-anchor="middle">in-flight bus (transient)</text>
+
+      <!-- audit -->
+      <rect x="122" y="24" width="96" height="44" rx="2"
+        fill="var(--bg)" stroke="var(--rule-soft)" stroke-width="1" />
+      <text x="170" y="44" class="service-label" text-anchor="middle">ot.dmz.audit</text>
+      <text x="170" y="57" class="service-sub" text-anchor="middle">audit chain head</text>
+
+      <!-- attest -->
+      <rect x="234" y="24" width="96" height="44" rx="2"
+        fill="var(--bg)" stroke="var(--accent)" stroke-width="1" />
+      <text x="282" y="44" class="service-label" text-anchor="middle">ot.dmz.attest</text>
+      <text x="282" y="57" class="service-sub" text-anchor="middle">attestation aggregator</text>
+
+      <!-- no-direct-cross-side note -->
+      <text x="170" y="98" class="zone-note" text-anchor="middle">
+        all cross-side traffic transits here
+      </text>
+    </g>
+
+    <!-- ===== OUTBOUND ZONE ===== -->
+    <g transform="translate(420,60)">
+      <rect x="0" y="0" width="340" height="344" rx="3"
+        fill="var(--bg-elev)" stroke="var(--rule-soft)" stroke-width="1" />
+      <text x="10" y="16" class="zone-eyebrow-it">OUTBOUND &nbsp;(IT-facing)</text>
+
+      <!-- publish -->
+      <rect x="10" y="24" width="150" height="60" rx="2"
+        fill="var(--bg)" stroke="var(--rule-soft)" stroke-width="1" />
+      <text x="85" y="48" class="service-label" text-anchor="middle">ot.it.publish</text>
+      <text x="85" y="62" class="service-sub" text-anchor="middle">edge publisher</text>
+      <text x="85" y="74" class="service-sub" text-anchor="middle">operator-selected profile</text>
+
+      <!-- api -->
+      <rect x="180" y="24" width="150" height="60" rx="2"
+        fill="var(--bg)" stroke="var(--rule-soft)" stroke-width="1" />
+      <text x="255" y="48" class="service-label" text-anchor="middle">ot.it.api</text>
+      <text x="255" y="62" class="service-sub" text-anchor="middle">structured query</text>
+      <text x="255" y="74" class="service-sub" text-anchor="middle">mTLS · non-HTTP</text>
+
+      <!-- tunnel -->
+      <rect x="10" y="100" width="320" height="44" rx="2"
+        fill="var(--bg)" stroke="var(--rule-soft)" stroke-width="1" />
+      <text x="170" y="120" class="service-label" text-anchor="middle">ot.it.tunnel</text>
+      <text x="170" y="133" class="service-sub" text-anchor="middle">outbound mTLS dial-out &nbsp;·&nbsp; no listener &nbsp;·&nbsp; no HTTP</text>
+
+      <!-- Management zone (embedded below) -->
+      <rect x="10" y="162" width="320" height="160" rx="3"
+        fill="var(--bg)" stroke="var(--rule-soft)" stroke-width="1" stroke-dasharray="4,3" />
+      <text x="20" y="178" class="zone-eyebrow-mgmt">MANAGEMENT &nbsp;(mgmt NIC · local-net only)</text>
+
+      <rect x="20" y="186" width="140" height="50" rx="2"
+        fill="var(--bg-elev)" stroke="var(--rule-soft)" stroke-width="1" />
+      <text x="90" y="208" class="service-label" text-anchor="middle">ot.mgmt.ui</text>
+      <text x="90" y="222" class="service-sub" text-anchor="middle">text generator</text>
+      <text x="90" y="232" class="service-sub" text-anchor="middle">no privileged access</text>
+
+      <rect x="176" y="186" width="140" height="50" rx="2"
+        fill="var(--bg-elev)" stroke="var(--rule-soft)" stroke-width="1" />
+      <text x="246" y="208" class="service-label" text-anchor="middle">ot.mgmt.cfg</text>
+      <text x="246" y="222" class="service-sub" text-anchor="middle">parser · validator</text>
+      <text x="246" y="232" class="service-sub" text-anchor="middle">signed artifact (GitOps)</text>
+
+      <!-- Operator actor -->
+      <ellipse cx="90" cy="300" rx="60" ry="22"
+        fill="var(--bg-elev)" stroke="var(--rule-soft)" stroke-width="1" />
+      <text x="90" y="298" class="actor-label" text-anchor="middle">Operator</text>
+      <text x="90" y="311" class="service-sub" text-anchor="middle">HTTPS · local-net only</text>
+
+      <!-- Console -->
+      <ellipse cx="246" cy="300" rx="64" ry="22"
+        fill="var(--bg-elev)" stroke="var(--rule-soft)" stroke-width="1" stroke-dasharray="3,2" />
+      <text x="246" y="298" class="actor-label" text-anchor="middle">Last-resort console</text>
+      <text x="246" y="311" class="service-sub" text-anchor="middle">serial · TPM-bound · never networked</text>
+
+      <!-- Operator -> UI arrow -->
+      <line x1="90" y1="278" x2="90" y2="236" stroke="var(--ink-mute)" stroke-width="1" marker-end="url(#b-arrow)" />
+      <!-- UI -> cfg arrow -->
+      <line x1="160" y1="211" x2="176" y2="211" stroke="var(--ink-mute)" stroke-width="1" marker-end="url(#b-arrow)" />
+    </g>
+
+    <!-- ===== IT DOMAIN — top ===== -->
+    <g transform="translate(0,0)">
+      <rect x="40" y="0" width="780" height="28" rx="3"
+        fill="var(--bg-elev)" stroke="var(--rule-soft)" stroke-width="1" stroke-dasharray="5,3" />
+      <text x="56" y="18" class="domain-eyebrow-it">IT DOMAIN &nbsp;&middot;&nbsp; Zero Trust &nbsp;&middot;&nbsp; CIA (records · information)</text>
+    </g>
+
+    <!-- ===== FLOW LINES ===== -->
+
+    <!-- ACS -> inbound (passive) -->
+    <line x1="220" y1="510" x2="160" y2="480" stroke="var(--ink-soft)" stroke-width="1.2" marker-end="url(#b-arrow)" />
+    <text x="116" y="496" class="flow-label">passive · RX-only</text>
+
+    <!-- collect -> lake -->
+    <line x1="139" y1="134" x2="200" y2="212" stroke="var(--ink-soft)" stroke-width="1" marker-end="url(#b-arrow)" />
+    <!-- witness -> lake -->
+    <line x1="255" y1="134" x2="230" y2="212" stroke="var(--ink-soft)" stroke-width="1" marker-end="url(#b-arrow)" />
+    <!-- io_master -> attest -->
+    <line x1="139" y1="162" x2="322" y2="302" stroke="var(--ink-soft)" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#b-arrow)" />
+
+    <!-- lake -> DMZ bus -->
+    <line x1="224" y1="250" x2="108" y2="278" stroke="var(--ink-soft)" stroke-width="1" marker-end="url(#b-arrow)" />
+
+    <!-- DMZ -> outbound -->
+    <line x1="394" y1="332" x2="420" y2="120" stroke="var(--ink-soft)" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#b-arrow)" />
+
+    <!-- outbound -> IT domain -->
+    <line x1="590" y1="60" x2="590" y2="28" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#b-arrow-accent)" />
+    <text x="596" y="48" class="flow-label-it">push / mTLS · no HTTP</text>
+
+  </svg>
+  <figcaption class="diagram-caption mono">
+    The Box &mdash; CIAD internal partitioning &middot; inbound &middot; DMZ &middot; outbound &middot; management
+  </figcaption>
+</figure>
+
+<style>
+  .box-diagram {
+    margin: 2.4rem 0;
+  }
+  .box-svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    background: var(--bg-elev);
+    border: 1px solid var(--rule-soft);
+    border-radius: 4px;
+  }
+
+  .box-svg .domain-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: 600;
+    fill: var(--ink-mute);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .box-svg .domain-eyebrow-it {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: 600;
+    fill: var(--ink-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .box-svg .box-outer-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    fill: var(--ink);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .box-svg .zone-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: 600;
+    fill: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .box-svg .zone-eyebrow-dmz {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: 600;
+    fill: var(--ink-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .box-svg .zone-eyebrow-it {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: 600;
+    fill: var(--ink-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .box-svg .zone-eyebrow-mgmt {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    font-weight: 600;
+    fill: var(--ink-mute);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .box-svg .zone-note {
+    font-family: var(--font-mono);
+    font-size: 8.5px;
+    fill: var(--ink-mute);
+    font-style: italic;
+  }
+  .box-svg .service-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+    fill: var(--ink);
+    letter-spacing: 0.02em;
+  }
+  .box-svg .service-label-bold {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 700;
+    fill: var(--accent);
+    letter-spacing: 0.04em;
+  }
+  .box-svg .service-sub {
+    font-family: var(--font-mono);
+    font-size: 7.5px;
+    fill: var(--ink-mute);
+  }
+  .box-svg .node-label {
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 500;
+    fill: var(--ink);
+  }
+  .box-svg .node-sub {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    fill: var(--ink-mute);
+  }
+  .box-svg .actor-label {
+    font-family: var(--font-sans);
+    font-size: 9px;
+    font-weight: 500;
+    fill: var(--ink);
+  }
+  .box-svg .flow-label {
+    font-family: var(--font-mono);
+    font-size: 7.5px;
+    fill: var(--ink-mute);
+  }
+  .box-svg .flow-label-it {
+    font-family: var(--font-mono);
+    font-size: 7.5px;
+    fill: var(--ink-soft);
+  }
+
+  .diagram-caption {
+    font-family: var(--font-mono);
+    font-size: 0.78em;
+    color: var(--ink-mute);
+    margin-top: 0.6rem;
+    text-align: center;
+    letter-spacing: 0.02em;
+  }
+</style>

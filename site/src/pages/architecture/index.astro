@@ -1,0 +1,243 @@
+---
+import Base from '../../layouts/Base.astro';
+import { Content } from '../../content-src/principle/README.md';
+---
+
+<Base title="The Architecture" description="Industrial Independence Architecture (IIA) — the architectural principle for industrial infrastructure. Published by the Industrial Independence Alliance." current="architecture">
+  <section class="hero">
+    <div class="container hero-grid">
+      <div class="hero-text">
+        <p class="eyebrow mono">The Architecture &middot; how we built it</p>
+        <h1 class="hero-title">
+          Industrial<br />Independence<br />Architecture<span class="dot">.</span>
+        </h1>
+        <p class="lede">
+          The architectural principle that operationalizes
+          <a href="/philosophy/"><strong>The Philosophy</strong></a>.
+          One self-contained unit at every zone.
+          Identical at every level. Scope is the only thing that changes.
+        </p>
+        <p class="lede dim">
+          The unit works with no upstream connectivity. No cloud. No corporate network. No internet.
+          If connectivity exists, it composes upward. If it drops, nothing changes on site.
+        </p>
+        <div class="cta-row">
+          <a class="btn primary" href="#the-principle">Read the principle</a>
+          <a class="btn ghost" href="/architecture/docs/introduction/">Start with the introduction</a>
+        </div>
+      </div>
+      <aside class="hero-meta">
+        <dl>
+          <div><dt>Publisher</dt><dd>The Industrial Independence Alliance</dd></div>
+          <div><dt>Stance</dt><dd>Sovereignty by architecture, not by policy</dd></div>
+          <div><dt>Aligns with</dt><dd>PERA+, IEC&nbsp;62443, ISA-95, CESMII&nbsp;i3X</dd></div>
+          <div><dt>Targets</dt><dd>SL3 floor &middot; SL4 via diode</dd></div>
+        </dl>
+      </aside>
+    </div>
+  </section>
+
+  <section class="thesis-strip">
+    <div class="container thesis-grid">
+      <div class="thesis-card">
+        <p class="card-eyebrow mono">The thesis</p>
+        <p class="card-line">
+          IIA provides the architectural pattern that makes
+          <strong>sovereignty the default</strong> rather than the aspiration.
+        </p>
+      </div>
+      <div class="thesis-card">
+        <p class="card-eyebrow mono">Sovereignty &ne; isolation</p>
+        <p class="card-line">
+          Units are self-contained, but historians on adjacent boxes know about each other.
+          Awareness is mutual. Dependency is not.
+        </p>
+      </div>
+      <div class="thesis-card">
+        <p class="card-eyebrow mono">Boundary enforcement</p>
+        <p class="card-line">
+          ACS is governed by SRP. Information is governed by CIA.
+          The boundary is enforced <strong>by architecture, not by policy</strong>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule" />
+
+  <article class="prose container readme-body" id="readme">
+    <Content />
+  </article>
+</Base>
+
+<style>
+  .hero {
+    padding: 4.5rem 0 3.5rem;
+    background:
+      linear-gradient(to bottom, var(--bg-elev), var(--bg)),
+      radial-gradient(circle at 18% 0%, var(--accent-soft), transparent 55%);
+    background-blend-mode: normal;
+    border-bottom: 1px solid var(--rule-soft);
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+    gap: 3.2rem;
+    align-items: start;
+  }
+  .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 0.74rem;
+    color: var(--accent);
+    margin: 0 0 1.4rem;
+    font-weight: 500;
+  }
+  .hero-title {
+    font-size: clamp(2.6rem, 6.4vw + 0.5rem, 5.4rem);
+    line-height: 0.96;
+    letter-spacing: -0.034em;
+    font-weight: 700;
+    margin: 0 0 1.8rem;
+    font-family: var(--font-display);
+  }
+  .hero-title .dot { color: var(--accent); }
+  .lede {
+    font-size: 1.16rem;
+    line-height: 1.55;
+    max-width: 56ch;
+    color: var(--ink);
+    margin: 0 0 1rem;
+  }
+  .lede.dim { color: var(--ink-soft); }
+  .cta-row {
+    display: flex;
+    gap: 0.9rem;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    text-decoration: none;
+    font-family: var(--font-mono);
+    font-size: 0.86rem;
+    letter-spacing: 0.04em;
+    padding: 0.7rem 1.1rem;
+    border-radius: 3px;
+    border: 1px solid var(--rule-soft);
+    transition: background 120ms ease, color 120ms ease, border-color 120ms ease;
+  }
+  .btn.primary {
+    background: var(--ink);
+    color: var(--bg);
+    border-color: var(--ink);
+  }
+  .btn.primary:hover { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+  .btn.ghost { background: transparent; color: var(--ink); }
+  .btn.ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+  .hero-meta {
+    border-left: 1px solid var(--rule-soft);
+    padding-left: 1.6rem;
+    margin-top: 0.4rem;
+  }
+  .hero-meta dl { margin: 0; }
+  .hero-meta div {
+    display: grid;
+    grid-template-columns: 9rem 1fr;
+    gap: 0.6rem;
+    padding: 0.55rem 0;
+    border-bottom: 1px solid var(--rule-soft);
+    align-items: baseline;
+  }
+  .hero-meta div:last-child { border-bottom: 0; }
+  .hero-meta dt {
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.7rem;
+    color: var(--ink-mute);
+  }
+  .hero-meta dd {
+    margin: 0;
+    font-size: 0.92rem;
+    color: var(--ink);
+  }
+
+  .thesis-strip {
+    background: var(--bg);
+    border-top: 1px solid var(--rule-soft);
+    border-bottom: 1px solid var(--rule-soft);
+  }
+  .thesis-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0;
+  }
+  .thesis-card {
+    padding: 2.4rem 1.8rem 2.4rem 0;
+    border-right: 1px solid var(--rule-soft);
+    position: relative;
+  }
+  .thesis-card:not(:first-child) { padding-left: 1.8rem; }
+  .thesis-card:last-child { border-right: 0; }
+  .card-eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-size: 0.7rem;
+    color: var(--accent);
+    margin: 0 0 0.8rem;
+  }
+  .card-line {
+    font-size: 1.02rem;
+    color: var(--ink);
+    margin: 0;
+    line-height: 1.5;
+    max-width: 38ch;
+  }
+  .card-line strong { font-weight: 600; }
+
+  .rule {
+    margin: 0;
+    border-top: 1px solid var(--rule-soft);
+  }
+
+  .readme-body {
+    padding-top: 4rem;
+  }
+
+  /* tighten the duplicate H1 inside the README content */
+  .readme-body :global(h1:first-child) {
+    display: none;
+  }
+  .readme-body :global(h2) {
+    font-size: 1.6rem;
+    border-bottom: 1px solid var(--rule-soft);
+    padding-bottom: 0.6rem;
+    margin-top: 4rem;
+  }
+  .readme-body :global(img) {
+    margin: 2.2rem auto;
+    border: 1px solid var(--rule-soft);
+    border-radius: 3px;
+    background: var(--bg-elev);
+    padding: 0.6rem;
+  }
+
+  @media (max-width: 920px) {
+    .hero { padding: 3rem 0 2.5rem; }
+    .hero-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .hero-meta { border-left: 0; border-top: 1px solid var(--rule-soft); padding-left: 0; padding-top: 1.2rem; }
+    .hero-meta div { grid-template-columns: 7rem 1fr; }
+    .thesis-grid { grid-template-columns: 1fr; }
+    .thesis-card { padding: 1.6rem 0; border-right: 0; border-bottom: 1px solid var(--rule-soft); }
+    .thesis-card:not(:first-child) { padding-left: 0; }
+    .thesis-card:last-child { border-bottom: 0; }
+  }
+  @media (max-width: 480px) {
+    .hero-meta div { grid-template-columns: 1fr; gap: 0.1rem; padding: 0.7rem 0; }
+    .hero-meta dd { font-size: 0.88rem; }
+  }
+</style>
