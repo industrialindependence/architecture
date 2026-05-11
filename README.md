@@ -71,7 +71,7 @@ IIA is fractal across security levels in the same way it is fractal across organ
 
 ## The Unit
 
-One box. Runs the complete ACS infrastructure stack: data collection, the zone's **decentralized historian**, security monitoring, asset inventory, intrusion detection, visualization, API, remote access, VPN, message brokering, protocol translation. Everything needed to operate, monitor, and secure a zone.
+One box. Runs the complete ACS infrastructure stack: zone IP services (DHCP, DNS, NTP, file/config shares, optional in-cell PKI), data collection, the zone's **decentralized historian**, security monitoring, asset inventory, intrusion detection, visualization, API, remote access, VPN, message brokering, protocol translation. Everything needed to operate, monitor, and secure a zone.
 
 The architecture is hardware-independent and scale-invariant. The box is a logical unit, realizable as an appliance, a server, a cluster, or a virtualized stack. Sizing is application- and scale-dependent — the box has run on less than 1GB of RAM with capability tradeoffs and scales up as the workload demands.
 
@@ -111,6 +111,8 @@ The hard problems are distributed systems problems. When a box reconnects after 
 IIA is shaped by the realities of automation and control system environments, not by enterprise computing assumptions.
 
 **Connectivity is a luxury, not a given.** Production floors, wellheads, substations, feed lots, and remote facilities operate on cellular, satellite, or no backhaul at all. The unit must be the complete system indefinitely, not a thin client waiting for a cloud to come back.
+
+**The zone provides its own infrastructure services.** DHCP, DNS, NTP, file/config shares, time sync, optional in-cell PKI — every IP-infrastructure service the cell network needs to be a network. A cell that depends on corporate DHCP fails when the WAN fails. A cell with corporate DNS as primary loses name resolution on the next enterprise outage. A cell whose HMIs read configs from a corporate fileserver loses HMI capability when that share goes offline. The box runs these services for its zone so disconnection from upstream is operationally invisible to the process. After Gary Workman, *[The Everyman's Guide to EtherNet/IP Network Design](https://www.amazon.com/EVERYMANS-GUIDE-ETHERNET-NETWORK-DESIGN/dp/B0B7PSHK7J)* (Real Time Automation, 2022).
 
 **Safety, Reliability, Performance, not Confidentiality, Integrity, Availability.** The issue is not ordering, it is category. CIA, AIC, and their derivatives describe properties of *information* — and information is historical by nature, a record of what already happened. ACS does not operate on records. ACS operates on action and physics: a valve that moves, an interlock that latches, a loop that closes within its required time. Reliability and Performance in SRP are properties of the physical system. Safety is the property the physical system protects. The correct priority ordering for ACS, as articulated by Robert Radvanovsky at Infracritical ([srpmodel.infracritical.com](https://srpmodel.infracritical.com/srpmodel.php)), is SRP: Safety first, then Reliability, then Performance. A security tool that compromises any of these is not a security tool. Every function on the box must degrade gracefully and never interfere with the process it monitors.
 
