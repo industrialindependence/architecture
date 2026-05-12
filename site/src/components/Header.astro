@@ -1,9 +1,12 @@
 ---
 const { current = '' } = Astro.props as { current?: string };
 const links = [
-  { href: '/philosophy/', label: 'The Philosophy', key: 'philosophy' },
+  { href: '/field/', label: 'The Field', key: 'field' },
+  { href: '/problem/', label: 'The Problem', key: 'problem' },
+  { href: '/claim/', label: 'Our Claim', key: 'claim' },
+  { href: '/philosophy/', label: 'Our Philosophy', key: 'philosophy' },
   { href: '/architecture/', label: 'The Architecture', key: 'architecture' },
-  { href: '/architecture/docs/', label: 'Documentation', key: 'docs' },
+  { href: '/architecture/docs/', label: 'Docs', key: 'docs' },
   { href: '/contact/', label: 'Contact', key: 'contact' }
 ];
 ---
@@ -30,9 +33,12 @@ const links = [
       {links.map((l) => {
         const active =
           l.key === current ||
+          (l.key === 'field' && current === 'field') ||
+          (l.key === 'problem' && current === 'problem') ||
+          (l.key === 'claim' && current === 'claim') ||
+          (l.key === 'philosophy' && current.startsWith('philosophy')) ||
           (l.key === 'architecture' && current.startsWith('architecture')) ||
           (l.key === 'docs' && current === 'docs') ||
-          (l.key === 'philosophy' && current.startsWith('philosophy')) ||
           (l.key === 'contact' && current === 'contact');
         return (
           <a href={l.href} class={active ? 'is-active' : ''}>{l.label}</a>
@@ -86,12 +92,12 @@ const links = [
   }
   .site-nav {
     display: flex;
-    gap: 1.6rem;
+    gap: 1.1rem;
     flex-wrap: wrap;
   }
   .site-nav a {
     font-family: var(--font-mono);
-    font-size: 0.82rem;
+    font-size: 0.78rem;
     letter-spacing: 0.04em;
     text-transform: uppercase;
     text-decoration: none;
@@ -99,6 +105,7 @@ const links = [
     padding: 0.3rem 0;
     border-bottom: 1.5px solid transparent;
     transition: color 120ms ease, border-color 120ms ease;
+    white-space: nowrap;
   }
   .site-nav a:hover { color: var(--ink); border-bottom-color: var(--accent); }
   .site-nav a.is-active {
@@ -106,15 +113,15 @@ const links = [
     border-bottom-color: var(--accent);
   }
 
-  @media (max-width: 820px) {
+  @media (max-width: 1100px) {
     .brand-full { display: none; }
     .header-row { gap: 1rem; }
-    .site-nav { gap: 1rem; }
-    .site-nav a { font-size: 0.74rem; }
+    .site-nav { gap: 0.9rem; }
+    .site-nav a { font-size: 0.72rem; }
   }
-  @media (max-width: 560px) {
+  @media (max-width: 720px) {
     .header-row { flex-direction: column; align-items: flex-start; gap: 0.7rem; padding: 0.8rem 0; }
-    .site-nav { width: 100%; gap: 0.8rem 1.2rem; }
-    .site-nav a { font-size: 0.7rem; }
+    .site-nav { width: 100%; gap: 0.7rem 1rem; }
+    .site-nav a { font-size: 0.68rem; }
   }
 </style>

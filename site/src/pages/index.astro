@@ -9,6 +9,7 @@ export const prerender = true;
   title="Industrial Independence Alliance"
   description="Operational sovereignty for industrial infrastructure. The Industrial Independence Alliance publishes The Philosophy and The Architecture (IIA)."
   current="home"
+  ogCard="home"
 >
   <section class="landing-hero">
     <div class="container landing-hero-inner">
@@ -18,8 +19,10 @@ export const prerender = true;
       </h1>
       <p class="lede">
         Control systems act on physics, not on information.
-        The Alliance publishes the principles that follow from that distinction
-        and the architecture that operationalizes them.
+        The Alliance publishes what follows from that distinction in five pillars:
+        the field operations works in, the problem standing in its way,
+        the claim we hold to, the philosophy we think with,
+        and the architecture that operationalizes all four.
       </p>
       <p class="onramp mono">
         New to industrial automation, ICS, or operational technology?
@@ -28,45 +31,84 @@ export const prerender = true;
     </div>
   </section>
 
-  <section class="doors">
-    <div class="container doors-grid">
-      <a href="/philosophy/" class="door">
-        <div class="door-row">
-          <p class="door-label mono">The Philosophy</p>
-          <span class="door-arrow mono" aria-hidden="true">&rarr;</span>
-        </div>
-        <h2 class="door-title">Why we build it this way<span class="dot">.</span></h2>
-        <p class="door-blurb">
-          The substrate distinction. The SRP Triad — Safety, Reliability, Performance —
-          governs the ACS substrate. Information is governed by CIA.
-          Six principles follow.
-        </p>
-        <ul class="door-meta mono">
-          <li>SRP Triad &middot; <span class="dim">after Robert Radvanovsky / Infracritical</span></li>
-          <li>PERA+ alignment &middot; <span class="dim">Gary Rathwell / Entercon</span></li>
-          <li>Six principles, plus the substrate principle</li>
-        </ul>
-        <span class="door-cta mono">Read The Philosophy &rarr;</span>
-      </a>
+  <section class="pillars">
+    <div class="container">
+      <p class="pillars-eyebrow mono">&sect; Five pillars</p>
+      <p class="pillars-intro">
+        Observation &rarr; observation &rarr; position &rarr; position &rarr; artifact.
+        Read top to bottom; each pillar is the ground of the next.
+      </p>
 
-      <a href="/architecture/" class="door">
-        <div class="door-row">
-          <p class="door-label mono">The Architecture</p>
-          <span class="door-arrow mono" aria-hidden="true">&rarr;</span>
-        </div>
-        <h2 class="door-title">How it deploys<span class="dot">.</span></h2>
-        <p class="door-blurb">
-          Industrial Independence Architecture (IIA).
-          One self-contained unit at every zone of an industrial network.
-          Identical at every level. Scope is the only thing that changes.
-        </p>
-        <ul class="door-meta mono">
-          <li>The box &middot; the fractal &middot; data contracts</li>
-          <li>SL3 floor &middot; SL4 via hardware diode</li>
-          <li>IEC&nbsp;62443 &middot; ISA-95 &middot; CESMII&nbsp;i3X</li>
-        </ul>
-        <span class="door-cta mono">Read The Architecture &rarr;</span>
-      </a>
+      <ol class="pillar-row pillar-row-diag">
+        <li>
+          <a href="/field/" class="pillar-card">
+            <span class="pillar-num mono">I &middot; observation</span>
+            <h2 class="pillar-title">The Field<span class="dot">.</span></h2>
+            <p class="pillar-blurb">
+              Where operations works. Specific kinds of places, specific kinds of people,
+              specific kinds of failures &mdash; the lived ground the architecture is shaped by.
+            </p>
+            <span class="pillar-cta mono">Read &rarr;</span>
+          </a>
+        </li>
+        <li>
+          <a href="/problem/" class="pillar-card">
+            <span class="pillar-num mono">II &middot; observation</span>
+            <h2 class="pillar-title">The Problem<span class="dot">.</span></h2>
+            <p class="pillar-blurb">
+              What stands in the way. The market, IT, and the field's own gatekeepers.
+              Closed stacks, security theater, knowledge hoarded by those who should be teaching.
+            </p>
+            <span class="pillar-cta mono">Read &rarr;</span>
+          </a>
+        </li>
+        <li>
+          <a href="/claim/" class="pillar-card">
+            <span class="pillar-num mono">III &middot; position</span>
+            <h2 class="pillar-title">Our Claim<span class="dot">.</span></h2>
+            <p class="pillar-blurb">
+              What operations is owed. What must be owned, taken back, formalized.
+              SLAs that match production. Contracts with IT. Separation as architecture, not policy.
+            </p>
+            <span class="pillar-cta mono">Read &rarr;</span>
+          </a>
+        </li>
+      </ol>
+
+      <ol class="pillar-row pillar-row-resp" start="4">
+        <li>
+          <a href="/philosophy/" class="pillar-card pillar-card-wide">
+            <span class="pillar-num mono">IV &middot; position</span>
+            <h2 class="pillar-title">Our Philosophy<span class="dot">.</span></h2>
+            <p class="pillar-blurb">
+              How we think about the substrate. SRP &mdash; Safety, Reliability, Performance &mdash;
+              governs the ACS. Information is governed by CIA. Seven principles follow.
+            </p>
+            <ul class="pillar-meta mono">
+              <li>SRP Triad &middot; <span class="dim">after Robert Radvanovsky / Infracritical</span></li>
+              <li>PERA+ alignment &middot; <span class="dim">Gary Rathwell / Entercon</span></li>
+            </ul>
+            <span class="pillar-cta mono">Read &rarr;</span>
+          </a>
+        </li>
+        <li>
+          <a href="/architecture/" class="pillar-card pillar-card-wide">
+            <span class="pillar-num mono">V &middot; artifact</span>
+            <h2 class="pillar-title">The Architecture<span class="dot">.</span></h2>
+            <p class="pillar-blurb">
+              Industrial Independence Architecture (IIA).
+              One self-contained unit at every zone of an industrial network.
+              Identical at every level. Scope is the only thing that changes.
+            </p>
+            <ul class="pillar-meta mono">
+              <li>The box &middot; the fractal &middot; data contracts</li>
+              <li>SL3 floor &middot; SL4 via hardware diode</li>
+              <li>IEC&nbsp;62443 &middot; ISA-95 &middot; CESMII&nbsp;i3X</li>
+            </ul>
+            <span class="pillar-cta mono">Read &rarr;</span>
+          </a>
+        </li>
+      </ol>
     </div>
   </section>
 
@@ -78,6 +120,36 @@ export const prerender = true;
         to a regional aggregate. Scope changes. The architecture does not.
       </p>
       <FractalDiagram />
+    </div>
+  </section>
+
+  <section class="implementations">
+    <div class="container">
+      <p class="impl-eyebrow mono">&sect; Reference implementations</p>
+      <p class="impl-intro">
+        What the principles look like in shipped software. Independent products, built on IIA.
+      </p>
+      <div class="impl-grid">
+        <a class="impl-card" href="https://www.grassmarlin.com" rel="noopener">
+          <p class="impl-label mono">MarlinSpike</p>
+          <h3 class="impl-title">The modern GrassMarlin<span class="dot">.</span></h3>
+          <p class="impl-blurb">
+            The maintained, multi-user successor to NSA&rsquo;s GrassMarlin (EOL 2017).
+            Open-source passive OT/ICS topology workbench. Captures in, zero packets out.
+          </p>
+          <span class="impl-cta mono">grassmarlin.com &rarr;</span>
+        </a>
+        <a class="impl-card" href="https://www.conversationalfactory.com" rel="noopener">
+          <p class="impl-label mono">Conversational Factory</p>
+          <h3 class="impl-title">A factory you can talk to<span class="dot">.</span></h3>
+          <p class="impl-blurb">
+            Read-only OT platform. Passive wire-witness DPI across 34 protocols,
+            medallion data lake, i3X v1 &middot; MCP query surface for operators and AI clients.
+            Every answer bound to an append-only audit chain.
+          </p>
+          <span class="impl-cta mono">conversationalfactory.com &rarr;</span>
+        </a>
+      </div>
     </div>
   </section>
 
@@ -147,93 +219,103 @@ export const prerender = true;
   }
   .onramp a:hover { text-decoration: underline; }
 
-  .doors {
-    padding: 0;
+  .pillars {
+    padding: 3rem 0 4rem;
     border-bottom: 1px solid var(--rule-soft);
-  }
-  .doors-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0;
-    padding: 0 !important;
-    max-width: var(--max-wide);
-  }
-  .door {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: 1.2rem;
-    padding: 4rem clamp(1.4rem, 4vw, 3rem);
-    text-decoration: none;
-    color: var(--ink);
     background: var(--bg);
-    border-right: 1px solid var(--rule-soft);
-    transition: background 180ms ease, color 180ms ease;
-    min-height: 32rem;
   }
-  .door:last-child { border-right: 0; }
-  .door:hover {
-    background: var(--accent-soft);
-  }
-  .door:hover .door-arrow {
-    transform: translateX(0.4rem);
-    color: var(--accent);
-  }
-  .door:hover .door-cta { color: var(--accent); }
-  .door-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .door-label {
+  .pillars-eyebrow {
     text-transform: uppercase;
     letter-spacing: 0.18em;
-    font-size: 0.78rem;
-    color: var(--accent);
-    margin: 0;
-  }
-  .door-arrow {
-    font-size: 1.4rem;
+    font-size: 0.72rem;
     color: var(--ink-mute);
-    transition: transform 200ms ease, color 200ms ease;
+    margin: 0 0 0.6rem;
   }
-  .door-title {
-    font-size: clamp(1.8rem, 2.6vw + 0.5rem, 2.4rem);
+  .pillars-intro {
+    font-size: 1.04rem;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    max-width: 64ch;
+    margin: 0 0 2rem;
+  }
+  .pillar-row {
+    list-style: none;
+    counter-reset: pillar;
+    padding: 0;
+    margin: 0 0 0;
+    display: grid;
+    gap: 0;
+    border-top: 1px solid var(--rule);
+  }
+  .pillar-row-diag { grid-template-columns: 1fr 1fr 1fr; }
+  .pillar-row-resp {
+    grid-template-columns: 1fr 1fr;
+    border-top: 0;
+    margin-top: -1px;
+  }
+  .pillar-row li {
+    border-bottom: 1px solid var(--rule-soft);
+    border-right: 1px solid var(--rule-soft);
+  }
+  .pillar-row li:last-child { border-right: 0; }
+  .pillar-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    padding: 2rem clamp(1.2rem, 2.4vw, 1.8rem) 2.2rem;
+    text-decoration: none;
+    color: var(--ink);
+    height: 100%;
+    transition: background 180ms ease;
+  }
+  .pillar-card:hover { background: var(--accent-soft); }
+  .pillar-card:hover .pillar-cta { color: var(--accent); }
+  .pillar-num {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--accent);
+    margin: 0 0 0.4rem;
+  }
+  .pillar-title {
+    font-size: clamp(1.5rem, 1.8vw + 0.4rem, 2rem);
     line-height: 1.05;
     letter-spacing: -0.02em;
-    margin: 0.4rem 0 0;
+    margin: 0 0 0.4rem;
     font-weight: 600;
     max-width: 22ch;
   }
-  .door-title .dot { color: var(--accent); }
-  .door-blurb {
-    font-size: 1.02rem;
-    line-height: 1.6;
+  .pillar-title .dot { color: var(--accent); }
+  .pillar-blurb {
+    font-size: 0.96rem;
+    line-height: 1.55;
     color: var(--ink-soft);
     max-width: 42ch;
     margin: 0;
   }
-  .door-meta {
+  .pillar-meta {
     list-style: none;
     padding: 0;
-    margin: 0.8rem 0 auto;
+    margin: 0.8rem 0 0;
     display: flex;
     flex-direction: column;
     gap: 0.45rem;
-    font-size: 0.78rem;
+    font-size: 0.76rem;
     color: var(--ink-mute);
   }
-  .door-meta li { padding: 0.4rem 0; border-top: 1px solid var(--rule-soft); }
-  .door-meta li:last-child {
-    border-bottom: 1px solid var(--rule-soft);
+  .pillar-meta li {
+    padding: 0.4rem 0;
+    border-top: 1px solid var(--rule-soft);
   }
-  .door-meta .dim { color: var(--ink-mute); opacity: 0.8; }
-  .door-cta {
-    font-size: 0.86rem;
+  .pillar-meta li:last-child { border-bottom: 1px solid var(--rule-soft); }
+  .pillar-meta .dim { color: var(--ink-mute); opacity: 0.8; }
+  .pillar-cta {
+    font-size: 0.78rem;
     text-transform: uppercase;
-    letter-spacing: 0.14em;
-    color: var(--ink);
-    margin-top: 0.4rem;
+    letter-spacing: 0.12em;
+    color: var(--ink-mute);
+    margin-top: auto;
+    padding-top: 0.6rem;
     transition: color 180ms ease;
   }
 
@@ -260,6 +342,80 @@ export const prerender = true;
     margin: 0 0 1.6rem;
   }
 
+  .implementations {
+    padding: 4.5rem 0;
+    border-bottom: 1px solid var(--rule-soft);
+    background: var(--bg);
+  }
+  .impl-eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-size: 0.74rem;
+    color: var(--accent);
+    margin: 0 0 0.7rem;
+  }
+  .impl-intro {
+    font-size: 1.08rem;
+    color: var(--ink-soft);
+    max-width: 70ch;
+    margin: 0 0 2.2rem;
+  }
+  .impl-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border-top: 1px solid var(--rule);
+  }
+  .impl-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    padding: 2rem clamp(1.4rem, 3vw, 2.4rem) 2.2rem;
+    text-decoration: none;
+    color: var(--ink);
+    border-bottom: 1px solid var(--rule-soft);
+    border-right: 1px solid var(--rule-soft);
+    transition: background 180ms ease;
+  }
+  .impl-card:last-child { border-right: 0; }
+  .impl-card:hover { background: var(--accent-soft); }
+  .impl-card:hover .impl-cta { color: var(--accent); }
+  .impl-label {
+    font-size: 0.76rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--accent);
+    margin: 0;
+  }
+  .impl-title {
+    font-size: clamp(1.4rem, 2vw + 0.4rem, 1.8rem);
+    line-height: 1.1;
+    letter-spacing: -0.018em;
+    font-weight: 600;
+    margin: 0;
+    max-width: 22ch;
+  }
+  .impl-title .dot { color: var(--accent); }
+  .impl-blurb {
+    font-size: 0.98rem;
+    color: var(--ink-soft);
+    line-height: 1.55;
+    margin: 0;
+    max-width: 48ch;
+  }
+  .impl-cta {
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-mute);
+    margin-top: 0.2rem;
+    transition: color 160ms ease;
+  }
+  @media (max-width: 820px) {
+    .impl-grid { grid-template-columns: 1fr; }
+    .impl-card { border-right: 0; }
+  }
+
   .bridge {
     padding: 4rem 0 5rem;
     background: var(--bg-elev);
@@ -280,15 +436,20 @@ export const prerender = true;
     margin: 0;
   }
 
-  @media (max-width: 820px) {
-    .doors-grid { grid-template-columns: 1fr; }
-    .door {
-      border-right: 0;
-      border-bottom: 1px solid var(--rule-soft);
-      min-height: auto;
-      padding: 2.6rem clamp(1.2rem, 4vw, 2.4rem);
+  @media (max-width: 980px) {
+    .pillar-row-diag { grid-template-columns: 1fr 1fr; }
+    .pillar-row-resp { grid-template-columns: 1fr; }
+    .pillar-row-diag li:nth-child(2n) { border-right: 0; }
+    .pillar-row-resp li { border-right: 0; }
+  }
+  @media (max-width: 720px) {
+    .pillar-row-diag,
+    .pillar-row-resp { grid-template-columns: 1fr; }
+    .pillar-row li {
+      border-right: 0 !important;
+      padding: 0;
     }
-    .door:last-child { border-bottom: 0; }
+    .pillar-card { padding: 1.8rem clamp(1.2rem, 4vw, 2.4rem) 2rem; }
     .landing-hero { padding: 3.5rem 0 2rem; }
     .fractal-section { padding: 2.8rem 0 2.6rem; }
     .bridge { padding: 2.6rem 0 3rem; }

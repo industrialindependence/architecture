@@ -241,8 +241,15 @@ IIA provides the architectural pattern that makes sovereignty the default rather
 
 ## Further Reading
 
+The Alliance publishes its position in five pillars. This README is the fifth — *The Architecture*. The first four ground it:
+
+- [`docs/the-field.md`](docs/the-field.md) — **The Field.** Where operations works. Specific kinds of places, specific kinds of people, specific kinds of failures — the lived ground the architecture is shaped by. The answer to "what is this *for*."
+- [`docs/the-problem.md`](docs/the-problem.md) — **The Problem.** What stands in the way. The market sells the dependence; IT inherits enterprise patterns and enforces them on a substrate they were not built for; the field's own gatekeepers will not teach. Plain about all three.
+- [`docs/our-claim.md`](docs/our-claim.md) — **Our Claim.** What operations is owed. What must be owned, taken back, formalized. SLAs that match production, bilateral contracts with IT, separation as architecture, recognition of IT / OT / ACS as different, the reintroduction of engineering.
+
+Supporting architectural documentation:
+
 - [`docs/introduction.md`](docs/introduction.md) — concept-first introduction for readers new to industrial automation, ICS, or operational technology. Builds the vocabulary the rest of this documentation assumes.
-- [`docs/field-notes.md`](docs/field-notes.md) — the lived ground the architecture is shaped by. Specific kinds of places, specific kinds of people, specific kinds of failures, and the architectural response to each. Reads as the answer to "what is this *for*."
 - [`docs/internal-architecture.md`](docs/internal-architecture.md) — the canonical implementation specification: invariants, partitioning, contracts, attestation, configuration, updates, and the SL3 / SL4 mappings to IEC 62443 foundational requirements. Names roles, not products.
 - [`docs/sample-contracts.md`](docs/sample-contracts.md) — six worked data contracts spanning internal flows, boundary contracts (batch and query), device-level contracts, wireless IO, and AI-agent consumption. Demonstrates the contract grammar and adherence telemetry.
 - [`docs/mcp-single-box.md`](docs/mcp-single-box.md) — operator quickstart for the smallest AI-agent consumption deployment: one box, one MCP server off-box, one AI client. Topology, identity, contract, and config-artifact pipeline.

@@ -1,10 +1,10 @@
-# Field Notes
+# The Field
 
 The architecture in the README is declarative. It says what the box is, what it does, and what it refuses. It does not say what it is *for*, in the sense of which rooms it walks into and which problems it stops being problems.
 
-These are notes from those rooms. They are the lived ground the architecture is shaped by — specific kinds of places, specific kinds of people, specific kinds of failures. The architecture is not angry at any of this. It is the architecture that makes most of this stop being necessary.
+This document does. The Field is where operations works — specific kinds of places, specific kinds of people, specific kinds of failures. It is the lived ground the architecture is shaped by. The architecture is not angry at any of this. The architecture is what makes most of it stop being necessary.
 
-None of the scenes below are hypothetical. Names and identifying details have been removed; the patterns are kept. After twenty-five years working in these environments, the patterns repeat.
+None of the scenes below are hypothetical. Names and identifying details have been removed; the patterns are kept. After more than two decades working in these environments, the patterns repeat.
 
 ## Contents
 
@@ -176,7 +176,7 @@ This is not because anyone is being excluded on purpose. It is because the organ
 
 ## Part IV — What the Architecture Answers
 
-The box is shaped by these scenes. The scenes are not anger. They are not grievance. They are conditions. Industrial operations exists in these conditions, every day, in every plant, in every industry. The conditions are not going away. The architecture is what makes most of them stop mattering.
+The box is shaped by The Field. The scenes are not anger. They are not grievance. They are conditions. Industrial operations exists in these conditions, every day, in every plant, in every industry. The conditions are not going away. The architecture is what makes most of them stop mattering.
 
 **Connectivity is a luxury.** The shack is in a corn field. The mine was in the mountains. Most of the operations the architecture serves are remote, satellite-dependent, cellular-dependent, or fully disconnected from upstream for hours or days at a time. The unit works alone, indefinitely. If connectivity exists, it composes upward. If it drops, nothing changes on site.
 
@@ -200,4 +200,4 @@ It does not require the supervisor to stop watching the plant from a tablet at h
 
 It does not require the plant electricians to stop being who they are. It requires the architecture to be theirs.
 
-These are the conditions. The architecture is the response.
+These are the conditions of The Field. The Problem is what stands in their way. Our Claim is what we hold to. Our Philosophy is how we think about it. The Architecture is the response.

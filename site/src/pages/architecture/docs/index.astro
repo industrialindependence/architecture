@@ -28,7 +28,10 @@ const orderMap: Record<string, number> = {
   'glossary': 5
 };
 
+const PILLAR_DOCS = new Set(['the-field', 'the-problem', 'our-claim']);
+
 const entries = (await getCollection('docs'))
+  .filter((d) => !PILLAR_DOCS.has(d.id))
   .map((d) => ({
     id: d.id,
     title: titleMap[d.id] ?? d.id,
@@ -38,7 +41,7 @@ const entries = (await getCollection('docs'))
   .sort((a, b) => a.order - b.order);
 ---
 
-<Base title="Documentation" description="Documentation for Industrial Independence Architecture." current="docs">
+<Base title="Documentation" description="Documentation for Industrial Independence Architecture." current="docs" ogCard="docs" pageType="CollectionPage">
   <div class="container docs-index">
     <header class="page-header">
       <p class="eyebrow mono">The Architecture &middot; Documentation</p>

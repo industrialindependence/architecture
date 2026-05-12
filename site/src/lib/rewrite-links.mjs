@@ -8,6 +8,12 @@ const DOC_SLUGS = new Set([
   'mcp-single-box'
 ]);
 
+const PILLAR_SLUGS = new Map([
+  ['the-field', '/field/'],
+  ['the-problem', '/problem/'],
+  ['our-claim', '/claim/']
+]);
+
 const IMAGE_NAMES = new Set([
   'box-architecture.png',
   'two-box-method.png',
@@ -35,6 +41,9 @@ function rewriteUrl(url) {
   if (siblingDocMatch && DOC_SLUGS.has(siblingDocMatch[1])) {
     return `/architecture/docs/${siblingDocMatch[1]}/${siblingDocMatch[2] ?? ''}`;
   }
+  if (siblingDocMatch && PILLAR_SLUGS.has(siblingDocMatch[1])) {
+    return `${PILLAR_SLUGS.get(siblingDocMatch[1])}${siblingDocMatch[2] ?? ''}`;
+  }
 
   // Images in docs/ — flatten to /diagrams/
   const imgMatch = url.match(/^\.?\/?([a-z0-9-]+\.png)$/i);
@@ -58,6 +67,9 @@ function rewriteUrl(url) {
   const docsDocMatch = url.match(/^docs\/([a-z0-9-]+)\.md(#.*)?$/i);
   if (docsDocMatch && DOC_SLUGS.has(docsDocMatch[1])) {
     return `/architecture/docs/${docsDocMatch[1]}/${docsDocMatch[2] ?? ''}`;
+  }
+  if (docsDocMatch && PILLAR_SLUGS.has(docsDocMatch[1])) {
+    return `${PILLAR_SLUGS.get(docsDocMatch[1])}${docsDocMatch[2] ?? ''}`;
   }
 
   return url;

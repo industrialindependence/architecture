@@ -4,12 +4,17 @@ import { getCollection, render } from 'astro:content';
 
 export const prerender = true;
 
+const PILLAR_DOCS = new Set(['the-field', 'the-problem', 'our-claim']);
+
 export async function getStaticPaths() {
+  const PILLAR_DOCS = new Set(['the-field', 'the-problem', 'our-claim']);
   const entries = await getCollection('docs');
-  return entries.map((entry) => ({
-    params: { slug: entry.id },
-    props: { entry }
-  }));
+  return entries
+    .filter((entry) => !PILLAR_DOCS.has(entry.id))
+    .map((entry) => ({
+      params: { slug: entry.id },
+      props: { entry }
+    }));
 }
 
 const { entry } = Astro.props;
@@ -43,13 +48,14 @@ const title = entry.data.title ?? titleMap[entry.id] ?? entry.id;
 const description = entry.data.description ?? descMap[entry.id];
 
 const allDocs = (await getCollection('docs'))
+  .filter((d) => !PILLAR_DOCS.has(d.id))
   .map((d) => ({ id: d.id, title: titleMap[d.id] ?? d.id, order: orderMap[d.id] ?? 99 }))
   .sort((a, b) => a.order - b.order);
 
 const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
 ---
 
-<Base title={title} description={description} current="docs">
+<Base title={title} description={description} current="docs" ogCard={entry.id} pageType="Article">
   <div class="doc-shell container">
     <aside class="doc-side">
       <p class="side-label mono">Documentation</p>

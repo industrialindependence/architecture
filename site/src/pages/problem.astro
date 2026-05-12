@@ -1,0 +1,239 @@
+---
+import Base from '../layouts/Base.astro';
+import { getEntry, render } from 'astro:content';
+
+export const prerender = true;
+
+const entry = await getEntry('docs', 'the-problem');
+if (!entry) throw new Error('the-problem doc entry not found');
+const { Content, headings } = await render(entry);
+
+const tocHeadings = headings.filter((h) => h.depth === 2);
+---
+
+<Base
+  title="The Problem"
+  description="What stands in the way of operational sovereignty. The market, IT, and the field's own gatekeepers. Closed stacks, reference architectures as security theater, IT-managed engineering workstations, integrator opacity, compliance economy, IT cadence imposed on OT, knowledge hoarded by senior practitioners."
+  current="problem"
+  ogCard="problem"
+  pageType="Article"
+>
+  <section class="pillar-hero">
+    <div class="container pillar-hero-inner">
+      <p class="eyebrow mono">Pillar II &middot; observation</p>
+      <h1 class="display">
+        The Problem<span class="dot">.</span>
+      </h1>
+      <p class="lede">
+        The field is not sovereign because too many actors benefit from it not being sovereign.
+        The market sells the dependence. IT inherits enterprise patterns and enforces them
+        on a substrate they were not built for. The field's own gatekeepers will not teach.
+      </p>
+      <p class="lede dim">
+        Plain about all three. The architecture exists to give operations a position to refuse from.
+      </p>
+    </div>
+  </section>
+
+  <div class="pillar-shell container">
+    {tocHeadings.length > 0 && (
+      <aside class="pillar-side">
+        <p class="side-label mono">On this page</p>
+        <nav class="toc" aria-label="Table of contents">
+          {tocHeadings.map((h) => (
+            <a href={`#${h.slug}`} class="toc-link">{h.text}</a>
+          ))}
+        </nav>
+      </aside>
+    )}
+    <article class="pillar-body prose">
+      <Content />
+    </article>
+  </div>
+
+  <section class="pillar-next">
+    <div class="container">
+      <p class="next-eyebrow mono">&sect; Next</p>
+      <div class="next-grid">
+        <a href="/claim/" class="next-card">
+          <span class="next-num mono">Pillar III</span>
+          <h3>Our Claim<span class="dot">.</span></h3>
+          <p>What operations is owed. What must be owned, taken back, formalized.</p>
+          <span class="next-cta mono">Read &rarr;</span>
+        </a>
+        <a href="/philosophy/" class="next-card">
+          <span class="next-num mono">Pillar IV</span>
+          <h3>Our Philosophy<span class="dot">.</span></h3>
+          <p>How we think about the substrate. SRP governs the ACS, CIA governs information.</p>
+          <span class="next-cta mono">Read &rarr;</span>
+        </a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .pillar-hero {
+    padding: 5.5rem 0 3rem;
+    background:
+      radial-gradient(ellipse 60% 50% at 20% 20%, var(--accent-soft), transparent 60%),
+      var(--bg);
+    border-bottom: 1px solid var(--rule-soft);
+  }
+  .pillar-hero-inner { max-width: 64ch; }
+  .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 0.74rem;
+    color: var(--accent);
+    margin: 0 0 1.4rem;
+    font-weight: 500;
+  }
+  .display {
+    font-size: clamp(2.4rem, 5.5vw + 0.4rem, 4.4rem);
+    line-height: 0.96;
+    letter-spacing: -0.034em;
+    font-weight: 700;
+    margin: 0 0 1.4rem;
+    font-family: var(--font-display);
+  }
+  .display .dot { color: var(--accent); }
+  .lede {
+    font-size: 1.2rem;
+    line-height: 1.55;
+    max-width: 60ch;
+    color: var(--ink);
+    margin: 0 0 0.9rem;
+  }
+  .lede.dim { color: var(--ink-soft); font-size: 1.04rem; }
+
+  .pillar-shell {
+    display: grid;
+    grid-template-columns: 16rem minmax(0, 1fr);
+    gap: 3.5rem;
+    padding-top: 3rem;
+    align-items: start;
+  }
+  .pillar-side {
+    position: sticky;
+    top: 5rem;
+    align-self: start;
+    border-right: 1px solid var(--rule-soft);
+    padding-right: 1.4rem;
+    max-height: calc(100vh - 6rem);
+    overflow-y: auto;
+  }
+  .side-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--ink-mute);
+    margin: 0 0 0.8rem;
+  }
+  .toc { display: flex; flex-direction: column; gap: 0.05rem; }
+  .toc-link {
+    display: block;
+    text-decoration: none;
+    color: var(--ink-mute);
+    font-size: 0.86rem;
+    padding: 0.35rem 0;
+    border-left: 2px solid transparent;
+    padding-left: 0.7rem;
+    transition: color 100ms ease, border-color 100ms ease;
+    line-height: 1.35;
+  }
+  .toc-link:hover { color: var(--ink); border-left-color: var(--accent); }
+
+  .pillar-body {
+    max-width: 70ch;
+    padding-bottom: 4rem;
+  }
+  .pillar-body :global(h1:first-of-type) { display: none; }
+  .pillar-body :global(h2) {
+    border-bottom: 1px solid var(--rule-soft);
+    padding-bottom: 0.5rem;
+    margin-top: 3rem;
+  }
+  .pillar-body :global(h3) { margin-top: 2rem; color: var(--ink); }
+  .pillar-body :global(hr) {
+    border: 0;
+    border-top: 1px solid var(--rule-soft);
+    margin: 3rem 0;
+  }
+  .pillar-body :global(blockquote) {
+    border-left: 3px solid var(--accent);
+    background: var(--bg-elev);
+    margin: 1.6rem 0;
+    padding: 1rem 1.3rem;
+    color: var(--ink);
+    font-style: normal;
+  }
+
+  .pillar-next {
+    padding: 4rem 0 5rem;
+    background: var(--bg-elev);
+    border-top: 1px solid var(--rule-soft);
+  }
+  .next-eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-size: 0.74rem;
+    color: var(--ink-mute);
+    margin: 0 0 1.4rem;
+  }
+  .next-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.4rem; }
+  .next-card {
+    display: block;
+    padding: 1.6rem 1.6rem 1.8rem;
+    border: 1px solid var(--rule-soft);
+    border-radius: 3px;
+    text-decoration: none;
+    color: var(--ink);
+    background: var(--bg);
+    transition: background 160ms ease, border-color 160ms ease;
+  }
+  .next-card:hover { background: var(--accent-soft); border-color: var(--accent); }
+  .next-card:hover .next-cta { color: var(--accent); }
+  .next-num {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+  .next-card h3 {
+    font-size: 1.4rem;
+    margin: 0 0 0.5rem;
+    letter-spacing: -0.02em;
+  }
+  .next-card h3 .dot { color: var(--accent); }
+  .next-card p {
+    font-size: 0.94rem;
+    color: var(--ink-soft);
+    line-height: 1.55;
+    margin: 0 0 0.8rem;
+    max-width: 36ch;
+  }
+  .next-cta {
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-mute);
+    transition: color 160ms ease;
+  }
+
+  @media (max-width: 980px) {
+    .pillar-shell { grid-template-columns: 1fr; gap: 1.6rem; }
+    .pillar-side {
+      position: static;
+      max-height: none;
+      border-right: 0;
+      border-bottom: 1px solid var(--rule-soft);
+      padding-right: 0;
+      padding-bottom: 1rem;
+    }
+    .next-grid { grid-template-columns: 1fr; }
+    .pillar-hero { padding: 3.5rem 0 2.4rem; }
+  }
+</style>

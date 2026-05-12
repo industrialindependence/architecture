@@ -35,35 +35,36 @@
       </marker>
     </defs>
 
-    <!-- ===== L0/L1 — Field & Control ===== -->
+    <!-- ===== L0/L1 — Field & Control: one ACS per zone, paired 1:1 with the zone box above ===== -->
     <g class="layer" transform="translate(0,490)">
       <rect x="60" y="0" width="680" height="76" rx="3"
         fill="var(--bg-elev)" stroke="var(--rule-soft)" stroke-width="1" stroke-dasharray="4,3" />
-      <text x="76" y="16" class="layer-eyebrow">PERA L0 / L1</text>
-      <text x="76" y="32" class="layer-label">Field &amp; Control</text>
+      <text x="76" y="16" class="layer-eyebrow">PERA L0 / L1 &middot; Field &amp; Control &middot; one ACS per zone</text>
 
-      <!-- PLC node -->
-      <rect x="120" y="22" width="160" height="40" rx="2"
+      <!-- ACS zone A -->
+      <rect x="110" y="22" width="140" height="40" rx="2"
         fill="var(--bg)" stroke="var(--rule-soft)" stroke-width="1" />
-      <text x="200" y="38" class="node-label" text-anchor="middle">PLC · SCADA · HMI</text>
-      <text x="200" y="52" class="node-sub" text-anchor="middle">sensors · actuators · IO</text>
+      <text x="180" y="40" class="node-label" text-anchor="middle">ACS · zone A</text>
+      <text x="180" y="54" class="node-sub" text-anchor="middle">PLC · IO · HMI</text>
 
-      <!-- Fieldbus label -->
-      <text x="388" y="50" class="edge-label" text-anchor="middle">analog · fieldbus · EtherNet/IP</text>
-
-      <!-- Field devices (right side) -->
-      <rect x="520" y="22" width="160" height="40" rx="2"
+      <!-- ACS zone B -->
+      <rect x="330" y="22" width="140" height="40" rx="2"
         fill="var(--bg)" stroke="var(--rule-soft)" stroke-width="1" />
-      <text x="600" y="38" class="node-label" text-anchor="middle">Wireless IO sensing</text>
-      <text x="600" y="52" class="node-sub" text-anchor="middle">LoRaWAN · LPWAN</text>
+      <text x="400" y="40" class="node-label" text-anchor="middle">ACS · zone B</text>
+      <text x="400" y="54" class="node-sub" text-anchor="middle">PLC · IO · HMI</text>
+
+      <!-- ACS zone C -->
+      <rect x="550" y="22" width="140" height="40" rx="2"
+        fill="var(--bg)" stroke="var(--rule-soft)" stroke-width="1" />
+      <text x="620" y="40" class="node-label" text-anchor="middle">ACS · zone C</text>
+      <text x="620" y="54" class="node-sub" text-anchor="middle">PLC · IO · HMI</text>
     </g>
 
     <!-- ===== L2 — Zone Boxes ===== -->
     <g class="layer" transform="translate(0,380)">
       <rect x="60" y="0" width="680" height="88" rx="3"
         fill="var(--accent-soft)" stroke="var(--rule-soft)" stroke-width="1" />
-      <text x="76" y="16" class="layer-eyebrow">PERA L2</text>
-      <text x="76" y="32" class="layer-label">Production Zone Boxes</text>
+      <text x="76" y="16" class="layer-eyebrow">PERA L2 &middot; Zone Boxes</text>
 
       <!-- Three zone boxes -->
       <rect x="110" y="28" width="140" height="46" rx="2"
@@ -86,8 +87,7 @@
     <g class="layer" transform="translate(0,278)">
       <rect x="60" y="0" width="680" height="80" rx="3"
         fill="var(--bg-elev)" stroke="var(--rule-soft)" stroke-width="1" />
-      <text x="76" y="16" class="layer-eyebrow">PERA L3</text>
-      <text x="76" y="32" class="layer-label">Plant Box</text>
+      <text x="76" y="16" class="layer-eyebrow">PERA L3 &middot; Plant Box</text>
 
       <rect x="260" y="18" width="280" height="50" rx="2"
         fill="var(--bg)" stroke="var(--accent)" stroke-width="1.5" />
@@ -99,8 +99,7 @@
     <g class="layer" transform="translate(0,178)">
       <rect x="60" y="0" width="680" height="78" rx="3"
         fill="var(--bg-elev)" stroke="var(--rule-soft)" stroke-width="1" />
-      <text x="76" y="16" class="layer-eyebrow">PERA L4</text>
-      <text x="76" y="32" class="layer-label">Site Box &nbsp;·&nbsp; <tspan class="layer-note">L3↔L4 = canonical plant firewall</tspan></text>
+      <text x="76" y="16" class="layer-eyebrow">PERA L4 &middot; Site Box &middot; L3↔L4 = canonical plant firewall</text>
 
       <rect x="270" y="18" width="260" height="48" rx="2"
         fill="var(--bg)" stroke="var(--accent)" stroke-width="1.5" />
@@ -112,8 +111,7 @@
     <g class="layer" transform="translate(0,80)">
       <rect x="60" y="0" width="680" height="78" rx="3"
         fill="var(--bg-elev)" stroke="var(--rule-soft)" stroke-width="1" stroke-dasharray="5,3" />
-      <text x="76" y="16" class="layer-eyebrow">PERA L5</text>
-      <text x="76" y="32" class="layer-label">Regional / Corporate / Cloud Box</text>
+      <text x="76" y="16" class="layer-eyebrow">PERA L5 &middot; Regional / Corporate / Cloud Box</text>
 
       <rect x="250" y="18" width="300" height="48" rx="2"
         fill="var(--bg)" stroke="var(--accent)" stroke-width="1.5" />
@@ -133,10 +131,10 @@
     <!-- L4 site -> L5 corp (upward) -->
     <line x1="400" y1="178" x2="400" y2="158" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrow-up)" />
 
-    <!-- L1 -> L2 zones (upward, ACS passive) -->
-    <line x1="200" y1="490" x2="165" y2="468" stroke="var(--ink-soft)" stroke-width="1.2" stroke-dasharray="none" marker-end="url(#arrow-neutral)" />
-    <line x1="310" y1="490" x2="395" y2="468" stroke="var(--ink-soft)" stroke-width="1.2" marker-end="url(#arrow-neutral)" />
-    <line x1="600" y1="490" x2="620" y2="468" stroke="var(--ink-soft)" stroke-width="1.2" marker-end="url(#arrow-neutral)" />
+    <!-- L1 ACS -> L2 zone box (upward, one box per ACS; ACS NIC is passive RX-only) -->
+    <line x1="180" y1="490" x2="180" y2="468" stroke="var(--ink-soft)" stroke-width="1.2" marker-end="url(#arrow-neutral)" />
+    <line x1="400" y1="490" x2="400" y2="468" stroke="var(--ink-soft)" stroke-width="1.2" marker-end="url(#arrow-neutral)" />
+    <line x1="620" y1="490" x2="620" y2="468" stroke="var(--ink-soft)" stroke-width="1.2" marker-end="url(#arrow-neutral)" />
 
     <!-- ===== Downward manifest arrows (dashed) ===== -->
     <!-- L5 -> L4 -->
@@ -161,14 +159,9 @@
       <text x="34" y="54" class="legend-label">manifests · approvals (south)</text>
     </g>
 
-    <!-- ===== AXIOM NOTE ===== -->
-    <g transform="translate(400,554)" text-anchor="middle">
-      <text class="axiom">Same unit at every level. Only scope changes. The fractal does not collapse at the top.</text>
-    </g>
-
   </svg>
   <figcaption class="diagram-caption mono">
-    The Fractal &mdash; PERA L0&ndash;L5 &middot; same unit, different scope &middot; each box sovereign and complete
+    The Fractal &mdash; PERA L0&ndash;L5 &middot; one ACS per zone &middot; same unit, different scope &middot; the fractal does not collapse at the top
   </figcaption>
 </figure>
 

@@ -47,23 +47,25 @@ const principles = [
 ---
 
 <Base
-  title="The Philosophy"
+  title="Our Philosophy"
   description="The Industrial Independence Alliance's philosophy of operational technology. SRP governs the ACS substrate; CIA governs information. Six principles, plus the substrate principle they all depend on."
   current="philosophy"
+  ogCard="philosophy"
+  pageType="AboutPage"
 >
   <section class="phil-hero">
     <div class="container">
-      <p class="eyebrow mono">The Philosophy &middot; the Industrial Independence Alliance</p>
+      <p class="eyebrow mono">Pillar IV &middot; position</p>
       <h1 class="display">
-        Control systems<br />act on physics<span class="dot">.</span>
+        Our Philosophy<span class="dot">.</span>
       </h1>
       <p class="lede">
-        Not on information. The architecture follows from that distinction.
+        Control systems act on physics, not on information. The architecture follows from that distinction.
       </p>
       <p class="lede dim">
-        The Alliance publishes the principles that follow from this fact,
-        and the architecture that operationalizes them.
-        Read this page first; <a href="/architecture/">The Architecture</a> reads as the consequence.
+        How we think about the substrate <a href="/field/">The Field</a> works in,
+        the way around <a href="/problem/">The Problem</a>, and the grounding of <a href="/claim/">Our Claim</a>.
+        <a href="/architecture/">The Architecture</a> is the consequence.
       </p>
     </div>
   </section>
@@ -233,7 +235,12 @@ const principles = [
 
   <section class="lineage">
     <div class="container">
-      <p class="section-eyebrow mono">&sect; Lineage &amp; standards</p>
+      <p class="section-eyebrow mono">&sect; Prior art cited</p>
+      <p class="lineage-note">
+        Independent works the Alliance credits as the substrate its position is built on.
+        Infracritical, Entercon, ISA, and IEC are independent organizations.
+        None of them is affiliated with the Alliance or with each other.
+      </p>
       <ul class="lineage-list">
         <li>
           <strong>SRP Triad</strong> &mdash; Robert Radvanovsky / Infracritical.
@@ -258,6 +265,22 @@ const principles = [
         </li>
         <li>
           <strong>ISA-95</strong> &mdash; the canonical IT&harr;ACS data-modeling backbone.
+        </li>
+      </ul>
+
+      <p class="lineage-impl-eyebrow mono">&sect; Reference implementations</p>
+      <ul class="lineage-list lineage-impl">
+        <li>
+          <strong>MarlinSpike</strong> &mdash; the maintained, multi-user successor to NSA&rsquo;s GrassMarlin.
+          Open-source passive OT/ICS topology workbench. Captures in, zero packets out.
+          <a href="https://www.grassmarlin.com" rel="noopener">grassmarlin.com &rarr;</a>
+        </li>
+        <li>
+          <strong>Conversational Factory</strong> &mdash; read-only OT platform.
+          Wire-witness DPI across 34 protocols, medallion data lake,
+          i3X v1 + MCP query surface for operators and AI clients,
+          every answer bound to an append-only audit chain.
+          <a href="https://www.conversationalfactory.com" rel="noopener">conversationalfactory.com &rarr;</a>
         </li>
       </ul>
     </div>
@@ -504,6 +527,14 @@ const principles = [
 
   /* lineage */
   .lineage { padding: 4rem 0 5rem; }
+  .lineage-note {
+    font-size: 0.92rem;
+    color: var(--ink-soft);
+    line-height: 1.55;
+    margin: 0 0 1.6rem;
+    max-width: 70ch;
+    font-style: italic;
+  }
   .lineage-list {
     list-style: none;
     padding: 0;
@@ -520,6 +551,23 @@ const principles = [
     color: var(--ink-soft);
   }
   .lineage-list li:last-child { border-bottom: 1px solid var(--rule-soft); }
+  .lineage-impl-eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-size: 0.74rem;
+    color: var(--ink-mute);
+    margin: 2.4rem 0 0.8rem;
+  }
+  .lineage-impl li a {
+    display: inline-block;
+    margin-top: 0.2rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .lineage-impl li a:hover { text-decoration: underline; }
   .lineage-list strong { color: var(--ink); }
   .lineage-list a { color: var(--ink); }
   .lineage-list a:hover { color: var(--accent); }

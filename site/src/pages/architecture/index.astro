@@ -8,17 +8,18 @@ import TwoBoxDiagram from '../../components/diagrams/TwoBoxDiagram.astro';
 export const prerender = true;
 ---
 
-<Base title="The Architecture" description="Industrial Independence Architecture (IIA) — the architectural principle for industrial infrastructure. Published by the Industrial Independence Alliance." current="architecture">
+<Base title="The Architecture" description="Industrial Independence Architecture (IIA) — the architectural principle for industrial infrastructure. Published by the Industrial Independence Alliance." current="architecture" ogCard="architecture" pageType="Article">
   <section class="hero">
     <div class="container hero-grid">
       <div class="hero-text">
-        <p class="eyebrow mono">The Architecture &middot; how we built it</p>
+        <p class="eyebrow mono">Pillar V &middot; artifact</p>
         <h1 class="hero-title">
-          Industrial<br />Independence<br />Architecture<span class="dot">.</span>
+          The<br />Architecture<span class="dot">.</span>
         </h1>
         <p class="lede">
-          The architectural principle that operationalizes
-          <a href="/philosophy/"><strong>The Philosophy</strong></a>.
+          The technical spec that operationalizes
+          <a href="/claim/"><strong>Our Claim</strong></a> and
+          <a href="/philosophy/"><strong>Our Philosophy</strong></a>.
           One self-contained unit at every zone.
           Identical at every level. Scope is the only thing that changes.
         </p>
@@ -107,10 +108,87 @@ export const prerender = true;
 
   <hr class="rule" />
 
+  <section class="arch-impl">
+    <div class="container arch-impl-inner">
+      <p class="arch-impl-eyebrow mono">&sect; What it looks like in shipped software</p>
+      <div class="arch-impl-grid">
+        <a class="arch-impl-card" href="https://www.grassmarlin.com" rel="noopener">
+          <span class="arch-impl-label mono">MarlinSpike</span>
+          <span class="arch-impl-text">The modern GrassMarlin. Passive OT/ICS topology workbench &mdash; captures in, zero packets out.</span>
+          <span class="arch-impl-cta mono">grassmarlin.com &rarr;</span>
+        </a>
+        <a class="arch-impl-card" href="https://www.conversationalfactory.com" rel="noopener">
+          <span class="arch-impl-label mono">Conversational Factory</span>
+          <span class="arch-impl-text">Read-only OT platform. Wire-witness DPI across 34 protocols, i3X v1 &middot; MCP query surface for operators and AI clients.</span>
+          <span class="arch-impl-cta mono">conversationalfactory.com &rarr;</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
   <article class="prose container readme-body" id="readme">
     <Content />
   </article>
 </Base>
+
+<style>
+  .arch-impl {
+    padding: 2.4rem 0 3.4rem;
+    border-bottom: 1px solid var(--rule-soft);
+  }
+  .arch-impl-eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-size: 0.74rem;
+    color: var(--accent);
+    margin: 0 0 1.2rem;
+  }
+  .arch-impl-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border: 1px solid var(--rule-soft);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .arch-impl-card {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    gap: 0.5rem;
+    padding: 1.2rem 1.4rem;
+    text-decoration: none;
+    color: var(--ink);
+    border-right: 1px solid var(--rule-soft);
+    transition: background 160ms ease;
+    background: var(--bg-elev);
+  }
+  .arch-impl-card:last-child { border-right: 0; }
+  .arch-impl-card:hover { background: var(--accent-soft); }
+  .arch-impl-card:hover .arch-impl-cta { color: var(--accent); }
+  .arch-impl-label {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--accent);
+  }
+  .arch-impl-text {
+    font-size: 0.94rem;
+    color: var(--ink-soft);
+    line-height: 1.5;
+  }
+  .arch-impl-cta {
+    font-size: 0.74rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-mute);
+    transition: color 160ms ease;
+  }
+  @media (max-width: 720px) {
+    .arch-impl-grid { grid-template-columns: 1fr; }
+    .arch-impl-card { border-right: 0; border-bottom: 1px solid var(--rule-soft); }
+    .arch-impl-card:last-child { border-bottom: 0; }
+  }
+</style>
 
 <style>
   .hero {
