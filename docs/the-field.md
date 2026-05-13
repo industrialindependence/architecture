@@ -62,6 +62,11 @@ The operators are not doing anything wrong. They are doing the only thing left. 
 
 ### The Midstream Plant
 
+<figure class="field-figure">
+  <img src="/field/field-refinery.jpg" alt="Process plant towers against a blue sky" loading="lazy" />
+  <figcaption>A process plant of the kind referenced below. Specific facility unidentified.</figcaption>
+</figure>
+
 A midstream plant I visited carries a meaningful share of the natural gas that flows through one of the major regional pipelines. The primary computer controlling the plant was multi-homed when I saw it — one interface on the control network, one on a network with always-on internet. A free remote-support utility, of a kind commonly abused by attackers, was running on the computer at all times. The plant supervisor had configured it so he could check on the plant from a tablet while he was at home.
 
 The configuration was not malicious. The supervisor was responsible for plant uptime. He had a tool that let him watch the plant when he was not on site, and he used it. The fact that the tool was a popular remote-access utility with a long history of being abused was not his concern — his concern was being able to see what was happening when his phone rang at three in the morning.
@@ -71,6 +76,10 @@ This is not unusual. Most plants have intentionally installed backdoors so plant
 > What the architecture answers: the box has a remote-access role, with an outbound tunnel agent that dials out over mTLS to a broker the operator owns. There is no inbound listener on the IT NIC. The supervisor gets the tablet-at-home capability, and the architecture gets to authenticate the session, identify the principal, audit the access, and constrain what can be done. The supervisor stops needing the consumer remote-support utility, because the legitimate path actually works.
 
 ### Two AM
+
+<figure class="field-figure">
+  <img src="/field/field-plant-interior.jpg" alt="Industrial plant interior with steel stairs and ductwork" loading="lazy" />
+</figure>
 
 Production line goes down at two in the morning. The plant engineer suspects the network. The night-shift technician begins by pinging the addresses he knows, because pinging is what he knows how to do. He cannot reach the switch through a browser — the switch is HTTPS-only, or the port is non-standard, or his laptop's IP is wrong for the segment. He cannot reach the next switch either. He cannot find anyone who can answer the question of why.
 
@@ -100,6 +109,13 @@ The integrator that built the network had moved on. They had not documented the 
 
 ### The Plant Electricians
 
+<figure class="field-figure field-figure-row">
+  <img src="/field/field-coal-yard-winter.jpg" alt="Snow-covered coal stockpile with conveyor belts and shipping containers" loading="lazy" />
+  <img src="/field/field-plant-electricians.jpg" alt="Two workers in personal protective equipment servicing industrial equipment" loading="lazy" />
+  <img src="/field/field-bench-repair.jpg" alt="Disassembled electronic components and wiring on a workbench" loading="lazy" />
+  <figcaption>The operation, the people, the bench. The plant electricians broke equipment down to repair it rather than replacing it.</figcaption>
+</figure>
+
 The first deeply industrial site I worked at was a metallurgical coal operation in mountainous country, with a process plant, crusher, breaker, and rail loadout. Winters there hit thirty below. The drive to the nearest town with a hospital was hours either direction. The plant handled its own technology. Three plant electricians, eventually best friends. The best of the best.
 
 Their ability to troubleshoot anything — mechanical, electrical, network, whatever — was the kind you only find in people who have decided that fixing the thing is more interesting than waiting for someone else to fix it. They broke equipment down to repair it on the bench rather than replacing it. They could read a fault from a description over the two-way radio. They examined the *why* of every problem. They had hideouts throughout the job site — a shipping container in the corner of a yard with a lounge inside, an alcove formed by the warehouse wall and storage with a tarp and a grill — because they did not want to be involved with everyone else's bullshit, and they were treated as untouchable by the rest of the operation, and they were correct to be.
@@ -110,6 +126,11 @@ I had to earn their trust before they would let me help. Once I had it, we were 
 
 ### The Mountain Tech
 
+<figure class="field-figure">
+  <img src="/field/field-mountain-mine.jpg" alt="Mountain mine roads winding through alpine terrain" loading="lazy" />
+  <figcaption>The kind of country the mountain tech drove service trucks to. Not the specific site.</figcaption>
+</figure>
+
 The IT technician at one of the sister sites in that same coal operation was about twenty years older than I was. She handled most of the help desk and IT work for the local operations. Half her job was driving service trucks to remote sites in weather that would have stopped most people from leaving the house. She was a long-time local, one of very few. She had grown up the daughter of a hunting guide and trapper, living in the bush without electricity for a significant portion of her upbringing. She was, and remains, smart as hell at every aspect of the work.
 
 I tried to replace another colleague who left not long after I arrived. I could not. I never found anyone before the mine went bankrupt. The reason was simple, and it is the same reason most plants do not have on-site technical staff. IT people do not want to work in the mountains. They do not want to off-road to a mine in a blizzard. They do not want to climb a ninety-foot roof to install a wireless bridge. They do not want surly operators smoking cigarettes and cussing them out while they work. They want stable power, multiple internet connections, a comfortable chair, and a wide SLA. To the right person, the mine is heaven. To most IT hires, it is a nightmare.
@@ -119,6 +140,11 @@ She was the exception that proved the rule. She had IT skills and operational te
 > What the architecture answers: the architecture is for the people who are already in the mountains. It does not assume an office. It does not assume always-on backhaul. It does not assume a help desk down the hall. It assumes one person, on site, with the tools to do the work themselves and the documentation to do it correctly. It assumes the network has to be legible to whoever walks up to it. The architecture is what gets handed to those operators, and the architecture is what works in their hands.
 
 ### The Senior Control System Engineer
+
+<figure class="field-figure">
+  <img src="/field/field-control-room.jpg" alt="Vintage industrial control room console with process schematic" loading="lazy" />
+  <figcaption>A control room of the kind whose configuration only exists in one engineer's head.</figcaption>
+</figure>
 
 Almost every plant has one. He configured the switches when the line was built, knows where the cables go, knows which interlocks are spanning which segments. When the line goes down at two in the morning, he is who gets called. He is also the single point of failure. If he is on vacation, the call goes to whoever is willing to pick up the phone, and the phone often does not get picked up.
 
@@ -131,6 +157,11 @@ He is not a hero by choice. He is a hero by accumulation. Twenty years of being 
 ## Part III — The Organizational Reality
 
 ### The Invisible Infrastructure
+
+<figure class="field-figure">
+  <img src="/field/field-automotive-line.jpg" alt="Vehicle chassis on an automotive assembly conveyor" loading="lazy" />
+  <figcaption>An automotive line of the kind whose two hundred long-distance interlocks ride invisible IT-owned infrastructure.</figcaption>
+</figure>
 
 The canonical EtherNet/IP design guide for discrete manufacturing — *The Everyman's Guide to EtherNet/IP Network Design*, by John Rinaldi and Gary Workman, drawn from Workman's career architecting control networks at a major automotive manufacturer — argues strongly against VLANs in control networks. The book says VLANs make things more difficult to configure and maintain. Its own implementation examples, however, include automotive plants with two hundred or more long-distance interlocks spanning a square mile, with EtherNet/IP traffic given priority guarantees across the enterprise network.
 

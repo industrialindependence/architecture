@@ -35,6 +35,16 @@ const tocHeadings = headings.filter((h) => h.depth === 2);
     </div>
   </section>
 
+  <figure class="field-hero">
+    <img
+      src="/field/field-conveyor-bridge.jpg"
+      alt="Underside of industrial conveyor bridges against an evening sky"
+      width="1600"
+      height="900"
+      fetchpriority="high"
+    />
+  </figure>
+
   <div class="pillar-shell container">
     {tocHeadings.length > 0 && (
       <aside class="pillar-side">
@@ -50,6 +60,27 @@ const tocHeadings = headings.filter((h) => h.depth === 2);
       <Content />
     </article>
   </div>
+
+  <section class="field-mosaic-section">
+    <div class="container">
+      <p class="mosaic-eyebrow mono">From the field</p>
+      <div class="field-mosaic">
+        <figure>
+          <img src="/field/field-tailings-pond.jpg" alt="Open-pit mine with a turquoise frozen tailings pond" loading="lazy" />
+        </figure>
+        <figure>
+          <img src="/field/field-winter-plant.jpg" alt="Winter processing plant in a mountain valley" loading="lazy" />
+        </figure>
+        <figure>
+          <img src="/field/field-dragline.jpg" alt="Dragline excavator working in snow" loading="lazy" />
+        </figure>
+      </div>
+      <p class="mosaic-caption">
+        Where the architecture is shaped. Author's own photographs; specific
+        facilities, geographies, and personnel are deliberately not identified.
+      </p>
+    </div>
+  </section>
 
   <section class="pillar-next">
     <div class="container">
@@ -106,6 +137,22 @@ const tocHeadings = headings.filter((h) => h.depth === 2);
     margin: 0 0 0.9rem;
   }
   .lede.dim { color: var(--ink-soft); font-size: 1.04rem; }
+
+  .field-hero {
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--rule-soft);
+    border-bottom: 1px solid var(--rule-soft);
+    background: var(--bg);
+  }
+  .field-hero img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 62vh;
+    object-fit: cover;
+    object-position: center 55%;
+  }
 
   .pillar-shell {
     display: grid;
@@ -171,6 +218,86 @@ const tocHeadings = headings.filter((h) => h.depth === 2);
     font-style: normal;
   }
   .pillar-body :global(blockquote strong) { color: var(--accent); }
+
+  .pillar-body :global(figure.field-figure) {
+    margin: 2.2rem 0 2rem;
+    padding: 0;
+  }
+  .pillar-body :global(figure.field-figure img) {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--rule-soft);
+    background: var(--bg-elev);
+  }
+  .pillar-body :global(figure.field-figure figcaption) {
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-mute);
+    margin-top: 0.7rem;
+    line-height: 1.5;
+  }
+  .pillar-body :global(figure.field-figure-row) {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.6rem;
+  }
+  .pillar-body :global(figure.field-figure-row img) {
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+  }
+  .pillar-body :global(figure.field-figure-row figcaption) {
+    grid-column: 1 / -1;
+  }
+  @media (max-width: 720px) {
+    .pillar-body :global(figure.field-figure-row) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .field-mosaic-section {
+    padding: 3.4rem 0 1.4rem;
+    border-top: 1px solid var(--rule-soft);
+    background: var(--bg);
+  }
+  .mosaic-eyebrow {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--ink-mute);
+    margin: 0 0 1.2rem;
+  }
+  .field-mosaic {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.8rem;
+  }
+  .field-mosaic figure {
+    margin: 0;
+  }
+  .field-mosaic img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border: 1px solid var(--rule-soft);
+  }
+  .mosaic-caption {
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-mute);
+    margin: 1.1rem 0 0;
+    max-width: 70ch;
+    line-height: 1.55;
+  }
+  @media (max-width: 720px) {
+    .field-mosaic { grid-template-columns: 1fr; }
+  }
 
   .pillar-next {
     padding: 4rem 0 5rem;
