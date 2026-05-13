@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import FractalDiagram from '../components/diagrams/FractalDiagram.astro';
+import PillarIcon from '../components/PillarIcon.astro';
 
 export const prerender = true;
 ---
@@ -42,7 +43,10 @@ export const prerender = true;
       <ol class="pillar-row pillar-row-diag">
         <li>
           <a href="/field/" class="pillar-card">
-            <span class="pillar-num mono">I &middot; observation</span>
+            <span class="pillar-head">
+              <PillarIcon pillar="field" size={26} />
+              <span class="pillar-num mono">I &middot; observation</span>
+            </span>
             <h2 class="pillar-title">The Field<span class="dot">.</span></h2>
             <p class="pillar-blurb">
               Where operations works. Specific kinds of places, specific kinds of people,
@@ -53,7 +57,10 @@ export const prerender = true;
         </li>
         <li>
           <a href="/problem/" class="pillar-card">
-            <span class="pillar-num mono">II &middot; observation</span>
+            <span class="pillar-head">
+              <PillarIcon pillar="problem" size={26} />
+              <span class="pillar-num mono">II &middot; observation</span>
+            </span>
             <h2 class="pillar-title">The Problem<span class="dot">.</span></h2>
             <p class="pillar-blurb">
               What stands in the way. The market, IT, and the field's own gatekeepers.
@@ -64,7 +71,10 @@ export const prerender = true;
         </li>
         <li>
           <a href="/claim/" class="pillar-card">
-            <span class="pillar-num mono">III &middot; position</span>
+            <span class="pillar-head">
+              <PillarIcon pillar="claim" size={26} />
+              <span class="pillar-num mono">III &middot; position</span>
+            </span>
             <h2 class="pillar-title">Our Claim<span class="dot">.</span></h2>
             <p class="pillar-blurb">
               What operations is owed. What must be owned, taken back, formalized.
@@ -78,7 +88,10 @@ export const prerender = true;
       <ol class="pillar-row pillar-row-resp" start="4">
         <li>
           <a href="/philosophy/" class="pillar-card pillar-card-wide">
-            <span class="pillar-num mono">IV &middot; position</span>
+            <span class="pillar-head">
+              <PillarIcon pillar="philosophy" size={28} />
+              <span class="pillar-num mono">IV &middot; position</span>
+            </span>
             <h2 class="pillar-title">Our Philosophy<span class="dot">.</span></h2>
             <p class="pillar-blurb">
               How we think about the substrate. SRP &mdash; Safety, Reliability, Performance &mdash;
@@ -93,7 +106,10 @@ export const prerender = true;
         </li>
         <li>
           <a href="/architecture/" class="pillar-card pillar-card-wide">
-            <span class="pillar-num mono">V &middot; artifact</span>
+            <span class="pillar-head">
+              <PillarIcon pillar="architecture" size={28} />
+              <span class="pillar-num mono">V &middot; artifact</span>
+            </span>
             <h2 class="pillar-title">The Architecture<span class="dot">.</span></h2>
             <p class="pillar-blurb">
               Industrial Independence Architecture (IIA).
@@ -101,7 +117,7 @@ export const prerender = true;
               Identical at every level. Scope is the only thing that changes.
             </p>
             <ul class="pillar-meta mono">
-              <li>The box &middot; the fractal &middot; data contracts</li>
+              <li>Secure edge gateway &middot; the fractal &middot; data contracts</li>
               <li>SL3 floor &middot; SL4 via hardware diode</li>
               <li>IEC&nbsp;62443 &middot; ISA-95 &middot; CESMII&nbsp;i3X</li>
             </ul>
@@ -271,12 +287,18 @@ export const prerender = true;
   }
   .pillar-card:hover { background: var(--accent-soft); }
   .pillar-card:hover .pillar-cta { color: var(--accent); }
+  .pillar-head {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    margin: 0 0 0.7rem;
+  }
   .pillar-num {
     font-size: 0.7rem;
     text-transform: uppercase;
     letter-spacing: 0.16em;
     color: var(--accent);
-    margin: 0 0 0.4rem;
+    margin: 0;
   }
   .pillar-title {
     font-size: clamp(1.5rem, 1.8vw + 0.4rem, 2rem);

@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import { getEntry, render } from 'astro:content';
+import PillarIcon from '../components/PillarIcon.astro';
 
 export const prerender = true;
 
@@ -20,7 +21,7 @@ const tocHeadings = headings.filter((h) => h.depth === 2);
 >
   <section class="pillar-hero">
     <div class="container pillar-hero-inner">
-      <p class="eyebrow mono">Pillar I &middot; observation</p>
+      <p class="eyebrow mono"><span class="eyebrow-icon"><PillarIcon pillar="field" size={22} /></span>Pillar I &middot; observation</p>
       <h1 class="display">
         The Field<span class="dot">.</span>
       </h1>
@@ -119,6 +120,13 @@ const tocHeadings = headings.filter((h) => h.depth === 2);
     color: var(--accent);
     margin: 0 0 1.4rem;
     font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .eyebrow-icon {
+    display: inline-flex;
+    line-height: 0;
   }
   .display {
     font-size: clamp(2.4rem, 5.5vw + 0.4rem, 4.4rem);

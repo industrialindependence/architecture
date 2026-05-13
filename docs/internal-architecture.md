@@ -1,6 +1,8 @@
 # Internal Architecture
 
-This document describes what runs inside an IIA box: the role inventory, the partitioning, the boundary invariants, the workload identity model, the audit posture, the deployment modes that map to IEC 62443 security levels, and the candidate implementations operators might select.
+This document describes what runs inside the IIA **secure edge gateway** (colloquially: the box): the role inventory, the partitioning, the boundary invariants, the workload identity model, the audit posture, the physical realizations that map to IEC 62443 security levels, and the candidate implementations operators might select.
+
+Throughout this document, "the secure edge gateway," "the gateway," "the box," and "the unit" refer to the same architectural element. *Secure edge gateway* is the canonical name; the shorter forms are used freely in body prose where it reads naturally.
 
 The architecture spec names **roles** and the **contracts** they satisfy. It does not name products. Operators select implementations to fit their operational requirements (license posture, resource envelope, vendor relationships, audit evidence). The non-normative *Reference Implementations* appendix at the end lists candidate software per role.
 
@@ -46,7 +48,7 @@ The architecture aligns with PERA+ (pera.net, Gary Rathwell, Entercon, CC BY-SA 
 
 ## Physical Realizations
 
-The architecture is logical. "The box" is a role-aggregate at a zone boundary, realizable at any scale the operator's scope demands:
+The architecture is logical. The secure edge gateway is a role-aggregate at a zone boundary, realizable at any scale the operator's scope demands:
 
 - **Commodity-hardware appliance** (the small-shop realization). Single chassis. Sized to the workload of the zone.
 - **Multi-host stack.** Broker on its own machine, capture and lake on another, IDS on another. Useful at plant or site scope.
@@ -60,14 +62,16 @@ The commodity-hardware appliance is positioned the way it is because IIA's acces
 
 ## Security Level Targets
 
-| Mode | SL Target | Topology |
+The secure edge gateway has two physical realizations, governed by the same software architecture.
+
+| Realization | SL Target | Topology |
 |---|---|---|
-| Software-only | SL3 | Single IIA box at the cell boundary. ACS-facing NIC passive. Internal three-side partitioning (inbound / DMZ / outbound) with default-deny conduits, mTLS at every internal hop. Push-only outbound on operator-selected edge profile, structured query API on mTLS for pull. No HTTP at the boundary. |
-| Two-box + diode | SL4 | One IIA box ACS-side, hardware data diode, one IIA box IT-side, physical one-way separation from the external consumer. Same software, same configuration model. |
+| **Single-box** (the floor) | SL3 | One IIA unit at the cell boundary. ACS-facing NIC passive. Internal three-side partitioning (inbound / DMZ / outbound) with default-deny conduits, mTLS at every internal hop. Push-only outbound on operator-selected edge profile, structured query API on mTLS for pull. No HTTP at the boundary. |
+| **Two-box + diode** (the ideal) | SL4 | The **inside box** on the ACS side. A hardware data diode between. The **outside box** (the **outside subscriber**) on the IT side. The inside box publishes to the outside subscriber across the diode; consumers access the outside subscriber, never the inside. Same software, same configuration model. |
 
 SL3 does not promise unidirectional flow. SL3 promises a hardened, segmented, authenticated, audited boundary. Bidirectional channels exist at SL3 (the structured query API listener on the IT NIC, the outbound mTLS tunnel reverse-dial) — they are firewalled, identified, and recorded.
 
-SL4 is reachable only with hardware diode and physical separation. No software-only deployment claims SL4. Anyone who claims otherwise is wrong.
+SL4 is reachable only with hardware diode and physical separation. No single-box deployment claims SL4. Anyone who claims otherwise is wrong.
 
 SL1 and SL2 are not separate products. They are SL3 with controls relaxed by deployment policy. The architecture does not change.
 
@@ -658,24 +662,27 @@ To push the same update to a fleet, repeat steps 2–8 with approvals issued per
 | FR6 | Timely Response to Events | Network IDS with current rule sets; audit chain head publishes every minute; alerts as `ot.security.*`; broker-side runbook automation. |
 | FR7 | Resource Availability | Per-zone resource limits; supervisor dependency graph; atomic update rollback; 30-day local buffer for disconnected operation; redundant broker at broader scope. |
 
-## SL4 Two-Box Deployment
+## SL4 Two-Box + Diode Realization (the ideal)
+
+The two-box + diode realization is the architecturally preferred configuration where the deployment can support it. The same secure edge gateway is split across two physical units with a hardware data diode between them; consumers access the outside subscriber and never the inside box.
 
 **Topology:**
 
 ```
-   ACS-side IIA box ───► hardware data diode ───► IT-side IIA box ───► external consumer
-   (passive collection,     (TX-only fiber,           (publishes north,    (with physical
-    capture, witness,        RX-only fiber,            no return path        one-way separation)
-    lake, audit)             no return path)           to ACS side)
+   inside box ─────► hardware data diode ─────► outside subscriber ─────► consumer
+   (ACS-side:           (TX-only fiber,            (IT-side outside box:     (with physical
+    witness, active      RX-only fiber,             receives diode stream,    one-way separation)
+    poll, historian,     no return path)            publishes north)
+    audit)
 ```
 
-**Configuration delta from SL3:**
+**Configuration delta from the single-box (SL3) realization:**
 
-- ACS-side box: `ot.it.publish` configured to send over a diode-friendly transport (typically UDP with FEC; TCP cannot survive a diode); no inbound conduits on the IT-side NIC; `ot.it.tunnel` and `ot.mgmt.ui` removed (no remote access into the ACS-side box; all operator access lands on the IT-side box).
-- IT-side box: `ot.acs.*` zones are empty or minimal (no PLCs to collect from; observation already happened on the ACS side); receives the diode stream into `ot.acs.diode_in`; passes through to `ot.dmz.bus` and `ot.acs.lake`.
+- **Inside box** (ACS-side): `ot.it.publish` configured to send over a diode-friendly transport (typically UDP with FEC; TCP cannot survive a diode); no inbound conduits on the IT-side NIC; `ot.it.tunnel` and `ot.mgmt.ui` removed (no remote access into the inside box; all operator access lands on the outside subscriber).
+- **Outside subscriber** (IT-side): `ot.acs.*` zones are empty or minimal (no PLCs to collect from; witness and active poll already happened on the inside box); receives the diode stream into `ot.acs.diode_in`; passes through to `ot.dmz.bus` and `ot.acs.lake`.
 - The diode appliance is not part of the IIA software stack; IIA configures itself to operate correctly across one.
 
-The architecture does not change. The same workload definitions, the same partitioning, the same audit chain. Only the network configuration and the absence of a few zones change between the two boxes.
+The architecture does not change. The same workload definitions, the same partitioning, the same audit chain. Only the network configuration and the absence of a few zones change between the inside box and the outside subscriber.
 
 ## Reference Implementations (non-normative)
 

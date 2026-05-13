@@ -1031,7 +1031,9 @@ _The canonical implementation specification. Invariants, partitioning, contracts
 
 # Internal Architecture
 
-This document describes what runs inside an IIA box: the role inventory, the partitioning, the boundary invariants, the workload identity model, the audit posture, the deployment modes that map to IEC 62443 security levels, and the candidate implementations operators might select.
+This document describes what runs inside the IIA **secure edge gateway** (colloquially: the box): the role inventory, the partitioning, the boundary invariants, the workload identity model, the audit posture, the physical realizations that map to IEC 62443 security levels, and the candidate implementations operators might select.
+
+Throughout this document, "the secure edge gateway," "the gateway," "the box," and "the unit" refer to the same architectural element. *Secure edge gateway* is the canonical name; the shorter forms are used freely in body prose where it reads naturally.
 
 The architecture spec names **roles** and the **contracts** they satisfy. It does not name products. Operators select implementations to fit their operational requirements (license posture, resource envelope, vendor relationships, audit evidence). The non-normative *Reference Implementations* appendix at the end lists candidate software per role.
 
@@ -1077,7 +1079,7 @@ The architecture aligns with PERA+ (pera.net, Gary Rathwell, Entercon, CC BY-SA 
 
 ## Physical Realizations
 
-The architecture is logical. "The box" is a role-aggregate at a zone boundary, realizable at any scale the operator's scope demands:
+The architecture is logical. The secure edge gateway is a role-aggregate at a zone boundary, realizable at any scale the operator's scope demands:
 
 - **Commodity-hardware appliance** (the small-shop realization). Single chassis. Sized to the workload of the zone.
 - **Multi-host stack.** Broker on its own machine, capture and lake on another, IDS on another. Useful at plant or site scope.
@@ -1091,14 +1093,16 @@ The commodity-hardware appliance is positioned the way it is because IIA's acces
 
 ## Security Level Targets
 
-| Mode | SL Target | Topology |
+The secure edge gateway has two physical realizations, governed by the same software architecture.
+
+| Realization | SL Target | Topology |
 |---|---|---|
-| Software-only | SL3 | Single IIA box at the cell boundary. ACS-facing NIC passive. Internal three-side partitioning (inbound / DMZ / outbound) with default-deny conduits, mTLS at every internal hop. Push-only outbound on operator-selected edge profile, structured query API on mTLS for pull. No HTTP at the boundary. |
-| Two-box + diode | SL4 | One IIA box ACS-side, hardware data diode, one IIA box IT-side, physical one-way separation from the external consumer. Same software, same configuration model. |
+| **Single-box** (the floor) | SL3 | One IIA unit at the cell boundary. ACS-facing NIC passive. Internal three-side partitioning (inbound / DMZ / outbound) with default-deny conduits, mTLS at every internal hop. Push-only outbound on operator-selected edge profile, structured query API on mTLS for pull. No HTTP at the boundary. |
+| **Two-box + diode** (the ideal) | SL4 | The **inside box** on the ACS side. A hardware data diode between. The **outside box** (the **outside subscriber**) on the IT side. The inside box publishes to the outside subscriber across the diode; consumers access the outside subscriber, never the inside. Same software, same configuration model. |
 
 SL3 does not promise unidirectional flow. SL3 promises a hardened, segmented, authenticated, audited boundary. Bidirectional channels exist at SL3 (the structured query API listener on the IT NIC, the outbound mTLS tunnel reverse-dial) — they are firewalled, identified, and recorded.
 
-SL4 is reachable only with hardware diode and physical separation. No software-only deployment claims SL4. Anyone who claims otherwise is wrong.
+SL4 is reachable only with hardware diode and physical separation. No single-box deployment claims SL4. Anyone who claims otherwise is wrong.
 
 SL1 and SL2 are not separate products. They are SL3 with controls relaxed by deployment policy. The architecture does not change.
 
@@ -1689,24 +1693,27 @@ To push the same update to a fleet, repeat steps 2–8 with approvals issued per
 | FR6 | Timely Response to Events | Network IDS with current rule sets; audit chain head publishes every minute; alerts as `ot.security.*`; broker-side runbook automation. |
 | FR7 | Resource Availability | Per-zone resource limits; supervisor dependency graph; atomic update rollback; 30-day local buffer for disconnected operation; redundant broker at broader scope. |
 
-## SL4 Two-Box Deployment
+## SL4 Two-Box + Diode Realization (the ideal)
+
+The two-box + diode realization is the architecturally preferred configuration where the deployment can support it. The same secure edge gateway is split across two physical units with a hardware data diode between them; consumers access the outside subscriber and never the inside box.
 
 **Topology:**
 
 ```
-   ACS-side IIA box ───► hardware data diode ───► IT-side IIA box ───► external consumer
-   (passive collection,     (TX-only fiber,           (publishes north,    (with physical
-    capture, witness,        RX-only fiber,            no return path        one-way separation)
-    lake, audit)             no return path)           to ACS side)
+   inside box ─────► hardware data diode ─────► outside subscriber ─────► consumer
+   (ACS-side:           (TX-only fiber,            (IT-side outside box:     (with physical
+    witness, active      RX-only fiber,             receives diode stream,    one-way separation)
+    poll, historian,     no return path)            publishes north)
+    audit)
 ```
 
-**Configuration delta from SL3:**
+**Configuration delta from the single-box (SL3) realization:**
 
-- ACS-side box: `ot.it.publish` configured to send over a diode-friendly transport (typically UDP with FEC; TCP cannot survive a diode); no inbound conduits on the IT-side NIC; `ot.it.tunnel` and `ot.mgmt.ui` removed (no remote access into the ACS-side box; all operator access lands on the IT-side box).
-- IT-side box: `ot.acs.*` zones are empty or minimal (no PLCs to collect from; observation already happened on the ACS side); receives the diode stream into `ot.acs.diode_in`; passes through to `ot.dmz.bus` and `ot.acs.lake`.
+- **Inside box** (ACS-side): `ot.it.publish` configured to send over a diode-friendly transport (typically UDP with FEC; TCP cannot survive a diode); no inbound conduits on the IT-side NIC; `ot.it.tunnel` and `ot.mgmt.ui` removed (no remote access into the inside box; all operator access lands on the outside subscriber).
+- **Outside subscriber** (IT-side): `ot.acs.*` zones are empty or minimal (no PLCs to collect from; witness and active poll already happened on the inside box); receives the diode stream into `ot.acs.diode_in`; passes through to `ot.dmz.bus` and `ot.acs.lake`.
 - The diode appliance is not part of the IIA software stack; IIA configures itself to operate correctly across one.
 
-The architecture does not change. The same workload definitions, the same partitioning, the same audit chain. Only the network configuration and the absence of a few zones change between the two boxes.
+The architecture does not change. The same workload definitions, the same partitioning, the same audit chain. Only the network configuration and the absence of a few zones change between the inside box and the outside subscriber.
 
 ## Reference Implementations (non-normative)
 
@@ -2443,6 +2450,8 @@ Standards and protocols are listed where they carry architectural weight in IIA.
 
 **ACS.** Automation and Control Systems. The domain where data acts on or controls a physical process. Governed by SRP. The line between ACS and IT is drawn by the criticality of the data — its time sensitivity and its relationship to the physical process — not by network topology, org chart, or vendor label.
 
+**Active poll.** A method by which the secure edge gateway acquires data from devices inside the zone: the gateway opens a session with the device — typically over a control-network protocol the device speaks (Modbus, EtherNet/IP, OPC UA, S7, etc.) — and reads tags, registers, or state on a configured cadence. Active poll requires the device to permit it and the operator to authorize it (credentials, allowed scopes). Where active poll is unavailable (the device does not support it, refuses, or cannot be safely interrupted), *witness* (passive observation) is the floor. Both feed the decentralized historian.
+
 **Adherence telemetry.** The receipts a box emits proving how well a contract is being held — by the box and by the upstream consumer. Records connectivity, delivery, authentication, schema, quota, reconciliation, audit verification, SLA breaches, and contract violations. Emitted under `ot.contract.*`. Architecture specifies the shape; operator publishes the values.
 
 **Approval artifact.** A signed authorization that permits specific boxes to apply specific staged updates within specific time windows. Supports per-box, per-fleet, two-person integrity (FR2 SR 2.4), and maintenance-window-conditional rollouts. Rollout strategy — canary, percentage, per-zone, per-plant — is operator policy expressed via which approval artifacts get issued to which boxes when.
@@ -2470,6 +2479,8 @@ Standards and protocols are listed where they carry architectural weight in IIA.
 **CIAD.** Control and Information Architecture Diagram. PERA+'s conceptual block diagram drawn during Conceptual Engineering. IIA reference deployments use CIADs to communicate architecture at the conceptual level.
 
 **CIND.** Control and Information Network Diagram. PERA+'s network detail diagram drawn during Preliminary Engineering, with SL1–SL4 annotations. IIA reference deployments use CINDs to communicate network detail.
+
+**Consumer.** The recipient of information published by a secure edge gateway. Two kinds, and only two: (1) **another gateway at broader scope** — the fractal case, where a zone gateway publishes to a plant gateway, a plant gateway publishes to a site gateway, and so on; (2) **an authorized external system** — an enterprise application, a BI/analytics lake, an AI/ML platform, a regulator-facing dashboard, a partner integration. Both kinds connect to the gateway's outbound interface (the outside subscriber in the two-box realization). Neither reaches back into the zone — the gateway is the only access in or out. The operator authorizes each consumer explicitly via the contract catalog; uncontracted consumers do not exist on the wire.
 
 **Configuration as signed artifact.** The box accepts configuration only as a signed, constrained-grammar text document consumed by a parser, never as a live API. Same pattern as image admission and OS updates. The management UI is a text generator with no privileged access. The parser is the trust boundary. The applier is a gated internal call set that executes when a verified-and-validated artifact is staged, then exits. The box has no live mutation channels — image, OS, and configuration are all artifact-in flows. Pattern is GitOps for an air-gapped industrial appliance.
 
@@ -2524,6 +2535,8 @@ Standards and protocols are listed where they carry architectural weight in IIA.
 **Two-Box Method.** The canonical articulation of physically enforced ACS/IT segmentation: two boxes and a hardware data diode. Documented by John Rinaldi and Gary Workman in *The Everyman's Guide to EtherNet/IP Network Design* (Real Time Automation, 2022, ISBN 9798839986152), drawn from Workman's experience architecting EtherNet/IP networks at General Motors. IIA generalizes the pattern in software at SL3 and deploys natively into it at SL4.
 
 **Update orchestration (fractal).** Each box at broader scope manages its children's updates: publishes intended-state manifest (OS image hash, config hash, rule-set hashes, approval artifacts), receives reported state (running hashes, attestation, audit). No global update server; the fleet's source of truth lives at whatever scope the operator manages from. Children pull manifests on a cadence, reconcile to declared state, and report back. Pull-only, mTLS, no inbound listener, no outbound HTTP. Disconnected boxes converge on intended state when reconnected, at operator pace via still-valid approvals.
+
+**Witness.** The secure edge gateway's passive observation role on the ACS substrate. The ACS-facing NIC is RX-only (no IP stack transmit, no listeners); it observes traffic via mirror port, network tap, or equivalent passive capture. Witness produces records from what it sees on the wire — protocol headers, packet flows, control-network conversations, broadcast traffic. Unlike *active poll*, witness requires no cooperation from the devices in the zone and cannot be refused. **Witness is the floor**: it is always available and is what makes brownfield deployment viable on substrates where active poll is impossible or unsafe. Active poll is added on top where the device permits and the operator authorizes. Both feed the decentralized historian. Role identifier: `ot.acs.witness`.
 
 **Zenoh.** Eclipse open-source pub/sub plus queryable plus federated-router protocol. Distinctive in IIA because it can fill multiple roles on one protocol: edge publisher (pub/sub), structured query API (queryables), in-flight bus, and inter-box mesh substrate (cross-scope routing across the fractal). No rebirth-storm or QoS-1/2-degraded-integrity pathology. Apache 2.0.
 
