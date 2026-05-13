@@ -41,10 +41,32 @@ export function withLocale(pathname: string, locale: Locale): string {
 }
 
 export function detectLocale(request: Request, cookieLocale?: string | null): Locale {
+  // 1. Explicit cookie always wins — the user has chosen.
   const explicit = normalizeLocale(cookieLocale);
   if (cookieLocale === 'fr' || cookieLocale === 'en') return explicit;
 
   const headers = request.headers;
+  const acceptLanguage = headers.get('accept-language');
+
+  // 2. Explicit Accept-Language preference (browser/OS choice) takes priority over geo.
+  //    This is what stops an English-Canadian or English-Cameroonian from being silently
+  //    redirected to /fr/ just because the country happens to be on the Francophone list.
+  if (acceptLanguage) {
+    const langs = acceptLanguage.toLowerCase();
+    // Pull the first non-wildcard preference; "*" / "und" don't count as explicit.
+    const firstPref = langs.split(',')[0]?.split(';')[0]?.trim();
+    if (firstPref && firstPref !== '*' && firstPref !== 'und') {
+      if (firstPref.startsWith('fr')) return 'fr';
+      if (firstPref.startsWith('en')) return 'en';
+      // Some other primary language — fall through to geo (e.g., Arabic-speaking
+      // Algerian user with ar-DZ; geo will route them to /fr/ since DZ is a
+      // Francophone-administered country and French is the lingua franca of the
+      // local industrial sector).
+    }
+  }
+
+  // 3. Geo header fallback when no explicit language preference. Order of header
+  //    inspection covers the common edge / proxy / CDN injections.
   const country =
     headers.get('x-vercel-ip-country') ??
     headers.get('cf-ipcountry') ??
@@ -54,7 +76,8 @@ export function detectLocale(request: Request, cookieLocale?: string | null): Lo
 
   if (isFrenchCountry(country)) return 'fr';
 
-  const acceptLanguage = headers.get('accept-language');
+  // 4. Last-resort Accept-Language scan for any French tag anywhere (e.g.,
+  //    "en-US,fr;q=0.5" where French is a secondary preference).
   if (acceptLanguage && /(^|,|;)\s*fr([-_][A-Z]{2})?/i.test(acceptLanguage)) {
     return 'fr';
   }
