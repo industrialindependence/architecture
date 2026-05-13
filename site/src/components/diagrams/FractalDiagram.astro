@@ -15,14 +15,17 @@
   >
     <title id="fractal-title">The Fractal — a box at the head of every zone, the secure edge gateway</title>
     <desc id="fractal-desc">
-      Two-pane diagram. Left pane shows the internal anatomy of one box: inbound, internal DMZ,
-      outbound, and management partitions, with a local lake as source of truth. Right pane shows
-      the deployment rule: every zone has a box at its head, which is the secure edge gateway.
-      Devices inside the zone can be any security level — legacy SCADA, modern PLCs, IoT sensors —
-      because the security boundary lives at the box, not at every device. Inside the zone is
-      control system data under SRP; at the box, the data becomes information governed by CIA,
-      published securely outbound to whatever the consumers are: internet, plant, partner,
-      regulator. The unit is identical at every zone; the operator defines what counts as a zone.
+      Two-pane diagram. Left pane shows the internal anatomy of one secure edge gateway:
+      inbound, internal DMZ, outbound, and management partitions, with a local lake — the
+      decentralized historian — as source of truth. Right pane shows the deployment rule:
+      every zone has a gateway at its head. Inside the zone are pools of data (process,
+      device telemetry, network, asset inventory, event streams, topology) fed by the
+      gateway's witness (passive) and active poll. Devices contributing to those pools can
+      be any security level; the security boundary lives at the gateway, not at every
+      device. The gateway publishes information governed by CIA outbound through a secure
+      conduit (with a hardware data diode in the SL4 ideal realization) to whatever the
+      zone's consumers are. The gateway is identical at every zone; the operator defines
+      what counts as a zone.
     </desc>
 
     <defs>
@@ -32,6 +35,13 @@
       <marker id="frac-arrow-neutral" markerWidth="7" markerHeight="7" refX="5" refY="2.5" orient="auto">
         <path d="M0,0 L0,5 L7,2.5 z" fill="var(--ink-soft)" />
       </marker>
+      <!-- Diode glyph: triangle pointing up with a bar above (no return path) -->
+      <symbol id="frac-diode" viewBox="0 0 28 28">
+        <path d="M 4 22 L 24 22 L 14 6 Z"
+          fill="var(--bg-elev)" stroke="var(--accent)" stroke-width="1.6" stroke-linejoin="round" />
+        <line x1="4" y1="3" x2="24" y2="3"
+          stroke="var(--accent)" stroke-width="2" stroke-linecap="round" />
+      </symbol>
     </defs>
 
     <!-- ===== HEADER ===== -->
@@ -101,10 +111,16 @@
       <text x="448" y="128" class="depl-band-label">CONSUMERS</text>
       <text x="448" y="140" class="depl-band-note">internet &middot; plant &middot; partner &middot; regulator &middot; whoever</text>
 
-      <!-- Arrow up from box to consumers + label -->
-      <line x1="599" y1="198" x2="599" y2="150" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#frac-arrow-up)" />
-      <text x="668" y="174" class="depl-flow-label">information (CIA)</text>
-      <text x="668" y="186" class="depl-flow-sub">mTLS &middot; signed &middot; audited</text>
+      <!-- Lower segment: from box up to just below diode glyph -->
+      <line x1="599" y1="198" x2="599" y2="186" stroke="var(--accent)" stroke-width="1.5" />
+      <!-- Diode glyph on the secure conduit -->
+      <use href="#frac-diode" x="585" y="156" width="28" height="28" />
+      <!-- Upper segment: from just above diode up to consumers band -->
+      <line x1="599" y1="156" x2="599" y2="150" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#frac-arrow-up)" />
+
+      <text x="624" y="166" class="depl-flow-label">secure conduit</text>
+      <text x="624" y="178" class="depl-flow-sub">information (CIA) &middot; mTLS &middot; signed</text>
+      <text x="624" y="190" class="depl-flow-sub">SL4 ideal: hardware diode, no return path</text>
 
       <!-- ==== Box (the secure edge gateway, at the head of the zone) ==== -->
       <rect x="538" y="198" width="124" height="50" rx="2"
@@ -122,38 +138,42 @@
       <text x="668" y="268" class="depl-flow-label">ACS data (SRP)</text>
       <text x="668" y="280" class="depl-flow-sub">witness &middot; active poll</text>
 
-      <!-- ==== Zone — bounded region containing devices of any SL ==== -->
+      <!-- ==== Zone — bounded region containing pools of data ==== -->
       <rect x="438" y="286" width="322" height="170" rx="3"
         fill="var(--bg)" stroke="var(--rule-soft)" stroke-width="1.2" stroke-dasharray="4,3" />
       <text x="448" y="302" class="depl-band-label">ZONE &middot; OPERATOR-DEFINED</text>
       <text x="448" y="314" class="depl-band-note">production &middot; plant &middot; site &middot; corp &middot; any boundary</text>
 
-      <!-- Device 1: legacy SCADA, SL0 -->
-      <rect x="456" y="328" width="138" height="44" rx="2"
-        fill="var(--bg-elev)" stroke="var(--rule-soft)" stroke-width="1" />
-      <text x="525" y="345" class="depl-dev-label" text-anchor="middle">legacy SCADA</text>
-      <text x="525" y="360" class="depl-dev-sl" text-anchor="middle">SL 0</text>
+      <text x="599" y="332" class="depl-pools-header" text-anchor="middle">POOLS OF DATA</text>
 
-      <!-- Device 2: modern PLC, SL3 -->
-      <rect x="604" y="328" width="138" height="44" rx="2"
+      <!-- Six pool ellipses in a 3x2 grid -->
+      <ellipse cx="496" cy="352" rx="54" ry="13"
         fill="var(--bg-elev)" stroke="var(--rule-soft)" stroke-width="1" />
-      <text x="673" y="345" class="depl-dev-label" text-anchor="middle">modern PLC</text>
-      <text x="673" y="360" class="depl-dev-sl" text-anchor="middle">SL 3</text>
+      <text x="496" y="356" class="depl-pool-label" text-anchor="middle">process data</text>
 
-      <!-- Device 3: consumer-grade IO, SL1 -->
-      <rect x="456" y="380" width="138" height="44" rx="2"
+      <ellipse cx="600" cy="352" rx="54" ry="13"
         fill="var(--bg-elev)" stroke="var(--rule-soft)" stroke-width="1" />
-      <text x="525" y="397" class="depl-dev-label" text-anchor="middle">consumer-grade IO</text>
-      <text x="525" y="412" class="depl-dev-sl" text-anchor="middle">SL 1</text>
+      <text x="600" y="356" class="depl-pool-label" text-anchor="middle">device telemetry</text>
 
-      <!-- Device 4: IoT sensor, SL0 -->
-      <rect x="604" y="380" width="138" height="44" rx="2"
+      <ellipse cx="704" cy="352" rx="54" ry="13"
         fill="var(--bg-elev)" stroke="var(--rule-soft)" stroke-width="1" />
-      <text x="673" y="397" class="depl-dev-label" text-anchor="middle">IoT sensor</text>
-      <text x="673" y="412" class="depl-dev-sl" text-anchor="middle">SL 0</text>
+      <text x="704" y="356" class="depl-pool-label" text-anchor="middle">network data</text>
+
+      <ellipse cx="496" cy="386" rx="54" ry="13"
+        fill="var(--bg-elev)" stroke="var(--rule-soft)" stroke-width="1" />
+      <text x="496" y="390" class="depl-pool-label" text-anchor="middle">asset inventory</text>
+
+      <ellipse cx="600" cy="386" rx="54" ry="13"
+        fill="var(--bg-elev)" stroke="var(--rule-soft)" stroke-width="1" />
+      <text x="600" y="390" class="depl-pool-label" text-anchor="middle">event streams</text>
+
+      <ellipse cx="704" cy="386" rx="54" ry="13"
+        fill="var(--bg-elev)" stroke="var(--rule-soft)" stroke-width="1" />
+      <text x="704" y="390" class="depl-pool-label" text-anchor="middle">topology</text>
 
       <!-- Inside-zone caption -->
-      <text x="599" y="444" class="depl-inside-note" text-anchor="middle">any SL inside &middot; the box is the security boundary</text>
+      <text x="599" y="418" class="depl-inside-note" text-anchor="middle">any SL device contributes &middot; gateway is the security boundary</text>
+      <text x="599" y="434" class="depl-inside-note" text-anchor="middle">witness (passive) + active poll feed every pool into the historian</text>
 
       <!-- ==== Fractal property strip at bottom ==== -->
       <text x="420" y="478" class="depl-rule">FRACTAL</text>
@@ -162,7 +182,7 @@
 
   </svg>
   <figcaption class="diagram-caption mono">
-    The Fractal &mdash; a box at the head of every zone, the secure edge gateway. Inside the zone is control system data under SRP; at the box, it becomes information governed by CIA and is published securely to whatever the consumers are. Devices inside the zone can be any security level; the box is the security boundary. The unit is identical at every zone; the operator defines what counts as a zone.
+    The Fractal &mdash; a secure edge gateway at the head of every zone. Inside the zone are pools of data fed by the gateway's witness (passive) and active poll; devices contributing can be any security level. The gateway publishes information securely outbound through a conduit (with a hardware data diode in the SL4 ideal realization) to whatever the zone's consumers are. The gateway is identical at every zone; the operator defines what counts as a zone.
   </figcaption>
 </figure>
 
@@ -287,6 +307,20 @@
     font-size: 8.5px;
     fill: var(--ink-soft);
     font-style: italic;
+  }
+  .fractal-svg .depl-pools-header {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: 700;
+    fill: var(--ink-soft);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+  .fractal-svg .depl-pool-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    fill: var(--ink);
+    letter-spacing: 0.02em;
   }
   .fractal-svg .depl-scope {
     font-family: var(--font-mono);

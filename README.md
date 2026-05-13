@@ -35,61 +35,70 @@ The cloud is a viewport into the mesh of units. It is not the platform. It is no
 
 ## The Unit
 
-One box. Runs the complete ACS infrastructure stack: zone IP services (DHCP, DNS, NTP, file/config shares, optional in-cell PKI), data collection, the zone's **decentralized historian**, security monitoring, asset inventory, intrusion detection, visualization, API, remote access, VPN, message brokering, protocol translation. Everything needed to operate, monitor, and secure a zone.
+The unit is the **secure edge gateway**. Colloquially: the box.
 
-The architecture is hardware-independent and scale-invariant. The box is a logical unit, realizable as an appliance, a server, a cluster, or a virtualized stack. Sizing is application- and scale-dependent — the box has run on less than 1GB of RAM with capability tradeoffs and scales up as the workload demands.
+One secure edge gateway per zone. Runs the complete ACS infrastructure stack for that zone: zone IP services (DHCP, DNS, NTP, file/config shares, optional in-cell PKI), data collection, the zone's **decentralized historian**, security monitoring, asset inventory, intrusion detection, visualization, API, remote access, VPN, message brokering, protocol translation. Everything needed to operate, monitor, and secure the zone.
 
-Every component selection, every protocol choice, every data flow decision traces back to one question: does this box work completely alone with no link? If yes, it ships. If no, it doesn't belong on the box.
+The gateway has two physical realizations. The **single-box** realization is one self-contained unit at the boundary (SL3, the floor). The **two-box + diode** realization splits the gateway into an **inside box** on the ACS side and an **outside subscriber** on the IT side, with a hardware data diode between them — the inside box publishes to the outside subscriber, and consumers access the outside subscriber (SL4, the ideal). Both realizations run the same software, same configuration model, same operator experience. The architectural element is the gateway; the physical topology determines the security level achieved. The Two-Box Method below covers the realizations in detail.
+
+The architecture is hardware-independent and scale-invariant. The secure edge gateway is a logical unit, realizable as an appliance, a server, a cluster, or a virtualized stack. Sizing is application- and scale-dependent — the box has run on less than 1GB of RAM with capability tradeoffs and scales up as the workload demands.
+
+Every component selection, every protocol choice, every data flow decision traces back to one question: does this gateway work completely alone with no link? If yes, it ships. If no, it doesn't belong on the gateway.
 
 ## The Fractal
 
-A box at the head of every zone. The secure edge gateway.
+A **secure edge gateway** at the head of every zone.
 
-Inside the zone is control system data — the substrate of physical action — governed by SRP. At the box, that data crosses the boundary and becomes information, governed by CIA, published securely outbound to whatever the zone's consumers are: another zone, a plant, a partner, a regulator, the internet.
+Inside the zone is control system data — the substrate of physical action — governed by SRP. At the gateway, that data crosses the boundary and becomes information, governed by CIA, published securely outbound to whatever the zone's consumers are: another zone, a plant, a partner, a regulator, the internet.
 
 Devices inside the zone can be any security level. Legacy SCADA at SL 0, modern PLCs at SL 3, consumer-grade IO, IoT sensors — all of it sits inside the zone. The security boundary lives at the gateway, not at every device. With the right engineering, the gateway is the only thing that needs to interface securely outbound.
 
-The box witnesses traffic on the ACS substrate passively and actively polls the devices that permit it. Both feed the *decentralized historian* — the local data lake on the box, the zone's source of truth. The historian publishes north only over the secure outbound interface. **That secure publish is the only access into the zone from outside it.** No inbound listener. No remote shell. No admin API exposed externally. The only thing external systems see is what the historian publishes — on the operator's terms, at the operator's cadence, under the operator's signature.
+The gateway witnesses traffic on the ACS substrate passively and actively polls the devices that permit it. Both feed the *decentralized historian* — the local data lake on the gateway, the zone's source of truth. The historian publishes north only over the secure outbound interface. **That secure publish is the only access into the zone from outside it.** No inbound listener. No remote shell. No admin API exposed externally. The only thing external systems see is what the historian publishes — on the operator's terms, at the operator's cadence, under the operator's signature.
 
-The unit is identical at every zone. The operator defines what counts as a zone — production cell, plant, site, region, corporate function, anything where data crosses a boundary. There is no required PERA L1–L5 tower; where a zone exists, a box exists at its head, and that is the rule.
+The gateway is identical at every zone. The operator defines what counts as a zone — production cell, plant, site, region, corporate function, anything where data crosses a boundary. There is no required PERA L1–L5 tower; where a zone exists, a gateway exists at its head, and that is the rule.
 
-The cloud is not a special architecture. A central historian is a unit with broader scope. A regional aggregator is a unit with broader scope. The fractal does not collapse at the top.
+The cloud is not a special architecture. A central historian is a gateway with broader scope. A regional aggregator is a gateway with broader scope. The fractal does not collapse at the top.
 
 ```
 external consumers  (internet · partner · regulator · plant · whoever)
                               ▲
                               │  information (CIA · mTLS · signed · audited)
-                              │
+                             ─┴─
+                              ▲    ← secure conduit; in the SL4 ideal
+                              │      realization, a hardware data diode
+                              │      enforces one-way flow by physics
                     ┌─────────┴─────────┐
-                    │  box · secure     │
-                    │  edge gateway     │   ← the only external access
-                    │  witness · poll   │      into the zone
-                    │  historian        │
+                    │   secure edge     │
+                    │   gateway         │   ← the only external access
+                    │   witness · poll  │      into the zone
+                    │   historian       │
                     └─────────▲─────────┘
-                              │  control system data (SRP)
+                              │  pools of data (witness + active poll)
                               │
        ┌──────────────────────┴──────────────────────┐
        │                  ZONE                        │
        │         (operator-defined boundary)          │
        │                                              │
-       │     legacy SCADA · modern PLC ·              │
-       │     consumer-grade IO · IoT sensor           │
-       │     any SL inside — the gateway is the       │
-       │     security boundary                        │
+       │   pools of data:                             │
+       │   process · device telemetry · network ·     │
+       │   asset inventory · event streams · topology │
+       │                                              │
+       │   any SL device can contribute; the gateway  │
+       │   is the security boundary                   │
        └──────────────────────────────────────────────┘
 ```
 
-![The Fractal: a box at the head of every zone, the secure edge gateway, with mixed-SL devices inside and secure publish out](docs/fractal.png)
+![The Fractal: a secure edge gateway at the head of every zone, with mixed-SL devices inside and secure publish out](docs/fractal.png)
 
-Each box works with no upstream connectivity. No cloud, no corporate network, no internet. It is the complete system for its zone. If connectivity exists, it composes upward. If it drops, nothing changes on site — the box runs locally with 30 days of buffered data, and when the link returns, the mesh reconverges.
+Each gateway works with no upstream connectivity. No cloud, no corporate network, no internet. It is the complete system for its zone. If connectivity exists, it composes upward. If it drops, nothing changes on site — the gateway runs locally with 30 days of buffered data, and when the link returns, the mesh reconverges.
 
-Each box meshes with adjacent boxes. If a box can see another box, data routes through. If a box can see a box that can see a box that can see the cloud, data gets there. The mesh finds the path. The constraint is that no box depends on another being available.
+Each gateway meshes with adjacent gateways. If a gateway can see another gateway, data routes through. If a gateway can see a gateway that can see a gateway that can see the cloud, data gets there. The mesh finds the path. The constraint is that no gateway depends on another being available.
 
-Sovereignty does not mean isolation. Each box's historian is the decentralized historian for its zone — the operator's data, on the operator's substrate, working complete without the cloud. Historians on adjacent boxes can know about each other without becoming dependent on each other. Awareness is mutual. Dependency is not. The centralized-historian pattern that came before — vendor-owned, off-site, reachable only when the WAN is up — is a sovereignty failure by design.
+Sovereignty does not mean isolation. Each gateway's historian is the decentralized historian for its zone — the operator's data, on the operator's substrate, working complete without the cloud. Historians on adjacent gateways can know about each other without becoming dependent on each other. Awareness is mutual. Dependency is not. The centralized-historian pattern that came before — vendor-owned, off-site, reachable only when the WAN is up — is a sovereignty failure by design.
 
-IIA is distributed, not federated. Every unit is operated by one operator, under one set of rules. A federation would be independent parties exchanging data by treaty; IIA is one operator running a mesh of their own units.
+IIA is distributed, not federated. Every gateway is operated by one operator, under one set of rules. A federation would be independent parties exchanging data by treaty; IIA is one operator running a mesh of their own gateways.
 
-The hard problems are distributed systems problems. When a box reconnects after thirty days off the mesh, the parent has thirty days of state from other paths — convergence at the boundary is conflict resolution, not transport. Schema evolution happens across boxes running different firmware with no coordinated maintenance window. Collection profiles differ by scope: a production-zone box and a corporate box are the same unit, not the same configuration. The architecture makes these problems tractable. It does not eliminate them.
+The hard problems are distributed systems problems. When a gateway reconnects after thirty days off the mesh, the parent has thirty days of state from other paths — convergence at the boundary is conflict resolution, not transport. Schema evolution happens across gateways running different firmware with no coordinated maintenance window. Collection profiles differ by scope: a production-zone gateway and a corporate gateway are the same unit, not the same configuration. The architecture makes these problems tractable. It does not eliminate them.
 
 ## The Domain Boundary
 
@@ -105,25 +114,25 @@ This distinction is absolute. A setpoint is ACS. A historian record of that setp
 
 Everything outside the automation cell is IT. Application data, demand planning, process reporting, origin tracking, business intelligence, compliance reporting. All of it. These are consumers of information that originated in the ACS domain, transmitted across the boundary after the time-critical obligation has been met.
 
-The box sits at this boundary. Inside the automation cell, it observes and protects ACS data under SRP rules. At the boundary, it transforms ACS data into information and publishes it north under IT rules. It does not allow IT governance to reach back into the cell. The boundary is enforced by architecture, not by policy.
+The secure edge gateway sits at this boundary. Inside the automation cell, it observes and protects ACS data under SRP rules. At the boundary, it transforms ACS data into information and publishes it north under IT rules. It does not allow IT governance to reach back into the cell. The boundary is enforced by architecture, not by policy.
 
-This boundary maps directly to PERA's articulation: it is where the IT *Zero Trust* environment changes to the ACS *Managed Trust* environment. On the IT side, every action is unauthenticated until proven. On the ACS side, every device and process is known, identified, and accountable to the operational manager. The box terminates one and begins the other.
+This boundary maps directly to PERA's articulation: it is where the IT *Zero Trust* environment changes to the ACS *Managed Trust* environment. On the IT side, every action is unauthenticated until proven. On the ACS side, every device and process is known, identified, and accountable to the operational manager. The gateway terminates one and begins the other.
 
 ## The Two-Box Method
 
 The canonical articulation of physically enforced ACS/IT segmentation predates IIA. John Rinaldi and Gary Workman documented it in *[The Everyman's Guide to EtherNet/IP Network Design](https://www.amazon.com/EVERYMANS-GUIDE-ETHERNET-NETWORK-DESIGN/dp/B0B7PSHK7J)* (Real Time Automation, 2022), drawn from Workman's experience architecting EtherNet/IP networks at General Motors.
 
-The pattern is two boxes and a hardware data diode. Box 1 sits in the ACS zone, collects from PLCs and SCADA, produces data. A hardware data diode — a unidirectional optical link with no return path — sits between. Box 2 sits in the IT zone, receives over the diode, and forwards to historians and dashboards. Compromise of Box 2 cannot reach Box 1. Compromise of the IT network cannot reach the ACS network. The boundary is enforced by physics, not by policy.
+The pattern is two boxes and a hardware data diode. The **inside box** sits in the ACS zone — witnesses traffic, polls devices that permit it, hosts the decentralized historian. A **hardware data diode** — a unidirectional optical link with no return path — sits between. The **outside box**, the **outside subscriber**, sits in the IT zone; it receives published data over the diode and is what consumers connect to. Compromise of the outside box cannot reach the inside. Compromise of the IT network cannot reach the ACS network. The boundary is enforced by physics, not by policy.
 
-IIA inherits the method and extends it into two deployment modes governed by the same architecture.
+The secure edge gateway is the architectural element. It has two physical realizations governed by the same software architecture.
 
-**Software-only mode (SL3).** A single IIA box at the boundary. The ACS-facing interface is passive — no IP stack transmit, no listeners. The box is internally partitioned into inbound, internal DMZ, and outbound; default-deny kernel firewall conduits between zones, mTLS authentication at every internal hop. Outbound is push-only on an operator-selected edge profile, plus a structured query API on mTLS for pull. No HTTP listener at the external boundary in any direction. Reaches Security Level 3 against motivated adversaries with ACS-specific skills.
+**Single-box (SL3, the floor).** One unit at the boundary. The ACS-facing interface is passive — no IP stack transmit, no listeners. The unit is internally partitioned into inbound, internal DMZ, and outbound; default-deny kernel firewall conduits between zones, mTLS authentication at every internal hop. Outbound is push-only on an operator-selected edge profile, plus a structured query API on mTLS for pull. No HTTP listener at the external boundary in any direction. Reaches Security Level 3 against motivated adversaries with ACS-specific skills.
 
-**Two-box mode (SL4).** One IIA box on the ACS side, hardware data diode between, one IIA box on the IT side with physical one-way separation from the external consumer. Same software, same configuration model, same operator experience. The architecture does not change. Only the physical topology does.
+**Two-box + diode (SL4, the ideal).** The inside box on the ACS side. A hardware data diode between. The outside subscriber on the IT side. The inside box publishes to the outside subscriber over the diode; consumers access the outside subscriber, never the inside. Same software, same configuration model, same operator experience. The architecture does not change. Only the physical topology does — and the topology buys SL4 by physics rather than policy. This is the architecturally preferred configuration where the deployment can support it.
 
-SL3 does not promise unidirectional flow. SL3 promises a hardened, segmented, authenticated, audited boundary. Unidirectional flow is the SL4 property, reached only via hardware data diode and physical one-way separation. The software architecture is invariant across both modes; the physical topology is what determines the security level achieved.
+SL3 does not promise unidirectional flow. SL3 promises a hardened, segmented, authenticated, audited boundary. Unidirectional flow is the SL4 property, reached only via hardware data diode and physical one-way separation. The software architecture is invariant across both realizations; the physical topology is what determines the security level achieved.
 
-![Two-Box Method: SL3 software-only mode and SL4 two-box mode with hardware data diode](docs/two-box-method.png)
+![Two-Box Method: SL3 single-box realization and SL4 two-box-plus-diode realization with inside box, diode, and outside subscriber](docs/two-box-method.png)
 
 IIA is fractal across security levels in the same way it is fractal across organizational scope.
 
