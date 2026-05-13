@@ -1,0 +1,94 @@
+# Fractal diagram, grid-row variant -- force L5..L1 vertical order
+# by using grid-rows on the parent container.
+
+direction: down
+
+classes: {
+  layer: {
+    style: {
+      fill: "#FFFFFF"
+      stroke: "#E0DDD7"
+      stroke-dash: 4
+      border-radius: 3
+      shadow: false
+    }
+  }
+  layer-accent: {
+    style: {
+      fill: "#F5E8E4"
+      stroke: "#E0DDD7"
+      border-radius: 3
+      shadow: false
+    }
+  }
+  node: {
+    style: {
+      fill: "#FAFAF7"
+      stroke: "#E0DDD7"
+      border-radius: 2
+      shadow: false
+      font-size: 14
+    }
+  }
+  box: {
+    style: {
+      fill: "#FFFFFF"
+      stroke: "#8B2A17"
+      stroke-width: 2
+      border-radius: 2
+      shadow: false
+      font-size: 16
+      bold: true
+    }
+  }
+}
+
+stack: {
+  grid-rows: 6
+  grid-gap: 24
+  style.stroke-width: 0
+  style.fill: "transparent"
+
+  L5: PERA L5 -- Regional / Corporate / Cloud Box {
+    class: layer
+    corp: box (corporate -- aggregates site boxes -- optional) { class: box }
+  }
+  L4: PERA L4 -- Site Box {
+    class: layer
+    site: box (site -- aggregates plant boxes) { class: box }
+  }
+  L3: PERA L3 -- Plant Box {
+    class: layer
+    plant: box (plant -- aggregates zone boxes) { class: box }
+  }
+  L2: PERA L2 -- Production Zone Boxes {
+    class: layer-accent
+    zoneA: box (zone A) { class: box }
+    zoneB: box (zone B) { class: box }
+    zoneC: box (zone C) { class: box }
+  }
+  L1: PERA L0 / L1 -- Field & Control {
+    class: layer
+    plc: PLC · SCADA · HMI { class: node }
+    field: Wireless IO sensing { class: node }
+  }
+}
+
+# Upward: data + contracts (accent)
+stack.L1.plc -> stack.L2.zoneA: { style: { stroke: "#8B2A17"; stroke-width: 2 } }
+stack.L1.plc -> stack.L2.zoneB: { style: { stroke: "#8B2A17"; stroke-width: 2 } }
+stack.L1.field -> stack.L2.zoneC: { style: { stroke: "#8B2A17"; stroke-width: 2 } }
+
+stack.L2.zoneA -> stack.L3.plant: data + contracts { style: { stroke: "#8B2A17"; stroke-width: 2 } }
+stack.L2.zoneB -> stack.L3.plant: { style: { stroke: "#8B2A17"; stroke-width: 2 } }
+stack.L2.zoneC -> stack.L3.plant: { style: { stroke: "#8B2A17"; stroke-width: 2 } }
+
+stack.L3.plant -> stack.L4.site: { style: { stroke: "#8B2A17"; stroke-width: 2 } }
+stack.L4.site -> stack.L5.corp: { style: { stroke: "#8B2A17"; stroke-width: 2 } }
+
+# Downward: manifests + approvals (mute, dashed)
+stack.L5.corp -> stack.L4.site: manifests · approvals { style: { stroke: "#7A746D"; stroke-dash: 4 } }
+stack.L4.site -> stack.L3.plant: { style: { stroke: "#7A746D"; stroke-dash: 4 } }
+stack.L3.plant -> stack.L2.zoneA: { style: { stroke: "#7A746D"; stroke-dash: 4 } }
+stack.L3.plant -> stack.L2.zoneB: { style: { stroke: "#7A746D"; stroke-dash: 4 } }
+stack.L3.plant -> stack.L2.zoneC: { style: { stroke: "#7A746D"; stroke-dash: 4 } }

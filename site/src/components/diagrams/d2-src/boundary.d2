@@ -1,0 +1,112 @@
+# Domain boundary -- ACS (physics, SRP, Managed Trust) | Box | IT (records, CIA, Zero Trust)
+direction: right
+
+classes: {
+  domain: {
+    style: {
+      fill: "#FFFFFF"
+      stroke: "#E0DDD7"
+      stroke-width: 1
+      border-radius: 3
+      shadow: false
+    }
+  }
+  triad-cell: {
+    style: {
+      fill: "#FAFAF7"
+      stroke: "#E0DDD7"
+      stroke-width: 1
+      border-radius: 2
+      shadow: false
+      font-size: 13
+    }
+  }
+  trust: {
+    style: {
+      fill: "#FAFAF7"
+      stroke: "#8B2A17"
+      stroke-width: 1
+      border-radius: 2
+      bold: true
+      font-size: 12
+    }
+  }
+  trust-mute: {
+    style: {
+      fill: "#FAFAF7"
+      stroke: "#E0DDD7"
+      stroke-width: 1
+      border-radius: 2
+      bold: true
+      font-size: 12
+    }
+  }
+  box-zone: {
+    style: {
+      fill: "#FFFFFF"
+      stroke: "#E0DDD7"
+      stroke-width: 1
+      border-radius: 2
+      shadow: false
+      font-size: 12
+    }
+  }
+  box-zone-acs: {
+    style: {
+      fill: "#F5E8E4"
+      stroke: "#E0DDD7"
+      stroke-width: 1
+      border-radius: 2
+      shadow: false
+      font-size: 12
+    }
+  }
+}
+
+acs: ACS\nAutomation & Control Systems {
+  class: domain
+  triad: SRP Triad -- Safety · Reliability · Performance { class: triad-cell }
+  acts: "Acts on physics\nValves · interlocks · loops\nReal-time determinism required" {
+    style.fill: "transparent"
+    style.stroke-width: 0
+    style.font-size: 12
+  }
+  trust: Managed Trust { class: trust }
+}
+
+box: The box\n(the boundary) {
+  style: {
+    fill: "#FFFFFF"
+    stroke: "#14110D"
+    stroke-width: 2
+    border-radius: 3
+    shadow: false
+    font-size: 14
+    bold: true
+  }
+
+  inbound: inbound (ACS-facing)\npassive · RX-only · ACS NIC { class: box-zone-acs }
+  dmz: internal DMZ\nbus · audit · attestation { class: box-zone }
+  outbound: outbound (IT-facing)\npush · query · mTLS · no HTTP { class: box-zone }
+  crossing: "value becomes a record\nat this crossing" {
+    style.fill: "transparent"
+    style.stroke-width: 0
+    style.font-color: "#8B2A17"
+    style.italic: true
+    style.font-size: 12
+  }
+}
+
+it: IT\nInformation Technology {
+  class: domain
+  triad: CIA Triad -- Confidentiality · Integrity · Availability { class: triad-cell }
+  ops: "Operates on records\nHistorical · information · reports\nBest-effort latency acceptable" {
+    style.fill: "transparent"
+    style.stroke-width: 0
+    style.font-size: 12
+  }
+  trust: Zero Trust { class: trust-mute }
+}
+
+acs -> box: data out { style: { stroke: "#8B2A17"; stroke-width: 2 } }
+box -> it: record { style: { stroke: "#7A746D"; stroke-width: 2 } }

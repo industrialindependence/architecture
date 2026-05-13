@@ -7,17 +7,87 @@ interface Props {
   title: string;
   description?: string;
   current?: string;
+  /** Slug of an OG card under /og-card/<slug>.png. Defaults to 'home'. */
+  ogCard?: string;
+  /** Schema.org @type for the JSON-LD WebPage. Default 'WebPage'. */
+  pageType?: 'WebPage' | 'Article' | 'AboutPage' | 'ContactPage' | 'CollectionPage';
+  /** Optional ISO date for Article schema. */
+  datePublished?: string;
+  /** Optional ISO date for Article schema. */
+  dateModified?: string;
 }
 
 const {
   title,
   description = 'Industrial Independence Architecture — an architectural principle for industrial infrastructure.',
-  current = ''
+  current = '',
+  ogCard = 'home',
+  pageType = 'WebPage',
+  datePublished,
+  dateModified
 } = Astro.props;
 
-const fullTitle = title === 'Industrial Independence Architecture'
+const fullTitle = title === 'Industrial Independence Architecture' || title === 'Industrial Independence Alliance'
   ? title
   : `${title} · IIA`;
+
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
+const ogImageUrl = new URL(`/og-card/${ogCard}.png`, Astro.site).toString();
+const siteUrl = Astro.site?.toString().replace(/\/$/, '') ?? 'https://industrialindependence.org';
+
+// --- JSON-LD ---
+const organization = {
+  '@type': 'Organization',
+  '@id': `${siteUrl}/#organization`,
+  name: 'Industrial Independence Alliance',
+  alternateName: 'IIA',
+  url: `${siteUrl}/`,
+  logo: `${siteUrl}/icons/icon-512.png`,
+  founder: {
+    '@type': 'Person',
+    name: 'Daniel "Riverman" Caudle',
+    email: 'mailto:river@riverman.io',
+    jobTitle: 'Architect, ISA-99 / IEC 62443 committee member'
+  },
+  sameAs: [
+    'https://github.com/industrialindependence/architecture'
+  ]
+};
+
+const website = {
+  '@type': 'WebSite',
+  '@id': `${siteUrl}/#website`,
+  url: `${siteUrl}/`,
+  name: 'Industrial Independence Alliance',
+  description: 'Operational sovereignty for industrial infrastructure.',
+  publisher: { '@id': `${siteUrl}/#organization` },
+  inLanguage: 'en',
+  license: 'https://creativecommons.org/licenses/by-sa/4.0/'
+};
+
+const pageEntity: Record<string, unknown> = {
+  '@type': pageType,
+  '@id': `${canonicalUrl}#page`,
+  url: canonicalUrl,
+  name: fullTitle,
+  description,
+  isPartOf: { '@id': `${siteUrl}/#website` },
+  inLanguage: 'en',
+  primaryImageOfPage: ogImageUrl
+};
+if (pageType === 'Article') {
+  pageEntity['headline'] = title;
+  pageEntity['author'] = { '@id': `${siteUrl}/#organization` };
+  pageEntity['publisher'] = { '@id': `${siteUrl}/#organization` };
+  pageEntity['image'] = ogImageUrl;
+  if (datePublished) pageEntity['datePublished'] = datePublished;
+  if (dateModified) pageEntity['dateModified'] = dateModified;
+}
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [organization, website, pageEntity]
+};
 ---
 
 <!DOCTYPE html>
@@ -26,14 +96,43 @@ const fullTitle = title === 'Industrial Independence Architecture'
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content="#0e0d0b" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#fafaf7" media="(prefers-color-scheme: light)" />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
+    <meta name="author" content="Industrial Independence Alliance" />
+
+    <link rel="canonical" href={canonicalUrl} />
+
+    {/* Open Graph */}
+    <meta property="og:site_name" content="Industrial Independence Alliance" />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content={new URL(Astro.url.pathname, Astro.site).toString()} />
-    <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site).toString()} />
+    <meta property="og:type" content={pageType === 'Article' ? 'article' : 'website'} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`${fullTitle} — Industrial Independence Alliance`} />
+    <meta property="og:locale" content="en_US" />
+
+    {/* Twitter Card */}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+    <meta name="twitter:image:alt" content={`${fullTitle} — Industrial Independence Alliance`} />
+
+    {/* Icons */}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="alternate icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="mask-icon" href="/favicon.svg" color="#d96a4f" />
+
+    {/* Fonts */}
     <link rel="preconnect" href="https://rsms.me/" />
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -42,6 +141,9 @@ const fullTitle = title === 'Industrial Independence Architecture'
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap"
     />
+
+    {/* Structured data */}
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   </head>
   <body>
     <a href="#main" class="skip">Skip to content</a>

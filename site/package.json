@@ -5,6 +5,9 @@
   "private": true,
   "scripts": {
     "dev": "astro dev",
+    "build:llms": "node scripts/build-llms.mjs",
+    "build:og": "node scripts/build-og-cards.mjs",
+    "prebuild": "npm run build:llms && npm run build:og",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro"

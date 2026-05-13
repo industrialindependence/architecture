@@ -1,4 +1,8 @@
 User-agent: *
 Allow: /
 
+# Industrial Independence Alliance
+# LLM-readable index at /llms.txt (https://llmstxt.org).
+# Full corpus dump at /llms-full.txt.
+
 Sitemap: https://industrialindependence.org/sitemap-index.xml

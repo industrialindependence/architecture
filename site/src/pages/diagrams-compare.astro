@@ -1,0 +1,106 @@
+---
+import Base from '../layouts/Base.astro';
+import FractalDiagram from '../components/diagrams/FractalDiagram.astro';
+import DomainBoundaryDiagram from '../components/diagrams/DomainBoundaryDiagram.astro';
+import HistorianDiagram from '../components/diagrams/HistorianDiagram.astro';
+
+export const prerender = true;
+---
+
+<Base
+  title="Diagrams · D2 vs hand-coded"
+  description="Internal preview: compare hand-coded SVG diagrams with their D2-generated counterparts."
+  current=""
+>
+  <section class="container" style="padding: 3rem 0;">
+    <p class="eyebrow mono">internal preview · not linked from anywhere</p>
+    <h1>Hand-coded SVG vs D2</h1>
+    <p class="lede">
+      Three diagrams, each in both forms. Hand-coded comes first; D2 follows.
+    </p>
+
+    <!-- ============================== -->
+    <!-- FRACTAL -->
+    <!-- ============================== -->
+    <h2 style="margin-top: 3rem;">A. Fractal — hand-coded</h2>
+    <FractalDiagram />
+
+    <h2 style="margin-top: 2rem;">A. Fractal — D2 (dagre, original)</h2>
+    <figure class="d2-wrap">
+      <img src="/diagrams-fractal-d2.svg" alt="Fractal, D2 dagre" class="d2-img" />
+      <figcaption class="diagram-caption mono">D2 0.7.1 · dagre · subgraph-per-layer · layer order not preserved</figcaption>
+    </figure>
+
+    <h2 style="margin-top: 2rem;">A. Fractal — D2 (elk)</h2>
+    <figure class="d2-wrap">
+      <img src="/diagrams-fractal-d2-elk.svg" alt="Fractal, D2 elk" class="d2-img" />
+      <figcaption class="diagram-caption mono">D2 0.7.1 · elk · edges loop across the figure</figcaption>
+    </figure>
+
+    <h2 style="margin-top: 2rem;">A. Fractal — D2 (grid-rows, dagre)</h2>
+    <figure class="d2-wrap">
+      <img src="/diagrams-fractal-d2-grid.svg" alt="Fractal, D2 grid-rows" class="d2-img" />
+      <figcaption class="diagram-caption mono">
+        D2 0.7.1 · <code>grid-rows: 6</code> on parent · forces vertical order; dagre routes edges
+      </figcaption>
+    </figure>
+
+    <!-- ============================== -->
+    <!-- DOMAIN BOUNDARY -->
+    <!-- ============================== -->
+    <h2 style="margin-top: 3rem;">B. Domain boundary — hand-coded</h2>
+    <DomainBoundaryDiagram />
+
+    <h2 style="margin-top: 2rem;">B. Domain boundary — D2</h2>
+    <figure class="d2-wrap">
+      <img src="/diagrams-boundary-d2.svg" alt="Domain boundary, D2" class="d2-img" />
+      <figcaption class="diagram-caption mono">
+        D2 0.7.1 · elk · three containers (ACS · Box · IT) left-to-right
+      </figcaption>
+    </figure>
+
+    <!-- ============================== -->
+    <!-- HISTORIAN -->
+    <!-- ============================== -->
+    <h2 style="margin-top: 3rem;">C. Historian — hand-coded</h2>
+    <HistorianDiagram />
+
+    <h2 style="margin-top: 2rem;">C. Historian — D2</h2>
+    <figure class="d2-wrap">
+      <img src="/diagrams-historian-d2.svg" alt="Historian, D2" class="d2-img" />
+      <figcaption class="diagram-caption mono">
+        D2 0.7.1 · elk · two panels via <code>grid-columns: 2</code>
+      </figcaption>
+    </figure>
+
+    <h2 style="margin-top: 3rem;">Source files</h2>
+    <ul>
+      <li><code>site/src/components/diagrams/d2-src/fractal.d2</code> — original (containers)</li>
+      <li><code>site/src/components/diagrams/d2-src/fractal-grid.d2</code> — grid-rows variant</li>
+      <li><code>site/src/components/diagrams/d2-src/boundary.d2</code></li>
+      <li><code>site/src/components/diagrams/d2-src/historian.d2</code></li>
+    </ul>
+  </section>
+</Base>
+
+<style>
+  .diagram-caption {
+    font-family: var(--font-mono);
+    font-size: 0.78em;
+    color: var(--ink-mute);
+    margin-top: 0.6rem;
+    text-align: center;
+    letter-spacing: 0.02em;
+  }
+  .d2-wrap {
+    margin: 2.4rem 0;
+  }
+  .d2-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    background: #fff;
+    border: 1px solid var(--rule-soft);
+    border-radius: 4px;
+  }
+</style>

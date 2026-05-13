@@ -1,0 +1,95 @@
+---
+import Base from '../layouts/Base.astro';
+
+export const prerender = true;
+---
+
+<Base
+  title="Not found"
+  description="The page you requested does not exist on industrialindependence.org."
+  current=""
+  ogCard="home"
+>
+  <section class="notfound">
+    <div class="container nf-inner">
+      <p class="eyebrow mono">404 &middot; Not found</p>
+      <h1 class="display">
+        Wrong zone<span class="dot">.</span>
+      </h1>
+      <p class="lede">
+        The page you requested isn&rsquo;t at this URL.
+        It may have moved, never existed, or been replaced as the spec evolved.
+      </p>
+
+      <ul class="onward">
+        <li><a href="/">Landing</a> &mdash; the two doors</li>
+        <li><a href="/philosophy/">The Philosophy</a> &mdash; SRP, the substrate distinction, the seven principles</li>
+        <li><a href="/architecture/">The Architecture</a> &mdash; Industrial Independence Architecture, the canonical statement</li>
+        <li><a href="/architecture/docs/">Documentation</a> &mdash; introduction, internal architecture, contracts, MCP, glossary</li>
+        <li><a href="/contact/">Contact</a> &mdash; questions, corrections, deployments</li>
+      </ul>
+
+      <p class="nf-footnote mono">
+        If you arrived here from an external link that you believe should work,
+        <a href="/contact/">let us know</a>.
+      </p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .notfound {
+    padding: 6rem 0 5rem;
+    min-height: 60vh;
+    background:
+      radial-gradient(ellipse 50% 50% at 25% 30%, var(--accent-soft), transparent 60%),
+      var(--bg);
+  }
+  .nf-inner { max-width: 68ch; }
+  .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 0.74rem;
+    color: var(--accent);
+    margin: 0 0 1.4rem;
+    font-weight: 500;
+  }
+  .display {
+    font-size: clamp(2.4rem, 5vw + 0.4rem, 4.2rem);
+    line-height: 0.96;
+    letter-spacing: -0.034em;
+    font-weight: 700;
+    margin: 0 0 1.4rem;
+    font-family: var(--font-display);
+  }
+  .display .dot { color: var(--accent); }
+  .lede {
+    font-size: 1.16rem;
+    line-height: 1.55;
+    max-width: 56ch;
+    color: var(--ink);
+    margin: 0 0 2.4rem;
+  }
+  .onward {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 2.4rem;
+    border-top: 1px solid var(--rule-soft);
+  }
+  .onward li {
+    padding: 0.7rem 0;
+    border-bottom: 1px solid var(--rule-soft);
+    font-size: 0.98rem;
+    color: var(--ink-soft);
+  }
+  .onward a {
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .nf-footnote {
+    font-size: 0.84rem;
+    color: var(--ink-mute);
+    margin: 0;
+  }
+  .nf-footnote a { color: var(--accent); }
+</style>

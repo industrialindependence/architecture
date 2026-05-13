@@ -1,0 +1,116 @@
+# Centralized vs decentralized historian -- two panels side by side
+direction: down
+
+classes: {
+  panel-bad: {
+    style: {
+      fill: "#FFFFFF"
+      stroke: "#E0DDD7"
+      stroke-width: 1
+      border-radius: 3
+      shadow: false
+    }
+  }
+  panel-good: {
+    style: {
+      fill: "#FFFFFF"
+      stroke: "#E0DDD7"
+      stroke-width: 1
+      border-radius: 3
+      shadow: false
+    }
+  }
+  bad: {
+    style: {
+      fill: "#FAFAF7"
+      stroke: "#E0DDD7"
+      stroke-width: 1
+      border-radius: 2
+      shadow: false
+      font-size: 12
+    }
+  }
+  warn: {
+    style: {
+      fill: "#FAFAF7"
+      stroke: "#E0DDD7"
+      stroke-dash: 3
+      border-radius: 2
+      bold: true
+      font-size: 11
+    }
+  }
+  box-good: {
+    style: {
+      fill: "#FFFFFF"
+      stroke: "#8B2A17"
+      stroke-width: 2
+      border-radius: 2
+      shadow: false
+      font-size: 13
+      bold: true
+    }
+  }
+  hist: {
+    style: {
+      fill: "#F5E8E4"
+      stroke: "#8B2A17"
+      stroke-width: 1
+      border-radius: 2
+      bold: true
+      font-size: 11
+    }
+  }
+}
+
+panels: {
+  grid-columns: 2
+  grid-gap: 32
+  style.stroke-width: 0
+  style.fill: "transparent"
+
+  centralized: Centralized historian {
+    class: panel-bad
+    server: Vendor-hosted historian\noff-site · WAN-dependent { class: bad }
+    wan: WAN { class: warn }
+    zoneA: Zone A\nthin client { class: bad }
+    zoneB: Zone B\nthin client { class: bad }
+    zoneC: Zone C\nthin client { class: bad }
+    failures: "WAN down → no historian\nVendor removed → data held hostage\nSingle point of failure by design\nVendor wedge between operator and own data" {
+      style.fill: "transparent"
+      style.stroke-width: 0
+      style.font-size: 11
+      style.font-color: "#7A746D"
+    }
+
+    server -> wan { style: { stroke: "#7A746D"; stroke-dash: 3 } }
+    wan -> zoneA { style: { stroke: "#7A746D"; stroke-dash: 3 } }
+    wan -> zoneB { style: { stroke: "#7A746D"; stroke-dash: 3 } }
+    wan -> zoneC { style: { stroke: "#7A746D"; stroke-dash: 3 } }
+  }
+
+  decentralized: Decentralized historian {
+    class: panel-good
+    boxA: box -- zone A {
+      class: box-good
+      hist: historian { class: hist }
+    }
+    boxB: box -- zone B {
+      class: box-good
+      hist: historian { class: hist }
+    }
+    boxC: box -- zone C {
+      class: box-good
+      hist: historian { class: hist }
+    }
+    props: "Operator owns substrate\nWAN down → historian still runs\nVendor removed → data stays\nSovereignty at every zone, by default" {
+      style.fill: "transparent"
+      style.stroke-width: 0
+      style.font-size: 11
+      style.font-color: "#4A4540"
+    }
+
+    boxA <-> boxB: optional awareness · no dependency { style: { stroke: "#E0DDD7"; stroke-dash: 3 } }
+    boxB <-> boxC: { style: { stroke: "#E0DDD7"; stroke-dash: 3 } }
+  }
+}
