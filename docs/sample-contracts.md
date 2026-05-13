@@ -9,13 +9,13 @@ Every catalog entry carries:
 - A scope: `internal` (intra-box), `boundary` (cross-domain), `device` (PLC / sensor / fieldbus / wireless), `inbound` (artifacts the box pulls in)
 - The declared shape per the dimensions in `internal-architecture.md` *Data Contracts*
 
-A communication that does not match a catalog entry is **prevented** (firewall + SPIFFE drop) or **flagged** (`ot.contract.violation`).
+A communication that does not match a catalog entry is **prevented** (firewall + SPIFFE drop) or **flagged** (`contract.violation`).
 
 ---
 
 ## Sample 1 — Internal contract: collector → lake
 
-Inter-zone contract between `ot.acs.collect` and `ot.acs.lake`. Enforced by the kernel firewall, the workload identity issuer (SPIFFE), and mTLS at the application layer.
+Inter-zone contract between `collect` and `lake`. Enforced by the kernel firewall, the workload identity issuer (SPIFFE), and mTLS at the application layer.
 
 ```yaml
 contract:
@@ -24,9 +24,9 @@ contract:
   scope: internal
 
   source:
-    spiffe_id: spiffe://iia.local/zone/ot.acs.collect/workload/protocol_collector
+    spiffe_id: spiffe://iia.local/zone/collect/workload/protocol_collector
   destination:
-    spiffe_id: spiffe://iia.local/zone/ot.acs.lake/workload/lake_writer
+    spiffe_id: spiffe://iia.local/zone/lake/workload/lake_writer
 
   allowed_operations:
     - WRITE_BATCH      # batched record append
@@ -60,7 +60,7 @@ Notes:
 
 - SPIFFE IDs are bound to TPM-attested image hashes. A workload booting from an unsigned image cannot get an SVID and cannot speak under this contract.
 - `failure_semantics` declares how the collector behaves when the lake is unreachable — relevant during disconnected operation and reconnect.
-- `audit.every_failure: true` ensures `ot.contract.violation` catches catalog-violating attempts.
+- `audit.every_failure: true` ensures `contract.violation` catches catalog-violating attempts.
 
 ---
 
@@ -75,8 +75,8 @@ contract:
   scope: boundary
 
   publisher:
-    role: ot.it.publish
-    spiffe_id: spiffe://iia.local/zone/ot.it.publish/workload/edge_publisher
+    role: publish
+    spiffe_id: spiffe://iia.local/zone/publish/workload/edge_publisher
   consumer:
     organization: enterprise-bi
     spiffe_id: spiffe://enterprise.example/iia/consumer/bi_ingest
@@ -93,11 +93,11 @@ contract:
 
   data_inventory:
     namespaces:
-      - ot.process.*
-      - ot.health.*
+      - process.*
+      - health.*
     excludes:
-      - ot.security.*                # security events on a separate contract
-      - ot.audit.*
+      - security.*                # security events on a separate contract
+      - audit.*
 
   freshness:
     native_resolution_ms: 100
@@ -220,8 +220,8 @@ contract:
     location: site/plant_a/area_3/compressor_unit_3
 
   collector:
-    role: ot.acs.collect
-    spiffe_id: spiffe://iia.local/zone/ot.acs.collect/workload/opcua_subscriber
+    role: collect
+    spiffe_id: spiffe://iia.local/zone/collect/workload/opcua_subscriber
 
   transport:
     protocol: opcua
@@ -260,15 +260,15 @@ contract:
 
   io_attestation:
     enabled: true
-    cross_check_via: ot.acs.io_master
+    cross_check_via: io-master
     tolerance_pct: 0.5
     on_divergence: emit_attestation_io_event
 ```
 
 Notes:
 
-- `declared_tags` is the data inventory at device granularity. A tag observed but not declared → `ot.contract.violation`. A declared tag that stops appearing → SLA event.
-- `io_attestation` engages the redundant IO master to cross-check the device's reported values; discrepancies emit `ot.attestation.io`.
+- `declared_tags` is the data inventory at device granularity. A tag observed but not declared → `contract.violation`. A declared tag that stops appearing → SLA event.
+- `io_attestation` engages the redundant IO master to cross-check the device's reported values; discrepancies emit `attestation.io`.
 
 ---
 
@@ -286,7 +286,7 @@ contract:
   gateway:
     type: lorawan_gateway
     network_server: lns://lorawan-ns.local:8080
-    spiffe_id: spiffe://iia.local/zone/ot.acs.collect/workload/lorawan_subscriber
+    spiffe_id: spiffe://iia.local/zone/collect/workload/lorawan_subscriber
 
   device_class:
     application_id: field-env-zone-a
@@ -346,8 +346,8 @@ contract:
   scope: boundary
 
   publisher:
-    role: ot.it.api
-    spiffe_id: spiffe://iia.local/zone/ot.it.api/workload/i3x_query_server
+    role: api
+    spiffe_id: spiffe://iia.local/zone/api/workload/i3x_query_server
 
   consumer:
     organization: enterprise-ai
@@ -366,12 +366,12 @@ contract:
 
   data_inventory:
     namespaces:
-      - ot.process.*
-      - ot.health.*
+      - process.*
+      - health.*
     excludes:
-      - ot.security.*       # do not expose security data through AI consumption pathway
-      - ot.audit.*
-      - ot.contract.*
+      - security.*       # do not expose security data through AI consumption pathway
+      - audit.*
+      - contract.*
 
   freshness:
     native_resolution_ms: 100
@@ -446,8 +446,8 @@ contract:
   scope: inbound
 
   puller:
-    role: ot.mgmt.cfg
-    spiffe_id: spiffe://iia.local/zone/ot.mgmt.cfg/workload/config_puller
+    role: cfg
+    spiffe_id: spiffe://iia.local/zone/cfg/workload/config_puller
 
   source:
     pull_target: https://config-repo.enterprise.example/iia-fleet/box-id-X.cue.signed
