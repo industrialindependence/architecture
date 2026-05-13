@@ -43,32 +43,53 @@ Every component selection, every protocol choice, every data flow decision trace
 
 ## The Fractal
 
-A production zone gets a box. That box IS the zone's entire infrastructure: historian, services, security, networking.
+A box at the head of every zone. The secure edge gateway.
 
-A plant gets a box. Same unit, broader scope. Aggregates the production zone boxes.
+Inside the zone is control system data — the substrate of physical action — governed by SRP. At the box, that data crosses the boundary and becomes information, governed by CIA, published securely outbound to whatever the zone's consumers are: another zone, a plant, a partner, a regulator, the internet.
 
-A site gets a box. Same unit, broader scope. Aggregates the plant boxes.
+Devices inside the zone can be any security level. Legacy SCADA at SL 0, modern PLCs at SL 3, consumer-grade IO, IoT sensors — all of it sits inside the zone. The security boundary lives at the gateway, not at every device. With the right engineering, the gateway is the only thing that needs to interface securely outbound.
 
-In PERA terms, IIA boxes deploy at any adjacent-level boundary across Levels 0–5. The L3/L4 boundary is the canonical *Plant Firewall* placement; IIA generalizes the same role across every level boundary.
+The box witnesses traffic on the ACS substrate passively and actively polls the devices that permit it. Both feed the *decentralized historian* — the local data lake on the box, the zone's source of truth. The historian publishes north only over the secure outbound interface. **That secure publish is the only access into the zone from outside it.** No inbound listener. No remote shell. No admin API exposed externally. The only thing external systems see is what the historian publishes — on the operator's terms, at the operator's cadence, under the operator's signature.
 
-The cloud aggregates all boxes. Optional. Centralized collection — corporate, regional, or cloud — is not a different architecture; it is the same unit at broader scope. The fractal does not collapse at the top.
+The unit is identical at every zone. The operator defines what counts as a zone — production cell, plant, site, region, corporate function, anything where data crosses a boundary. There is no required PERA L1–L5 tower; where a zone exists, a box exists at its head, and that is the rule.
+
+The cloud is not a special architecture. A central historian is a unit with broader scope. A regional aggregator is a unit with broader scope. The fractal does not collapse at the top.
 
 ```
-Production zone: [box]  -- sovereign, complete
-Plant zone:      [box]  -- aggregates zone boxes, also sovereign
-Site:            [box]  -- aggregates plant boxes, also sovereign
-Cloud:           viewport into all boxes, optional
+external consumers  (internet · partner · regulator · plant · whoever)
+                              ▲
+                              │  information (CIA · mTLS · signed · audited)
+                              │
+                    ┌─────────┴─────────┐
+                    │  box · secure     │
+                    │  edge gateway     │   ← the only external access
+                    │  witness · poll   │      into the zone
+                    │  historian        │
+                    └─────────▲─────────┘
+                              │  control system data (SRP)
+                              │
+       ┌──────────────────────┴──────────────────────┐
+       │                  ZONE                        │
+       │         (operator-defined boundary)          │
+       │                                              │
+       │     legacy SCADA · modern PLC ·              │
+       │     consumer-grade IO · IoT sensor           │
+       │     any SL inside — the gateway is the       │
+       │     security boundary                        │
+       └──────────────────────────────────────────────┘
 ```
 
-![The Fractal: identical units deployed at every PERA level boundary, with broader scope as the only thing that changes](docs/fractal.png)
+![The Fractal: a box at the head of every zone, the secure edge gateway, with mixed-SL devices inside and secure publish out](docs/fractal.png)
 
-Each box meshes with adjacent boxes. If a box can see another box, data routes through. If a box can see a box that can see a box that can see the cloud, data gets there. The mesh finds the path. If no path exists, the box keeps running locally with 30 days of buffered data.
+Each box works with no upstream connectivity. No cloud, no corporate network, no internet. It is the complete system for its zone. If connectivity exists, it composes upward. If it drops, nothing changes on site — the box runs locally with 30 days of buffered data, and when the link returns, the mesh reconverges.
 
-Sovereignty does not mean isolation. Each box's historian is the *decentralized historian* for its zone — the operator's data, on the operator's substrate, working complete without the cloud. Historians on adjacent boxes can know about each other without becoming dependent on each other. Awareness is mutual. Dependency is not. The centralized-historian pattern that came before — vendor-owned, off-site, reachable only when the WAN is up — is a sovereignty failure by design.
+Each box meshes with adjacent boxes. If a box can see another box, data routes through. If a box can see a box that can see a box that can see the cloud, data gets there. The mesh finds the path. The constraint is that no box depends on another being available.
 
-Add a production zone, add a box. Add a site, add a box. Add a region, add a cloud aggregator. The unit of scaling is always the same self-contained block. Scales nearly infinitely by design.
+Sovereignty does not mean isolation. Each box's historian is the decentralized historian for its zone — the operator's data, on the operator's substrate, working complete without the cloud. Historians on adjacent boxes can know about each other without becoming dependent on each other. Awareness is mutual. Dependency is not. The centralized-historian pattern that came before — vendor-owned, off-site, reachable only when the WAN is up — is a sovereignty failure by design.
 
-The hard problems are distributed systems problems. When a box reconnects after thirty days off the mesh, the parent has thirty days of state from other paths — convergence at the boundary is conflict resolution, not transport. Schema evolution happens across boxes running different firmware with no coordinated maintenance window. Collection profiles differ by level: a production zone box and a site box are the same unit, not the same configuration. The architecture makes these problems tractable. It does not eliminate them.
+IIA is distributed, not federated. Every unit is operated by one operator, under one set of rules. A federation would be independent parties exchanging data by treaty; IIA is one operator running a mesh of their own units.
+
+The hard problems are distributed systems problems. When a box reconnects after thirty days off the mesh, the parent has thirty days of state from other paths — convergence at the boundary is conflict resolution, not transport. Schema evolution happens across boxes running different firmware with no coordinated maintenance window. Collection profiles differ by scope: a production-zone box and a corporate box are the same unit, not the same configuration. The architecture makes these problems tractable. It does not eliminate them.
 
 ## The Domain Boundary
 

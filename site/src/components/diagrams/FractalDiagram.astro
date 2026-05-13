@@ -1,167 +1,168 @@
 ---
 // FractalDiagram.astro
-// The IIA Fractal — same unit at every PERA scope.
-// Responsive SVG, consumed CSS variables, accessible.
+// The IIA Fractal — same unit, deployed wherever a zone publishes outward.
+// Two panes: the anatomy of one box (left), and where boxes actually appear (right).
 ---
 
 <figure class="fractal-diagram" aria-label="The IIA Fractal diagram">
   <svg
-    viewBox="0 0 800 580"
+    viewBox="0 0 800 540"
     xmlns="http://www.w3.org/2000/svg"
     role="img"
     aria-labelledby="fractal-title fractal-desc"
     class="fractal-svg"
     preserveAspectRatio="xMidYMid meet"
   >
-    <title id="fractal-title">The Fractal — same unit at every PERA scope</title>
+    <title id="fractal-title">The Fractal — a box at the head of every zone, the secure edge gateway</title>
     <desc id="fractal-desc">
-      A vertical stack showing the IIA box deployed at every level of the PERA hierarchy:
-      L0/L1 field and control at the bottom, L2 production zone boxes, L3 plant box,
-      L4 site box, and L5 regional/corporate/cloud box at the top.
-      Data and contracts flow upward; manifests and approvals flow downward.
-      Each box is sovereign and complete. The fractal does not collapse at the top.
+      Two-pane diagram. Left pane shows the internal anatomy of one box: inbound, internal DMZ,
+      outbound, and management partitions, with a local lake as source of truth. Right pane shows
+      the deployment rule: every zone has a box at its head, which is the secure edge gateway.
+      Devices inside the zone can be any security level — legacy SCADA, modern PLCs, IoT sensors —
+      because the security boundary lives at the box, not at every device. Inside the zone is
+      control system data under SRP; at the box, the data becomes information governed by CIA,
+      published securely outbound to whatever the consumers are: internet, plant, partner,
+      regulator. The unit is identical at every zone; the operator defines what counts as a zone.
     </desc>
 
     <defs>
-      <!-- Arrow markers -->
-      <marker id="arrow-up" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <marker id="frac-arrow-up" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
         <path d="M0,0 L0,6 L8,3 z" fill="var(--accent)" />
       </marker>
-      <marker id="arrow-down" markerWidth="8" markerHeight="8" refX="2" refY="3" orient="auto">
-        <path d="M8,0 L8,6 L0,3 z" fill="var(--ink-mute)" />
-      </marker>
-      <marker id="arrow-neutral" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-        <path d="M0,0 L0,6 L8,3 z" fill="var(--ink-soft)" />
+      <marker id="frac-arrow-neutral" markerWidth="7" markerHeight="7" refX="5" refY="2.5" orient="auto">
+        <path d="M0,0 L0,5 L7,2.5 z" fill="var(--ink-soft)" />
       </marker>
     </defs>
 
-    <!-- ===== L0/L1 — Field & Control: one ACS per zone, paired 1:1 with the zone box above ===== -->
-    <g class="layer" transform="translate(0,490)">
-      <rect x="60" y="0" width="680" height="76" rx="3"
-        fill="var(--bg-elev)" stroke="var(--rule-soft)" stroke-width="1" stroke-dasharray="4,3" />
-      <text x="76" y="16" class="layer-eyebrow">PERA L0 / L1 &middot; Field &amp; Control &middot; one ACS per zone</text>
-
-      <!-- ACS zone A -->
-      <rect x="110" y="22" width="140" height="40" rx="2"
-        fill="var(--bg)" stroke="var(--rule-soft)" stroke-width="1" />
-      <text x="180" y="40" class="node-label" text-anchor="middle">ACS · zone A</text>
-      <text x="180" y="54" class="node-sub" text-anchor="middle">PLC · IO · HMI</text>
-
-      <!-- ACS zone B -->
-      <rect x="330" y="22" width="140" height="40" rx="2"
-        fill="var(--bg)" stroke="var(--rule-soft)" stroke-width="1" />
-      <text x="400" y="40" class="node-label" text-anchor="middle">ACS · zone B</text>
-      <text x="400" y="54" class="node-sub" text-anchor="middle">PLC · IO · HMI</text>
-
-      <!-- ACS zone C -->
-      <rect x="550" y="22" width="140" height="40" rx="2"
-        fill="var(--bg)" stroke="var(--rule-soft)" stroke-width="1" />
-      <text x="620" y="40" class="node-label" text-anchor="middle">ACS · zone C</text>
-      <text x="620" y="54" class="node-sub" text-anchor="middle">PLC · IO · HMI</text>
+    <!-- ===== HEADER ===== -->
+    <g>
+      <text x="400" y="26" class="frac-eyebrow" text-anchor="middle">The Fractal</text>
+      <text x="400" y="44" class="frac-subtitle" text-anchor="middle">the unit is the same &middot; scope varies &middot; boxes exist where zones publish outward</text>
     </g>
 
-    <!-- ===== L2 — Zone Boxes ===== -->
-    <g class="layer" transform="translate(0,380)">
-      <rect x="60" y="0" width="680" height="88" rx="3"
-        fill="var(--accent-soft)" stroke="var(--rule-soft)" stroke-width="1" />
-      <text x="76" y="16" class="layer-eyebrow">PERA L2 &middot; Zone Boxes</text>
+    <!-- ===== CENTER DIVIDER ===== -->
+    <line x1="400" y1="62" x2="400" y2="500" stroke="var(--rule-soft)" stroke-width="1" stroke-dasharray="4,4" />
 
-      <!-- Three zone boxes -->
-      <rect x="110" y="28" width="140" height="46" rx="2"
-        fill="var(--bg-elev)" stroke="var(--accent)" stroke-width="1" />
-      <text x="180" y="48" class="box-label" text-anchor="middle">box</text>
-      <text x="180" y="63" class="node-sub" text-anchor="middle">zone A</text>
+    <!-- ============================================== -->
+    <!-- ===== LEFT PANE — THE UNIT (anatomy) ========= -->
+    <!-- ============================================== -->
+    <g class="pane pane-left">
+      <text x="60" y="80" class="pane-eyebrow">The Unit &middot; anatomy</text>
+      <text x="60" y="96" class="pane-sub">identical at every scope</text>
 
-      <rect x="330" y="28" width="140" height="46" rx="2"
-        fill="var(--bg-elev)" stroke="var(--accent)" stroke-width="1" />
-      <text x="400" y="48" class="box-label" text-anchor="middle">box</text>
-      <text x="400" y="63" class="node-sub" text-anchor="middle">zone B</text>
+      <!-- Outer box -->
+      <rect x="60" y="116" width="300" height="350" rx="3"
+        fill="var(--bg-elev)" stroke="var(--accent)" stroke-width="1.5" />
 
-      <rect x="550" y="28" width="140" height="46" rx="2"
-        fill="var(--bg-elev)" stroke="var(--accent)" stroke-width="1" />
-      <text x="620" y="48" class="box-label" text-anchor="middle">box</text>
-      <text x="620" y="63" class="node-sub" text-anchor="middle">zone C</text>
+      <!-- INBOUND -->
+      <rect x="76" y="132" width="268" height="68" rx="2"
+        fill="var(--bg)" stroke="var(--rule-soft)" stroke-width="1" />
+      <text x="86" y="150" class="part-label">INBOUND &middot; ACS-facing</text>
+      <text x="86" y="167" class="part-note">witness (passive) &middot; active poll &middot; classify</text>
+      <text x="86" y="182" class="part-note">no IP TX &middot; no external listeners</text>
+
+      <!-- DMZ -->
+      <rect x="76" y="208" width="268" height="62" rx="2"
+        fill="var(--bg)" stroke="var(--rule-soft)" stroke-width="1" />
+      <text x="86" y="226" class="part-label">INTERNAL DMZ</text>
+      <text x="86" y="243" class="part-note">in-flight bus &middot; transient</text>
+      <text x="86" y="258" class="part-note">no durable state here</text>
+
+      <!-- OUTBOUND -->
+      <rect x="76" y="278" width="268" height="68" rx="2"
+        fill="var(--bg)" stroke="var(--rule-soft)" stroke-width="1" />
+      <text x="86" y="296" class="part-label">OUTBOUND &middot; IT-facing</text>
+      <text x="86" y="313" class="part-note">secure publish &middot; structured query API</text>
+      <text x="86" y="328" class="part-note">the only external access into the zone</text>
+
+      <!-- MANAGEMENT -->
+      <rect x="76" y="354" width="268" height="44" rx="2"
+        fill="var(--bg)" stroke="var(--rule-soft)" stroke-width="1" />
+      <text x="86" y="372" class="part-label">MANAGEMENT</text>
+      <text x="86" y="388" class="part-note">local ops UI &middot; signed-artifact ingress only</text>
+
+      <!-- Lake — labelled band at the bottom -->
+      <rect x="76" y="406" width="268" height="44" rx="2"
+        fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1" stroke-dasharray="3,2" />
+      <text x="86" y="424" class="part-label">LOCAL LAKE &middot; HISTORIAN</text>
+      <text x="86" y="440" class="part-note">source of truth on the box &middot; decentralized historian</text>
     </g>
 
-    <!-- ===== L3 — Plant Box ===== -->
-    <g class="layer" transform="translate(0,278)">
-      <rect x="60" y="0" width="680" height="80" rx="3"
+    <!-- ============================================== -->
+    <!-- ===== RIGHT PANE — THE DEPLOYMENT (where) ==== -->
+    <!-- ============================================== -->
+    <g class="pane pane-right">
+      <text x="420" y="80" class="pane-eyebrow">The Deployment &middot; where</text>
+      <text x="420" y="96" class="pane-sub">a box at the head of every zone &middot; the secure edge gateway</text>
+
+      <!-- ==== Consumers band (top) ==== -->
+      <rect x="438" y="116" width="322" height="30" rx="2"
+        fill="var(--bg)" stroke="var(--rule-soft)" stroke-width="1" stroke-dasharray="4,3" />
+      <text x="448" y="128" class="depl-band-label">CONSUMERS</text>
+      <text x="448" y="140" class="depl-band-note">internet &middot; plant &middot; partner &middot; regulator &middot; whoever</text>
+
+      <!-- Arrow up from box to consumers + label -->
+      <line x1="599" y1="198" x2="599" y2="150" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#frac-arrow-up)" />
+      <text x="668" y="174" class="depl-flow-label">information (CIA)</text>
+      <text x="668" y="186" class="depl-flow-sub">mTLS &middot; signed &middot; audited</text>
+
+      <!-- ==== Box (the secure edge gateway, at the head of the zone) ==== -->
+      <rect x="538" y="198" width="124" height="50" rx="2"
+        fill="var(--bg-elev)" stroke="var(--accent)" stroke-width="1.6" />
+      <text x="600" y="216" class="depl-box-label" text-anchor="middle">box</text>
+      <text x="600" y="230" class="depl-sub" text-anchor="middle">secure edge gateway</text>
+      <text x="600" y="242" class="depl-sub" text-anchor="middle">witness &middot; historian &middot; publish</text>
+
+      <!-- Callout: the only external access -->
+      <text x="438" y="222" class="depl-flow-label">the only external</text>
+      <text x="438" y="234" class="depl-flow-label">access into the zone</text>
+
+      <!-- Arrow up from zone interior to box + label -->
+      <line x1="599" y1="286" x2="599" y2="250" stroke="var(--ink-soft)" stroke-width="1.3" marker-end="url(#frac-arrow-neutral)" />
+      <text x="668" y="268" class="depl-flow-label">ACS data (SRP)</text>
+      <text x="668" y="280" class="depl-flow-sub">witness &middot; active poll</text>
+
+      <!-- ==== Zone — bounded region containing devices of any SL ==== -->
+      <rect x="438" y="286" width="322" height="170" rx="3"
+        fill="var(--bg)" stroke="var(--rule-soft)" stroke-width="1.2" stroke-dasharray="4,3" />
+      <text x="448" y="302" class="depl-band-label">ZONE &middot; OPERATOR-DEFINED</text>
+      <text x="448" y="314" class="depl-band-note">production &middot; plant &middot; site &middot; corp &middot; any boundary</text>
+
+      <!-- Device 1: legacy SCADA, SL0 -->
+      <rect x="456" y="328" width="138" height="44" rx="2"
         fill="var(--bg-elev)" stroke="var(--rule-soft)" stroke-width="1" />
-      <text x="76" y="16" class="layer-eyebrow">PERA L3 &middot; Plant Box</text>
+      <text x="525" y="345" class="depl-dev-label" text-anchor="middle">legacy SCADA</text>
+      <text x="525" y="360" class="depl-dev-sl" text-anchor="middle">SL 0</text>
 
-      <rect x="260" y="18" width="280" height="50" rx="2"
-        fill="var(--bg)" stroke="var(--accent)" stroke-width="1.5" />
-      <text x="400" y="40" class="box-label" text-anchor="middle">box</text>
-      <text x="400" y="56" class="node-sub" text-anchor="middle">plant · aggregates zone boxes</text>
-    </g>
-
-    <!-- ===== L4 — Site Box ===== -->
-    <g class="layer" transform="translate(0,178)">
-      <rect x="60" y="0" width="680" height="78" rx="3"
+      <!-- Device 2: modern PLC, SL3 -->
+      <rect x="604" y="328" width="138" height="44" rx="2"
         fill="var(--bg-elev)" stroke="var(--rule-soft)" stroke-width="1" />
-      <text x="76" y="16" class="layer-eyebrow">PERA L4 &middot; Site Box &middot; L3↔L4 = canonical plant firewall</text>
+      <text x="673" y="345" class="depl-dev-label" text-anchor="middle">modern PLC</text>
+      <text x="673" y="360" class="depl-dev-sl" text-anchor="middle">SL 3</text>
 
-      <rect x="270" y="18" width="260" height="48" rx="2"
-        fill="var(--bg)" stroke="var(--accent)" stroke-width="1.5" />
-      <text x="400" y="38" class="box-label" text-anchor="middle">box</text>
-      <text x="400" y="53" class="node-sub" text-anchor="middle">site · aggregates plant boxes</text>
-    </g>
+      <!-- Device 3: consumer-grade IO, SL1 -->
+      <rect x="456" y="380" width="138" height="44" rx="2"
+        fill="var(--bg-elev)" stroke="var(--rule-soft)" stroke-width="1" />
+      <text x="525" y="397" class="depl-dev-label" text-anchor="middle">consumer-grade IO</text>
+      <text x="525" y="412" class="depl-dev-sl" text-anchor="middle">SL 1</text>
 
-    <!-- ===== L5 — Corporate / Cloud ===== -->
-    <g class="layer" transform="translate(0,80)">
-      <rect x="60" y="0" width="680" height="78" rx="3"
-        fill="var(--bg-elev)" stroke="var(--rule-soft)" stroke-width="1" stroke-dasharray="5,3" />
-      <text x="76" y="16" class="layer-eyebrow">PERA L5 &middot; Regional / Corporate / Cloud Box</text>
+      <!-- Device 4: IoT sensor, SL0 -->
+      <rect x="604" y="380" width="138" height="44" rx="2"
+        fill="var(--bg-elev)" stroke="var(--rule-soft)" stroke-width="1" />
+      <text x="673" y="397" class="depl-dev-label" text-anchor="middle">IoT sensor</text>
+      <text x="673" y="412" class="depl-dev-sl" text-anchor="middle">SL 0</text>
 
-      <rect x="250" y="18" width="300" height="48" rx="2"
-        fill="var(--bg)" stroke="var(--accent)" stroke-width="1.5" />
-      <text x="400" y="38" class="box-label" text-anchor="middle">box</text>
-      <text x="400" y="53" class="node-sub" text-anchor="middle">corporate · aggregates site boxes · optional</text>
-    </g>
+      <!-- Inside-zone caption -->
+      <text x="599" y="444" class="depl-inside-note" text-anchor="middle">any SL inside &middot; the box is the security boundary</text>
 
-    <!-- ===== CONNECTOR COLUMN (upward data flow) ===== -->
-    <!-- L2 zones -> L3 plant (upward arrows) -->
-    <line x1="180" y1="380" x2="310" y2="358" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrow-up)" />
-    <line x1="400" y1="380" x2="400" y2="358" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrow-up)" />
-    <line x1="620" y1="380" x2="490" y2="358" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrow-up)" />
-
-    <!-- L3 plant -> L4 site (upward) -->
-    <line x1="400" y1="278" x2="400" y2="256" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrow-up)" />
-
-    <!-- L4 site -> L5 corp (upward) -->
-    <line x1="400" y1="178" x2="400" y2="158" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrow-up)" />
-
-    <!-- L1 ACS -> L2 zone box (upward, one box per ACS; ACS NIC is passive RX-only) -->
-    <line x1="180" y1="490" x2="180" y2="468" stroke="var(--ink-soft)" stroke-width="1.2" marker-end="url(#arrow-neutral)" />
-    <line x1="400" y1="490" x2="400" y2="468" stroke="var(--ink-soft)" stroke-width="1.2" marker-end="url(#arrow-neutral)" />
-    <line x1="620" y1="490" x2="620" y2="468" stroke="var(--ink-soft)" stroke-width="1.2" marker-end="url(#arrow-neutral)" />
-
-    <!-- ===== Downward manifest arrows (dashed) ===== -->
-    <!-- L5 -> L4 -->
-    <line x1="420" y1="158" x2="420" y2="178" stroke="var(--ink-mute)" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrow-down)" />
-    <!-- L4 -> L3 -->
-    <line x1="420" y1="256" x2="420" y2="278" stroke="var(--ink-mute)" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrow-down)" />
-    <!-- L3 -> L2 (three) -->
-    <line x1="360" y1="358" x2="200" y2="380" stroke="var(--ink-mute)" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrow-down)" />
-    <line x1="420" y1="358" x2="420" y2="380" stroke="var(--ink-mute)" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrow-down)" />
-    <line x1="440" y1="358" x2="600" y2="380" stroke="var(--ink-mute)" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrow-down)" />
-
-    <!-- ===== LEGEND ===== -->
-    <g transform="translate(64, 16)">
-      <text x="0" y="14" class="legend-eyebrow">The Fractal</text>
-
-      <!-- data flow legend -->
-      <line x1="0" y1="32" x2="28" y2="32" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrow-up)" />
-      <text x="34" y="36" class="legend-label">data + contracts (north)</text>
-
-      <!-- manifest legend -->
-      <line x1="0" y1="50" x2="28" y2="50" stroke="var(--ink-mute)" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrow-down)" />
-      <text x="34" y="54" class="legend-label">manifests · approvals (south)</text>
+      <!-- ==== Fractal property strip at bottom ==== -->
+      <text x="420" y="478" class="depl-rule">FRACTAL</text>
+      <text x="420" y="492" class="depl-rule-body">same pattern at every zone &middot; operator decides what counts as a zone</text>
     </g>
 
   </svg>
   <figcaption class="diagram-caption mono">
-    The Fractal &mdash; PERA L0&ndash;L5 &middot; one ACS per zone &middot; same unit, different scope &middot; the fractal does not collapse at the top
+    The Fractal &mdash; a box at the head of every zone, the secure edge gateway. Inside the zone is control system data under SRP; at the box, it becomes information governed by CIA and is published securely to whatever the consumers are. Devices inside the zone can be any security level; the box is the security boundary. The unit is identical at every zone; the operator defines what counts as a zone.
   </figcaption>
 </figure>
 
@@ -178,69 +179,138 @@
     border-radius: 4px;
   }
 
-  /* SVG text styles via CSS — these cascade into the SVG */
-  .fractal-svg .layer-eyebrow {
+  .fractal-svg .frac-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 700;
+    fill: var(--ink);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .fractal-svg .frac-subtitle {
     font-family: var(--font-mono);
     font-size: 9px;
-    font-weight: 600;
+    fill: var(--ink-mute);
+    letter-spacing: 0.05em;
+  }
+  .fractal-svg .pane-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 700;
     fill: var(--accent);
     letter-spacing: 0.14em;
     text-transform: uppercase;
   }
-  .fractal-svg .layer-label {
-    font-family: var(--font-display);
-    font-size: 11px;
-    font-weight: 600;
-    fill: var(--ink);
-  }
-  .fractal-svg .layer-note {
+  .fractal-svg .pane-sub {
     font-family: var(--font-mono);
     font-size: 9px;
-    font-weight: 400;
+    fill: var(--ink-mute);
+    letter-spacing: 0.04em;
+  }
+  .fractal-svg .part-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 700;
+    fill: var(--ink);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .fractal-svg .part-note {
+    font-family: var(--font-mono);
+    font-size: 9px;
     fill: var(--ink-mute);
   }
-  .fractal-svg .box-label {
+
+  .fractal-svg .depl-box-label {
     font-family: var(--font-mono);
-    font-size: 13px;
-    font-weight: 600;
+    font-size: 11px;
+    font-weight: 700;
     fill: var(--ink);
-    letter-spacing: 0.02em;
+    letter-spacing: 0.04em;
   }
-  .fractal-svg .node-label {
-    font-family: var(--font-sans);
-    font-size: 10px;
-    font-weight: 500;
-    fill: var(--ink);
-  }
-  .fractal-svg .node-sub {
+  .fractal-svg .depl-sub {
     font-family: var(--font-mono);
     font-size: 8.5px;
     fill: var(--ink-mute);
   }
-  .fractal-svg .edge-label {
+  .fractal-svg .depl-zone-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 500;
+    fill: var(--ink-soft);
+  }
+  .fractal-svg .depl-zone-note {
     font-family: var(--font-mono);
     font-size: 8px;
     fill: var(--ink-mute);
-    letter-spacing: 0.02em;
+    font-style: italic;
   }
-  .fractal-svg .legend-eyebrow {
+  .fractal-svg .depl-band-label {
     font-family: var(--font-mono);
-    font-size: 10px;
-    font-weight: 600;
+    font-size: 9px;
+    font-weight: 700;
     fill: var(--ink);
+    letter-spacing: 0.12em;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
   }
-  .fractal-svg .legend-label {
+  .fractal-svg .depl-band-note {
+    font-family: var(--font-mono);
+    font-size: 8.5px;
+    fill: var(--ink-mute);
+  }
+  .fractal-svg .depl-flow-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: 600;
+    fill: var(--accent);
+    letter-spacing: 0.04em;
+  }
+  .fractal-svg .depl-flow-sub {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    fill: var(--ink-mute);
+  }
+  .fractal-svg .depl-dev-label {
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    font-weight: 500;
+    fill: var(--ink);
+  }
+  .fractal-svg .depl-dev-sl {
+    font-family: var(--font-mono);
+    font-size: 8.5px;
+    fill: var(--ink-mute);
+    letter-spacing: 0.04em;
+  }
+  .fractal-svg .depl-inside-note {
+    font-family: var(--font-mono);
+    font-size: 8.5px;
+    fill: var(--ink-soft);
+    font-style: italic;
+  }
+  .fractal-svg .depl-scope {
+    font-family: var(--font-mono);
+    font-size: 8.5px;
+    fill: var(--ink-mute);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .fractal-svg .depl-rule {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: 700;
+    fill: var(--accent);
+    letter-spacing: 0.14em;
+  }
+  .fractal-svg .depl-rule-body {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    fill: var(--ink);
+  }
+  .fractal-svg .frac-legend {
     font-family: var(--font-mono);
     font-size: 9px;
     fill: var(--ink-soft);
-  }
-  .fractal-svg .axiom {
-    font-family: var(--font-mono);
-    font-size: 9px;
-    fill: var(--ink-mute);
-    font-style: italic;
   }
 
   .diagram-caption {
@@ -250,5 +320,9 @@
     margin-top: 0.6rem;
     text-align: center;
     letter-spacing: 0.02em;
+    max-width: 80ch;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.5;
   }
 </style>

@@ -32,11 +32,13 @@ IIA names the security model on each side: **Zero Trust** above the boundary (ev
 
 ## The unit and the fractal
 
-Industrial sites are organized in zones. A control loop runs in a cell. Cells aggregate into a line. Lines aggregate into an area. Areas aggregate into a plant. Plants aggregate into a region. Regions aggregate into a corporate function.
+Industrial sites are organized in zones. A control loop runs in a cell. Cells aggregate into a line. Lines aggregate into an area. Areas aggregate into a plant. Plants aggregate into a region. Regions aggregate into a corporate function. Each is a zone — a boundary the operator declares, with data that crosses it.
 
-IIA places one unit at every zone. The unit is identical at every level — same software, same partitioning, same boundary rules. Only the *scope* changes. A unit in a cell sees one machine; a unit in a plant sees the plant; a unit at corporate sees the fleet. Same architecture, different aperture.
+IIA places one unit at the head of every zone — the **secure edge gateway**. Inside the zone is control system data, governed by SRP. At the box, that data crosses the boundary and becomes information, governed by CIA, published securely outbound to whatever the zone's consumers are: another zone, a plant, a partner, a regulator, the internet. Devices inside the zone can be any security level — legacy SCADA, modern PLCs, consumer-grade IO, IoT sensors — because the security boundary lives at the gateway, not at every device.
 
-This is the fractal property. There is no special "central" architecture and no special "edge" architecture. A central historian is a unit with broader scope. A device gateway is a unit with narrower scope. The fractal makes the architecture scale-invariant: deploy on commodity hardware in a single cabinet, or as a hyperscale realization for a multi-plant operator, and the invariants travel.
+The unit is identical at every zone. Same software, same partitioning, same boundary rules. Only the *scope* changes. A unit in a cell sees one machine; a unit in a plant sees the plant; a unit at corporate sees the fleet. Same architecture, different aperture.
+
+This is the fractal property. There is no special "central" architecture and no special "edge" architecture. A central historian is a unit with broader scope. A device gateway is a unit with narrower scope. The fractal makes the architecture scale-invariant: deploy on commodity hardware in a single cabinet, or as a hyperscale realization for a multi-plant operator, and the invariants travel. There is no required PERA L1–L5 tower; the operator's topology decides where zones are, and a box exists at the head of each one.
 
 The architecture is also *distributed*, not federated. Every unit is operated by one operator, under one set of rules. A federation would be independent parties exchanging data by treaty; IIA is one operator running a mesh of their own units. Sovereignty does not mean isolation: units on adjacent boxes know about each other, but no unit depends on another being available.
 
