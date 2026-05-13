@@ -247,6 +247,8 @@ IIA does not derive from any single standard. It is the physical instantiation o
 
 IIA documentation uses PERA+'s **CIAD** (Control and Information Architecture Diagram, conceptual block diagram, drawn during Conceptual Engineering) and **CIND** (Control and Information Network Diagram, network detail with SL1–SL4 annotations, drawn during Preliminary Engineering) conventions for reference deployments. This makes IIA deployments legible to any control engineer working within the PERA framework.
 
+Architectural roles inside the gateway are named with a *leaf-first*, hierarchical, hyphenated convention that aligns with DNS and ISA-95 — `<role>.<gateway>.<work-unit>.<work-center>.<area>.<site>.local`. Specifications use short labels (`witness`, `lake`, `publish`, etc.) and operators extend them rightward at deployment time. The architecture requires the convention, not any particular naming substrate; operators may realize it on a DNS zone, an LDAP tree, a UNS hierarchy, or their own asset registry. The convention is detailed in `docs/internal-architecture.md` (*Role addressing*) and in [`docs/glossary.md`](docs/glossary.md).
+
 The convergence is not coincidental. These standards arrive at the same place because they are built on the same observation: the unit of industrial operation is the zone, the zone must be self-sufficient, and any dependency on external systems for basic function is an architectural failure. IIA is the first deliberate physical instantiation of that observation. The standards are the formal description of it.
 
 ## Who This Is For
