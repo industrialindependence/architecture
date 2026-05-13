@@ -1,6 +1,9 @@
 ---
 import ContactForm from './ContactForm.astro';
+import { withLocale } from '../lib/i18n';
+
 const year = new Date().getFullYear();
+const { locale = 'en' } = Astro.props as { locale?: 'en' | 'fr' };
 ---
 
 <footer class="site-footer">
@@ -8,47 +11,48 @@ const year = new Date().getFullYear();
     <div class="footer-brand">
       <p class="brand-line mono">Industrial Independence Alliance</p>
       <p class="tagline">
-        Operational sovereignty for industrial infrastructure.
-        Not a product. Not a framework. The architectural principle, claimed by name.
+        {locale === 'fr'
+          ? "Souverainete operationnelle pour les infrastructures industrielles. Ni un produit. Ni un framework. Le principe architectural, revendique par son nom."
+          : 'Operational sovereignty for industrial infrastructure. Not a product. Not a framework. The architectural principle, claimed by name.'}
       </p>
     </div>
 
     <div class="footer-block">
-      <p class="block-label mono">Pillars</p>
+      <p class="block-label mono">{locale === 'fr' ? 'Piliers' : 'Pillars'}</p>
       <ul>
-        <li><a href="/field/">The Field</a></li>
-        <li><a href="/problem/">The Problem</a></li>
-        <li><a href="/claim/">Our Claim</a></li>
-        <li><a href="/philosophy/">Our Philosophy</a></li>
-        <li><a href="/architecture/">The Architecture</a></li>
-        <li><a href="/architecture/docs/">Documentation</a></li>
-        <li><a href="/contact/">Contact</a></li>
+        <li><a href={withLocale('/field/', locale)}>{locale === 'fr' ? 'Le terrain' : 'The Field'}</a></li>
+        <li><a href={withLocale('/problem/', locale)}>{locale === 'fr' ? 'Le probleme' : 'The Problem'}</a></li>
+        <li><a href={withLocale('/claim/', locale)}>{locale === 'fr' ? 'Notre position' : 'Our Claim'}</a></li>
+        <li><a href={withLocale('/philosophy/', locale)}>{locale === 'fr' ? 'Notre philosophie' : 'Our Philosophy'}</a></li>
+        <li><a href={withLocale('/architecture/', locale)}>{locale === 'fr' ? "L'architecture" : 'The Architecture'}</a></li>
+        <li><a href={withLocale('/architecture/docs/', locale)}>{locale === 'fr' ? 'Documentation' : 'Documentation'}</a></li>
+        <li><a href={withLocale('/contact/', locale)}>{locale === 'fr' ? 'Contact' : 'Contact'}</a></li>
       </ul>
     </div>
 
     <div class="footer-block">
-      <p class="block-label mono">Prior art cited</p>
+      <p class="block-label mono">{locale === 'fr' ? 'Antecedents cites' : 'Prior art cited'}</p>
       <ul>
         <li><a href="https://srpmodel.infracritical.com/srpmodel.php" rel="noopener">SRP Triad &mdash; Robert Radvanovsky, Infracritical</a></li>
         <li><a href="https://www.pera.net" rel="noopener">PERA+ &mdash; Gary Rathwell, Entercon</a></li>
         <li>IEC&nbsp;62443 &middot; ISA-95</li>
-        <li class="dim">Independent works. Not affiliated with the Alliance or with each other.</li>
+        <li class="dim">{locale === 'fr' ? "Travaux independants. Sans affiliation avec l'Alliance ni entre eux." : 'Independent works. Not affiliated with the Alliance or with each other.'}</li>
       </ul>
     </div>
 
     <div class="footer-block">
-      <p class="block-label mono">Implementations</p>
+      <p class="block-label mono">{locale === 'fr' ? 'Implementations' : 'Implementations'}</p>
       <ul>
-        <li><a href="https://www.grassmarlin.com" rel="noopener">MarlinSpike &mdash; GrassMarlin successor</a></li>
+        <li><a href="https://www.grassmarlin.com" rel="noopener">MarlinSpike &mdash; {locale === 'fr' ? 'successeur de GrassMarlin' : 'GrassMarlin successor'}</a></li>
         <li><a href="https://www.conversationalfactory.com" rel="noopener">Conversational Factory</a></li>
-        <li class="dim">Built on IIA</li>
+        <li class="dim">{locale === 'fr' ? 'Construit sur IIA' : 'Built on IIA'}</li>
       </ul>
     </div>
 
     <div class="footer-block">
-      <p class="block-label mono">Publisher</p>
+      <p class="block-label mono">{locale === 'fr' ? 'Editeur' : 'Publisher'}</p>
       <ul>
-        <li>The Industrial Independence Alliance</li>
+        <li>Industrial Independence Alliance</li>
         <li><a href="https://github.com/industrialindependence/architecture" rel="noopener">github &rarr;</a></li>
       </ul>
     </div>
@@ -56,13 +60,13 @@ const year = new Date().getFullYear();
 
   <div class="container footer-contact">
     <div class="footer-contact-intro">
-      <p class="block-label mono">Quick contact</p>
+      <p class="block-label mono">{locale === 'fr' ? 'Contact rapide' : 'Quick contact'}</p>
       <p class="contact-line">
-        Drop a line. <a href="/contact/">Full form &rarr;</a>
+        {locale === 'fr' ? 'Envoyez un message.' : 'Drop a line.'} <a href={withLocale('/contact/', locale)}>{locale === 'fr' ? 'Formulaire complet' : 'Full form'} &rarr;</a>
       </p>
     </div>
     <div class="footer-contact-form">
-      <ContactForm id="footer-contact-form" compact />
+      <ContactForm id="footer-contact-form" compact locale={locale} />
     </div>
   </div>
 
@@ -70,7 +74,9 @@ const year = new Date().getFullYear();
     <p class="mono small dim">
       &copy; {year} Industrial Independence Alliance &middot;
       <a href="https://creativecommons.org/licenses/by-sa/4.0/" rel="noopener">CC&nbsp;BY-SA&nbsp;4.0</a> &middot;
-      "Industrial Independence Architecture" and "IIA" are trademarks
+      {locale === 'fr'
+        ? '"Industrial Independence Architecture" et "IIA" sont des marques'
+        : '"Industrial Independence Architecture" and "IIA" are trademarks'}
     </p>
   </div>
 </footer>

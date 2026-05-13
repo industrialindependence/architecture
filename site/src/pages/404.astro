@@ -1,37 +1,45 @@
 ---
 import Base from '../layouts/Base.astro';
+import { withLocale } from '../lib/i18n';
 
-export const prerender = true;
+export const prerender = false;
+const locale = (Astro.locals.locale ?? 'en') as 'en' | 'fr';
 ---
 
 <Base
-  title="Not found"
-  description="The page you requested does not exist on industrialindependence.org."
+  title={locale === 'fr' ? 'Introuvable' : 'Not found'}
+  description={locale === 'fr'
+    ? "La page demandee n'existe pas sur industrialindependence.org."
+    : 'The page you requested does not exist on industrialindependence.org.'}
   current=""
   ogCard="home"
+  locale={locale}
 >
   <section class="notfound">
     <div class="container nf-inner">
-      <p class="eyebrow mono">404 &middot; Not found</p>
+      <p class="eyebrow mono">404 &middot; {locale === 'fr' ? 'Introuvable' : 'Not found'}</p>
       <h1 class="display">
-        Wrong zone<span class="dot">.</span>
+        {locale === 'fr' ? 'Mauvaise zone' : 'Wrong zone'}<span class="dot">.</span>
       </h1>
       <p class="lede">
-        The page you requested isn&rsquo;t at this URL.
-        It may have moved, never existed, or been replaced as the spec evolved.
+        {locale === 'fr'
+          ? "La page demandee n'est pas a cette URL. Elle a peut-etre ete deplacee, n'a jamais existe ou a ete remplacee au fil de l'evolution de la spec."
+          : 'The page you requested isn’t at this URL. It may have moved, never existed, or been replaced as the spec evolved.'}
       </p>
 
       <ul class="onward">
-        <li><a href="/">Landing</a> &mdash; the two doors</li>
-        <li><a href="/philosophy/">The Philosophy</a> &mdash; SRP, the substrate distinction, the seven principles</li>
-        <li><a href="/architecture/">The Architecture</a> &mdash; Industrial Independence Architecture, the canonical statement</li>
-        <li><a href="/architecture/docs/">Documentation</a> &mdash; introduction, internal architecture, contracts, MCP, glossary</li>
-        <li><a href="/contact/">Contact</a> &mdash; questions, corrections, deployments</li>
+        <li><a href={withLocale('/', locale)}>{locale === 'fr' ? 'Accueil' : 'Landing'}</a> &mdash; {locale === 'fr' ? 'les deux portes' : 'the two doors'}</li>
+        <li><a href={withLocale('/philosophy/', locale)}>{locale === 'fr' ? 'La philosophie' : 'The Philosophy'}</a> &mdash; {locale === 'fr' ? 'SRP, la distinction de substrat, les sept principes' : 'SRP, the substrate distinction, the seven principles'}</li>
+        <li><a href={withLocale('/architecture/', locale)}>{locale === 'fr' ? "L'architecture" : 'The Architecture'}</a> &mdash; {locale === 'fr' ? 'Industrial Independence Architecture, la declaration canonique' : 'Industrial Independence Architecture, the canonical statement'}</li>
+        <li><a href={withLocale('/architecture/docs/', locale)}>{locale === 'fr' ? 'Documentation' : 'Documentation'}</a> &mdash; {locale === 'fr' ? 'introduction, architecture interne, contrats, MCP, glossaire' : 'introduction, internal architecture, contracts, MCP, glossary'}</li>
+        <li><a href={withLocale('/contact/', locale)}>{locale === 'fr' ? 'Contact' : 'Contact'}</a> &mdash; {locale === 'fr' ? 'questions, corrections, deploiements' : 'questions, corrections, deployments'}</li>
       </ul>
 
       <p class="nf-footnote mono">
-        If you arrived here from an external link that you believe should work,
-        <a href="/contact/">let us know</a>.
+        {locale === 'fr'
+          ? 'Si vous etes arrive ici depuis un lien externe qui devrait fonctionner,'
+          : 'If you arrived here from an external link that you believe should work,'}
+        <a href={withLocale('/contact/', locale)}>{locale === 'fr' ? 'dites-le-nous' : 'let us know'}</a>.
       </p>
     </div>
   </section>

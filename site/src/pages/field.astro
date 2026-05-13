@@ -2,10 +2,12 @@
 import Base from '../layouts/Base.astro';
 import { getEntry, render } from 'astro:content';
 import PillarIcon from '../components/PillarIcon.astro';
+import { withLocale } from '../lib/i18n';
 
-export const prerender = true;
+export const prerender = false;
+const locale = (Astro.locals.locale ?? 'en') as 'en' | 'fr';
 
-const entry = await getEntry('docs', 'the-field');
+const entry = await getEntry(locale === 'fr' ? 'docsFr' : 'docs', 'the-field');
 if (!entry) throw new Error('the-field doc entry not found');
 const { Content, headings } = await render(entry);
 
@@ -13,25 +15,30 @@ const tocHeadings = headings.filter((h) => h.depth === 2);
 ---
 
 <Base
-  title="The Field"
-  description="The lived ground the Industrial Independence Architecture is shaped by — specific kinds of places, specific kinds of people, specific kinds of failures, and the architectural response to each."
+  title={locale === 'fr' ? 'Le terrain' : 'The Field'}
+  description={locale === 'fr'
+    ? "Le terrain vecu qui donne sa forme a l'Industrial Independence Architecture — des types de lieux, de personnes et de defaillances bien precis, ainsi que la reponse architecturale a chacun."
+    : 'The lived ground the Industrial Independence Architecture is shaped by — specific kinds of places, specific kinds of people, specific kinds of failures, and the architectural response to each.'}
   current="field"
   ogCard="field"
   pageType="Article"
+  locale={locale}
 >
   <section class="pillar-hero">
     <div class="container pillar-hero-inner">
-      <p class="eyebrow mono"><span class="eyebrow-icon"><PillarIcon pillar="field" size={22} /></span>Pillar I &middot; observation</p>
+      <p class="eyebrow mono"><span class="eyebrow-icon"><PillarIcon pillar="field" size={22} /></span>{locale === 'fr' ? 'Pilier I · observation' : 'Pillar I · observation'}</p>
       <h1 class="display">
-        The Field<span class="dot">.</span>
+        {locale === 'fr' ? 'Le terrain' : 'The Field'}<span class="dot">.</span>
       </h1>
       <p class="lede">
-        Where operations works. Specific kinds of places, specific kinds of people,
-        specific kinds of failures.
+        {locale === 'fr'
+          ? "Le lieu ou l'exploitation travaille. Des types de lieux, de personnes et de defaillances bien precis."
+          : 'Where operations works. Specific kinds of places, specific kinds of people, specific kinds of failures.'}
       </p>
       <p class="lede dim">
-        The lived ground the architecture is shaped by. Read this first;
-        every architectural decision is downstream of these conditions.
+        {locale === 'fr'
+          ? "Le terrain vecu qui donne sa forme a l'architecture. Lisez ceci d'abord ; chaque decision architecturale decoule de ces conditions."
+          : 'The lived ground the architecture is shaped by. Read this first; every architectural decision is downstream of these conditions.'}
       </p>
     </div>
   </section>
@@ -39,7 +46,7 @@ const tocHeadings = headings.filter((h) => h.depth === 2);
   <figure class="field-hero">
     <img
       src="/field/field-conveyor-bridge.jpg"
-      alt="Underside of industrial conveyor bridges against an evening sky"
+      alt={locale === 'fr' ? 'Dessous de convoyeurs industriels sur ciel du soir' : 'Underside of industrial conveyor bridges against an evening sky'}
       width="1600"
       height="900"
       fetchpriority="high"
@@ -49,8 +56,8 @@ const tocHeadings = headings.filter((h) => h.depth === 2);
   <div class="pillar-shell container">
     {tocHeadings.length > 0 && (
       <aside class="pillar-side">
-        <p class="side-label mono">On this page</p>
-        <nav class="toc" aria-label="Table of contents">
+        <p class="side-label mono">{locale === 'fr' ? 'Sur cette page' : 'On this page'}</p>
+        <nav class="toc" aria-label={locale === 'fr' ? 'Table des matieres' : 'Table of contents'}>
           {tocHeadings.map((h) => (
             <a href={`#${h.slug}`} class="toc-link">{h.text}</a>
           ))}
@@ -64,40 +71,41 @@ const tocHeadings = headings.filter((h) => h.depth === 2);
 
   <section class="field-mosaic-section">
     <div class="container">
-      <p class="mosaic-eyebrow mono">From the field</p>
+      <p class="mosaic-eyebrow mono">{locale === 'fr' ? 'Depuis le terrain' : 'From the field'}</p>
       <div class="field-mosaic">
         <figure>
-          <img src="/field/field-tailings-pond.jpg" alt="Open-pit mine with a turquoise frozen tailings pond" loading="lazy" />
+          <img src="/field/field-tailings-pond.jpg" alt={locale === 'fr' ? 'Mine a ciel ouvert avec bassin de residus gele turquoise' : 'Open-pit mine with a turquoise frozen tailings pond'} loading="lazy" />
         </figure>
         <figure>
-          <img src="/field/field-winter-plant.jpg" alt="Winter processing plant in a mountain valley" loading="lazy" />
+          <img src="/field/field-winter-plant.jpg" alt={locale === 'fr' ? 'Usine de traitement hivernale dans une vallee montagneuse' : 'Winter processing plant in a mountain valley'} loading="lazy" />
         </figure>
         <figure>
-          <img src="/field/field-dragline.jpg" alt="Dragline excavator working in snow" loading="lazy" />
+          <img src="/field/field-dragline.jpg" alt={locale === 'fr' ? 'Pelle dragline travaillant dans la neige' : 'Dragline excavator working in snow'} loading="lazy" />
         </figure>
       </div>
       <p class="mosaic-caption">
-        Where the architecture is shaped. Author's own photographs; specific
-        facilities, geographies, and personnel are deliberately not identified.
+        {locale === 'fr'
+          ? "La ou l'architecture prend forme. Photographies de l'auteur ; installations, geographies et personnels specifiques ne sont volontairement pas identifies."
+          : "Where the architecture is shaped. Author's own photographs; specific facilities, geographies, and personnel are deliberately not identified."}
       </p>
     </div>
   </section>
 
   <section class="pillar-next">
     <div class="container">
-      <p class="next-eyebrow mono">&sect; Next</p>
+      <p class="next-eyebrow mono">&sect; {locale === 'fr' ? 'Ensuite' : 'Next'}</p>
       <div class="next-grid">
-        <a href="/problem/" class="next-card">
-          <span class="next-num mono">Pillar II</span>
-          <h3>The Problem<span class="dot">.</span></h3>
-          <p>What stands in the way. The market, IT, and the field's own gatekeepers.</p>
-          <span class="next-cta mono">Read &rarr;</span>
+        <a href={withLocale('/problem/', locale)} class="next-card">
+          <span class="next-num mono">{locale === 'fr' ? 'Pilier II' : 'Pillar II'}</span>
+          <h3>{locale === 'fr' ? 'Le probleme' : 'The Problem'}<span class="dot">.</span></h3>
+          <p>{locale === 'fr' ? "Ce qui fait obstacle. Le marche, l'IT et les propres gardiens du terrain." : "What stands in the way. The market, IT, and the field's own gatekeepers."}</p>
+          <span class="next-cta mono">{locale === 'fr' ? 'Lire' : 'Read'} &rarr;</span>
         </a>
-        <a href="/claim/" class="next-card">
-          <span class="next-num mono">Pillar III</span>
-          <h3>Our Claim<span class="dot">.</span></h3>
-          <p>What operations is owed. What must be owned, taken back, formalized.</p>
-          <span class="next-cta mono">Read &rarr;</span>
+        <a href={withLocale('/claim/', locale)} class="next-card">
+          <span class="next-num mono">{locale === 'fr' ? 'Pilier III' : 'Pillar III'}</span>
+          <h3>{locale === 'fr' ? 'Notre position' : 'Our Claim'}<span class="dot">.</span></h3>
+          <p>{locale === 'fr' ? "Ce qui est du aux operations. Ce qui doit etre possede, repris, formalise." : 'What operations is owed. What must be owned, taken back, formalized.'}</p>
+          <span class="next-cta mono">{locale === 'fr' ? 'Lire' : 'Read'} &rarr;</span>
         </a>
       </div>
     </div>

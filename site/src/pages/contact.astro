@@ -2,29 +2,33 @@
 import Base from '../layouts/Base.astro';
 import ContactForm from '../components/ContactForm.astro';
 
-export const prerender = true;
+export const prerender = false;
+const locale = (Astro.locals.locale ?? 'en') as 'en' | 'fr';
 ---
 
 <Base
-  title="Contact"
-  description="Contact the Industrial Independence Alliance. Questions, corrections, deployments, contributions."
+  title={locale === 'fr' ? 'Contact' : 'Contact'}
+  description={locale === 'fr'
+    ? "Contactez l'Industrial Independence Alliance. Questions, corrections, deploiements, contributions."
+    : 'Contact the Industrial Independence Alliance. Questions, corrections, deployments, contributions.'}
   current="contact"
   ogCard="contact"
   pageType="ContactPage"
+  locale={locale}
 >
   <section class="contact-hero">
     <div class="container contact-hero-inner">
-      <p class="eyebrow mono">Contact &middot; the Industrial Independence Alliance</p>
+      <p class="eyebrow mono">{locale === 'fr' ? 'Contact · Industrial Independence Alliance' : 'Contact · the Industrial Independence Alliance'}</p>
       <h1 class="display">
-        Drop a line<span class="dot">.</span>
+        {locale === 'fr' ? 'Ecrivez-nous' : 'Drop a line'}<span class="dot">.</span>
       </h1>
       <p class="lede">
-        Questions about the architecture, corrections to the spec,
-        deployments in the wild, contributions to the standard,
-        or implementation collaboration.
+        {locale === 'fr'
+          ? "Questions sur l'architecture, corrections de la spec, deploiements observes, contributions au standard ou collaboration d'implementation."
+          : 'Questions about the architecture, corrections to the spec, deployments in the wild, contributions to the standard, or implementation collaboration.'}
       </p>
       <p class="lede dim">
-        We read everything. Replies vary by depth of question.
+        {locale === 'fr' ? 'Nous lisons tout. La reponse depend de la profondeur de la question.' : 'We read everything. Replies vary by depth of question.'}
       </p>
     </div>
   </section>
@@ -32,10 +36,10 @@ export const prerender = true;
   <section class="contact-form-section">
     <div class="container contact-grid">
       <div class="contact-form-wrap">
-        <ContactForm id="contact-page-form" />
+        <ContactForm id="contact-page-form" locale={locale} />
       </div>
       <aside class="contact-meta">
-        <p class="meta-eyebrow mono">&sect; Other paths</p>
+        <p class="meta-eyebrow mono">&sect; {locale === 'fr' ? 'Autres voies' : 'Other paths'}</p>
         <dl>
           <div>
             <dt>GitHub</dt>
@@ -43,14 +47,14 @@ export const prerender = true;
               <a href="https://github.com/industrialindependence/architecture" rel="noopener">
                 industrialindependence/architecture &rarr;
               </a>
-              <p class="meta-hint">Open issues, propose edits, fork the spec.</p>
+              <p class="meta-hint">{locale === 'fr' ? 'Ouvrir des issues, proposer des edits, forker la spec.' : 'Open issues, propose edits, fork the spec.'}</p>
             </dd>
           </div>
           <div>
             <dt>License</dt>
             <dd>
               <a href="https://creativecommons.org/licenses/by-sa/4.0/" rel="noopener">CC&nbsp;BY-SA&nbsp;4.0</a>
-              <p class="meta-hint">The text is freely usable. The trademarks are not.</p>
+              <p class="meta-hint">{locale === 'fr' ? 'Le texte est librement reutilisable. Les marques ne le sont pas.' : 'The text is freely usable. The trademarks are not.'}</p>
             </dd>
           </div>
         </dl>

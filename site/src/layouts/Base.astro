@@ -2,40 +2,48 @@
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import '../styles/global.css';
+import { stripLocalePrefix, withLocale } from '../lib/i18n';
 
 interface Props {
   title: string;
   description?: string;
   current?: string;
-  /** Slug of an OG card under /og-card/<slug>.png. Defaults to 'home'. */
   ogCard?: string;
-  /** Schema.org @type for the JSON-LD WebPage. Default 'WebPage'. */
   pageType?: 'WebPage' | 'Article' | 'AboutPage' | 'ContactPage' | 'CollectionPage';
-  /** Optional ISO date for Article schema. */
   datePublished?: string;
-  /** Optional ISO date for Article schema. */
   dateModified?: string;
+  locale?: 'en' | 'fr';
 }
 
 const {
   title,
-  description = 'Industrial Independence Architecture — an architectural principle for industrial infrastructure.',
+  description,
   current = '',
   ogCard = 'home',
   pageType = 'WebPage',
   datePublished,
-  dateModified
+  dateModified,
+  locale: propLocale
 } = Astro.props;
+
+const locale = (propLocale ?? Astro.locals.locale ?? 'en') as 'en' | 'fr';
+const pageDescription = description
+  ?? (locale === 'fr'
+    ? 'Industrial Independence Architecture — un principe architectural pour les infrastructures industrielles.'
+    : 'Industrial Independence Architecture — an architectural principle for industrial infrastructure.');
 
 const fullTitle = title === 'Industrial Independence Architecture' || title === 'Industrial Independence Alliance'
   ? title
   : `${title} · IIA`;
 
-const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
+const pagePath = Astro.locals.pagePath ?? stripLocalePrefix(Astro.url.pathname);
+const canonicalPath = withLocale(pagePath, locale);
+const canonicalUrl = new URL(canonicalPath, Astro.site).toString();
 const ogImageUrl = new URL(`/og-card/${ogCard}.png`, Astro.site).toString();
 const siteUrl = Astro.site?.toString().replace(/\/$/, '') ?? 'https://industrialindependence.org';
+const englishUrl = new URL(withLocale(pagePath, 'en'), Astro.site).toString();
+const frenchUrl = new URL(withLocale(pagePath, 'fr'), Astro.site).toString();
 
-// --- JSON-LD ---
 const organization = {
   '@type': 'Organization',
   '@id': `${siteUrl}/#organization`,
@@ -59,9 +67,11 @@ const website = {
   '@id': `${siteUrl}/#website`,
   url: `${siteUrl}/`,
   name: 'Industrial Independence Alliance',
-  description: 'Operational sovereignty for industrial infrastructure.',
+  description: locale === 'fr'
+    ? 'Souverainete operationnelle pour les infrastructures industrielles.'
+    : 'Operational sovereignty for industrial infrastructure.',
   publisher: { '@id': `${siteUrl}/#organization` },
-  inLanguage: 'en',
+  inLanguage: locale,
   license: 'https://creativecommons.org/licenses/by-sa/4.0/'
 };
 
@@ -70,9 +80,9 @@ const pageEntity: Record<string, unknown> = {
   '@id': `${canonicalUrl}#page`,
   url: canonicalUrl,
   name: fullTitle,
-  description,
+  description: pageDescription,
   isPartOf: { '@id': `${siteUrl}/#website` },
-  inLanguage: 'en',
+  inLanguage: locale,
   primaryImageOfPage: ogImageUrl
 };
 if (pageType === 'Article') {
@@ -91,7 +101,7 @@ const jsonLd = {
 ---
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang={locale}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -99,31 +109,31 @@ const jsonLd = {
     <meta name="theme-color" content="#0e0d0b" media="(prefers-color-scheme: dark)" />
     <meta name="theme-color" content="#fafaf7" media="(prefers-color-scheme: light)" />
     <title>{fullTitle}</title>
-    <meta name="description" content={description} />
+    <meta name="description" content={pageDescription} />
     <meta name="author" content="Industrial Independence Alliance" />
 
     <link rel="canonical" href={canonicalUrl} />
+    <link rel="alternate" hreflang="en" href={englishUrl} />
+    <link rel="alternate" hreflang="fr" href={frenchUrl} />
+    <link rel="alternate" hreflang="x-default" href={englishUrl} />
 
-    {/* Open Graph */}
     <meta property="og:site_name" content="Industrial Independence Alliance" />
     <meta property="og:title" content={fullTitle} />
-    <meta property="og:description" content={description} />
+    <meta property="og:description" content={pageDescription} />
     <meta property="og:type" content={pageType === 'Article' ? 'article' : 'website'} />
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:image" content={ogImageUrl} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content={`${fullTitle} — Industrial Independence Alliance`} />
-    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale" content={locale === 'fr' ? 'fr_FR' : 'en_US'} />
 
-    {/* Twitter Card */}
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={fullTitle} />
-    <meta name="twitter:description" content={description} />
+    <meta name="twitter:description" content={pageDescription} />
     <meta name="twitter:image" content={ogImageUrl} />
     <meta name="twitter:image:alt" content={`${fullTitle} — Industrial Independence Alliance`} />
 
-    {/* Icons */}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
@@ -132,7 +142,6 @@ const jsonLd = {
     <link rel="manifest" href="/site.webmanifest" />
     <link rel="mask-icon" href="/favicon.svg" color="#d96a4f" />
 
-    {/* Fonts */}
     <link rel="preconnect" href="https://rsms.me/" />
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -142,15 +151,14 @@ const jsonLd = {
       href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap"
     />
 
-    {/* Structured data */}
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   </head>
   <body>
-    <a href="#main" class="skip">Skip to content</a>
-    <Header current={current} />
+    <a href="#main" class="skip">{locale === 'fr' ? 'Aller au contenu' : 'Skip to content'}</a>
+    <Header current={current} locale={locale} />
     <main id="main">
       <slot />
     </main>
-    <Footer />
+    <Footer locale={locale} />
   </body>
 </html>

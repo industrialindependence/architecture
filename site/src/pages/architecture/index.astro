@@ -1,44 +1,47 @@
 ---
 import Base from '../../layouts/Base.astro';
-import { Content } from '../../content-src/principle/README.md';
+import { Content as ContentEn } from '../../content-src/principle/README.md';
+import { Content as ContentFr } from '../../content-src/principle/README.fr.md';
 import FractalDiagram from '../../components/diagrams/FractalDiagram.astro';
 import BoxDiagram from '../../components/diagrams/BoxDiagram.astro';
 import TwoBoxDiagram from '../../components/diagrams/TwoBoxDiagram.astro';
 import PillarIcon from '../../components/PillarIcon.astro';
+import { withLocale } from '../../lib/i18n';
 
-export const prerender = true;
+export const prerender = false;
+const locale = (Astro.locals.locale ?? 'en') as 'en' | 'fr';
+const Content = locale === 'fr' ? ContentFr : ContentEn;
 ---
 
-<Base title="The Architecture" description="Industrial Independence Architecture (IIA) — the architectural principle for industrial infrastructure. Published by the Industrial Independence Alliance." current="architecture" ogCard="architecture" pageType="Article">
+<Base title={locale === 'fr' ? "L'architecture" : 'The Architecture'} description={locale === 'fr' ? "Industrial Independence Architecture (IIA) — le principe architectural pour les infrastructures industrielles. Publie par l'Industrial Independence Alliance." : 'Industrial Independence Architecture (IIA) — the architectural principle for industrial infrastructure. Published by the Industrial Independence Alliance.'} current="architecture" ogCard="architecture" pageType="Article" locale={locale}>
   <section class="hero">
     <div class="container hero-grid">
       <div class="hero-text">
-        <p class="eyebrow mono"><span class="eyebrow-icon"><PillarIcon pillar="architecture" size={22} /></span>Pillar V &middot; artifact</p>
+        <p class="eyebrow mono"><span class="eyebrow-icon"><PillarIcon pillar="architecture" size={22} /></span>{locale === 'fr' ? 'Pilier V · artefact' : 'Pillar V · artifact'}</p>
         <h1 class="hero-title">
-          The<br />Architecture<span class="dot">.</span>
+          {locale === 'fr' ? <Fragment>L'<br />architecture</Fragment> : <Fragment>The<br />Architecture</Fragment>}<span class="dot">.</span>
         </h1>
         <p class="lede">
-          The technical spec that operationalizes
-          <a href="/claim/"><strong>Our Claim</strong></a> and
-          <a href="/philosophy/"><strong>Our Philosophy</strong></a>.
-          One self-contained unit at every zone.
-          Identical at every level. Scope is the only thing that changes.
+          {locale === 'fr'
+            ? <Fragment>La specification technique qui operationalise <a href={withLocale('/claim/', locale)}><strong>Notre position</strong></a> et <a href={withLocale('/philosophy/', locale)}><strong>Notre philosophie</strong></a>. Une unite autonome dans chaque zone. Identique a tous les niveaux. Seule l'echelle change.</Fragment>
+            : <Fragment>The technical spec that operationalizes <a href={withLocale('/claim/', locale)}><strong>Our Claim</strong></a> and <a href={withLocale('/philosophy/', locale)}><strong>Our Philosophy</strong></a>. One self-contained unit at every zone. Identical at every level. Scope is the only thing that changes.</Fragment>}
         </p>
         <p class="lede dim">
-          The unit works with no upstream connectivity. No cloud. No corporate network. No internet.
-          If connectivity exists, it composes upward. If it drops, nothing changes on site.
+          {locale === 'fr'
+            ? "L'unite fonctionne sans connectivite amont. Pas de cloud. Pas de reseau corporate. Pas d'internet. Si la connectivite existe, elle se compose vers le haut. Si elle tombe, rien ne change sur site."
+            : 'The unit works with no upstream connectivity. No cloud. No corporate network. No internet. If connectivity exists, it composes upward. If it drops, nothing changes on site.'}
         </p>
         <div class="cta-row">
-          <a class="btn primary" href="#the-principle">Read the principle</a>
-          <a class="btn ghost" href="/architecture/docs/introduction/">Start with the introduction</a>
+          <a class="btn primary" href="#readme">{locale === 'fr' ? 'Lire le principe' : 'Read the principle'}</a>
+          <a class="btn ghost" href={withLocale('/architecture/docs/introduction/', locale)}>{locale === 'fr' ? "Commencer par l'introduction" : 'Start with the introduction'}</a>
         </div>
       </div>
       <aside class="hero-meta">
         <dl>
-          <div><dt>Publisher</dt><dd>The Industrial Independence Alliance</dd></div>
-          <div><dt>Stance</dt><dd>Sovereignty by architecture, not by policy</dd></div>
-          <div><dt>Aligns with</dt><dd>PERA+, IEC&nbsp;62443, ISA-95, CESMII&nbsp;i3X</dd></div>
-          <div><dt>Targets</dt><dd>SL3 floor &middot; SL4 via diode</dd></div>
+          <div><dt>{locale === 'fr' ? 'Editeur' : 'Publisher'}</dt><dd>Industrial Independence Alliance</dd></div>
+          <div><dt>{locale === 'fr' ? 'Position' : 'Stance'}</dt><dd>{locale === 'fr' ? 'Souverainete par architecture, pas par politique' : 'Sovereignty by architecture, not by policy'}</dd></div>
+          <div><dt>{locale === 'fr' ? "S'aligne avec" : 'Aligns with'}</dt><dd>PERA+, IEC&nbsp;62443, ISA-95, CESMII&nbsp;i3X</dd></div>
+          <div><dt>{locale === 'fr' ? 'Vise' : 'Targets'}</dt><dd>SL3 floor &middot; SL4 via diode</dd></div>
         </dl>
       </aside>
     </div>
@@ -47,24 +50,21 @@ export const prerender = true;
   <section class="thesis-strip">
     <div class="container thesis-grid">
       <div class="thesis-card">
-        <p class="card-eyebrow mono">The thesis</p>
+        <p class="card-eyebrow mono">{locale === 'fr' ? 'La these' : 'The thesis'}</p>
         <p class="card-line">
-          IIA provides the architectural pattern that makes
-          <strong>sovereignty the default</strong> rather than the aspiration.
+          {locale === 'fr' ? <Fragment>IIA fournit le motif architectural qui fait de <strong>la souverainete l'etat par defaut</strong> plutot que l'aspiration.</Fragment> : <Fragment>IIA provides the architectural pattern that makes <strong>sovereignty the default</strong> rather than the aspiration.</Fragment>}
         </p>
       </div>
       <div class="thesis-card">
-        <p class="card-eyebrow mono">Sovereignty &ne; isolation</p>
+        <p class="card-eyebrow mono">{locale === 'fr' ? 'Souverainete ≠ isolement' : 'Sovereignty ≠ isolation'}</p>
         <p class="card-line">
-          Units are self-contained, but historians on adjacent boxes know about each other.
-          Awareness is mutual. Dependency is not.
+          {locale === 'fr' ? 'Les unites sont autonomes, mais les historiens des boites adjacentes se connaissent. La conscience est mutuelle. La dependance ne l’est pas.' : 'Units are self-contained, but historians on adjacent boxes know about each other. Awareness is mutual. Dependency is not.'}
         </p>
       </div>
       <div class="thesis-card">
-        <p class="card-eyebrow mono">Boundary enforcement</p>
+        <p class="card-eyebrow mono">{locale === 'fr' ? 'Application de frontiere' : 'Boundary enforcement'}</p>
         <p class="card-line">
-          ACS is governed by SRP. Information is governed by CIA.
-          The boundary is enforced <strong>by architecture, not by policy</strong>.
+          {locale === 'fr' ? <Fragment>L'ACS est gouverne par SRP. L'information est gouvernee par CIA. La frontiere est appliquee <strong>par l'architecture, pas par la politique</strong>.</Fragment> : <Fragment>ACS is governed by SRP. Information is governed by CIA. The boundary is enforced <strong>by architecture, not by policy</strong>.</Fragment>}
         </p>
       </div>
     </div>
@@ -74,38 +74,29 @@ export const prerender = true;
 
   <section class="diagrams-section">
     <div class="container">
-
       <div class="diagram-block">
-        <p class="diag-eyebrow mono">&sect; The fractal</p>
+        <p class="diag-eyebrow mono">&sect; {locale === 'fr' ? 'Le fractal' : 'The fractal'}</p>
         <p class="diag-intro">
-          A box at the head of every zone &mdash; the secure edge gateway.
-          Inside the zone is control system data; at the box, it becomes information for consumers.
-          Devices inside can be any security level. The secure outbound publish is the only external access into the zone.
-          The fractal does not collapse at the top &mdash; a central historian is just a unit with broader scope.
+          {locale === 'fr' ? 'Une boite a la tete de chaque zone — la passerelle de bordure securisee. A l’interieur de la zone se trouvent les donnees du systeme de controle ; a la boite, elles deviennent de l’information pour les consommateurs. Les dispositifs internes peuvent etre a n’importe quel niveau de securite. La publication sortante securisee est le seul acces externe dans la zone. Le fractal ne se collapse pas au sommet — un historien central n’est qu’une unite a portee plus large.' : 'A box at the head of every zone — the secure edge gateway. Inside the zone is control system data; at the box, it becomes information for consumers. Devices inside can be any security level. The secure outbound publish is the only external access into the zone. The fractal does not collapse at the top — a central historian is just a unit with broader scope.'}
         </p>
         <FractalDiagram />
       </div>
 
       <div class="diagram-block">
-        <p class="diag-eyebrow mono">&sect; The box (CIAD)</p>
+        <p class="diag-eyebrow mono">&sect; {locale === 'fr' ? 'La boite (CIAD)' : 'The box (CIAD)'}</p>
         <p class="diag-intro">
-          Internal partitioning of the IIA box.
-          Inbound (ACS-facing), DMZ, and outbound (IT-facing) zones.
-          All cross-side traffic transits the DMZ. ACS NIC is passive, RX-only.
+          {locale === 'fr' ? 'Partitionnement interne de la boite IIA. Zones entrante (cote ACS), DMZ et sortante (cote IT). Tout trafic entre les cotes transite par la DMZ. La NIC ACS est passive, RX-only.' : 'Internal partitioning of the IIA box. Inbound (ACS-facing), DMZ, and outbound (IT-facing) zones. All cross-side traffic transits the DMZ. ACS NIC is passive, RX-only.'}
         </p>
         <BoxDiagram />
       </div>
 
       <div class="diagram-block">
-        <p class="diag-eyebrow mono">&sect; The two-box method</p>
+        <p class="diag-eyebrow mono">&sect; {locale === 'fr' ? 'La methode deux-boites' : 'The two-box method'}</p>
         <p class="diag-intro">
-          SL3: one box, software segmentation. SL4: two boxes with a hardware data diode.
-          Same software architecture in both modes. Only the physical topology changes.
-          Credited: Rinaldi &amp; Workman, <em>The Everyman's Guide to EtherNet/IP Network Design</em> (RTA, 2022).
+          {locale === 'fr' ? 'SL3 : une boite, segmentation logicielle. SL4 : deux boites avec diode materielle. Meme architecture logicielle dans les deux modes. Seule la topologie physique change. Attribution : Rinaldi & Workman, The Everyman’s Guide to EtherNet/IP Network Design (RTA, 2022).' : 'SL3: one box, software segmentation. SL4: two boxes with a hardware data diode. Same software architecture in both modes. Only the physical topology changes. Credited: Rinaldi & Workman, The Everyman’s Guide to EtherNet/IP Network Design (RTA, 2022).'}
         </p>
         <TwoBoxDiagram />
       </div>
-
     </div>
   </section>
 
@@ -113,16 +104,16 @@ export const prerender = true;
 
   <section class="arch-impl">
     <div class="container arch-impl-inner">
-      <p class="arch-impl-eyebrow mono">&sect; What it looks like in shipped software</p>
+      <p class="arch-impl-eyebrow mono">&sect; {locale === 'fr' ? 'A quoi cela ressemble dans du logiciel livre' : 'What it looks like in shipped software'}</p>
       <div class="arch-impl-grid">
         <a class="arch-impl-card" href="https://www.grassmarlin.com" rel="noopener">
           <span class="arch-impl-label mono">MarlinSpike</span>
-          <span class="arch-impl-text">The modern GrassMarlin. Passive OT/ICS topology workbench &mdash; captures in, zero packets out.</span>
+          <span class="arch-impl-text">{locale === 'fr' ? 'Le GrassMarlin moderne. Etabli de topologie OT/ICS passive — les captures entrent, zero paquet ne sort.' : 'The modern GrassMarlin. Passive OT/ICS topology workbench — captures in, zero packets out.'}</span>
           <span class="arch-impl-cta mono">grassmarlin.com &rarr;</span>
         </a>
         <a class="arch-impl-card" href="https://www.conversationalfactory.com" rel="noopener">
           <span class="arch-impl-label mono">Conversational Factory</span>
-          <span class="arch-impl-text">Read-only OT platform. Wire-witness DPI across 34 protocols, i3X v1 &middot; MCP query surface for operators and AI clients.</span>
+          <span class="arch-impl-text">{locale === 'fr' ? 'Plateforme OT en lecture seule. DPI temoin sur le fil sur 34 protocoles, surface de requete i3X v1 · MCP pour operateurs et clients IA.' : 'Read-only OT platform. Wire-witness DPI across 34 protocols, i3X v1 · MCP query surface for operators and AI clients.'}</span>
           <span class="arch-impl-cta mono">conversationalfactory.com &rarr;</span>
         </a>
       </div>
@@ -336,12 +327,8 @@ export const prerender = true;
     border-bottom: 1px solid var(--rule-soft);
     background: var(--bg);
   }
-  .diagram-block {
-    margin-bottom: 4rem;
-  }
-  .diagram-block:last-child {
-    margin-bottom: 0;
-  }
+  .diagram-block { margin-bottom: 4rem; }
+  .diagram-block:last-child { margin-bottom: 0; }
   .diag-eyebrow {
     text-transform: uppercase;
     letter-spacing: 0.16em;
@@ -356,15 +343,8 @@ export const prerender = true;
     max-width: 72ch;
     margin: 0 0 1.4rem;
   }
-
-  .readme-body {
-    padding-top: 4rem;
-  }
-
-  /* tighten the duplicate H1 inside the README content */
-  .readme-body :global(h1:first-child) {
-    display: none;
-  }
+  .readme-body { padding-top: 4rem; }
+  .readme-body :global(h1:first-child) { display: none; }
   .readme-body :global(h2) {
     font-size: 1.6rem;
     border-bottom: 1px solid var(--rule-soft);

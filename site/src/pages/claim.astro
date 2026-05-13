@@ -2,10 +2,12 @@
 import Base from '../layouts/Base.astro';
 import { getEntry, render } from 'astro:content';
 import PillarIcon from '../components/PillarIcon.astro';
+import { withLocale } from '../lib/i18n';
 
-export const prerender = true;
+export const prerender = false;
+const locale = (Astro.locals.locale ?? 'en') as 'en' | 'fr';
 
-const entry = await getEntry('docs', 'our-claim');
+const entry = await getEntry(locale === 'fr' ? 'docsFr' : 'docs', 'our-claim');
 if (!entry) throw new Error('our-claim doc entry not found');
 const { Content, headings } = await render(entry);
 
@@ -13,24 +15,30 @@ const tocHeadings = headings.filter((h) => h.depth === 2);
 ---
 
 <Base
-  title="Our Claim"
-  description="What operations is owed. What must be owned, what has to be taken back from IT, the SLAs that match production, the bilateral contracts with IT, separation as architecture not policy, recognition of IT / OT / ACS as different substrates, the reintroduction of engineering."
+  title={locale === 'fr' ? 'Notre position' : 'Our Claim'}
+  description={locale === 'fr'
+    ? "Ce qui est du aux operations. Ce qui doit etre possede, ce qui doit etre repris a l'IT, les SLA qui correspondent a la production, les contrats bilateraux avec l'IT, la separation comme architecture et non comme politique, la reconnaissance de l'IT / OT / ACS comme substrats differents, la reintroduction de l'ingenierie."
+    : 'What operations is owed. What must be owned, what has to be taken back from IT, the SLAs that match production, the bilateral contracts with IT, separation as architecture not policy, recognition of IT / OT / ACS as different substrates, the reintroduction of engineering.'}
   current="claim"
   ogCard="claim"
   pageType="Article"
+  locale={locale}
 >
   <section class="pillar-hero">
     <div class="container pillar-hero-inner">
-      <p class="eyebrow mono"><span class="eyebrow-icon"><PillarIcon pillar="claim" size={22} /></span>Pillar III &middot; position</p>
+      <p class="eyebrow mono"><span class="eyebrow-icon"><PillarIcon pillar="claim" size={22} /></span>{locale === 'fr' ? 'Pilier III · position' : 'Pillar III · position'}</p>
       <h1 class="display">
-        Our Claim<span class="dot">.</span>
+        {locale === 'fr' ? 'Notre position' : 'Our Claim'}<span class="dot">.</span>
       </h1>
       <p class="lede">
-        What operations is owed. What must be owned, taken back, formalized, named.
+        {locale === 'fr'
+          ? "Ce qui est du aux operations. Ce qui doit etre possede, repris, formalise, nomme."
+          : 'What operations is owed. What must be owned, taken back, formalized, named.'}
       </p>
       <p class="lede dim">
-        Not requests. The working terms for a substrate operations can answer for.
-        The architecture is what makes them deliverable.
+        {locale === 'fr'
+          ? "Pas des demandes. Les termes operatoires d'un substrat dont les operations peuvent repondre. L'architecture est ce qui les rend livrables."
+          : 'Not requests. The working terms for a substrate operations can answer for. The architecture is what makes them deliverable.'}
       </p>
     </div>
   </section>
@@ -38,8 +46,8 @@ const tocHeadings = headings.filter((h) => h.depth === 2);
   <div class="pillar-shell container">
     {tocHeadings.length > 0 && (
       <aside class="pillar-side">
-        <p class="side-label mono">On this page</p>
-        <nav class="toc" aria-label="Table of contents">
+        <p class="side-label mono">{locale === 'fr' ? 'Sur cette page' : 'On this page'}</p>
+        <nav class="toc" aria-label={locale === 'fr' ? 'Table des matieres' : 'Table of contents'}>
           {tocHeadings.map((h) => (
             <a href={`#${h.slug}`} class="toc-link">{h.text}</a>
           ))}
@@ -53,19 +61,19 @@ const tocHeadings = headings.filter((h) => h.depth === 2);
 
   <section class="pillar-next">
     <div class="container">
-      <p class="next-eyebrow mono">&sect; Next</p>
+      <p class="next-eyebrow mono">&sect; {locale === 'fr' ? 'Ensuite' : 'Next'}</p>
       <div class="next-grid">
-        <a href="/philosophy/" class="next-card">
-          <span class="next-num mono">Pillar IV</span>
-          <h3>Our Philosophy<span class="dot">.</span></h3>
-          <p>How we think about the substrate. SRP governs the ACS, CIA governs information.</p>
-          <span class="next-cta mono">Read &rarr;</span>
+        <a href={withLocale('/philosophy/', locale)} class="next-card">
+          <span class="next-num mono">{locale === 'fr' ? 'Pilier IV' : 'Pillar IV'}</span>
+          <h3>{locale === 'fr' ? 'Notre philosophie' : 'Our Philosophy'}<span class="dot">.</span></h3>
+          <p>{locale === 'fr' ? "Notre facon de penser le substrat. SRP gouverne l'ACS, CIA gouverne l'information." : 'How we think about the substrate. SRP governs the ACS, CIA governs information.'}</p>
+          <span class="next-cta mono">{locale === 'fr' ? 'Lire' : 'Read'} &rarr;</span>
         </a>
-        <a href="/architecture/" class="next-card">
-          <span class="next-num mono">Pillar V</span>
-          <h3>The Architecture<span class="dot">.</span></h3>
-          <p>The technical spec. One self-contained unit at every zone. Identical at every level.</p>
-          <span class="next-cta mono">Read &rarr;</span>
+        <a href={withLocale('/architecture/', locale)} class="next-card">
+          <span class="next-num mono">{locale === 'fr' ? 'Pilier V' : 'Pillar V'}</span>
+          <h3>{locale === 'fr' ? "L'architecture" : 'The Architecture'}<span class="dot">.</span></h3>
+          <p>{locale === 'fr' ? "La specification technique. Une unite autonome dans chaque zone. Identique a tous les niveaux." : 'The technical spec. One self-contained unit at every zone. Identical at every level.'}</p>
+          <span class="next-cta mono">{locale === 'fr' ? 'Lire' : 'Read'} &rarr;</span>
         </a>
       </div>
     </div>

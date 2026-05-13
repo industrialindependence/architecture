@@ -2,126 +2,135 @@
 import Base from '../layouts/Base.astro';
 import FractalDiagram from '../components/diagrams/FractalDiagram.astro';
 import PillarIcon from '../components/PillarIcon.astro';
+import { withLocale } from '../lib/i18n';
 
-export const prerender = true;
+export const prerender = false;
+const locale = (Astro.locals.locale ?? 'en') as 'en' | 'fr';
+const readLabel = locale === 'fr' ? 'Lire ->' : 'Read ->';
 ---
 
 <Base
   title="Industrial Independence Alliance"
-  description="Operational sovereignty for industrial infrastructure. The Industrial Independence Alliance publishes The Philosophy and The Architecture (IIA)."
+  description={locale === 'fr'
+    ? "Souverainete operationnelle pour les infrastructures industrielles. L'Industrial Independence Alliance publie La Philosophie et L'Architecture (IIA)."
+    : 'Operational sovereignty for industrial infrastructure. The Industrial Independence Alliance publishes The Philosophy and The Architecture (IIA).'}
   current="home"
   ogCard="home"
+  locale={locale}
 >
   <section class="landing-hero">
     <div class="container landing-hero-inner">
       <p class="eyebrow mono">Industrial Independence Alliance</p>
       <h1 class="display">
-        Operational sovereignty<br />for industrial infrastructure<span class="dot">.</span>
+        {locale === 'fr' ? 'Souverainete operationnelle' : 'Operational sovereignty'}<br />{locale === 'fr' ? 'pour les infrastructures industrielles' : 'for industrial infrastructure'}<span class="dot">.</span>
       </h1>
       <p class="lede">
-        Control systems act on physics, not on information.
-        The Alliance publishes what follows from that distinction in five pillars:
-        the field operations works in, the problem standing in its way,
-        the claim we hold to, the philosophy we think with,
-        and the architecture that operationalizes all four.
+        {locale === 'fr'
+          ? "Les systemes de controle agissent sur la physique, pas sur l'information. L'Alliance publie ce qui decoule de cette distinction en cinq piliers : le terrain dans lequel l'exploitation travaille, le probleme qui lui fait obstacle, la position que nous tenons, la philosophie avec laquelle nous pensons et l'architecture qui operationalise les quatre autres."
+          : 'Control systems act on physics, not on information. The Alliance publishes what follows from that distinction in five pillars: the field operations works in, the problem standing in its way, the claim we hold to, the philosophy we think with, and the architecture that operationalizes all four.'}
       </p>
       <p class="onramp mono">
-        New to industrial automation, ICS, or operational technology?
-        <a href="/architecture/docs/introduction/">Start here &rarr;</a>
+        {locale === 'fr' ? 'Nouveau dans l’automatisation industrielle, les ICS ou les technologies operationnelles ?' : 'New to industrial automation, ICS, or operational technology?'}
+        <a href={withLocale('/architecture/docs/introduction/', locale)}>{locale === 'fr' ? 'Commencez ici' : 'Start here'} &rarr;</a>
       </p>
     </div>
   </section>
 
   <section class="pillars">
     <div class="container">
-      <p class="pillars-eyebrow mono">&sect; Five pillars</p>
+      <p class="pillars-eyebrow mono">&sect; {locale === 'fr' ? 'Cinq piliers' : 'Five pillars'}</p>
       <p class="pillars-intro">
-        Observation &rarr; observation &rarr; position &rarr; position &rarr; artifact.
-        Read top to bottom; each pillar is the ground of the next.
+        {locale === 'fr'
+          ? 'Observation -> observation -> position -> position -> artefact. Lisez de haut en bas ; chaque pilier est le sol du suivant.'
+          : 'Observation -> observation -> position -> position -> artifact. Read top to bottom; each pillar is the ground of the next.'}
       </p>
 
       <ol class="pillar-row pillar-row-diag">
         <li>
-          <a href="/field/" class="pillar-card">
+          <a href={withLocale('/field/', locale)} class="pillar-card">
             <span class="pillar-head">
               <PillarIcon pillar="field" size={26} />
-              <span class="pillar-num mono">I &middot; observation</span>
+              <span class="pillar-num mono">I &middot; {locale === 'fr' ? 'observation' : 'observation'}</span>
             </span>
-            <h2 class="pillar-title">The Field<span class="dot">.</span></h2>
+            <h2 class="pillar-title">{locale === 'fr' ? 'Le terrain' : 'The Field'}<span class="dot">.</span></h2>
             <p class="pillar-blurb">
-              Where operations works. Specific kinds of places, specific kinds of people,
-              specific kinds of failures &mdash; the lived ground the architecture is shaped by.
+              {locale === 'fr'
+                ? "Le lieu du travail d'exploitation. Des types de lieux, de personnes et de defaillances bien concrets — le terrain vecu qui donne sa forme a l'architecture."
+                : 'Where operations works. Specific kinds of places, specific kinds of people, specific kinds of failures — the lived ground the architecture is shaped by.'}
             </p>
-            <span class="pillar-cta mono">Read &rarr;</span>
+            <span class="pillar-cta mono">{readLabel}</span>
           </a>
         </li>
         <li>
-          <a href="/problem/" class="pillar-card">
+          <a href={withLocale('/problem/', locale)} class="pillar-card">
             <span class="pillar-head">
               <PillarIcon pillar="problem" size={26} />
-              <span class="pillar-num mono">II &middot; observation</span>
+              <span class="pillar-num mono">II &middot; {locale === 'fr' ? 'observation' : 'observation'}</span>
             </span>
-            <h2 class="pillar-title">The Problem<span class="dot">.</span></h2>
+            <h2 class="pillar-title">{locale === 'fr' ? 'Le probleme' : 'The Problem'}<span class="dot">.</span></h2>
             <p class="pillar-blurb">
-              What stands in the way. The market, IT, and the field's own gatekeepers.
-              Closed stacks, security theater, knowledge hoarded by those who should be teaching.
+              {locale === 'fr'
+                ? "Ce qui fait obstacle. Le marche, l'IT et les propres gardiens du terrain. Des piles fermees, du theatre securitaire, un savoir garde par ceux qui devraient l'enseigner."
+                : "What stands in the way. The market, IT, and the field's own gatekeepers. Closed stacks, security theater, knowledge hoarded by those who should be teaching."}
             </p>
-            <span class="pillar-cta mono">Read &rarr;</span>
+            <span class="pillar-cta mono">{readLabel}</span>
           </a>
         </li>
         <li>
-          <a href="/claim/" class="pillar-card">
+          <a href={withLocale('/claim/', locale)} class="pillar-card">
             <span class="pillar-head">
               <PillarIcon pillar="claim" size={26} />
-              <span class="pillar-num mono">III &middot; position</span>
+              <span class="pillar-num mono">III &middot; {locale === 'fr' ? 'position' : 'position'}</span>
             </span>
-            <h2 class="pillar-title">Our Claim<span class="dot">.</span></h2>
+            <h2 class="pillar-title">{locale === 'fr' ? 'Notre position' : 'Our Claim'}<span class="dot">.</span></h2>
             <p class="pillar-blurb">
-              What operations is owed. What must be owned, taken back, formalized.
-              SLAs that match production. Contracts with IT. Separation as architecture, not policy.
+              {locale === 'fr'
+                ? "Ce qui est du aux operations. Ce qui doit etre possede, repris, formalise. Des SLA qui correspondent a la production. Des contrats avec l'IT. La separation comme architecture, pas comme politique."
+                : 'What operations is owed. What must be owned, taken back, formalized. SLAs that match production. Contracts with IT. Separation as architecture, not policy.'}
             </p>
-            <span class="pillar-cta mono">Read &rarr;</span>
+            <span class="pillar-cta mono">{readLabel}</span>
           </a>
         </li>
       </ol>
 
       <ol class="pillar-row pillar-row-resp" start="4">
         <li>
-          <a href="/philosophy/" class="pillar-card pillar-card-wide">
+          <a href={withLocale('/philosophy/', locale)} class="pillar-card pillar-card-wide">
             <span class="pillar-head">
               <PillarIcon pillar="philosophy" size={28} />
-              <span class="pillar-num mono">IV &middot; position</span>
+              <span class="pillar-num mono">IV &middot; {locale === 'fr' ? 'position' : 'position'}</span>
             </span>
-            <h2 class="pillar-title">Our Philosophy<span class="dot">.</span></h2>
+            <h2 class="pillar-title">{locale === 'fr' ? 'Notre philosophie' : 'Our Philosophy'}<span class="dot">.</span></h2>
             <p class="pillar-blurb">
-              How we think about the substrate. SRP &mdash; Safety, Reliability, Performance &mdash;
-              governs the ACS. Information is governed by CIA. Seven principles follow.
+              {locale === 'fr'
+                ? "Notre facon de penser le substrat. SRP — Securite, Fiabilite, Performance — gouverne l'ACS. L'information est gouvernee par CIA. Sept principes en decoulent."
+                : 'How we think about the substrate. SRP — Safety, Reliability, Performance — governs the ACS. Information is governed by CIA. Seven principles follow.'}
             </p>
             <ul class="pillar-meta mono">
-              <li>SRP Triad &middot; <span class="dim">after Robert Radvanovsky / Infracritical</span></li>
+              <li>SRP Triad &middot; <span class="dim">{locale === 'fr' ? 'd’apres Robert Radvanovsky / Infracritical' : 'after Robert Radvanovsky / Infracritical'}</span></li>
               <li>PERA+ alignment &middot; <span class="dim">Gary Rathwell / Entercon</span></li>
             </ul>
-            <span class="pillar-cta mono">Read &rarr;</span>
+            <span class="pillar-cta mono">{readLabel}</span>
           </a>
         </li>
         <li>
-          <a href="/architecture/" class="pillar-card pillar-card-wide">
+          <a href={withLocale('/architecture/', locale)} class="pillar-card pillar-card-wide">
             <span class="pillar-head">
               <PillarIcon pillar="architecture" size={28} />
-              <span class="pillar-num mono">V &middot; artifact</span>
+              <span class="pillar-num mono">V &middot; {locale === 'fr' ? 'artefact' : 'artifact'}</span>
             </span>
-            <h2 class="pillar-title">The Architecture<span class="dot">.</span></h2>
+            <h2 class="pillar-title">{locale === 'fr' ? "L'architecture" : 'The Architecture'}<span class="dot">.</span></h2>
             <p class="pillar-blurb">
-              Industrial Independence Architecture (IIA).
-              One self-contained unit at every zone of an industrial network.
-              Identical at every level. Scope is the only thing that changes.
+              {locale === 'fr'
+                ? "Industrial Independence Architecture (IIA). Une unite autonome a la tete de chaque zone d'un reseau industriel. Identique a tous les niveaux. Seule l'echelle change."
+                : 'Industrial Independence Architecture (IIA). One self-contained unit at every zone of an industrial network. Identical at every level. Scope is the only thing that changes.'}
             </p>
             <ul class="pillar-meta mono">
-              <li>Secure edge gateway &middot; the fractal &middot; data contracts</li>
+              <li>{locale === 'fr' ? 'Passerelle de bordure securisee · le fractal · contrats de donnees' : 'Secure edge gateway · the fractal · data contracts'}</li>
               <li>SL3 floor &middot; SL4 via hardware diode</li>
               <li>IEC&nbsp;62443 &middot; ISA-95 &middot; CESMII&nbsp;i3X</li>
             </ul>
-            <span class="pillar-cta mono">Read &rarr;</span>
+            <span class="pillar-cta mono">{readLabel}</span>
           </a>
         </li>
       </ol>
@@ -130,11 +139,11 @@ export const prerender = true;
 
   <section class="fractal-section">
     <div class="container fractal-inner">
-      <p class="fractal-eyebrow mono">&sect; The fractal</p>
+      <p class="fractal-eyebrow mono">&sect; {locale === 'fr' ? 'Le fractal' : 'The fractal'}</p>
       <p class="fractal-intro">
-        A box at the head of every zone &mdash; the secure edge gateway.
-        Inside is control system data; at the box it becomes information for consumers.
-        Devices inside can be any security level. The same unit at every zone, regardless of scope.
+        {locale === 'fr'
+          ? "Une boite a la tete de chaque zone — la passerelle de bordure securisee. A l'interieur se trouvent les donnees du systeme de controle ; a la boite, elles deviennent de l'information pour les consommateurs. Les dispositifs internes peuvent etre a n'importe quel niveau de securite. La meme unite a chaque zone, quelle que soit l'echelle."
+          : 'A box at the head of every zone — the secure edge gateway. Inside is control system data; at the box it becomes information for consumers. Devices inside can be any security level. The same unit at every zone, regardless of scope.'}
       </p>
       <FractalDiagram />
     </div>
@@ -142,27 +151,30 @@ export const prerender = true;
 
   <section class="implementations">
     <div class="container">
-      <p class="impl-eyebrow mono">&sect; Reference implementations</p>
+      <p class="impl-eyebrow mono">&sect; {locale === 'fr' ? 'Implementations de reference' : 'Reference implementations'}</p>
       <p class="impl-intro">
-        What the principles look like in shipped software. Independent products, built on IIA.
+        {locale === 'fr'
+          ? 'A quoi ressemblent les principes dans des logiciels effectivement livres. Produits independants, construits sur IIA.'
+          : 'What the principles look like in shipped software. Independent products, built on IIA.'}
       </p>
       <div class="impl-grid">
         <a class="impl-card" href="https://www.grassmarlin.com" rel="noopener">
           <p class="impl-label mono">MarlinSpike</p>
-          <h3 class="impl-title">The modern GrassMarlin<span class="dot">.</span></h3>
+          <h3 class="impl-title">{locale === 'fr' ? 'Le GrassMarlin moderne' : 'The modern GrassMarlin'}<span class="dot">.</span></h3>
           <p class="impl-blurb">
-            The maintained, multi-user successor to NSA&rsquo;s GrassMarlin (EOL 2017).
-            Open-source passive OT/ICS topology workbench. Captures in, zero packets out.
+            {locale === 'fr'
+              ? "Le successeur maintenu et multi-utilisateur de GrassMarlin de la NSA (fin de vie 2017). Atelier open source de topologie OT/ICS passive. Les captures entrent, zero paquet ne sort."
+              : 'The maintained, multi-user successor to NSA’s GrassMarlin (EOL 2017). Open-source passive OT/ICS topology workbench. Captures in, zero packets out.'}
           </p>
           <span class="impl-cta mono">grassmarlin.com &rarr;</span>
         </a>
         <a class="impl-card" href="https://www.conversationalfactory.com" rel="noopener">
           <p class="impl-label mono">Conversational Factory</p>
-          <h3 class="impl-title">A factory you can talk to<span class="dot">.</span></h3>
+          <h3 class="impl-title">{locale === 'fr' ? 'Une usine a laquelle on peut parler' : 'A factory you can talk to'}<span class="dot">.</span></h3>
           <p class="impl-blurb">
-            Read-only OT platform. Passive wire-witness DPI across 34 protocols,
-            medallion data lake, i3X v1 &middot; MCP query surface for operators and AI clients.
-            Every answer bound to an append-only audit chain.
+            {locale === 'fr'
+              ? "Plateforme OT en lecture seule. DPI temoin passif sur 34 protocoles, lac de donnees medallion, surface de requete i3X v1 · MCP pour operateurs et clients IA. Chaque reponse est liee a une chaine d'audit append-only."
+              : 'Read-only OT platform. Passive wire-witness DPI across 34 protocols, medallion data lake, i3X v1 · MCP query surface for operators and AI clients. Every answer bound to an append-only audit chain.'}
           </p>
           <span class="impl-cta mono">conversationalfactory.com &rarr;</span>
         </a>
@@ -172,11 +184,11 @@ export const prerender = true;
 
   <section class="bridge">
     <div class="container bridge-inner">
-      <p class="bridge-eyebrow mono">Sovereignty bridges the two</p>
+      <p class="bridge-eyebrow mono">{locale === 'fr' ? 'La souverainete relie les deux' : 'Sovereignty bridges the two'}</p>
       <p class="bridge-line">
-        Industrial independence is not a technology position.
-        It is an <strong>operational sovereignty</strong> position.
-        The entity that controls the automation infrastructure controls the operation.
+        {locale === 'fr'
+          ? "L'independance industrielle n'est pas une position technologique. C'est une position de <strong>souverainete operationnelle</strong>. L'entite qui controle l'infrastructure d'automatisation controle l'operation."
+          : 'Industrial independence is not a technology position. It is an <strong>operational sovereignty</strong> position. The entity that controls the automation infrastructure controls the operation.'}
       </p>
     </div>
   </section>

@@ -1,23 +1,25 @@
 ---
 import Base from '../../../layouts/Base.astro';
 import { getCollection } from 'astro:content';
+import { withLocale } from '../../../lib/i18n';
 
-export const prerender = true;
+export const prerender = false;
+const locale = (Astro.locals.locale ?? 'en') as 'en' | 'fr';
 
-const titleMap: Record<string, string> = {
-  'introduction': 'Introduction',
-  'internal-architecture': 'Internal Architecture',
-  'glossary': 'Glossary',
-  'sample-contracts': 'Sample Data Contracts',
-  'mcp-single-box': 'MCP — Single Box Quickstart'
+const titleMap: Record<string, { en: string; fr: string }> = {
+  'introduction': { en: 'Introduction', fr: 'Introduction' },
+  'internal-architecture': { en: 'Internal Architecture', fr: 'Architecture interne' },
+  'glossary': { en: 'Glossary', fr: 'Glossaire' },
+  'sample-contracts': { en: 'Sample Data Contracts', fr: 'Exemples de contrats de donnees' },
+  'mcp-single-box': { en: 'MCP — Single Box Quickstart', fr: 'MCP — demarrage rapide mono-boite' }
 };
 
-const descMap: Record<string, string> = {
-  'introduction': 'Concept-first introduction for readers new to industrial automation, ICS, or operational technology. Builds the vocabulary the rest of the documentation assumes.',
-  'internal-architecture': 'The canonical implementation specification. Invariants, partitioning, contracts, attestation, configuration, updates, SL3 / SL4 mappings to IEC 62443 foundational requirements. Names roles, not products.',
-  'glossary': 'Vocabulary used across IIA documentation. Domain terms, architectural terms, and the standards IIA aligns with.',
-  'sample-contracts': 'Six worked data contracts spanning internal flows, boundary contracts (batch and query), device-level contracts, wireless IO, and AI-agent consumption.',
-  'mcp-single-box': 'Operator quickstart for the smallest AI-agent consumption deployment: one box, one MCP server off-box, one AI client. Topology, identity, contract, and config-artifact pipeline.'
+const descMap: Record<string, { en: string; fr: string }> = {
+  'introduction': { en: 'Concept-first introduction for readers new to industrial automation, ICS, or operational technology. Builds the vocabulary the rest of the documentation assumes.', fr: 'Introduction conceptuelle pour les lecteurs nouveaux en automatisation industrielle, ICS ou technologies operationnelles. Construit le vocabulaire suppose par le reste de la documentation.' },
+  'internal-architecture': { en: 'The canonical implementation specification. Invariants, partitioning, contracts, attestation, configuration, updates, SL3 / SL4 mappings to IEC 62443 foundational requirements. Names roles, not products.', fr: 'La specification canonique d’implementation. Invariants, partitionnement, contrats, attestation, configuration, mises a jour, mappings SL3 / SL4 vers les exigences fondamentales IEC 62443. Nomme des roles, pas des produits.' },
+  'glossary': { en: 'Vocabulary used across IIA documentation. Domain terms, architectural terms, and the standards IIA aligns with.', fr: 'Vocabulaire utilise dans la documentation IIA. Termes du domaine, termes architecturaux et normes avec lesquelles IIA s’aligne.' },
+  'sample-contracts': { en: 'Six worked data contracts spanning internal flows, boundary contracts (batch and query), device-level contracts, wireless IO, and AI-agent consumption.', fr: 'Six contrats de donnees travailles couvrant les flux internes, les contrats de frontiere (batch et requete), les contrats au niveau dispositif, les E/S sans fil et la consommation par agent IA.' },
+  'mcp-single-box': { en: 'Operator quickstart for the smallest AI-agent consumption deployment: one box, one MCP server off-box, one AI client. Topology, identity, contract, and config-artifact pipeline.', fr: 'Demarrage rapide operateur pour le plus petit deploiement de consommation par agent IA : une boite, un serveur MCP hors boite, un client IA. Topologie, identite, contrat et pipeline d’artefacts de configuration.' }
 };
 
 const orderMap: Record<string, number> = {
@@ -30,36 +32,42 @@ const orderMap: Record<string, number> = {
 
 const PILLAR_DOCS = new Set(['the-field', 'the-problem', 'our-claim']);
 
-const entries = (await getCollection('docs'))
+const rawEntries = locale === 'fr'
+  ? await getCollection('docsFr')
+  : await getCollection('docs');
+const fallbackEntries = await getCollection('docs');
+const sourceEntries = rawEntries.filter((d) => !PILLAR_DOCS.has(d.id)).length > 0 ? rawEntries : fallbackEntries;
+const entries = sourceEntries
   .filter((d) => !PILLAR_DOCS.has(d.id))
   .map((d) => ({
     id: d.id,
-    title: titleMap[d.id] ?? d.id,
-    description: descMap[d.id] ?? '',
+    title: titleMap[d.id]?.[locale] ?? titleMap[d.id]?.en ?? d.id,
+    description: descMap[d.id]?.[locale] ?? descMap[d.id]?.en ?? '',
     order: orderMap[d.id] ?? 99
   }))
   .sort((a, b) => a.order - b.order);
 ---
 
-<Base title="Documentation" description="Documentation for Industrial Independence Architecture." current="docs" ogCard="docs" pageType="CollectionPage">
+<Base title={locale === 'fr' ? 'Documentation' : 'Documentation'} description={locale === 'fr' ? "Documentation de l'Industrial Independence Architecture." : 'Documentation for Industrial Independence Architecture.'} current="docs" ogCard="docs" pageType="CollectionPage" locale={locale}>
   <div class="container docs-index">
     <header class="page-header">
-      <p class="eyebrow mono">The Architecture &middot; Documentation</p>
-      <h1>The full set</h1>
+      <p class="eyebrow mono">{locale === 'fr' ? "L'architecture · Documentation" : 'The Architecture · Documentation'}</p>
+      <h1>{locale === 'fr' ? 'L’ensemble complet' : 'The full set'}</h1>
       <p class="lede">
-        Every IIA document. The principle in the <a href="/architecture/">README</a> is the canonical statement;
-        the documents below extend it without contradicting it.
+        {locale === 'fr'
+          ? "Tous les documents IIA. Le principe dans le <a href='/architecture/'>README</a> est la declaration canonique ; les documents ci-dessous l'etendent sans la contredire."
+          : "Every IIA document. The principle in the <a href='/architecture/'>README</a> is the canonical statement; the documents below extend it without contradicting it."}
       </p>
     </header>
 
     <ol class="doc-grid">
       {entries.map((d) => (
         <li class="doc-card">
-          <a href={`/architecture/docs/${d.id}/`} class="card-link">
+          <a href={withLocale(`/architecture/docs/${d.id}/`, locale)} class="card-link">
             <span class="doc-num mono">{String(d.order).padStart(2, '0')}</span>
             <h2>{d.title}</h2>
             <p>{d.description}</p>
-            <span class="read mono">Read &rarr;</span>
+            <span class="read mono">{locale === 'fr' ? 'Lire ->' : 'Read ->'}</span>
           </a>
         </li>
       ))}

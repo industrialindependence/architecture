@@ -2,53 +2,78 @@
 interface Props {
   compact?: boolean;
   id?: string;
+  locale?: 'en' | 'fr';
 }
-const { compact = false, id = 'contact-form' } = Astro.props;
+const { compact = false, id = 'contact-form', locale = 'en' } = Astro.props;
+const t = locale === 'fr'
+  ? {
+      name: 'Nom',
+      email: 'E-mail',
+      subject: 'Sujet',
+      optional: '(optionnel)',
+      message: 'Message',
+      send: 'Envoyer ->',
+      sending: 'Envoi...',
+      sent: 'Envoye. Nous repondrons bientot.',
+      failed: "Echec de l'envoi. Veuillez reessayer."
+    }
+  : {
+      name: 'Name',
+      email: 'Email',
+      subject: 'Subject',
+      optional: '(optional)',
+      message: 'Message',
+      send: 'Send ->',
+      sending: 'Sending...',
+      sent: 'Sent. We will reply soon.',
+      failed: 'Send failed. Please try again.'
+    };
 ---
 
-<form class:list={["contact-form", { compact }]} data-contact-form id={id} novalidate>
+<form class:list={["contact-form", { compact }]} data-contact-form id={id} novalidate data-locale={locale}>
+  <input type="hidden" name="locale" value={locale} />
   <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" class="honey" />
 
   <div class="row">
     <div class="field">
-      <label for={`${id}-name`}>Name</label>
+      <label for={`${id}-name`}>{t.name}</label>
       <input type="text" id={`${id}-name`} name="name" required maxlength="120" autocomplete="name" />
     </div>
     <div class="field">
-      <label for={`${id}-email`}>Email</label>
+      <label for={`${id}-email`}>{t.email}</label>
       <input type="email" id={`${id}-email`} name="email" required maxlength="200" autocomplete="email" />
     </div>
   </div>
 
   {!compact && (
     <div class="field">
-      <label for={`${id}-subject`}>Subject <span class="hint">(optional)</span></label>
+      <label for={`${id}-subject`}>{t.subject} <span class="hint">{t.optional}</span></label>
       <input type="text" id={`${id}-subject`} name="subject" maxlength="160" />
     </div>
   )}
 
   <div class="field">
-    <label for={`${id}-message`}>Message</label>
+    <label for={`${id}-message`}>{t.message}</label>
     <textarea id={`${id}-message`} name="message" rows={compact ? 3 : 6} required minlength="4" maxlength="5000"></textarea>
   </div>
 
   <div class="actions">
-    <button type="submit" class="submit mono">Send &rarr;</button>
-    <p class="status mono" role="status" aria-live="polite"></p>
+    <button type="submit" class="submit mono" data-send-label={t.send} data-sending-label={t.sending}>{t.send}</button>
+    <p class="status mono" role="status" aria-live="polite" data-ok-label={t.sent} data-fail-label={t.failed}></p>
   </div>
 </form>
 
 <script>
-  document.querySelectorAll<HTMLFormElement>('[data-contact-form]').forEach((form) => {
+  document.querySelectorAll('[data-contact-form]').forEach((form) => {
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const status = form.querySelector('.status') as HTMLElement;
-      const button = form.querySelector('button.submit') as HTMLButtonElement;
+      const status = form.querySelector('.status');
+      const button = form.querySelector('button.submit');
 
       const data = Object.fromEntries(new FormData(form));
       button.disabled = true;
-      const originalLabel = button.textContent;
-      button.textContent = 'Sending...';
+      const originalLabel = button.dataset.sendLabel || button.textContent || '';
+      button.textContent = button.dataset.sendingLabel || 'Sending...';
       status.textContent = '';
       status.removeAttribute('data-tone');
 
@@ -59,13 +84,13 @@ const { compact = false, id = 'contact-form' } = Astro.props;
           body: JSON.stringify(data),
         });
         const body = await res.json().catch(() => ({}));
-        if (!res.ok) throw new Error(body.error || 'Send failed. Please try again.');
+        if (!res.ok) throw new Error(body.error || status.dataset.failLabel || 'Send failed. Please try again.');
 
-        status.textContent = 'Sent. We will reply soon.';
+        status.textContent = status.dataset.okLabel || 'Sent. We will reply soon.';
         status.dataset.tone = 'ok';
         form.reset();
       } catch (err) {
-        status.textContent = (err as Error).message || 'Send failed. Please try again.';
+        status.textContent = err.message || status.dataset.failLabel || 'Send failed. Please try again.';
         status.dataset.tone = 'error';
       } finally {
         button.disabled = false;

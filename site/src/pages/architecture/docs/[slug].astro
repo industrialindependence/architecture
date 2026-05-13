@@ -1,39 +1,43 @@
 ---
 import Base from '../../../layouts/Base.astro';
 import { getCollection, render } from 'astro:content';
+import { withLocale } from '../../../lib/i18n';
 
-export const prerender = true;
+export const prerender = false;
 
+const locale = (Astro.locals.locale ?? 'en') as 'en' | 'fr';
 const PILLAR_DOCS = new Set(['the-field', 'the-problem', 'our-claim']);
+const slug = Astro.params.slug ?? '';
 
-export async function getStaticPaths() {
-  const PILLAR_DOCS = new Set(['the-field', 'the-problem', 'our-claim']);
-  const entries = await getCollection('docs');
-  return entries
-    .filter((entry) => !PILLAR_DOCS.has(entry.id))
-    .map((entry) => ({
-      params: { slug: entry.id },
-      props: { entry }
-    }));
-}
-
-const { entry } = Astro.props;
-const { Content, headings } = await render(entry);
-
-const titleMap: Record<string, string> = {
-  'introduction': 'Introduction',
-  'internal-architecture': 'Internal Architecture',
-  'glossary': 'Glossary',
-  'sample-contracts': 'Sample Data Contracts',
-  'mcp-single-box': 'MCP — Single Box Quickstart'
+const titleMap: Record<string, { en: string; fr: string }> = {
+  'introduction': { en: 'Introduction', fr: 'Introduction' },
+  'internal-architecture': { en: 'Internal Architecture', fr: 'Architecture interne' },
+  'glossary': { en: 'Glossary', fr: 'Glossaire' },
+  'sample-contracts': { en: 'Sample Data Contracts', fr: 'Exemples de contrats de donnees' },
+  'mcp-single-box': { en: 'MCP — Single Box Quickstart', fr: 'MCP — demarrage rapide mono-boite' }
 };
 
-const descMap: Record<string, string> = {
-  'introduction': 'A concept-first introduction to industrial automation, ICS, operational technology, and the architectural problems they create.',
-  'internal-architecture': 'The canonical implementation specification: invariants, partitioning, contracts, attestation, configuration, updates, SL3 / SL4 mappings.',
-  'glossary': 'Vocabulary used across IIA documentation. Domain, architecture, and standards terms with normative definitions.',
-  'sample-contracts': 'Six worked data contracts spanning internal flows, boundary contracts, device-level contracts, wireless IO, and AI-agent consumption.',
-  'mcp-single-box': 'Operator quickstart for the smallest AI-agent consumption deployment — one box, one MCP server off-box, one AI client.'
+const descMap: Record<string, { en: string; fr: string }> = {
+  'introduction': {
+    en: 'A concept-first introduction to industrial automation, ICS, operational technology, and the architectural problems they create.',
+    fr: "Une introduction d'abord conceptuelle a l'automatisation industrielle, aux ICS, aux technologies operationnelles et aux problemes architecturaux qu'elles creent."
+  },
+  'internal-architecture': {
+    en: 'The canonical implementation specification: invariants, partitioning, contracts, attestation, configuration, updates, SL3 / SL4 mappings.',
+    fr: "La specification canonique d'implementation : invariants, partitionnement, contrats, attestation, configuration, mises a jour, mappings SL3 / SL4."
+  },
+  'glossary': {
+    en: 'Vocabulary used across IIA documentation. Domain, architecture, and standards terms with normative definitions.',
+    fr: 'Le vocabulaire utilise dans la documentation IIA. Termes de domaine, d’architecture et de normes avec definitions normatives.'
+  },
+  'sample-contracts': {
+    en: 'Six worked data contracts spanning internal flows, boundary contracts, device-level contracts, wireless IO, and AI-agent consumption.',
+    fr: "Six contrats de donnees travailles couvrant les flux internes, les contrats de frontiere, les contrats au niveau dispositif, les E/S sans fil et la consommation par agents IA."
+  },
+  'mcp-single-box': {
+    en: 'Operator quickstart for the smallest AI-agent consumption deployment — one box, one MCP server off-box, one AI client.',
+    fr: "Demarrage rapide operateur pour le plus petit deploiement de consommation par agent IA — une boite, un serveur MCP hors boite, un client IA."
+  }
 };
 
 const orderMap: Record<string, number> = {
@@ -44,25 +48,36 @@ const orderMap: Record<string, number> = {
   'glossary': 5
 };
 
-const title = entry.data.title ?? titleMap[entry.id] ?? entry.id;
-const description = entry.data.description ?? descMap[entry.id];
+const localizedEntries = locale === 'fr' ? await getCollection('docsFr') : await getCollection('docs');
+const englishEntries = await getCollection('docs');
+const entries = localizedEntries.filter((candidate) => !PILLAR_DOCS.has(candidate.id)).length > 0
+  ? localizedEntries
+  : englishEntries;
+const entry = entries.find((candidate) => candidate.id === slug && !PILLAR_DOCS.has(candidate.id));
+if (!entry) {
+  throw new Error(`Doc entry not found for slug: ${slug}`);
+}
 
-const allDocs = (await getCollection('docs'))
+const { Content, headings } = await render(entry);
+const title = entry.data.title ?? titleMap[entry.id]?.[locale] ?? titleMap[entry.id]?.en ?? entry.id;
+const description = entry.data.description ?? descMap[entry.id]?.[locale] ?? descMap[entry.id]?.en;
+
+const allDocs = entries
   .filter((d) => !PILLAR_DOCS.has(d.id))
-  .map((d) => ({ id: d.id, title: titleMap[d.id] ?? d.id, order: orderMap[d.id] ?? 99 }))
+  .map((d) => ({ id: d.id, title: titleMap[d.id]?.[locale] ?? titleMap[d.id]?.en ?? d.id, order: orderMap[d.id] ?? 99 }))
   .sort((a, b) => a.order - b.order);
 
 const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
 ---
 
-<Base title={title} description={description} current="docs" ogCard={entry.id} pageType="Article">
+<Base title={title} description={description} current="docs" ogCard={entry.id} pageType="Article" locale={locale}>
   <div class="doc-shell container">
     <aside class="doc-side">
-      <p class="side-label mono">Documentation</p>
-      <nav class="doc-list" aria-label="Documents">
+      <p class="side-label mono">{locale === 'fr' ? 'Documentation' : 'Documentation'}</p>
+      <nav class="doc-list" aria-label={locale === 'fr' ? 'Documents' : 'Documents'}>
         {allDocs.map((d) => (
           <a
-            href={`/architecture/docs/${d.id}/`}
+            href={withLocale(`/architecture/docs/${d.id}/`, locale)}
             class={`doc-link ${d.id === entry.id ? 'is-active' : ''}`}
           >
             <span class="doc-num mono">{String(d.order).padStart(2, '0')}</span>
@@ -73,15 +88,10 @@ const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
 
       {tocHeadings.length > 0 && (
         <>
-          <p class="side-label mono toc-label">On this page</p>
-          <nav class="toc" aria-label="Table of contents">
+          <p class="side-label mono toc-label">{locale === 'fr' ? 'Sur cette page' : 'On this page'}</p>
+          <nav class="toc" aria-label={locale === 'fr' ? 'Table des matieres' : 'Table of contents'}>
             {tocHeadings.map((h) => (
-              <a
-                href={`#${h.slug}`}
-                class={`toc-link depth-${h.depth}`}
-              >
-                {h.text}
-              </a>
+              <a href={`#${h.slug}`} class={`toc-link depth-${h.depth}`}>{h.text}</a>
             ))}
           </nav>
         </>
@@ -90,7 +100,7 @@ const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
 
     <article class="doc-body prose">
       <header class="doc-header">
-        <p class="eyebrow mono">Documentation &middot; {String(orderMap[entry.id] ?? '').padStart(2, '0')}</p>
+        <p class="eyebrow mono">{locale === 'fr' ? 'Documentation' : 'Documentation'} &middot; {String(orderMap[entry.id] ?? '').padStart(2, '0')}</p>
         <h1>{title}</h1>
         {description && <p class="doc-lede">{description}</p>}
       </header>

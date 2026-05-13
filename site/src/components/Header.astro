@@ -1,19 +1,23 @@
 ---
-const { current = '' } = Astro.props as { current?: string };
+import { stripLocalePrefix, withLocale } from '../lib/i18n';
+
+const { current = '', locale = 'en' } = Astro.props as { current?: string; locale?: 'en' | 'fr' };
+const currentPath = Astro.locals.originalPathname ?? Astro.url.pathname;
+const languageToggleHref = locale === 'fr' ? stripLocalePrefix(currentPath) : withLocale(currentPath, 'fr');
 const links = [
-  { href: '/field/', label: 'The Field', key: 'field' },
-  { href: '/problem/', label: 'The Problem', key: 'problem' },
-  { href: '/claim/', label: 'Our Claim', key: 'claim' },
-  { href: '/philosophy/', label: 'Our Philosophy', key: 'philosophy' },
-  { href: '/architecture/', label: 'The Architecture', key: 'architecture' },
-  { href: '/architecture/docs/', label: 'Docs', key: 'docs' },
-  { href: '/contact/', label: 'Contact', key: 'contact' }
+  { href: '/field/', en: 'The Field', fr: 'Le terrain', key: 'field' },
+  { href: '/problem/', en: 'The Problem', fr: 'Le probleme', key: 'problem' },
+  { href: '/claim/', en: 'Our Claim', fr: 'Notre position', key: 'claim' },
+  { href: '/philosophy/', en: 'Our Philosophy', fr: 'Notre philosophie', key: 'philosophy' },
+  { href: '/architecture/', en: 'The Architecture', fr: "L'architecture", key: 'architecture' },
+  { href: '/architecture/docs/', en: 'Docs', fr: 'Docs', key: 'docs' },
+  { href: '/contact/', en: 'Contact', fr: 'Contact', key: 'contact' }
 ];
 ---
 
 <header class="site-header">
   <div class="container header-row">
-    <a href="/" class="brand" aria-label="Industrial Independence Alliance, home">
+    <a href={withLocale('/', locale)} class="brand" aria-label={locale === 'fr' ? "Industrial Independence Alliance, accueil" : 'Industrial Independence Alliance, home'}>
       <span class="brand-mark" aria-hidden="true">
         <svg viewBox="0 0 24 24" width="24" height="24">
           <rect x="2.5" y="2.5" width="19" height="19" rx="1.2" fill="none" stroke="currentColor" stroke-width="1.8" />
@@ -26,21 +30,18 @@ const links = [
         <span class="brand-full">Industrial Independence Alliance</span>
       </span>
     </a>
-    <nav class="site-nav" aria-label="Primary">
+    <nav class="site-nav" aria-label={locale === 'fr' ? 'Primaire' : 'Primary'}>
       {links.map((l) => {
         const active =
           l.key === current ||
-          (l.key === 'field' && current === 'field') ||
-          (l.key === 'problem' && current === 'problem') ||
-          (l.key === 'claim' && current === 'claim') ||
           (l.key === 'philosophy' && current.startsWith('philosophy')) ||
           (l.key === 'architecture' && current.startsWith('architecture')) ||
-          (l.key === 'docs' && current === 'docs') ||
-          (l.key === 'contact' && current === 'contact');
+          (l.key === 'docs' && current === 'docs');
         return (
-          <a href={l.href} class={active ? 'is-active' : ''}>{l.label}</a>
+          <a href={withLocale(l.href, locale)} class={active ? 'is-active' : ''}>{locale === 'fr' ? l.fr : l.en}</a>
         );
       })}
+      <a href={languageToggleHref} class="lang-link">{locale === 'fr' ? 'EN' : 'FR'}</a>
     </nav>
   </div>
 </header>
@@ -91,6 +92,7 @@ const links = [
     display: flex;
     gap: 1.1rem;
     flex-wrap: wrap;
+    align-items: center;
   }
   .site-nav a {
     font-family: var(--font-mono);
@@ -105,7 +107,8 @@ const links = [
     white-space: nowrap;
   }
   .site-nav a:hover { color: var(--ink); border-bottom-color: var(--accent); }
-  .site-nav a.is-active {
+  .site-nav a.is-active,
+  .site-nav a.lang-link {
     color: var(--ink);
     border-bottom-color: var(--accent);
   }

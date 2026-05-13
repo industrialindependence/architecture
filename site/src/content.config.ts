@@ -15,4 +15,12 @@ const docs = defineCollection({
   schema: optionalMeta
 });
 
-export const collections = { docs };
+const docsFr = defineCollection({
+  loader: glob({
+    pattern: '*.md',
+    base: '../docs-fr'
+  }),
+  schema: optionalMeta
+});
+
+export const collections = { docs, docsFr };
