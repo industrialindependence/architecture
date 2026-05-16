@@ -1,6 +1,6 @@
 # Glossary
 
-Vocabulary used in IIA documentation. Definitions are normative for the architecture and align with how each term is used in [`README.md`](../README.md), [`internal-architecture.md`](internal-architecture.md), and [`sample-contracts.md`](sample-contracts.md).
+Vocabulary used in IIA documentation. Definitions are normative for the architecture and align with how each term is used on [the Architecture page](/architecture/).
 
 Standards and protocols are listed where they carry architectural weight in IIA. External-standard definitions are summaries, not substitutes for the source standards.
 

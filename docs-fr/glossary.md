@@ -1,6 +1,6 @@
 # Glossaire
 
-Vocabulaire utilisé dans la documentation IIA. Les définitions sont normatives pour l'architecture et s'alignent sur l'usage de chaque terme dans [/fr/architecture/](/fr/architecture/), [/fr/architecture/docs/internal-architecture/](/fr/architecture/docs/internal-architecture/) et [/fr/architecture/docs/sample-contracts/](/fr/architecture/docs/sample-contracts/).
+Vocabulaire utilisé dans la documentation IIA. Les définitions sont normatives pour l'architecture et s'alignent sur l'usage de chaque terme dans [la page Architecture](/fr/architecture/).
 
 Les normes et protocoles sont listés lorsqu'ils portent un poids architectural dans l'IIA. Les définitions provenant de normes externes sont des résumés, pas des substituts aux normes sources.
 

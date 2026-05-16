@@ -1,7 +1,5 @@
 ---
 import Base from '../../layouts/Base.astro';
-import { Content as ContentEn } from '../../content-src/principle/README.md';
-import { Content as ContentFr } from '../../content-src/principle/README.fr.md';
 import FractalDiagram from '../../components/diagrams/FractalDiagram.astro';
 import BoxDiagram from '../../components/diagrams/BoxDiagram.astro';
 import TwoBoxDiagram from '../../components/diagrams/TwoBoxDiagram.astro';
@@ -10,10 +8,9 @@ import { withLocale } from '../../lib/i18n';
 
 export const prerender = false;
 const locale = (Astro.locals.locale ?? 'en') as 'en' | 'fr';
-const Content = locale === 'fr' ? ContentFr : ContentEn;
 ---
 
-<Base title={locale === 'fr' ? "L'architecture" : 'The Architecture'} description={locale === 'fr' ? "Industrial Independence Architecture (IIA) — le principe architectural pour les infrastructures industrielles. Publie par l'Industrial Independence Alliance." : 'Industrial Independence Architecture (IIA) — the architectural principle for industrial infrastructure. Published by the Industrial Independence Alliance.'} current="architecture" ogCard="architecture" pageType="Article" locale={locale}>
+<Base title={locale === 'fr' ? "L'architecture" : 'The Architecture'} description={locale === 'fr' ? "Industrial Independence Architecture (IIA) — le principe architectural pour les infrastructures industrielles. Une passerelle de bordure securisee a la tete de chaque zone." : 'Industrial Independence Architecture (IIA) — the architectural principle for industrial infrastructure. A secure edge gateway at the head of every zone.'} current="architecture" ogCard="architecture" pageType="Article" locale={locale}>
   <section class="hero">
     <div class="container hero-grid">
       <div class="hero-text">
@@ -23,17 +20,17 @@ const Content = locale === 'fr' ? ContentFr : ContentEn;
         </h1>
         <p class="lede">
           {locale === 'fr'
-            ? <Fragment>La specification technique qui operationalise <a href={withLocale('/claim/', locale)}><strong>Notre position</strong></a> et <a href={withLocale('/philosophy/', locale)}><strong>Notre philosophie</strong></a>. Une unite autonome dans chaque zone. Identique a tous les niveaux. Seule l'echelle change.</Fragment>
-            : <Fragment>The technical spec that operationalizes <a href={withLocale('/claim/', locale)}><strong>Our Claim</strong></a> and <a href={withLocale('/philosophy/', locale)}><strong>Our Philosophy</strong></a>. One self-contained unit at every zone. Identical at every level. Scope is the only thing that changes.</Fragment>}
+            ? <Fragment>Un site industriel fait tourner deux systemes cousus ensemble. L'un deplace le monde physique. L'autre l'enregistre. Industrial Independence Architecture est l'unite qui se tient la ou les deux se rencontrent — la <strong>passerelle de bordure securisee</strong> — et la regle qui en place une a la tete de chaque zone.</Fragment>
+            : <Fragment>An industrial site runs two systems stitched together. One moves the physical world. One records it. Industrial Independence Architecture is the unit that sits where they meet — the <strong>secure edge gateway</strong> — and the rule that puts one at the head of every zone.</Fragment>}
         </p>
         <p class="lede dim">
           {locale === 'fr'
-            ? "L'unite fonctionne sans connectivite amont. Pas de cloud. Pas de reseau corporate. Pas d'internet. Si la connectivite existe, elle se compose vers le haut. Si elle tombe, rien ne change sur site."
-            : 'The unit works with no upstream connectivity. No cloud. No corporate network. No internet. If connectivity exists, it composes upward. If it drops, nothing changes on site.'}
+            ? "La passerelle fonctionne sans connectivite amont. Pas de cloud. Pas de reseau corporate. Pas d'internet. Si la connectivite existe, elle se compose vers le haut. Si elle tombe, rien ne change sur site."
+            : 'The gateway works with no upstream connectivity. No cloud. No corporate network. No internet. If connectivity exists, it composes upward. If it drops, nothing changes on site.'}
         </p>
         <div class="cta-row">
-          <a class="btn primary" href="#readme">{locale === 'fr' ? 'Lire le principe' : 'Read the principle'}</a>
-          <a class="btn ghost" href={withLocale('/architecture/docs/introduction/', locale)}>{locale === 'fr' ? "Commencer par l'introduction" : 'Start with the introduction'}</a>
+          <a class="btn primary" href="#two-systems">{locale === 'fr' ? 'Lire la these' : 'Read the thesis'}</a>
+          <a class="btn ghost" href={withLocale('/architecture/docs/glossary/', locale)}>{locale === 'fr' ? 'Glossaire' : 'Glossary'}</a>
         </div>
       </div>
       <aside class="hero-meta">
@@ -47,142 +44,220 @@ const Content = locale === 'fr' ? ContentFr : ContentEn;
     </div>
   </section>
 
-  <section class="thesis-strip">
-    <div class="container thesis-grid">
-      <div class="thesis-card">
-        <p class="card-eyebrow mono">{locale === 'fr' ? 'La these' : 'The thesis'}</p>
-        <p class="card-line">
-          {locale === 'fr' ? <Fragment>IIA fournit le motif architectural qui fait de <strong>la souverainete l'etat par defaut</strong> plutot que l'aspiration.</Fragment> : <Fragment>IIA provides the architectural pattern that makes <strong>sovereignty the default</strong> rather than the aspiration.</Fragment>}
-        </p>
-      </div>
-      <div class="thesis-card">
-        <p class="card-eyebrow mono">{locale === 'fr' ? 'Souverainete ≠ isolement' : 'Sovereignty ≠ isolation'}</p>
-        <p class="card-line">
-          {locale === 'fr' ? 'Les unites sont autonomes, mais les historiens des boites adjacentes se connaissent. La conscience est mutuelle. La dependance ne l’est pas.' : 'Units are self-contained, but historians on adjacent boxes know about each other. Awareness is mutual. Dependency is not.'}
-        </p>
-      </div>
-      <div class="thesis-card">
-        <p class="card-eyebrow mono">{locale === 'fr' ? 'Application de frontiere' : 'Boundary enforcement'}</p>
-        <p class="card-line">
-          {locale === 'fr' ? <Fragment>L'ACS est gouverne par SRP. L'information est gouvernee par CIA. La frontiere est appliquee <strong>par l'architecture, pas par la politique</strong>.</Fragment> : <Fragment>ACS is governed by SRP. Information is governed by CIA. The boundary is enforced <strong>by architecture, not by policy</strong>.</Fragment>}
-        </p>
-      </div>
-    </div>
-  </section>
+  <article class="thesis container">
+    <section class="prose-section" id="two-systems">
+      <p class="section-eyebrow mono">&sect; {locale === 'fr' ? 'Les deux systemes' : 'The two systems'}</p>
+      {locale === 'fr' ? (
+        <Fragment>
+          <p>Une usine, une raffinerie, une station de traitement des eaux, une centrale electrique — toutes sont faites de deux systemes cousus ensemble. Ils n'ont pas ete concus ensemble. Ils ont ete assembles, site par site, par des integrateurs payes projet par projet. Le resultat est ce dont herite chaque exploitant : une pile sur mesure, une emprise du fournisseur sur les donnees, et une reconstruction a chaque fois qu'un changement important devient necessaire.</p>
+          <p>Le premier systeme est l'<strong>Automation and Control Systems</strong> (ACS) : capteurs, automates, vannes, moteurs, interlocks de securite. Le travail est physique et les delais sont physiques. Une boucle de controle en retard de cent millisecondes est un probleme de securite, pas un probleme de latence. L'ACS est gouverne par <strong>SRP — Safety, Reliability, Performance</strong>. Le vocabulaire est celui de la physique.</p>
+          <p>Le second est l'<strong>Information Technology</strong> (IT) : ordres, plannings, audits, tableaux de bord, modeles d'apprentissage automatique. Le travail consiste a tenir des enregistrements correctement et a les atteindre quand il le faut. L'IT est gouvernee par <strong>CIA — Confidentiality, Integrity, Availability</strong>.</p>
+          <p>SRP et CIA ne sont pas deux ordres de priorite d'une meme liste. Ils decrivent des substrats differents. Utiliser CIA pour gouverner l'ACS est une erreur de categorie. L'habitude de trente ans qui consiste a traiter les systemes de controle comme « de l'IT avec un peu plus de disponibilite » est la source de la plupart des problemes que cette architecture existe pour resoudre.</p>
+        </Fragment>
+      ) : (
+        <Fragment>
+          <p>A factory, a refinery, a water-treatment plant, a power station — every one of them is made of two systems stitched together. The two were not designed together. They were assembled, plant by plant, by integrators paid per project. The result is what every operator inherits: a custom stack, a vendor stranglehold on the data, and a rebuild every time anything important needs to change.</p>
+          <p>The first system is <strong>Automation and Control Systems</strong> (ACS) — sensors, controllers, valves, motors, safety interlocks. The work is physical and the deadlines are physical. A control loop late by a hundred milliseconds is a safety problem, not a latency problem. ACS is governed by <strong>SRP — Safety, Reliability, Performance</strong>. The vocabulary is physics.</p>
+          <p>The second is <strong>Information Technology</strong> (IT) — orders, schedules, audits, dashboards, machine-learning models. The work is records kept correctly and reached when needed. IT is governed by <strong>CIA — Confidentiality, Integrity, Availability</strong>.</p>
+          <p>SRP and CIA are not two priority orderings of the same list. They describe different substrates. Using CIA to govern ACS is a category error. The thirty-year industry habit of treating control systems as &ldquo;IT with extra availability&rdquo; is the source of most of the problems this architecture exists to solve.</p>
+        </Fragment>
+      )}
+    </section>
 
-  <hr class="rule" />
+    <section class="prose-section">
+      <p class="section-eyebrow mono">&sect; {locale === 'fr' ? "Ou se trouve la frontiere" : 'Where the boundary sits'}</p>
+      {locale === 'fr' ? (
+        <Fragment>
+          <p>La frontiere IT/ACS n'est pas un schema reseau. C'est une frontiere de criticite des donnees. D'un cote, les donnees decrivent un etat physique qui existe maintenant et sur lequel on agit dans les millisecondes. De l'autre, les donnees sont un enregistrement de ce qui s'est deja passe. L'ACS transforme un etat physique en enregistrement en le capturant. L'IT transforme un enregistrement en action en emettant une instruction. La frontiere est l'endroit ou capture et instruction se rencontrent.</p>
+          <p>Cette frontiere a besoin de deux modeles de securite differents sur ses deux cotes. L'architecture les nomme comme le fait PERA+ : <strong>Zero Trust</strong> cote IT, <strong>Managed Trust</strong> cote ACS. Cote IT, chaque connexion est authentifiee et autorisee independamment de son emplacement. Cote ACS, chaque equipement et chaque procede est connu, identifie et imputable au responsable operationnel. L'unite placee sur la frontiere termine le Zero Trust et commence le Managed Trust.</p>
+        </Fragment>
+      ) : (
+        <Fragment>
+          <p>The IT/ACS boundary is not a network diagram. It is a data-criticality boundary. On one side, data describes a physical state that exists right now and is acted on within milliseconds. On the other, data is a record of what already happened. ACS turns physical state into a record by capturing it. IT turns a record into action by issuing an instruction. The boundary is where capture and instruction meet.</p>
+          <p>That boundary needs two different security models on its two sides. The architecture names them as PERA+ does: <strong>Zero Trust</strong> on the IT side, <strong>Managed Trust</strong> on the ACS side. On the IT side every connection is authenticated and authorized regardless of location. On the ACS side every device and process is known, identified, and accountable to the operational manager. The unit placed on the boundary terminates Zero Trust and begins Managed Trust.</p>
+        </Fragment>
+      )}
+    </section>
 
-  <section class="diagrams-section">
-    <div class="container">
-      <div class="diagram-block">
-        <p class="diag-eyebrow mono">&sect; {locale === 'fr' ? 'Le fractal' : 'The fractal'}</p>
-        <p class="diag-intro">
-          {locale === 'fr' ? 'Une boite a la tete de chaque zone — la passerelle de bordure securisee. A l’interieur de la zone se trouvent les donnees du systeme de controle ; a la boite, elles deviennent de l’information pour les consommateurs. Les dispositifs internes peuvent etre a n’importe quel niveau de securite. La publication sortante securisee est le seul acces externe dans la zone. Le fractal ne se collapse pas au sommet — un historien central n’est qu’une unite a portee plus large.' : 'A box at the head of every zone — the secure edge gateway. Inside the zone is control system data; at the box, it becomes information for consumers. Devices inside can be any security level. The secure outbound publish is the only external access into the zone. The fractal does not collapse at the top — a central historian is just a unit with broader scope.'}
-        </p>
-        <FractalDiagram />
-      </div>
+    <section class="prose-section feature">
+      <p class="section-eyebrow mono">&sect; {locale === 'fr' ? 'La passerelle de bordure securisee' : 'The secure edge gateway'}</p>
+      {locale === 'fr' ? (
+        <Fragment>
+          <p>L'unite a un nom. C'est la <strong>passerelle de bordure securisee</strong> — <em>secure edge gateway</em>.</p>
+          <p>La passerelle de bordure securisee se tient a la tete d'une zone. A l'interieur de la zone se trouve le systeme de controle dont l'exploitant a herite — PLC modernes, SCADA legacy, capteurs IoT, E/S grand public. A l'exterieur se trouve tout ce qui veut savoir ce qui se passe : une autre zone, une usine, un partenaire, un regulateur, le cloud, l'agent IA. La passerelle est ce que les deux cotes voient quand ils se regardent.</p>
+          <p>La passerelle fait quatre choses et refuse tout le reste.</p>
+          <p>Elle <strong>temoigne</strong>. Une derivation passive sur le reseau ACS. L'interface est en reception seule au niveau materiel : pas de pile IP, pas d'ecouteur, pas de transmission possible. Une compromission du role de temoin ne peut pas devenir une intrusion active sur le reseau de controle.</p>
+          <p>Elle <strong>interroge</strong>. Certains equipements ne parlent que lorsqu'on les sollicite. La passerelle les interroge, avec une cadence bornee, une identite explicite, et une trace d'audit pour chaque requete.</p>
+          <p>Elle <strong>historise</strong>. La passerelle exploite un magasin de series temporelles local. Captures, classifications, evenements et pistes d'audit y atterrissent. Le magasin local est la source de verite sur la passerelle ; les publicateurs sortants y puisent. Une passerelle deconnectee de tout amont reste pleinement fonctionnelle sur place.</p>
+          <p>Elle <strong>publie vers l'exterieur</strong>, de facon securisee. Une seule direction. Le profil de sortie est selectionnable par l'exploitant a chaque deploiement : OPC UA pub/sub, MQTT+Sparkplug B a la frontiere controleur↔broker de zone, une API de requete structuree sur mTLS, ou une ecriture batch vers un lac en aval. Il n'y a pas de defaut nomme. La passerelle publie ; l'aval s'abonne.</p>
+          <p>Ce que la passerelle refuse, c'est le reste. Pas de HTTP a la frontiere externe dans aucune direction. Pas de HTTP/HTTPS sortant. Pas de services actifs par defaut. Pas de canal de mutation en direct. L'interface de gestion locale optionnelle est en HTTPS, reservee au reseau local, sur un port physique distinct. Chaque ecouteur qui existe sur la passerelle existe parce que quelqu'un l'a concu et ingenie pour un usage operationnel specifique.</p>
+        </Fragment>
+      ) : (
+        <Fragment>
+          <p>The unit has a name. It is the <strong>secure edge gateway</strong>.</p>
+          <p>The secure edge gateway sits at the head of a zone. Inside the zone is whatever control system the operator inherited — modern PLCs, legacy SCADA, IoT sensors, consumer-grade IO. Outside the zone is everything that wants to know what is happening: another zone, a plant, a partner, a regulator, the cloud, the AI agent. The gateway is what the two sides see when they look at each other.</p>
+          <p>The gateway does four things and refuses everything else.</p>
+          <p>It <strong>witnesses</strong>. A passive tap on the ACS network. The interface is receive-only at the hardware level — no IP stack, no listener, no possible transmission. Compromise of the witness role cannot become an active intrusion onto the control network.</p>
+          <p>It <strong>polls</strong>. Some devices speak only when asked. The gateway asks them, with bounded rate, explicit identity, and an audit record for every query.</p>
+          <p>It <strong>historizes</strong>. The gateway runs a local time-series store. Captures, classifications, events, and audit trails all land there. The local store is the source of truth on the gateway; outbound publishers siphon from it. A gateway disconnected from everything upstream is fully functional in place.</p>
+          <p>It <strong>publishes outward</strong>, securely. One direction. The outbound profile is operator-selectable per deployment: OPC UA pub/sub, MQTT+Sparkplug B at the controller↔area-broker boundary, a structured query API over mTLS, or a batch-write into a downstream lake. There is no named default. The gateway publishes; downstream subscribes.</p>
+          <p>What the gateway refuses is the rest. No HTTP at the external boundary in either direction. No outbound HTTP/HTTPS. No default-on services. No live mutation channels. The optional local management interface is HTTPS, local-network only, on a separate physical port. Every listener that exists on the gateway exists because someone designed and engineered it for a specific operational purpose.</p>
+        </Fragment>
+      )}
+    </section>
 
-      <div class="diagram-block">
-        <p class="diag-eyebrow mono">&sect; {locale === 'fr' ? 'La boite (CIAD)' : 'The box (CIAD)'}</p>
-        <p class="diag-intro">
-          {locale === 'fr' ? 'Partitionnement interne de la boite IIA. Zones entrante (cote ACS), DMZ et sortante (cote IT). Tout trafic entre les cotes transite par la DMZ. La NIC ACS est passive, RX-only.' : 'Internal partitioning of the IIA box. Inbound (ACS-facing), DMZ, and outbound (IT-facing) zones. All cross-side traffic transits the DMZ. ACS NIC is passive, RX-only.'}
-        </p>
-        <BoxDiagram />
-      </div>
-
-      <div class="diagram-block">
-        <p class="diag-eyebrow mono">&sect; {locale === 'fr' ? 'La methode deux-boites' : 'The two-box method'}</p>
-        <p class="diag-intro">
-          {locale === 'fr' ? 'SL3 : une boite, segmentation logicielle. SL4 : deux boites avec diode materielle. Meme architecture logicielle dans les deux modes. Seule la topologie physique change. Attribution : Rinaldi & Workman, The Everyman’s Guide to EtherNet/IP Network Design (RTA, 2022).' : 'SL3: one box, software segmentation. SL4: two boxes with a hardware data diode. Same software architecture in both modes. Only the physical topology changes. Credited: Rinaldi & Workman, The Everyman’s Guide to EtherNet/IP Network Design (RTA, 2022).'}
-        </p>
+    <section class="prose-section">
+      <p class="section-eyebrow mono">&sect; {locale === 'fr' ? 'Une unite, deux realisations' : 'One unit, two flavors'}</p>
+      {locale === 'fr' ? (
+        <Fragment>
+          <p>L'architecture a deux realisations physiques. Le logiciel est le meme dans les deux.</p>
+          <p><strong>SL3</strong> est le plancher. Une seule passerelle de bordure securisee, partitionnee en logiciel. Segmentation forte, TLS mutuel sur chaque conduit, identite de charge de travail, controle d'admission. Les canaux bidirectionnels existent la ou la conception en a besoin — l'ecouteur de l'API de requete structuree, le tunnel de publication sortant — et chacun est protege par pare-feu, identifie, enregistre. SL3 n'impose pas un flux physiquement unidirectionnel. SL3 est le <em>triptyque de prevention</em> — pare-feu noyau, identite de charge de travail, politique d'admission — soutenu par une attestation capable d'alerter quand le triptyque fuit.</p>
+          <p><strong>SL4</strong> est l'ideal. Deux passerelles et une diode de donnees materielle entre elles. La passerelle interne se tient cote ACS et execute temoin, interrogation, historien. Elle publie a travers la diode — les electrons circulent dans une seule direction au niveau physique — vers la passerelle externe cote IT. Les consommateurs atteignent la passerelle externe. La passerelle externe n'a aucun chemin de retour. SL4 est l'assertion la plus forte de l'architecture : pas « aucun chemin de retour n'a ete configure », mais « aucun chemin de retour ne peut exister ».</p>
+          <p>IIA vise SL3 comme plancher et SL4 via diode comme ideal. La <em>two-box method</em> que SL4 generalise est creditee : Rinaldi &amp; Workman, <em>The Everyman's Guide to EtherNet/IP Network Design</em>, RTA 2022.</p>
+        </Fragment>
+      ) : (
+        <Fragment>
+          <p>The architecture has two physical realizations. The software is the same in both.</p>
+          <p><strong>SL3</strong> is the floor. One secure edge gateway, internally partitioned in software. Strong segmentation, mutual TLS on every conduit, workload identity, admission control. Bidirectional channels exist where the design needs them — the structured query API listener, the outbound publish tunnel — and each one is firewalled, identified, and recorded. SL3 does not enforce physical unidirectional flow. SL3 is the <em>prevention triad</em> — kernel firewall, workload identity, admission policy — backed by attestation that can alert when the triad is leaking.</p>
+          <p><strong>SL4</strong> is the ideal. Two secure edge gateways and a hardware data diode between them. The inside gateway sits on the ACS side and runs witness, poll, and historian. It publishes across the diode — electrons flow in one direction at the physics layer — to the outside gateway on the IT side. Consumers reach the outside gateway. The outside gateway has no path back. SL4 is the architecture's strongest assertion: not &ldquo;no return path was configured,&rdquo; but &ldquo;no return path can exist.&rdquo;</p>
+          <p>IIA targets SL3 as the floor and SL4 via diode as the ideal. The Two-Box Method that SL4 generalizes is credited: Rinaldi &amp; Workman, <em>The Everyman's Guide to EtherNet/IP Network Design</em>, RTA 2022.</p>
+        </Fragment>
+      )}
+      <div class="diagram-host">
         <TwoBoxDiagram />
       </div>
-    </div>
-  </section>
+    </section>
 
-  <hr class="rule" />
-
-  <section class="arch-impl">
-    <div class="container arch-impl-inner">
-      <p class="arch-impl-eyebrow mono">&sect; {locale === 'fr' ? 'A quoi cela ressemble dans du logiciel livre' : 'What it looks like in shipped software'}</p>
-      <div class="arch-impl-grid">
-        <a class="arch-impl-card" href="https://www.grassmarlin.com" rel="noopener">
-          <span class="arch-impl-label mono">MarlinSpike</span>
-          <span class="arch-impl-text">{locale === 'fr' ? 'Le GrassMarlin moderne. Etabli de topologie OT/ICS passive — les captures entrent, zero paquet ne sort.' : 'The modern GrassMarlin. Passive OT/ICS topology workbench — captures in, zero packets out.'}</span>
-          <span class="arch-impl-cta mono">grassmarlin.com &rarr;</span>
-        </a>
-        <a class="arch-impl-card" href="https://www.conversationalfactory.com" rel="noopener">
-          <span class="arch-impl-label mono">Conversational Factory</span>
-          <span class="arch-impl-text">{locale === 'fr' ? 'Plateforme OT en lecture seule. DPI temoin sur le fil sur 34 protocoles, surface de requete i3X v1 · MCP pour operateurs et clients IA.' : 'Read-only OT platform. Wire-witness DPI across 34 protocols, i3X v1 · MCP query surface for operators and AI clients.'}</span>
-          <span class="arch-impl-cta mono">conversationalfactory.com &rarr;</span>
-        </a>
+    <section class="prose-section">
+      <p class="section-eyebrow mono">&sect; {locale === 'fr' ? 'Le fractal' : 'The fractal'}</p>
+      {locale === 'fr' ? (
+        <Fragment>
+          <p>Un site industriel est organise en zones. Une boucle de controle tourne dans une cellule. Les cellules s'agregent en ligne. Les lignes en aire. Les aires en usine. Les usines en region. Les regions en fonction corporate.</p>
+          <p>L'architecture place une passerelle de bordure securisee a la tete de chaque zone. La passerelle est identique a chaque zone. Le logiciel est le meme ; le partitionnement est le meme ; les regles de frontiere sont les memes. Seule la <em>portee</em> change. Une passerelle dans une cellule voit une machine. Une passerelle dans une usine voit l'usine. Une passerelle au niveau corporate voit la flotte. Meme architecture, ouverture differente.</p>
+          <p>Le bas du fractal est strictement un-pour-un : chaque ACS recoit sa propre passerelle. L'agregation — plusieurs-vers-un — commence au-dessus de L2. Le haut ne s'effondre pas : un historien central est une passerelle a portee plus large, pas un autre type de systeme. Le cloud est un abonne, pas un pair.</p>
+          <p>Chaque passerelle est <strong>souveraine</strong>. Elle possede son identite, son historien, sa chaine d'audit. Elle ne depend de rien en amont pour continuer a fonctionner. Si la connexion corporate tombe, la passerelle de l'usine va bien. Si l'usine tombe, la passerelle de l'aire va bien. Si un fournisseur sort du marche, la passerelle, elle, reste.</p>
+          <p>La souverainete n'est pas l'isolement. Les passerelles a des portees adjacentes se connaissent ; elles ont des contrats de donnees entre elles ; elles echangent de l'information sur des conduits mTLS. La contrainte n'est pas « invisible ». La contrainte est « aucune dependance ». La conscience est autorisee. La dependance ne l'est pas.</p>
+          <p>L'architecture est <strong>distribuee</strong>, pas federee. Un seul exploitant exploite le maillage. Le fractal n'est pas un traite entre parties independantes ; c'est l'ensemble des unites d'une seule organisation, composees a travers les portees.</p>
+        </Fragment>
+      ) : (
+        <Fragment>
+          <p>An industrial site is organized in zones. A control loop runs in a cell. Cells aggregate into a line. Lines into an area. Areas into a plant. Plants into a region. Regions into a corporate function.</p>
+          <p>The architecture places one secure edge gateway at the head of every zone. The gateway is identical at every zone. The software is the same; the partitioning is the same; the boundary rules are the same. Only the <em>scope</em> changes. A gateway in a cell sees one machine. A gateway in a plant sees the plant. A gateway at corporate sees the fleet. Same architecture, different aperture.</p>
+          <p>The bottom of the fractal is strictly one-to-one: every ACS gets its own gateway. Aggregation — many-to-one — begins above L2. The top does not collapse: a central historian is a gateway at broader scope, not a different kind of system. The cloud is a subscriber, not a peer.</p>
+          <p>Each gateway is <strong>sovereign</strong>. It owns its identity, its historian, its audit chain. It depends on nothing upstream to keep functioning. If the corporate connection drops, the plant gateway is fine. If the plant drops, the area gateway is fine. If a vendor exits the market, the gateway does not.</p>
+          <p>Sovereignty is not isolation. Gateways at adjacent scopes know about each other; they have data contracts with each other; they exchange information across mTLS conduits. The constraint is not &ldquo;invisible.&rdquo; The constraint is &ldquo;no dependency.&rdquo; Awareness is allowed. Dependency is not.</p>
+          <p>The architecture is <strong>distributed</strong>, not federated. One operator runs the mesh. The fractal is not a treaty between independent parties; it is one organization's units composed across scopes.</p>
+        </Fragment>
+      )}
+      <div class="diagram-host">
+        <FractalDiagram />
       </div>
-    </div>
-  </section>
+    </section>
 
-  <article class="prose container readme-body" id="readme">
-    <Content />
+    <section class="prose-section">
+      <p class="section-eyebrow mono">&sect; {locale === 'fr' ? 'A l\'interieur de la passerelle' : 'Inside the gateway'}</p>
+      {locale === 'fr' ? (
+        <Fragment>
+          <p>La passerelle est partitionnee en interne en quatre cotes : <strong>entrant</strong> (cote ACS), une <strong>DMZ interne</strong>, <strong>sortant</strong> (cote IT), et une <strong>interface de gestion</strong> sur un port physique distinct. L'entrant et le sortant ne peuvent pas conduire directement l'un vers l'autre. Tout trafic transverse passe par la DMZ. La NIC cote ACS est passive : pas de TX sur la pile IP, pas d'ecouteur, meme quand elle partage le sous-reseau de gestion via VLAN.</p>
+          <p>Le <strong>lac de donnees local</strong> vit dans la DMZ. Tout ce que la passerelle capture, classe ou audite y atterrit. Le bus en vol qui relie les roles ne perdure rien ; il transporte les messages entre conteneurs vivants et les oublie. Le lac est la source de verite sur la passerelle. Les publicateurs sortants lisent depuis le lac. Une passerelle deconnectee de l'amont continue d'enregistrer, continue de repondre aux requetes locales, continue d'attester. Quand l'amont revient, elle siphonne.</p>
+        </Fragment>
+      ) : (
+        <Fragment>
+          <p>The gateway is partitioned internally into four sides: <strong>inbound</strong> (ACS-facing), an <strong>internal DMZ</strong>, <strong>outbound</strong> (IT-facing), and a <strong>management interface</strong> on a separate physical port. Inbound and outbound cannot conduit directly. All cross-side traffic transits the DMZ. The ACS-facing NIC is passive — no IP stack TX, no listeners — even when it shares the management subnet through VLAN.</p>
+          <p>The <strong>local data lake</strong> lives in the DMZ. Everything the gateway captures or classifies or audits lands there. The in-flight bus that connects roles is durable nothing; it carries messages between live containers and forgets them. The lake is the source of truth on the gateway. Outbound publishers read from the lake. A gateway disconnected upstream still records, still answers local queries, still attests. When upstream returns, it siphons.</p>
+        </Fragment>
+      )}
+      <div class="diagram-host">
+        <BoxDiagram />
+      </div>
+    </section>
+
+    <section class="prose-section">
+      <p class="section-eyebrow mono">&sect; {locale === 'fr' ? 'Chaque conversation a un contrat' : 'Every conversation has a contract'}</p>
+      {locale === 'fr' ? (
+        <Fragment>
+          <p>Toute communication sur la passerelle et a travers ses frontieres est regie par un <strong>contrat de donnees</strong> explicite : ce qui circule, sous quelle forme, avec quelle authentification, sous quel SLA, avec quelle matrice RACI pour chaque mode de defaillance. L'ensemble complet est le <strong>catalogue de contrats</strong>, versionne et decouvrable.</p>
+          <p>La communication sans contrat est <em>empechee</em> la ou l'architecture peut imposer la prevention — pas d'entree au catalogue, pas d'identite SPIFFE emise, pas de mTLS, pas de trafic — et <em>signalee</em> la ou elle ne le peut pas, ce qui concerne surtout les cas d'observation passive en bordure. L'absence de contrat a un quelconque niveau est un defaut de deploiement, pas un etat tolere.</p>
+          <p>Les contrats de frontiere sont <strong>bilateraux</strong>. L'ACS s'engage a produire la donnee conforme au cahier des charges. L'amont s'engage sur la connectivite, l'authentification, l'accuse de reception, le temps de reponse, la capacite et la reponse a incident. Chaque contrat nomme une matrice RACI pour chaque mode de defaillance et emet une telemetrie d'adherence — recus de qui a tenu quel cote.</p>
+        </Fragment>
+      ) : (
+        <Fragment>
+          <p>Communication on the gateway and across its boundaries is governed by an explicit <strong>data contract</strong>: what flows, in what shape, with what authentication, under what SLA, with what RACI matrix at every failure mode. The full set is the <strong>contract catalog</strong>, versioned and discoverable.</p>
+          <p>Communication without a contract is <em>prevented</em> where the architecture can enforce prevention — no catalog entry, no SPIFFE-issued identity, no mTLS, no traffic — and <em>flagged</em> where it cannot, which is mostly the passive observation cases at the edge. Contractless communication at any layer is a deployment defect, not a tolerated state.</p>
+          <p>Boundary contracts are <strong>bilateral</strong>. The ACS commits to producing data per spec. The upstream commits to connectivity, authentication, acknowledgement, response time, capacity, and incident response. Each contract names a RACI matrix for every failure mode and emits adherence telemetry — receipts of who held up which side.</p>
+        </Fragment>
+      )}
+    </section>
+
+    <section class="prose-section">
+      <p class="section-eyebrow mono">&sect; {locale === 'fr' ? 'Attestation : savoir si la prevention fonctionne' : 'Attestation: how you know prevention is working'}</p>
+      {locale === 'fr' ? (
+        <Fragment>
+          <p>La prevention sans attestation est une histoire qu'on se raconte. La passerelle execute des observateurs independants qui verifient en croise si la prevention fonctionne reellement. Un observateur d'intrusion compare le trafic observe au catalogue de contrats et signale tout ce que le catalogue n'autorise pas — y compris le trafic attendu qui n'apparait pas. La ou le deploiement dispose d'un plan reseau programmable, les conduits n'existent sur le fil que la ou le catalogue le dit. Un <strong>maitre E/S</strong> observe le substrat E/S physique depuis un chemin separe et croise la capture primaire de la passerelle ; l'independance du chemin d'observation est la propriete porteuse. Tous les resultats d'attestation rejoignent la chaine d'audit a la severite d'evenement de securite.</p>
+          <p>C'est la reponse stable de l'architecture a la question : <em>comment savez-vous que la prevention fonctionne reellement ?</em> Trois observateurs, independants des choses qu'ils observent, emettant sur la meme chaine d'audit que les evenements qu'ils croisent.</p>
+        </Fragment>
+      ) : (
+        <Fragment>
+          <p>Prevention without attestation is a story. The gateway runs independent observers that cross-check whether prevention is actually working. An intrusion-detection observer compares observed traffic against the contract catalog and flags anything the catalog does not authorize — including expected traffic that does not appear. Where the deployment has a programmable network plane, conduits exist on the wire only where the catalog says so. An <strong>IO master</strong> observes the physical IO substrate from a separate path and cross-checks the gateway's primary capture; independence of the observation path is the load-bearing property. All attestation findings route to the audit chain at security-event severity.</p>
+          <p>This is the architecture's standing answer to the question <em>how do you know prevention is actually working?</em> Three observers, independent of the things they observe, emitting on the same audit chain as the events they cross-check.</p>
+        </Fragment>
+      )}
+    </section>
+
+    <section class="prose-section">
+      <p class="section-eyebrow mono">&sect; {locale === 'fr' ? 'La configuration est un artefact signe' : 'Configuration is a signed artifact'}</p>
+      {locale === 'fr' ? (
+        <Fragment>
+          <p>La passerelle accepte la configuration uniquement comme un artefact texte signe consomme par un parseur. Meme motif pour les images de conteneur, le systeme d'exploitation et les jeux de regles. Il n'y a pas de point de terminaison REST qui mute l'etat en cours d'execution. L'interface de gestion optionnelle est un generateur de texte sans acces privilegie ; le parseur est la frontiere de confiance ; l'applicateur s'execute apres verification et validation, puis sort. Chaque transition d'etat est reconstructible depuis la chaine d'audit : hash d'artefact → validation du parseur → appels de l'applicateur → etat avant/apres.</p>
+          <p>Les mises a jour sont fractales elles aussi. Chaque passerelle a une portee plus large publie un manifeste d'etat voulu pour ses enfants. Les enfants tirent, reconcilient vers l'etat declare, rapportent ce qu'ils executent. Les exploitants autorisent des mises a jour specifiques pour des passerelles specifiques dans des fenetres specifiques via des artefacts d'approbation signes. Les deploiements graduels (canary, par zone, par usine) sont une politique exprimee par les approbations qui sont emises. Les passerelles deconnectees convergent quand elles se reconnectent, au rythme de l'exploitant.</p>
+        </Fragment>
+      ) : (
+        <Fragment>
+          <p>The gateway accepts configuration only as a signed text artifact consumed by a parser. The same pattern applies to container images, the operating system, and the rule sets. There is no REST endpoint that mutates running state. The optional management interface is a text generator with no privileged access; the parser is the trust boundary; the applier executes after verification and validation, then exits. Every state transition is reconstructable from the audit chain: artifact hash → parser validation → applier calls → before/after state.</p>
+          <p>Updates are fractal too. Each gateway at broader scope publishes an intended-state manifest to its children. Children pull, reconcile to declared state, report what they are running. Operators authorize specific updates for specific gateways within specific windows through signed approval artifacts. Rollouts (canary, per-zone, per-plant) are policy expressed through which approvals get issued. Disconnected gateways converge when reconnected, at operator pace.</p>
+        </Fragment>
+      )}
+    </section>
+
+    <section class="prose-section">
+      <p class="section-eyebrow mono">&sect; {locale === 'fr' ? 'Ce que cela donne' : 'What this gives you'}</p>
+      {locale === 'fr' ? (
+        <Fragment>
+          <p>Un fournisseur qui quitte le marche n'echoue pas l'usine. La passerelle a son propre historien et sa propre identite. Il n'y a pas d'amont qui puisse tomber.</p>
+          <p>Une coupure cloud n'arrete pas la production. Le cloud est un abonne a la passerelle, pas l'inverse. Les operations locales restent locales.</p>
+          <p>Le deplacement lateral est borne par ce que le catalogue de contrats autorise et par ce que l'attestation peut voir. L'architecture repond a la question qu'on pose aux exploitants mais qu'ils ne peuvent autrement pas trancher : <em>montrez-moi quels conduits existent, qui les a autorises, et comment vous savez qu'ils se comportent bien</em>.</p>
+          <p>Les agents IA obtiennent un chemin propre, authentifie en mTLS, vers la surface de requete structuree de la passerelle. Le serveur Model Context Protocol qui expose la passerelle aux agents vit <strong>hors boite</strong> a une portee plus large, parce que le transport MCP entre en conflit avec la regle « pas de HTTP a la frontiere ». L'IA n'est pas une nouvelle surface d'attaque ; c'est un abonne lie par la meme grammaire de contrat que tout le reste.</p>
+          <p>La preuve de conformite est un sous-produit de l'exploitation. Le catalogue de contrats plus les flux d'attestation plus la chaine d'audit de la configuration signee constituent la preuve. Les exploitants publient ; les auditeurs lisent.</p>
+        </Fragment>
+      ) : (
+        <Fragment>
+          <p>A vendor leaving the market does not strand the plant. The gateway has its own historian and identity. There is no upstream to fail.</p>
+          <p>A cloud outage does not stop production. The cloud is a subscriber to the gateway, not the other way around. Local operations stay local.</p>
+          <p>Lateral movement is bounded by what the contract catalog authorizes and what attestation can see. The architecture answers the standing question that operators are asked but otherwise cannot settle: <em>show me which conduits exist, what authorized them, and how I know they are behaving</em>.</p>
+          <p>AI agents get a clean, mTLS-authenticated path to the gateway's structured query surface. The Model Context Protocol server that exposes the gateway to agents lives <strong>off-box</strong> at broader scope, because the MCP transport conflicts with the no-HTTP-at-boundary rule. AI is not a new attack surface; it is a subscriber bound by the same contract grammar as everything else.</p>
+          <p>Compliance evidence is a byproduct of operation. The contract catalog plus the attestation streams plus the signed-configuration audit chain are the evidence. Operators publish; auditors read.</p>
+        </Fragment>
+      )}
+    </section>
+
+    <section class="prose-section close">
+      <p class="section-eyebrow mono">&sect; {locale === 'fr' ? "L'ordre" : 'The order'}</p>
+      {locale === 'fr' ? (
+        <Fragment>
+          <p class="close-line"><strong>Connecter d'abord. Modeliser ensuite. IA en troisieme.</strong></p>
+          <p>Mettre les passerelles en place et faire couler les donnees de facon fiable. Modeliser les donnees — ISA-95 a L3, la colonne vertebrale de modelisation — a une portee plus large, la ou la modelisation a du sens. Confier les donnees modelisees a des agents IA via des serveurs MCP hors boite, a une portee plus large encore.</p>
+          <p>La plupart des echecs dans cet espace sont des echecs d'ordre inverse : de l'IA sans modele, des modeles sans connexion fiable, de la connexion sans fondation souveraine. L'architecture refuse l'inversion.</p>
+        </Fragment>
+      ) : (
+        <Fragment>
+          <p class="close-line"><strong>Connect first. Model second. AI third.</strong></p>
+          <p>Get the secure edge gateways in place and the data flowing reliably. Model the data — ISA-95 at L3, the modeling backbone — at broader scope, where modeling is appropriate. Hand the modeled data to AI agents through MCP servers off-box at broader scope still.</p>
+          <p>Most failures in this space are inverted-order failures: AI without a model, models without reliable connection, connection without a sovereign foundation. The architecture refuses the inversion.</p>
+        </Fragment>
+      )}
+    </section>
   </article>
 </Base>
-
-<style>
-  .arch-impl {
-    padding: 2.4rem 0 3.4rem;
-    border-bottom: 1px solid var(--rule-soft);
-  }
-  .arch-impl-eyebrow {
-    text-transform: uppercase;
-    letter-spacing: 0.16em;
-    font-size: 0.74rem;
-    color: var(--accent);
-    margin: 0 0 1.2rem;
-  }
-  .arch-impl-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0;
-    border: 1px solid var(--rule-soft);
-    border-radius: 3px;
-    overflow: hidden;
-  }
-  .arch-impl-card {
-    display: grid;
-    grid-template-rows: auto 1fr auto;
-    gap: 0.5rem;
-    padding: 1.2rem 1.4rem;
-    text-decoration: none;
-    color: var(--ink);
-    border-right: 1px solid var(--rule-soft);
-    transition: background 160ms ease;
-    background: var(--bg-elev);
-  }
-  .arch-impl-card:last-child { border-right: 0; }
-  .arch-impl-card:hover { background: var(--accent-soft); }
-  .arch-impl-card:hover .arch-impl-cta { color: var(--accent); }
-  .arch-impl-label {
-    font-size: 0.72rem;
-    text-transform: uppercase;
-    letter-spacing: 0.16em;
-    color: var(--accent);
-  }
-  .arch-impl-text {
-    font-size: 0.94rem;
-    color: var(--ink-soft);
-    line-height: 1.5;
-  }
-  .arch-impl-cta {
-    font-size: 0.74rem;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: var(--ink-mute);
-    transition: color 160ms ease;
-  }
-  @media (max-width: 720px) {
-    .arch-impl-grid { grid-template-columns: 1fr; }
-    .arch-impl-card { border-right: 0; border-bottom: 1px solid var(--rule-soft); }
-    .arch-impl-card:last-child { border-bottom: 0; }
-  }
-</style>
 
 <style>
   .hero {
@@ -221,13 +296,14 @@ const Content = locale === 'fr' ? ContentFr : ContentEn;
   }
   .hero-title .dot { color: var(--accent); }
   .lede {
-    font-size: 1.16rem;
+    font-size: 1.18rem;
     line-height: 1.55;
     max-width: 56ch;
     color: var(--ink);
     margin: 0 0 1rem;
   }
   .lede.dim { color: var(--ink-soft); }
+  .lede strong { font-weight: 600; }
   .cta-row {
     display: flex;
     gap: 0.9rem;
@@ -284,79 +360,54 @@ const Content = locale === 'fr' ? ContentFr : ContentEn;
     color: var(--ink);
   }
 
-  .thesis-strip {
-    background: var(--bg);
+  .thesis {
+    padding: 4rem 0 5rem;
+    max-width: 78ch;
+  }
+  .prose-section {
+    margin: 0 0 3.4rem;
+  }
+  .prose-section:last-child { margin-bottom: 0; }
+  .prose-section.feature {
+    border-left: 2px solid var(--accent);
+    padding-left: 1.6rem;
+    margin-left: -1.8rem;
+  }
+  .prose-section.close {
     border-top: 1px solid var(--rule-soft);
-    border-bottom: 1px solid var(--rule-soft);
-  }
-  .thesis-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 0;
-  }
-  .thesis-card {
-    padding: 2.4rem 1.8rem 2.4rem 0;
-    border-right: 1px solid var(--rule-soft);
-    position: relative;
-  }
-  .thesis-card:not(:first-child) { padding-left: 1.8rem; }
-  .thesis-card:last-child { border-right: 0; }
-  .card-eyebrow {
-    text-transform: uppercase;
-    letter-spacing: 0.16em;
-    font-size: 0.7rem;
-    color: var(--accent);
-    margin: 0 0 0.8rem;
-  }
-  .card-line {
-    font-size: 1.02rem;
-    color: var(--ink);
-    margin: 0;
-    line-height: 1.5;
-    max-width: 38ch;
-  }
-  .card-line strong { font-weight: 600; }
-
-  .rule {
-    margin: 0;
-    border-top: 1px solid var(--rule-soft);
-  }
-
-  .diagrams-section {
-    padding: 4.5rem 0 4rem;
-    border-bottom: 1px solid var(--rule-soft);
-    background: var(--bg);
-  }
-  .diagram-block { margin-bottom: 4rem; }
-  .diagram-block:last-child { margin-bottom: 0; }
-  .diag-eyebrow {
-    text-transform: uppercase;
-    letter-spacing: 0.16em;
-    font-size: 0.72rem;
-    color: var(--ink-mute);
-    margin: 0 0 0.7rem;
-  }
-  .diag-intro {
-    font-size: 1.02rem;
-    line-height: 1.6;
-    color: var(--ink-soft);
-    max-width: 72ch;
-    margin: 0 0 1.4rem;
-  }
-  .readme-body { padding-top: 4rem; }
-  .readme-body :global(h1:first-child) { display: none; }
-  .readme-body :global(h2) {
-    font-size: 1.6rem;
-    border-bottom: 1px solid var(--rule-soft);
-    padding-bottom: 0.6rem;
+    padding-top: 2.6rem;
     margin-top: 4rem;
   }
-  .readme-body :global(img) {
-    margin: 2.2rem auto;
+  .section-eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-size: 0.74rem;
+    color: var(--accent);
+    margin: 0 0 1.2rem;
+  }
+  .prose-section p {
+    font-size: 1.05rem;
+    line-height: 1.68;
+    color: var(--ink);
+    margin: 0 0 1.1rem;
+    max-width: 70ch;
+  }
+  .prose-section p:last-child { margin-bottom: 0; }
+  .prose-section p strong { font-weight: 600; }
+  .prose-section p em { font-style: italic; color: var(--ink-soft); }
+  .close-line {
+    font-size: 1.3rem !important;
+    line-height: 1.4 !important;
+    margin-bottom: 1.4rem !important;
+    color: var(--ink) !important;
+  }
+  .diagram-host {
+    margin: 2.4rem 0 0;
+    padding: 1.6rem;
+    background: var(--bg-elev);
     border: 1px solid var(--rule-soft);
     border-radius: 3px;
-    background: var(--bg-elev);
-    padding: 0.6rem;
+    max-width: 100%;
   }
 
   @media (max-width: 920px) {
@@ -364,15 +415,14 @@ const Content = locale === 'fr' ? ContentFr : ContentEn;
     .hero-grid { grid-template-columns: 1fr; gap: 2rem; }
     .hero-meta { border-left: 0; border-top: 1px solid var(--rule-soft); padding-left: 0; padding-top: 1.2rem; }
     .hero-meta div { grid-template-columns: 7rem 1fr; }
-    .thesis-grid { grid-template-columns: 1fr; }
-    .thesis-card { padding: 1.6rem 0; border-right: 0; border-bottom: 1px solid var(--rule-soft); }
-    .thesis-card:not(:first-child) { padding-left: 0; }
-    .thesis-card:last-child { border-bottom: 0; }
-    .diagrams-section { padding: 2.8rem 0 2.4rem; }
-    .diagram-block { margin-bottom: 2.8rem; }
+    .thesis { padding: 2.8rem 0 3.4rem; }
+    .prose-section { margin-bottom: 2.4rem; }
+    .prose-section.feature { padding-left: 1rem; margin-left: 0; }
+    .diagram-host { padding: 1rem; }
   }
   @media (max-width: 480px) {
     .hero-meta div { grid-template-columns: 1fr; gap: 0.1rem; padding: 0.7rem 0; }
     .hero-meta dd { font-size: 0.88rem; }
+    .prose-section p { font-size: 1rem; }
   }
 </style>

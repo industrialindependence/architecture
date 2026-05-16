@@ -26,12 +26,12 @@ const readLabel = locale === 'fr' ? 'Lire ->' : 'Read ->';
       </h1>
       <p class="lede">
         {locale === 'fr'
-          ? "Les systemes de controle agissent sur la physique, pas sur l'information. L'Alliance publie ce qui decoule de cette distinction en cinq piliers : le terrain dans lequel l'exploitation travaille, le probleme qui lui fait obstacle, la position que nous tenons, la philosophie avec laquelle nous pensons et l'architecture qui operationalise les quatre autres."
-          : 'Control systems act on physics, not on information. The Alliance publishes what follows from that distinction in five pillars: the field operations works in, the problem standing in its way, the claim we hold to, the philosophy we think with, and the architecture that operationalizes all four.'}
+          ? "Les systemes de controle agissent sur la physique, pas sur l'information. L'Alliance publie ce qui decoule de cette distinction."
+          : 'Control systems act on physics, not on information. The Alliance publishes what follows from that distinction.'}
       </p>
       <p class="onramp mono">
         {locale === 'fr' ? 'Nouveau dans l’automatisation industrielle, les ICS ou les technologies operationnelles ?' : 'New to industrial automation, ICS, or operational technology?'}
-        <a href={withLocale('/architecture/docs/introduction/', locale)}>{locale === 'fr' ? 'Commencez ici' : 'Start here'} &rarr;</a>
+        <a href={withLocale('/architecture/', locale)}>{locale === 'fr' ? 'Commencez ici' : 'Start here'} &rarr;</a>
       </p>
     </div>
   </section>
@@ -39,11 +39,6 @@ const readLabel = locale === 'fr' ? 'Lire ->' : 'Read ->';
   <section class="pillars">
     <div class="container">
       <p class="pillars-eyebrow mono">&sect; {locale === 'fr' ? 'Cinq piliers' : 'Five pillars'}</p>
-      <p class="pillars-intro">
-        {locale === 'fr'
-          ? 'Observation -> observation -> position -> position -> artefact. Lisez de haut en bas ; chaque pilier est le sol du suivant.'
-          : 'Observation -> observation -> position -> position -> artifact. Read top to bottom; each pillar is the ground of the next.'}
-      </p>
 
       <ol class="pillar-row pillar-row-diag">
         <li>

@@ -6,56 +6,37 @@ import { withLocale } from '../../../lib/i18n';
 export const prerender = false;
 
 const locale = (Astro.locals.locale ?? 'en') as 'en' | 'fr';
-const PILLAR_DOCS = new Set(['the-field', 'the-problem', 'our-claim']);
 const slug = Astro.params.slug ?? '';
 
 const titleMap: Record<string, { en: string; fr: string }> = {
-  'introduction': { en: 'Introduction', fr: 'Introduction' },
-  'internal-architecture': { en: 'Internal Architecture', fr: 'Architecture interne' },
-  'glossary': { en: 'Glossary', fr: 'Glossaire' },
-  'sample-contracts': { en: 'Sample Data Contracts', fr: 'Exemples de contrats de donnees' },
-  'mcp-single-box': { en: 'MCP — Single Box Quickstart', fr: 'MCP — demarrage rapide mono-boite' }
+  'glossary': { en: 'Glossary', fr: 'Glossaire' }
 };
 
 const descMap: Record<string, { en: string; fr: string }> = {
-  'introduction': {
-    en: 'A concept-first introduction to industrial automation, ICS, operational technology, and the architectural problems they create.',
-    fr: "Une introduction d'abord conceptuelle a l'automatisation industrielle, aux ICS, aux technologies operationnelles et aux problemes architecturaux qu'elles creent."
-  },
-  'internal-architecture': {
-    en: 'The canonical implementation specification: invariants, partitioning, contracts, attestation, configuration, updates, SL3 / SL4 mappings.',
-    fr: "La specification canonique d'implementation : invariants, partitionnement, contrats, attestation, configuration, mises a jour, mappings SL3 / SL4."
-  },
   'glossary': {
     en: 'Vocabulary used across IIA documentation. Domain, architecture, and standards terms with normative definitions.',
     fr: 'Le vocabulaire utilise dans la documentation IIA. Termes de domaine, d’architecture et de normes avec definitions normatives.'
-  },
-  'sample-contracts': {
-    en: 'Six worked data contracts spanning internal flows, boundary contracts, device-level contracts, wireless IO, and AI-agent consumption.',
-    fr: "Six contrats de donnees travailles couvrant les flux internes, les contrats de frontiere, les contrats au niveau dispositif, les E/S sans fil et la consommation par agents IA."
-  },
-  'mcp-single-box': {
-    en: 'Operator quickstart for the smallest AI-agent consumption deployment — one box, one MCP server off-box, one AI client.',
-    fr: "Demarrage rapide operateur pour le plus petit deploiement de consommation par agent IA — une boite, un serveur MCP hors boite, un client IA."
   }
 };
 
 const orderMap: Record<string, number> = {
-  'introduction': 1,
-  'internal-architecture': 2,
-  'sample-contracts': 3,
-  'mcp-single-box': 4,
-  'glossary': 5
+  'glossary': 1
 };
+
+const PUBLIC_DOCS = new Set(Object.keys(titleMap));
+
+if (!PUBLIC_DOCS.has(slug)) {
+  return new Response(null, { status: 404 });
+}
 
 const localizedEntries = locale === 'fr' ? await getCollection('docsFr') : await getCollection('docs');
 const englishEntries = await getCollection('docs');
-const entries = localizedEntries.filter((candidate) => !PILLAR_DOCS.has(candidate.id)).length > 0
+const entries = localizedEntries.filter((candidate) => PUBLIC_DOCS.has(candidate.id)).length > 0
   ? localizedEntries
   : englishEntries;
-const entry = entries.find((candidate) => candidate.id === slug && !PILLAR_DOCS.has(candidate.id));
+const entry = entries.find((candidate) => candidate.id === slug && PUBLIC_DOCS.has(candidate.id));
 if (!entry) {
-  throw new Error(`Doc entry not found for slug: ${slug}`);
+  return new Response(null, { status: 404 });
 }
 
 const { Content, headings } = await render(entry);
@@ -63,7 +44,7 @@ const title = entry.data.title ?? titleMap[entry.id]?.[locale] ?? titleMap[entry
 const description = entry.data.description ?? descMap[entry.id]?.[locale] ?? descMap[entry.id]?.en;
 
 const allDocs = entries
-  .filter((d) => !PILLAR_DOCS.has(d.id))
+  .filter((d) => PUBLIC_DOCS.has(d.id))
   .map((d) => ({ id: d.id, title: titleMap[d.id]?.[locale] ?? titleMap[d.id]?.en ?? d.id, order: orderMap[d.id] ?? 99 }))
   .sort((a, b) => a.order - b.order);
 

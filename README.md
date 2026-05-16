@@ -4,7 +4,7 @@
 
 *Published by the [Industrial Independence Alliance](https://industrialindependence.org/). The Architecture (this repo) is the consequence of [the Philosophy](https://industrialindependence.org/philosophy/) — read that first if you want the why.*
 
-*New to industrial automation, ICS, or operational technology? Start with [docs/introduction.md](docs/introduction.md) — it builds the vocabulary used here.*
+*New to industrial automation, ICS, or operational technology? Start with [the Architecture page](https://industrialindependence.org/architecture/) — it builds the vocabulary used here.*
 
 IIA is the deliberate abstraction of a convergence pattern that exists in adjacent domains, named and applied for the first time to automation and control systems. It is not a product. It is not a framework. It is the architectural principle, claimed by name.
 
@@ -211,11 +211,11 @@ The box's external surface is engineered for minimum runtime exposure:
 - **Edge profile is operator-selectable per deployment.** MQTT + Sparkplug B is appropriate at the controller↔area-broker level (PERA L1/L2). Above L2, OPC UA pub/sub, structured query on mTLS, or batch-write to a BI lake (Iceberg / Delta / DuckLake on object store) are typically the better fit. The architecture spec does not pick.
 - **The local data lake is the source of truth on the box.** All inbound capture, classification output, audit, events, and time-series land there. Outbound publishers siphon from the lake; the in-flight bus is transient.
 - **Minimum runtime surface.** Every listener, daemon, and outbound connection exists because it was designed and engineered for a specific operational purpose. The OS image is built so disabled services cannot be turned on at runtime.
-- **Configuration is a signed artifact, not a live API.** The box has no REST endpoint that mutates running state. Declarative state in, signed-and-validated, applied or rejected — GitOps for an air-gapped industrial appliance. (Parser-as-trust-boundary mechanics live in [`docs/internal-architecture.md`](docs/internal-architecture.md).)
+- **Configuration is a signed artifact, not a live API.** The box has no REST endpoint that mutates running state. Declarative state in, signed-and-validated, applied or rejected — GitOps for an air-gapped industrial appliance.
 
 Inside the automation cell, data is ACS: time-critical, process-relevant, governed by SRP. The box observes passively and stores locally. At the boundary, the box transforms process data into information and publishes it north under IT rules. Outbound is bidirectional only when authenticated, identified, audited, and minimized — and never via HTTP.
 
-**Every communication is governed by an explicit data contract.** Internal (between containers, between zones) and external (every connection that exits the ACS, including device-level exchanges). The full set is the **contract catalog** — versioned, discoverable. Contractless communication is *prevented* where the architecture can enforce it and *flagged* where it cannot. Contracts at the boundary are **bilateral**: ACS commits to producing per spec; upstream commits to connectivity, authentication, capacity, and incident response. Each contract names a **RACI** matrix for every failure mode. The box emits **adherence telemetry** under `ot.contract.*` — receipts of who held up which side. Contractlessness at any layer is a deployment defect. (Grammar, telemetry shape, and worked examples live in [`docs/internal-architecture.md`](docs/internal-architecture.md) and [`docs/sample-contracts.md`](docs/sample-contracts.md).)
+**Every communication is governed by an explicit data contract.** Internal (between containers, between zones) and external (every connection that exits the ACS, including device-level exchanges). The full set is the **contract catalog** — versioned, discoverable. Contractless communication is *prevented* where the architecture can enforce it and *flagged* where it cannot. Contracts at the boundary are **bilateral**: ACS commits to producing per spec; upstream commits to connectivity, authentication, capacity, and incident response. Each contract names a **RACI** matrix for every failure mode. The box emits **adherence telemetry** under `ot.contract.*` — receipts of who held up which side. Contractlessness at any layer is a deployment defect.
 
 **Attestation observes prevention.** Every prevention mechanism may leak; the architecture assumes this. The network IDS doubles as a contract-attestation observer — it compares observed traffic against the catalog and flags policy leaks. An **IO master** independently observes the physical IO substrate (analog IO, fieldbus, industrial Ethernet) and cross-checks against the box's primary capture; discrepancies indicate substrate-level deviation. Attestation findings emit under `ot.attestation.*`. When prevention and attestation agree, the operator has evidence of compliance. When they disagree, the operator has evidence of where to look.
 
@@ -247,7 +247,7 @@ IIA does not derive from any single standard. It is the physical instantiation o
 
 IIA documentation uses PERA+'s **CIAD** (Control and Information Architecture Diagram, conceptual block diagram, drawn during Conceptual Engineering) and **CIND** (Control and Information Network Diagram, network detail with SL1–SL4 annotations, drawn during Preliminary Engineering) conventions for reference deployments. This makes IIA deployments legible to any control engineer working within the PERA framework.
 
-Architectural roles inside the gateway are named with a *leaf-first*, hierarchical, hyphenated convention that aligns with DNS and ISA-95 — `<role>.<gateway>.<work-unit>.<work-center>.<area>.<site>.local`. Specifications use short labels (`witness`, `lake`, `publish`, etc.) and operators extend them rightward at deployment time. The architecture requires the convention, not any particular naming substrate; operators may realize it on a DNS zone, an LDAP tree, a UNS hierarchy, or their own asset registry. The convention is detailed in `docs/internal-architecture.md` (*Role addressing*) and in [`docs/glossary.md`](docs/glossary.md).
+Architectural roles inside the gateway are named with a *leaf-first*, hierarchical, hyphenated convention that aligns with DNS and ISA-95 — `<role>.<gateway>.<work-unit>.<work-center>.<area>.<site>.local`. Specifications use short labels (`witness`, `lake`, `publish`, etc.) and operators extend them rightward at deployment time. The architecture requires the convention, not any particular naming substrate; operators may realize it on a DNS zone, an LDAP tree, a UNS hierarchy, or their own asset registry. The convention is enumerated in [`docs/glossary.md`](docs/glossary.md).
 
 The convergence is not coincidental. These standards arrive at the same place because they are built on the same observation: the unit of industrial operation is the zone, the zone must be self-sufficient, and any dependency on external systems for basic function is an architectural failure. IIA is the first deliberate physical instantiation of that observation. The standards are the formal description of it.
 
@@ -281,11 +281,9 @@ The Alliance publishes its position in five pillars. This README is the fifth �
 
 Supporting architectural documentation:
 
-- [`docs/introduction.md`](docs/introduction.md) — concept-first introduction for readers new to industrial automation, ICS, or operational technology. Builds the vocabulary the rest of this documentation assumes.
-- [`docs/internal-architecture.md`](docs/internal-architecture.md) — the canonical implementation specification: invariants, partitioning, contracts, attestation, configuration, updates, and the SL3 / SL4 mappings to IEC 62443 foundational requirements. Names roles, not products.
-- [`docs/sample-contracts.md`](docs/sample-contracts.md) — six worked data contracts spanning internal flows, boundary contracts (batch and query), device-level contracts, wireless IO, and AI-agent consumption. Demonstrates the contract grammar and adherence telemetry.
-- [`docs/mcp-single-box.md`](docs/mcp-single-box.md) — operator quickstart for the smallest AI-agent consumption deployment: one box, one MCP server off-box, one AI client. Topology, identity, contract, and config-artifact pipeline.
 - [`docs/glossary.md`](docs/glossary.md) — vocabulary used across the documentation. Domain terms (ACS, IT, SRP, CIA, SAIC), architectural terms (the box, fractal, contract catalog, attestation, IO master), and the standards IIA aligns with (PERA+, IEC 62443, ISA-95, CESMII i3X, MCP, Zenoh).
+
+The canonical implementation specification (partitioning, contract grammar, attestation, configuration, updates, sample contracts, and the SL3 / SL4 mappings to IEC 62443 foundational requirements) is maintained privately. Operators implementing IIA can request access through the Alliance.
 
 ## Trademarks
 

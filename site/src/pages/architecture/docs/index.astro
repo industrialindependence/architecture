@@ -7,38 +7,26 @@ export const prerender = false;
 const locale = (Astro.locals.locale ?? 'en') as 'en' | 'fr';
 
 const titleMap: Record<string, { en: string; fr: string }> = {
-  'introduction': { en: 'Introduction', fr: 'Introduction' },
-  'internal-architecture': { en: 'Internal Architecture', fr: 'Architecture interne' },
-  'glossary': { en: 'Glossary', fr: 'Glossaire' },
-  'sample-contracts': { en: 'Sample Data Contracts', fr: 'Exemples de contrats de donnees' },
-  'mcp-single-box': { en: 'MCP — Single Box Quickstart', fr: 'MCP — demarrage rapide mono-boite' }
+  'glossary': { en: 'Glossary', fr: 'Glossaire' }
 };
 
 const descMap: Record<string, { en: string; fr: string }> = {
-  'introduction': { en: 'Concept-first introduction for readers new to industrial automation, ICS, or operational technology. Builds the vocabulary the rest of the documentation assumes.', fr: 'Introduction conceptuelle pour les lecteurs nouveaux en automatisation industrielle, ICS ou technologies operationnelles. Construit le vocabulaire suppose par le reste de la documentation.' },
-  'internal-architecture': { en: 'The canonical implementation specification. Invariants, partitioning, contracts, attestation, configuration, updates, SL3 / SL4 mappings to IEC 62443 foundational requirements. Names roles, not products.', fr: 'La specification canonique d’implementation. Invariants, partitionnement, contrats, attestation, configuration, mises a jour, mappings SL3 / SL4 vers les exigences fondamentales IEC 62443. Nomme des roles, pas des produits.' },
-  'glossary': { en: 'Vocabulary used across IIA documentation. Domain terms, architectural terms, and the standards IIA aligns with.', fr: 'Vocabulaire utilise dans la documentation IIA. Termes du domaine, termes architecturaux et normes avec lesquelles IIA s’aligne.' },
-  'sample-contracts': { en: 'Six worked data contracts spanning internal flows, boundary contracts (batch and query), device-level contracts, wireless IO, and AI-agent consumption.', fr: 'Six contrats de donnees travailles couvrant les flux internes, les contrats de frontiere (batch et requete), les contrats au niveau dispositif, les E/S sans fil et la consommation par agent IA.' },
-  'mcp-single-box': { en: 'Operator quickstart for the smallest AI-agent consumption deployment: one box, one MCP server off-box, one AI client. Topology, identity, contract, and config-artifact pipeline.', fr: 'Demarrage rapide operateur pour le plus petit deploiement de consommation par agent IA : une boite, un serveur MCP hors boite, un client IA. Topologie, identite, contrat et pipeline d’artefacts de configuration.' }
+  'glossary': { en: 'Vocabulary used across IIA documentation. Domain terms, architectural terms, and the standards IIA aligns with.', fr: 'Vocabulaire utilise dans la documentation IIA. Termes du domaine, termes architecturaux et normes avec lesquelles IIA s’aligne.' }
 };
 
 const orderMap: Record<string, number> = {
-  'introduction': 1,
-  'internal-architecture': 2,
-  'sample-contracts': 3,
-  'mcp-single-box': 4,
-  'glossary': 5
+  'glossary': 1
 };
 
-const PILLAR_DOCS = new Set(['the-field', 'the-problem', 'our-claim']);
+const PUBLIC_DOCS = new Set(Object.keys(titleMap));
 
 const rawEntries = locale === 'fr'
   ? await getCollection('docsFr')
   : await getCollection('docs');
 const fallbackEntries = await getCollection('docs');
-const sourceEntries = rawEntries.filter((d) => !PILLAR_DOCS.has(d.id)).length > 0 ? rawEntries : fallbackEntries;
+const sourceEntries = rawEntries.filter((d) => PUBLIC_DOCS.has(d.id)).length > 0 ? rawEntries : fallbackEntries;
 const entries = sourceEntries
-  .filter((d) => !PILLAR_DOCS.has(d.id))
+  .filter((d) => PUBLIC_DOCS.has(d.id))
   .map((d) => ({
     id: d.id,
     title: titleMap[d.id]?.[locale] ?? titleMap[d.id]?.en ?? d.id,
@@ -52,12 +40,10 @@ const entries = sourceEntries
   <div class="container docs-index">
     <header class="page-header">
       <p class="eyebrow mono">{locale === 'fr' ? "L'architecture · Documentation" : 'The Architecture · Documentation'}</p>
-      <h1>{locale === 'fr' ? 'L’ensemble complet' : 'The full set'}</h1>
-      <p class="lede">
-        {locale === 'fr'
-          ? "Tous les documents IIA. Le principe dans le <a href='/architecture/'>README</a> est la declaration canonique ; les documents ci-dessous l'etendent sans la contredire."
-          : "Every IIA document. The principle in the <a href='/architecture/'>README</a> is the canonical statement; the documents below extend it without contradicting it."}
-      </p>
+      <h1>{locale === 'fr' ? 'Reference' : 'Reference'}</h1>
+      <p class="lede" set:html={locale === 'fr'
+        ? "La <a href='/architecture/'>page Architecture</a> est la declaration publique. La reference ci-dessous fixe le vocabulaire qu'elle suppose."
+        : "The <a href='/architecture/'>Architecture page</a> is the public statement. The reference below fixes the vocabulary it assumes."} />
     </header>
 
     <ol class="doc-grid">

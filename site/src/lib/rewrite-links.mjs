@@ -1,11 +1,7 @@
 import { visit } from 'unist-util-visit';
 
 const DOC_SLUGS = new Set([
-  'introduction',
-  'internal-architecture',
-  'glossary',
-  'sample-contracts',
-  'mcp-single-box'
+  'glossary'
 ]);
 
 const PILLAR_SLUGS = new Map([

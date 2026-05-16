@@ -49,43 +49,11 @@ const sources = [
   },
   {
     slug: 'architecture',
-    title: 'The Architecture — README',
+    title: 'The Architecture',
     url: `${SITE}/architecture/`,
     blurb:
-      'Pillar V. The canonical statement of Industrial Independence Architecture. One self-contained unit at every zone, identical across the fractal, sovereign without upstream connectivity.',
+      'Pillar V. The canonical statement of Industrial Independence Architecture. A secure edge gateway at the head of every zone, identical across the fractal, sovereign without upstream connectivity.',
     file: join(repoRoot, 'README.md')
-  },
-  {
-    slug: 'docs/introduction',
-    title: 'Introduction',
-    url: `${SITE}/architecture/docs/introduction/`,
-    blurb:
-      'A concept-first introduction for readers new to industrial automation, ICS, or operational technology. Builds the vocabulary the rest of the documentation assumes.',
-    file: join(repoRoot, 'docs/introduction.md')
-  },
-  {
-    slug: 'docs/internal-architecture',
-    title: 'Internal Architecture',
-    url: `${SITE}/architecture/docs/internal-architecture/`,
-    blurb:
-      'The canonical implementation specification. Invariants, partitioning, contracts, attestation, configuration, updates, and the SL3 / SL4 mappings to IEC 62443. Names roles, not products.',
-    file: join(repoRoot, 'docs/internal-architecture.md')
-  },
-  {
-    slug: 'docs/sample-contracts',
-    title: 'Sample Data Contracts',
-    url: `${SITE}/architecture/docs/sample-contracts/`,
-    blurb:
-      'Six worked data contracts spanning internal flows, boundary contracts, device-level contracts, wireless IO, and AI-agent consumption.',
-    file: join(repoRoot, 'docs/sample-contracts.md')
-  },
-  {
-    slug: 'docs/mcp-single-box',
-    title: 'MCP — Single Box Quickstart',
-    url: `${SITE}/architecture/docs/mcp-single-box/`,
-    blurb:
-      'Operator quickstart for the smallest AI-agent consumption deployment: one IIA box, one MCP server off-box, one AI client.',
-    file: join(repoRoot, 'docs/mcp-single-box.md')
   },
   {
     slug: 'docs/glossary',
@@ -123,10 +91,6 @@ const indexLines = [
   '',
   '## Read — Supporting Documentation',
   '',
-  `- [Introduction](${SITE}/architecture/docs/introduction/): Concept-first for newcomers to ICS / OT. Builds the vocabulary used everywhere else.`,
-  `- [Internal Architecture](${SITE}/architecture/docs/internal-architecture/): The canonical implementation specification. Invariants, partitioning, contracts, attestation, configuration, updates, SL3 / SL4 mappings.`,
-  `- [Sample Data Contracts](${SITE}/architecture/docs/sample-contracts/): Six worked contracts demonstrating the grammar and adherence telemetry.`,
-  `- [MCP — Single Box Quickstart](${SITE}/architecture/docs/mcp-single-box/): The smallest AI-agent consumption deployment — one box, one MCP server off-box, one AI client.`,
   `- [Glossary](${SITE}/architecture/docs/glossary/): Vocabulary used across the documentation.`,
   '',
   '## Standards & lineage',

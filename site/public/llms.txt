@@ -14,10 +14,6 @@ This file follows the llms.txt convention (https://llmstxt.org). The full concat
 
 ## Read — Supporting Documentation
 
-- [Introduction](https://industrialindependence.org/architecture/docs/introduction/): Concept-first for newcomers to ICS / OT. Builds the vocabulary used everywhere else.
-- [Internal Architecture](https://industrialindependence.org/architecture/docs/internal-architecture/): The canonical implementation specification. Invariants, partitioning, contracts, attestation, configuration, updates, SL3 / SL4 mappings.
-- [Sample Data Contracts](https://industrialindependence.org/architecture/docs/sample-contracts/): Six worked contracts demonstrating the grammar and adherence telemetry.
-- [MCP — Single Box Quickstart](https://industrialindependence.org/architecture/docs/mcp-single-box/): The smallest AI-agent consumption deployment — one box, one MCP server off-box, one AI client.
 - [Glossary](https://industrialindependence.org/architecture/docs/glossary/): Vocabulary used across the documentation.
 
 ## Standards & lineage
