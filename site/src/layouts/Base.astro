@@ -39,7 +39,11 @@ const fullTitle = title === 'Industrial Independence Architecture' || title === 
 const pagePath = Astro.locals.pagePath ?? stripLocalePrefix(Astro.url.pathname);
 const canonicalPath = withLocale(pagePath, locale);
 const canonicalUrl = new URL(canonicalPath, Astro.site).toString();
-const ogImageUrl = new URL(`/og-card/${ogCard}.png`, Astro.site).toString();
+// Bump OG_V whenever the OG card design/content changes. LinkedIn (and
+// other scrapers) mirror images by URL and never re-fetch an unchanged
+// one — versioning the URL is what forces a fresh pull.
+const OG_V = '20260518b';
+const ogImageUrl = new URL(`/og-card/${ogCard}.png?v=${OG_V}`, Astro.site).toString();
 const siteUrl = Astro.site?.toString().replace(/\/$/, '') ?? 'https://industrialindependence.org';
 const englishUrl = new URL(withLocale(pagePath, 'en'), Astro.site).toString();
 const frenchUrl = new URL(withLocale(pagePath, 'fr'), Astro.site).toString();
