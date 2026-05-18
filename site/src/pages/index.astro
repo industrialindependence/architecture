@@ -208,11 +208,13 @@ const readLabel = locale === 'fr' ? 'Lire ->' : 'Read ->';
       var(--bg);
     border-bottom: 1px solid var(--rule-soft);
   }
-  .landing-hero-inner { max-width: 60rem; }
+  /* wide enough that the headline keeps its two authored lines with the
+     mark beside it (was 60rem when the mark stacked above) */
+  .landing-hero-inner { max-width: 76rem; }
   .hero-lockup {
     display: flex;
     align-items: center;
-    gap: clamp(1.5rem, 4vw, 3.25rem);
+    gap: clamp(1.25rem, 3vw, 2.5rem);
   }
   .hero-copy { min-width: 0; }
   .hero-mark {
@@ -223,10 +225,10 @@ const readLabel = locale === 'fr' ? 'Lire ->' : 'Read ->';
   }
   .hero-mark svg {
     display: block;
-    width: clamp(96px, 13vw, 176px);
+    width: clamp(96px, 11vw, 148px);
     height: auto;
   }
-  @media (max-width: 720px) {
+  @media (max-width: 900px) {
     .hero-lockup {
       flex-direction: column;
       align-items: flex-start;
