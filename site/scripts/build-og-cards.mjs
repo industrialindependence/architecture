@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-// Generate per-page OG cards using Chrome headless. Layout is 1200×630;
-// rendered at 2x device scale → 2400×1260 PNG so social previews stay crisp.
+// Generate per-page OG cards using Chrome headless at 1200×627 (LinkedIn /
+// Open Graph recommended size, 1.91:1).
 
 import { writeFile, mkdir, rm } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
@@ -47,7 +47,7 @@ function cardHtml({ eyebrow, title, subtitle }) {
       --rule: rgba(245, 241, 232, 0.14);
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { width: 1200px; height: 630px; }
+    html, body { width: 1200px; height: 627px; }
     body {
       font-family: 'Inter', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
       background:
@@ -175,8 +175,7 @@ for (const page of pages) {
     '--no-sandbox',
     '--hide-scrollbars',
     '--disable-features=NetworkService',
-    '--window-size=1200,630',
-    '--force-device-scale-factor=2',
+    '--window-size=1200,627',
     '--virtual-time-budget=2500',
     '--timeout=8000',
     `--screenshot=${pngPath}`,

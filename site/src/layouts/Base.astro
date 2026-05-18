@@ -42,7 +42,7 @@ const canonicalUrl = new URL(canonicalPath, Astro.site).toString();
 // Bump OG_V whenever the OG card design/content changes. LinkedIn (and
 // other scrapers) mirror images by URL and never re-fetch an unchanged
 // one — versioning the URL is what forces a fresh pull.
-const OG_V = '20260518b';
+const OG_V = '20260518c';
 const ogImageUrl = new URL(`/og-card/${ogCard}.png?v=${OG_V}`, Astro.site).toString();
 const siteUrl = Astro.site?.toString().replace(/\/$/, '') ?? 'https://industrialindependence.org';
 const englishUrl = new URL(withLocale(pagePath, 'en'), Astro.site).toString();
@@ -128,8 +128,8 @@ const jsonLd = {
     <meta property="og:url" content={canonicalUrl} />
     <meta name="image" property="og:image" content={ogImageUrl} />
     <meta property="og:image:type" content="image/png" />
-    <meta property="og:image:width" content="2400" />
-    <meta property="og:image:height" content="1260" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="627" />
     <meta property="og:image:alt" content={`${fullTitle} - Industrial Independence Alliance`} />
     <meta property="og:locale" content={locale === 'fr' ? 'fr_FR' : 'en_US'} />
 
