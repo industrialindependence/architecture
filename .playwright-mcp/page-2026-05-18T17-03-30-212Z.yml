@@ -1,0 +1,254 @@
+- generic [active] [ref=e1]:
+  - link "Aller au contenu" [ref=e2] [cursor=pointer]:
+    - /url: "#main"
+  - banner [ref=e3]:
+    - generic [ref=e4]:
+      - link "Industrial Independence Alliance, accueil" [ref=e5] [cursor=pointer]:
+        - /url: /fr/
+        - img [ref=e7]
+        - generic [ref=e11]:
+          - generic [ref=e12]: IIA
+          - generic [ref=e13]: Industrial Independence Alliance
+      - navigation "Primaire" [ref=e14]:
+        - link "Le terrain" [ref=e15] [cursor=pointer]:
+          - /url: /fr/field/
+        - link "Le probleme" [ref=e16] [cursor=pointer]:
+          - /url: /fr/problem/
+        - link "Notre position" [ref=e17] [cursor=pointer]:
+          - /url: /fr/claim/
+        - link "Notre philosophie" [ref=e18] [cursor=pointer]:
+          - /url: /fr/philosophy/
+        - link "L'architecture" [ref=e19] [cursor=pointer]:
+          - /url: /fr/architecture/
+        - link "Docs" [ref=e20] [cursor=pointer]:
+          - /url: /fr/architecture/docs/
+        - link "Contact" [ref=e21] [cursor=pointer]:
+          - /url: /fr/contact/
+        - link "EN" [ref=e22] [cursor=pointer]:
+          - /url: /
+  - main [ref=e23]:
+    - generic [ref=e25]:
+      - img [ref=e27]
+      - paragraph [ref=e31]: Industrial Independence Alliance
+      - heading "Souverainete operationnelle pour les infrastructures industrielles." [level=1] [ref=e32]:
+        - text: Souverainete operationnelle
+        - text: pour les infrastructures industrielles.
+      - paragraph [ref=e33]: Les systemes de controle agissent sur la physique, pas sur l'information. L'Alliance publie ce qui decoule de cette distinction.
+      - paragraph [ref=e34]:
+        - text: Nouveau dans l’automatisation industrielle, les ICS ou les technologies operationnelles ?
+        - link "Commencez ici →" [ref=e35] [cursor=pointer]:
+          - /url: /fr/architecture/
+    - generic [ref=e37]:
+      - paragraph [ref=e38]: § Cinq piliers
+      - list [ref=e39]:
+        - listitem [ref=e40]:
+          - link "Sparse field - observation I · observation Le terrain. Le lieu du travail d'exploitation. Des types de lieux, de personnes et de defaillances bien concrets - le terrain vecu qui donne sa forme a l'architecture. Lire ->" [ref=e41] [cursor=pointer]:
+            - /url: /fr/field/
+            - generic [ref=e42]:
+              - img "Sparse field - observation" [ref=e43]:
+                - img [ref=e44]
+              - generic [ref=e54]: I · observation
+            - heading "Le terrain." [level=2] [ref=e55]
+            - paragraph [ref=e56]: Le lieu du travail d'exploitation. Des types de lieux, de personnes et de defaillances bien concrets - le terrain vecu qui donne sa forme a l'architecture.
+            - generic [ref=e57]: Lire ->
+        - listitem [ref=e58]:
+          - link "Fracture - what stands in the way II · observation Le probleme. Ce qui fait obstacle. Le marche, l'IT et les propres gardiens du terrain. Des piles fermees, du theatre securitaire, un savoir garde par ceux qui devraient l'enseigner. Lire ->" [ref=e59] [cursor=pointer]:
+            - /url: /fr/problem/
+            - generic [ref=e60]:
+              - img "Fracture - what stands in the way" [ref=e61]:
+                - img [ref=e62]
+              - generic [ref=e64]: II · observation
+            - heading "Le probleme." [level=2] [ref=e65]
+            - paragraph [ref=e66]: Ce qui fait obstacle. Le marche, l'IT et les propres gardiens du terrain. Des piles fermees, du theatre securitaire, un savoir garde par ceux qui devraient l'enseigner.
+            - generic [ref=e67]: Lire ->
+        - listitem [ref=e68]:
+          - link "Lines of assertion - the claim III · position Notre position. Ce qui est du aux operations. Ce qui doit etre possede, repris, formalise. Des SLA qui correspondent a la production. Des contrats avec l'IT. La separation comme architecture, pas comme politique. Lire ->" [ref=e69] [cursor=pointer]:
+            - /url: /fr/claim/
+            - generic [ref=e70]:
+              - img "Lines of assertion - the claim" [ref=e71]:
+                - img [ref=e72]
+              - generic [ref=e73]: III · position
+            - heading "Notre position." [level=2] [ref=e74]
+            - paragraph [ref=e75]: Ce qui est du aux operations. Ce qui doit etre possede, repris, formalise. Des SLA qui correspondent a la production. Des contrats avec l'IT. La separation comme architecture, pas comme politique.
+            - generic [ref=e76]: Lire ->
+      - list [ref=e77]:
+        - listitem [ref=e78]:
+          - link "Nested form - recursive position IV · position Notre philosophie. Notre facon de penser le substrat. SRP - Securite, Fiabilite, Performance - gouverne l'ACS. L'information est gouvernee par CIA. Sept principes en decoulent. SRP Triad · d’apres Robert Radvanovsky / Infracritical PERA+ alignment · Gary Rathwell / Entercon Lire ->" [ref=e79] [cursor=pointer]:
+            - /url: /fr/philosophy/
+            - generic [ref=e80]:
+              - img "Nested form - recursive position" [ref=e81]:
+                - img [ref=e82]
+              - generic [ref=e85]: IV · position
+            - heading "Notre philosophie." [level=2] [ref=e86]
+            - paragraph [ref=e87]: Notre facon de penser le substrat. SRP - Securite, Fiabilite, Performance - gouverne l'ACS. L'information est gouvernee par CIA. Sept principes en decoulent.
+            - list [ref=e88]:
+              - listitem [ref=e89]: SRP Triad · d’apres Robert Radvanovsky / Infracritical
+              - listitem [ref=e90]: PERA+ alignment · Gary Rathwell / Entercon
+            - generic [ref=e91]: Lire ->
+        - listitem [ref=e92]:
+          - link "Diode glyph - secure boundary V · artefact L'architecture. Industrial Independence Architecture (IIA). Une unite autonome a la tete de chaque zone d'un reseau industriel. Identique a tous les niveaux. Seule l'echelle change. Passerelle de bordure securisee · le fractal · contrats de donnees SL3 floor · SL4 via hardware diode IEC 62443 · ISA-95 · CESMII i3X Lire ->" [ref=e93] [cursor=pointer]:
+            - /url: /fr/architecture/
+            - generic [ref=e94]:
+              - img "Diode glyph - secure boundary" [ref=e95]:
+                - img [ref=e96]
+              - generic [ref=e98]: V · artefact
+            - heading "L'architecture." [level=2] [ref=e99]
+            - paragraph [ref=e100]: Industrial Independence Architecture (IIA). Une unite autonome a la tete de chaque zone d'un reseau industriel. Identique a tous les niveaux. Seule l'echelle change.
+            - list [ref=e101]:
+              - listitem [ref=e102]: Passerelle de bordure securisee · le fractal · contrats de donnees
+              - listitem [ref=e103]: SL3 floor · SL4 via hardware diode
+              - listitem [ref=e104]: IEC 62443 · ISA-95 · CESMII i3X
+            - generic [ref=e105]: Lire ->
+    - generic [ref=e107]:
+      - paragraph [ref=e108]: § Le fractal
+      - paragraph [ref=e109]: Une boite a la tete de chaque zone - la passerelle de bordure securisee. A l'interieur se trouvent les donnees du systeme de controle ; a la boite, elles deviennent de l'information pour les consommateurs. Les dispositifs internes peuvent etre a n'importe quel niveau de securite. La meme unite a chaque zone, quelle que soit l'echelle.
+      - figure "The IIA Fractal diagram" [ref=e110]:
+        - img [ref=e111]:
+          - generic [ref=e112]:
+            - generic [ref=e113]: The Fractal
+            - generic [ref=e114]: the unit is the same · scope varies · a gateway at the head of every zone
+          - generic [ref=e115]:
+            - generic [ref=e116]: The Unit · anatomy
+            - generic [ref=e117]: identical at every scope
+            - generic [ref=e120]: INBOUND · ACS-facing
+            - generic [ref=e121]: witness (passive) · active poll · classify
+            - generic [ref=e122]: no IP TX · no external listeners
+            - generic [ref=e124]: INTERNAL DMZ
+            - generic [ref=e125]: in-flight bus · transient
+            - generic [ref=e126]: no durable state here
+            - generic [ref=e128]: OUTBOUND · IT-facing
+            - generic [ref=e129]: secure publish · structured query API
+            - generic [ref=e130]: the only external access into the zone
+            - generic [ref=e132]: MANAGEMENT
+            - generic [ref=e133]: local ops UI · signed-artifact ingress only
+            - generic [ref=e135]: LOCAL LAKE · HISTORIAN
+            - generic [ref=e136]: source of truth on the box · decentralized historian
+          - generic [ref=e137]:
+            - generic [ref=e138]: The Deployment · where
+            - generic [ref=e139]: a box at the head of every zone · the secure edge gateway
+            - generic [ref=e141]: CONSUMERS
+            - generic [ref=e142]: internet · plant · partner · regulator · whoever
+            - generic [ref=e144]: secure conduit
+            - generic [ref=e145]: "SL4: hw diode, one-way"
+            - generic [ref=e147]: box
+            - generic [ref=e148]: secure edge gateway
+            - generic [ref=e149]: witness · historian · publish
+            - generic [ref=e150]: ACS data (SRP)
+            - generic [ref=e151]: witness · active poll
+            - generic [ref=e153]: ZONE · OPERATOR-DEFINED
+            - generic [ref=e154]: production · plant · site · corp · any boundary
+            - generic [ref=e155]: POOLS OF DATA
+            - generic [ref=e157]: process data
+            - generic [ref=e159]: device telemetry
+            - generic [ref=e161]: network data
+            - generic [ref=e163]: asset inventory
+            - generic [ref=e165]: event streams
+            - generic [ref=e167]: topology
+            - generic [ref=e168]: any SL device contributes · gateway is the security boundary
+            - generic [ref=e169]: witness (passive) + active poll feed every pool into the historian
+            - generic [ref=e170]: FRACTAL
+            - generic [ref=e171]: same pattern at every zone · operator decides what counts as a zone
+        - generic [ref=e172]: The Fractal - a secure edge gateway at the head of every zone. Inside the zone are pools of data fed by the gateway's witness (passive) and active poll; devices contributing can be any security level. The gateway publishes information securely outbound through a conduit (with a hardware data diode in the SL4 ideal realization) to whatever the zone's consumers are. The gateway is identical at every zone; the operator defines what counts as a zone.
+    - generic [ref=e174]:
+      - paragraph [ref=e175]: § Implementations de reference
+      - paragraph [ref=e176]: A quoi ressemblent les principes dans des logiciels effectivement livres. Produits independants, construits sur IIA.
+      - generic [ref=e177]:
+        - link "MarlinSpike Le GrassMarlin moderne. Le successeur maintenu et multi-utilisateur de GrassMarlin de la NSA (fin de vie 2017). Atelier open source de topologie OT/ICS passive. Les captures entrent, zero paquet ne sort. grassmarlin.com →" [ref=e178] [cursor=pointer]:
+          - /url: https://www.grassmarlin.com
+          - paragraph [ref=e179]: MarlinSpike
+          - heading "Le GrassMarlin moderne." [level=3] [ref=e180]
+          - paragraph [ref=e181]: Le successeur maintenu et multi-utilisateur de GrassMarlin de la NSA (fin de vie 2017). Atelier open source de topologie OT/ICS passive. Les captures entrent, zero paquet ne sort.
+          - generic [ref=e182]: grassmarlin.com →
+        - link "Conversational Factory Une usine a laquelle on peut parler. Plateforme OT en lecture seule. DPI temoin passif sur 34 protocoles, lac de donnees medallion, surface de requete i3X v1 · MCP pour operateurs et clients IA. Chaque reponse est liee a une chaine d'audit append-only. conversationalfactory.com →" [ref=e183] [cursor=pointer]:
+          - /url: https://www.conversationalfactory.com
+          - paragraph [ref=e184]: Conversational Factory
+          - heading "Une usine a laquelle on peut parler." [level=3] [ref=e185]
+          - paragraph [ref=e186]: Plateforme OT en lecture seule. DPI temoin passif sur 34 protocoles, lac de donnees medallion, surface de requete i3X v1 · MCP pour operateurs et clients IA. Chaque reponse est liee a une chaine d'audit append-only.
+          - generic [ref=e187]: conversationalfactory.com →
+    - generic [ref=e189]:
+      - paragraph [ref=e190]: La souverainete relie les deux
+      - paragraph [ref=e191]: L'independance industrielle n'est pas une position technologique. C'est une position de <strong>souverainete operationnelle</strong>. L'entite qui controle l'infrastructure d'automatisation controle l'operation.
+  - contentinfo [ref=e192]:
+    - generic [ref=e193]:
+      - generic [ref=e194]:
+        - paragraph [ref=e195]: Industrial Independence Alliance
+        - paragraph [ref=e196]: Souverainete operationnelle pour les infrastructures industrielles. Ni un produit. Ni un framework. Le principe architectural, revendique par son nom.
+      - generic [ref=e197]:
+        - paragraph [ref=e198]: Piliers
+        - list [ref=e199]:
+          - listitem [ref=e200]:
+            - link "Le terrain" [ref=e201] [cursor=pointer]:
+              - /url: /fr/field/
+          - listitem [ref=e202]:
+            - link "Le probleme" [ref=e203] [cursor=pointer]:
+              - /url: /fr/problem/
+          - listitem [ref=e204]:
+            - link "Notre position" [ref=e205] [cursor=pointer]:
+              - /url: /fr/claim/
+          - listitem [ref=e206]:
+            - link "Notre philosophie" [ref=e207] [cursor=pointer]:
+              - /url: /fr/philosophy/
+          - listitem [ref=e208]:
+            - link "L'architecture" [ref=e209] [cursor=pointer]:
+              - /url: /fr/architecture/
+          - listitem [ref=e210]:
+            - link "Documentation" [ref=e211] [cursor=pointer]:
+              - /url: /fr/architecture/docs/
+          - listitem [ref=e212]:
+            - link "Contact" [ref=e213] [cursor=pointer]:
+              - /url: /fr/contact/
+      - generic [ref=e214]:
+        - paragraph [ref=e215]: Antecedents cites
+        - list [ref=e216]:
+          - listitem [ref=e217]:
+            - link "SRP Triad - Robert Radvanovsky, Infracritical" [ref=e218] [cursor=pointer]:
+              - /url: https://srpmodel.infracritical.com/srpmodel.php
+          - listitem [ref=e219]:
+            - link "PERA+ - Gary Rathwell, Entercon" [ref=e220] [cursor=pointer]:
+              - /url: https://www.pera.net
+          - listitem [ref=e221]: IEC 62443 · ISA-95
+          - listitem [ref=e222]: Travaux independants. Sans affiliation avec l'Alliance ni entre eux.
+      - generic [ref=e223]:
+        - paragraph [ref=e224]: Implementations
+        - list [ref=e225]:
+          - listitem [ref=e226]:
+            - link "MarlinSpike - successeur de GrassMarlin" [ref=e227] [cursor=pointer]:
+              - /url: https://www.grassmarlin.com
+          - listitem [ref=e228]:
+            - link "Conversational Factory" [ref=e229] [cursor=pointer]:
+              - /url: https://www.conversationalfactory.com
+          - listitem [ref=e230]: Construit sur IIA
+      - generic [ref=e231]:
+        - paragraph [ref=e232]: Editeur
+        - list [ref=e233]:
+          - listitem [ref=e234]: Industrial Independence Alliance
+          - listitem [ref=e235]:
+            - link "github →" [ref=e236] [cursor=pointer]:
+              - /url: https://github.com/industrialindependence/architecture
+    - generic [ref=e237]:
+      - generic [ref=e238]:
+        - paragraph [ref=e239]: Contact rapide
+        - paragraph [ref=e240]:
+          - text: Envoyez un message.
+          - link "Formulaire complet →" [ref=e241] [cursor=pointer]:
+            - /url: /fr/contact/
+      - generic [ref=e243]:
+        - textbox
+        - generic [ref=e244]:
+          - generic [ref=e245]:
+            - generic [ref=e246]: Nom
+            - textbox "Nom" [ref=e247]
+          - generic [ref=e248]:
+            - generic [ref=e249]: E-mail
+            - textbox "E-mail" [ref=e250]
+        - generic [ref=e251]:
+          - generic [ref=e252]: Message
+          - textbox "Message" [ref=e253]
+        - generic [ref=e254]:
+          - button "Envoyer ->" [ref=e255] [cursor=pointer]
+          - status
+    - paragraph [ref=e257]:
+      - text: © 2026 Industrial Independence Alliance ·
+      - link "CC BY-SA 4.0" [ref=e258] [cursor=pointer]:
+        - /url: https://creativecommons.org/licenses/by-sa/4.0/
+      - text: · "Industrial Independence Architecture" et "IIA" sont des marques

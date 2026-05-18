@@ -1,0 +1,465 @@
+- generic [active] [ref=e1]:
+  - link "Aller au contenu" [ref=e2] [cursor=pointer]:
+    - /url: "#main"
+  - banner [ref=e3]:
+    - generic [ref=e4]:
+      - link "Industrial Independence Alliance, accueil" [ref=e5] [cursor=pointer]:
+        - /url: /fr/
+        - img [ref=e7]
+        - generic [ref=e11]:
+          - generic [ref=e12]: IIA
+          - generic [ref=e13]: Industrial Independence Alliance
+      - navigation "Primaire" [ref=e14]:
+        - link "Le terrain" [ref=e15] [cursor=pointer]:
+          - /url: /fr/field/
+        - link "Le probleme" [ref=e16] [cursor=pointer]:
+          - /url: /fr/problem/
+        - link "Notre position" [ref=e17] [cursor=pointer]:
+          - /url: /fr/claim/
+        - link "Notre philosophie" [ref=e18] [cursor=pointer]:
+          - /url: /fr/philosophy/
+        - link "L'architecture" [ref=e19] [cursor=pointer]:
+          - /url: /fr/architecture/
+        - link "Docs" [ref=e20] [cursor=pointer]:
+          - /url: /fr/architecture/docs/
+        - link "Contact" [ref=e21] [cursor=pointer]:
+          - /url: /fr/contact/
+        - link "EN" [ref=e22] [cursor=pointer]:
+          - /url: /architecture/
+  - main [ref=e23]:
+    - generic [ref=e25]:
+      - generic [ref=e26]:
+        - paragraph [ref=e27]:
+          - img "Diode glyph — secure boundary" [ref=e29]:
+            - img [ref=e30]
+          - text: Pilier V · artefact
+        - heading "L' architecture." [level=1] [ref=e32]:
+          - text: L'
+          - text: architecture.
+        - paragraph [ref=e33]:
+          - text: Un site industriel fait tourner deux systemes cousus ensemble. L'un deplace le monde physique. L'autre l'enregistre. Industrial Independence Architecture est l'unite qui se tient la ou les deux se rencontrent — la
+          - strong [ref=e34]: passerelle de bordure securisee
+          - text: — et la regle qui en place une a la tete de chaque zone.
+        - paragraph [ref=e35]: La passerelle fonctionne sans connectivite amont. Pas de cloud. Pas de reseau corporate. Pas d'internet. Si la connectivite existe, elle se compose vers le haut. Si elle tombe, rien ne change sur site.
+        - generic [ref=e36]:
+          - link "Lire la these" [ref=e37] [cursor=pointer]:
+            - /url: "#two-systems"
+          - link "Glossaire" [ref=e38] [cursor=pointer]:
+            - /url: /fr/architecture/docs/glossary/
+      - complementary [ref=e39]:
+        - generic [ref=e40]:
+          - generic [ref=e41]:
+            - term [ref=e42]: Editeur
+            - definition [ref=e43]: Industrial Independence Alliance
+          - generic [ref=e44]:
+            - term [ref=e45]: Position
+            - definition [ref=e46]: Souverainete par architecture, pas par politique
+          - generic [ref=e47]:
+            - term [ref=e48]: S'aligne avec
+            - definition [ref=e49]: PERA+, IEC 62443, ISA-95, CESMII i3X
+          - generic [ref=e50]:
+            - term [ref=e51]: Vise
+            - definition [ref=e52]: SL3 floor · SL4 via diode
+    - article [ref=e53]:
+      - generic [ref=e54]:
+        - paragraph [ref=e55]: § Les deux systemes
+        - paragraph [ref=e56]: "Une usine, une raffinerie, une station de traitement des eaux, une centrale electrique — toutes sont faites de deux systemes cousus ensemble. Ils n'ont pas ete concus ensemble. Ils ont ete assembles, site par site, par des integrateurs payes projet par projet. Le resultat est ce dont herite chaque exploitant : une pile sur mesure, une emprise du fournisseur sur les donnees, et une reconstruction a chaque fois qu'un changement important devient necessaire."
+        - paragraph [ref=e57]:
+          - text: Le premier systeme est l'
+          - strong [ref=e58]: Automation and Control Systems
+          - text: "(ACS) : capteurs, automates, vannes, moteurs, interlocks de securite. Le travail est physique et les delais sont physiques. Une boucle de controle en retard de cent millisecondes est un probleme de securite, pas un probleme de latence. L'ACS est gouverne par"
+          - strong [ref=e59]: SRP — Safety, Reliability, Performance
+          - text: . Le vocabulaire est celui de la physique.
+        - paragraph [ref=e60]:
+          - text: Le second est l'
+          - strong [ref=e61]: Information Technology
+          - text: "(IT) : ordres, plannings, audits, tableaux de bord, modeles d'apprentissage automatique. Le travail consiste a tenir des enregistrements correctement et a les atteindre quand il le faut. L'IT est gouvernee par"
+          - strong [ref=e62]: CIA — Confidentiality, Integrity, Availability
+          - text: .
+        - paragraph [ref=e63]: SRP et CIA ne sont pas deux ordres de priorite d'une meme liste. Ils decrivent des substrats differents. Utiliser CIA pour gouverner l'ACS est une erreur de categorie. L'habitude de trente ans qui consiste a traiter les systemes de controle comme « de l'IT avec un peu plus de disponibilite » est la source de la plupart des problemes que cette architecture existe pour resoudre.
+      - generic [ref=e64]:
+        - paragraph [ref=e65]: § Ou se trouve la frontiere
+        - paragraph [ref=e66]: La frontiere IT/ACS n'est pas un schema reseau. C'est une frontiere de criticite des donnees. D'un cote, les donnees decrivent un etat physique qui existe maintenant et sur lequel on agit dans les millisecondes. De l'autre, les donnees sont un enregistrement de ce qui s'est deja passe. L'ACS transforme un etat physique en enregistrement en le capturant. L'IT transforme un enregistrement en action en emettant une instruction. La frontiere est l'endroit ou capture et instruction se rencontrent.
+        - paragraph [ref=e67]:
+          - text: "Cette frontiere a besoin de deux modeles de securite differents sur ses deux cotes. L'architecture les nomme comme le fait PERA+ :"
+          - strong [ref=e68]: Zero Trust
+          - text: cote IT,
+          - strong [ref=e69]: Managed Trust
+          - text: cote ACS. Cote IT, chaque connexion est authentifiee et autorisee independamment de son emplacement. Cote ACS, chaque equipement et chaque procede est connu, identifie et imputable au responsable operationnel. L'unite placee sur la frontiere termine le Zero Trust et commence le Managed Trust.
+      - generic [ref=e70]:
+        - paragraph [ref=e71]: § La passerelle de bordure securisee
+        - paragraph [ref=e72]:
+          - text: L'unite a un nom. C'est la
+          - strong [ref=e73]: passerelle de bordure securisee
+          - text: —
+          - emphasis [ref=e74]: secure edge gateway
+          - text: .
+        - paragraph [ref=e75]: "La passerelle de bordure securisee se tient a la tete d'une zone. A l'interieur de la zone se trouve le systeme de controle dont l'exploitant a herite — PLC modernes, SCADA legacy, capteurs IoT, E/S grand public. A l'exterieur se trouve tout ce qui veut savoir ce qui se passe : une autre zone, une usine, un partenaire, un regulateur, le cloud, l'agent IA. La passerelle est ce que les deux cotes voient quand ils se regardent."
+        - paragraph [ref=e76]: La passerelle fait quatre choses et refuse tout le reste.
+        - paragraph [ref=e77]:
+          - text: Elle
+          - strong [ref=e78]: temoigne
+          - text: ". Une derivation passive sur le reseau ACS. L'interface est en reception seule au niveau materiel : pas de pile IP, pas d'ecouteur, pas de transmission possible. Une compromission du role de temoin ne peut pas devenir une intrusion active sur le reseau de controle."
+        - paragraph [ref=e79]:
+          - text: Elle
+          - strong [ref=e80]: interroge
+          - text: . Certains equipements ne parlent que lorsqu'on les sollicite. La passerelle les interroge, avec une cadence bornee, une identite explicite, et une trace d'audit pour chaque requete.
+        - paragraph [ref=e81]:
+          - text: Elle
+          - strong [ref=e82]: historise
+          - text: . La passerelle exploite un magasin de series temporelles local. Captures, classifications, evenements et pistes d'audit y atterrissent. Le magasin local est la source de verite sur la passerelle ; les publicateurs sortants y puisent. Une passerelle deconnectee de tout amont reste pleinement fonctionnelle sur place.
+        - paragraph [ref=e83]:
+          - text: Elle
+          - strong [ref=e84]: publie vers l'exterieur
+          - text: ", de facon securisee. Une seule direction. Le profil de sortie est selectionnable par l'exploitant a chaque deploiement : OPC UA pub/sub, MQTT+Sparkplug B a la frontiere controleur↔broker de zone, une API de requete structuree sur mTLS, ou une ecriture batch vers un lac en aval. Il n'y a pas de defaut nomme. La passerelle publie ; l'aval s'abonne."
+        - paragraph [ref=e85]: Ce que la passerelle refuse, c'est le reste. Pas de HTTP a la frontiere externe dans aucune direction. Pas de HTTP/HTTPS sortant. Pas de services actifs par defaut. Pas de canal de mutation en direct. L'interface de gestion locale optionnelle est en HTTPS, reservee au reseau local, sur un port physique distinct. Chaque ecouteur qui existe sur la passerelle existe parce que quelqu'un l'a concu et ingenie pour un usage operationnel specifique.
+      - generic [ref=e86]:
+        - paragraph [ref=e87]: § Une unite, deux realisations
+        - paragraph [ref=e88]: L'architecture a deux realisations physiques. Le logiciel est le meme dans les deux.
+        - paragraph [ref=e89]:
+          - strong [ref=e90]: SL3
+          - text: est le plancher. Une seule passerelle de bordure securisee, partitionnee en logiciel. Segmentation forte, TLS mutuel sur chaque conduit, identite de charge de travail, controle d'admission. Les canaux bidirectionnels existent la ou la conception en a besoin — l'ecouteur de l'API de requete structuree, le tunnel de publication sortant — et chacun est protege par pare-feu, identifie, enregistre. SL3 n'impose pas un flux physiquement unidirectionnel. SL3 est le
+          - emphasis [ref=e91]: triptyque de prevention
+          - text: — pare-feu noyau, identite de charge de travail, politique d'admission — soutenu par une attestation capable d'alerter quand le triptyque fuit.
+        - paragraph [ref=e92]:
+          - strong [ref=e93]: SL4
+          - text: "est l'ideal. Deux passerelles et une diode de donnees materielle entre elles. La passerelle interne se tient cote ACS et execute temoin, interrogation, historien. Elle publie a travers la diode — les electrons circulent dans une seule direction au niveau physique — vers la passerelle externe cote IT. Les consommateurs atteignent la passerelle externe. La passerelle externe n'a aucun chemin de retour. SL4 est l'assertion la plus forte de l'architecture : pas « aucun chemin de retour n'a ete configure », mais « aucun chemin de retour ne peut exister »."
+        - paragraph [ref=e94]:
+          - text: IIA vise SL3 comme plancher et SL4 via diode comme ideal. La
+          - emphasis [ref=e95]: two-box method
+          - text: "que SL4 generalise est creditee : Rinaldi & Workman,"
+          - emphasis [ref=e96]: The Everyman's Guide to EtherNet/IP Network Design
+          - text: ", RTA 2022."
+        - 'figure "Two-Box Method: SL3 versus SL4 diagram" [ref=e98]':
+          - 'img "The Two-Box Method — SL3 vs SL4 Side-by-side comparison of SL3 and SL4 deployment modes. SL3 (left): a single IIA box at the boundary, software-only segmentation, passive ACS NIC, bidirectional channels firewalled and authenticated. SL4 (right): two IIA boxes with a hardware data diode between them — fiber TX-only in one direction, fiber RX-only in the other, physically enforced unidirectional flow. The software architecture is identical in both modes; only the physical topology changes." [ref=e99]':
+            - generic [ref=e100]:
+              - generic [ref=e101]: SL3 — software-only segmentation
+              - generic [ref=e103]: ACS
+              - generic [ref=e104]: PLC · SCADA · sensors
+              - generic [ref=e105]: Managed Trust · SRP
+              - generic [ref=e107]: IIA box
+              - generic [ref=e108]: inbound · DMZ · outbound · mgmt
+              - generic [ref=e110]: inbound
+              - generic [ref=e112]: DMZ
+              - generic [ref=e114]: outbound · mTLS · no HTTP
+              - generic [ref=e116]: IT
+              - generic [ref=e117]: next box
+              - generic [ref=e118]: Zero Trust
+              - generic [ref=e119]: CIA
+              - generic [ref=e120]: passive
+              - generic [ref=e121]: RX-only
+              - generic [ref=e122]: push
+              - generic [ref=e123]: pull query
+              - generic [ref=e124]: segmentation + authentication + audit
+              - generic [ref=e125]: bidirectional channels · firewalled + authenticated
+              - generic [ref=e126]: passive ACS NIC · no HTTP at boundary
+              - generic [ref=e127]: IEC 62443 SL3 floor
+            - generic [ref=e128]:
+              - generic [ref=e129]: SL4 — two boxes + hardware diode
+              - generic [ref=e131]: ACS
+              - generic [ref=e132]: PLC · SCADA
+              - generic [ref=e133]: Managed Trust
+              - generic [ref=e135]: ACS-side box
+              - generic [ref=e136]: passive collection
+              - generic [ref=e137]: capture · witness · lake
+              - generic [ref=e138]: audit chain
+              - generic [ref=e140]: diode
+              - generic [ref=e141]: HW
+              - generic [ref=e143]: IT-side box
+              - generic [ref=e144]: diode receiver
+              - generic [ref=e145]: publish · query API
+              - generic [ref=e146]: tunnel
+              - generic [ref=e148]: IT
+              - generic [ref=e149]: Zero Trust · CIA
+              - generic [ref=e150]: passive
+              - generic [ref=e151]: TX only
+              - generic [ref=e152]: RX only
+              - generic [ref=e153]: no return path
+              - generic [ref=e154]: physically enforced unidirectional flow
+              - generic [ref=e155]: fiber TX-only out · RX-only path impossible in hardware
+              - generic [ref=e156]: same software architecture in both boxes
+              - generic [ref=e157]: IEC 62443 SL4 via diode
+            - generic [ref=e158]: Same software architecture in both modes. Only the physical topology changes.
+          - generic [ref=e159]: "The Two-Box Method — SL3 (software segmentation) vs SL4 (hardware diode) · credited: Rinaldi & Workman, RTA 2022"
+      - generic [ref=e160]:
+        - paragraph [ref=e161]: § Le fractal
+        - paragraph [ref=e162]: Un site industriel est organise en zones. Une boucle de controle tourne dans une cellule. Les cellules s'agregent en ligne. Les lignes en aire. Les aires en usine. Les usines en region. Les regions en fonction corporate.
+        - paragraph [ref=e163]:
+          - text: L'architecture place une passerelle de bordure securisee a la tete de chaque zone. La passerelle est identique a chaque zone. Le logiciel est le meme ; le partitionnement est le meme ; les regles de frontiere sont les memes. Seule la
+          - emphasis [ref=e164]: portee
+          - text: change. Une passerelle dans une cellule voit une machine. Une passerelle dans une usine voit l'usine. Une passerelle au niveau corporate voit la flotte. Meme architecture, ouverture differente.
+        - paragraph [ref=e165]: "Le bas du fractal est strictement un-pour-un : chaque ACS recoit sa propre passerelle. L'agregation — plusieurs-vers-un — commence au-dessus de L2. Le haut ne s'effondre pas : un historien central est une passerelle a portee plus large, pas un autre type de systeme. Le cloud est un abonne, pas un pair."
+        - paragraph [ref=e166]:
+          - text: Chaque passerelle est
+          - strong [ref=e167]: souveraine
+          - text: . Elle possede son identite, son historien, sa chaine d'audit. Elle ne depend de rien en amont pour continuer a fonctionner. Si la connexion corporate tombe, la passerelle de l'usine va bien. Si l'usine tombe, la passerelle de l'aire va bien. Si un fournisseur sort du marche, la passerelle, elle, reste.
+        - paragraph [ref=e168]: La souverainete n'est pas l'isolement. Les passerelles a des portees adjacentes se connaissent ; elles ont des contrats de donnees entre elles ; elles echangent de l'information sur des conduits mTLS. La contrainte n'est pas « invisible ». La contrainte est « aucune dependance ». La conscience est autorisee. La dependance ne l'est pas.
+        - paragraph [ref=e169]:
+          - text: L'architecture est
+          - strong [ref=e170]: distribuee
+          - text: ", pas federee. Un seul exploitant exploite le maillage. Le fractal n'est pas un traite entre parties independantes ; c'est l'ensemble des unites d'une seule organisation, composees a travers les portees."
+        - figure "The IIA Fractal diagram" [ref=e172]:
+          - img [ref=e173]:
+            - generic [ref=e174]:
+              - generic [ref=e175]: The Fractal
+              - generic [ref=e176]: the unit is the same · scope varies · a gateway at the head of every zone
+            - generic [ref=e177]:
+              - generic [ref=e178]: The Unit · anatomy
+              - generic [ref=e179]: identical at every scope
+              - generic [ref=e182]: INBOUND · ACS-facing
+              - generic [ref=e183]: witness (passive) · active poll · classify
+              - generic [ref=e184]: no IP TX · no external listeners
+              - generic [ref=e186]: INTERNAL DMZ
+              - generic [ref=e187]: in-flight bus · transient
+              - generic [ref=e188]: no durable state here
+              - generic [ref=e190]: OUTBOUND · IT-facing
+              - generic [ref=e191]: secure publish · structured query API
+              - generic [ref=e192]: the only external access into the zone
+              - generic [ref=e194]: MANAGEMENT
+              - generic [ref=e195]: local ops UI · signed-artifact ingress only
+              - generic [ref=e197]: LOCAL LAKE · HISTORIAN
+              - generic [ref=e198]: source of truth on the box · decentralized historian
+            - generic [ref=e199]:
+              - generic [ref=e200]: The Deployment · where
+              - generic [ref=e201]: a box at the head of every zone · the secure edge gateway
+              - generic [ref=e203]: CONSUMERS
+              - generic [ref=e204]: internet · plant · partner · regulator · whoever
+              - generic [ref=e206]: secure conduit
+              - generic [ref=e207]: "SL4: hw diode, one-way"
+              - generic [ref=e209]: box
+              - generic [ref=e210]: secure edge gateway
+              - generic [ref=e211]: witness · historian · publish
+              - generic [ref=e212]: ACS data (SRP)
+              - generic [ref=e213]: witness · active poll
+              - generic [ref=e215]: ZONE · OPERATOR-DEFINED
+              - generic [ref=e216]: production · plant · site · corp · any boundary
+              - generic [ref=e217]: POOLS OF DATA
+              - generic [ref=e219]: process data
+              - generic [ref=e221]: device telemetry
+              - generic [ref=e223]: network data
+              - generic [ref=e225]: asset inventory
+              - generic [ref=e227]: event streams
+              - generic [ref=e229]: topology
+              - generic [ref=e230]: any SL device contributes · gateway is the security boundary
+              - generic [ref=e231]: witness (passive) + active poll feed every pool into the historian
+              - generic [ref=e232]: FRACTAL
+              - generic [ref=e233]: same pattern at every zone · operator decides what counts as a zone
+          - generic [ref=e234]: The Fractal — a secure edge gateway at the head of every zone. Inside the zone are pools of data fed by the gateway's witness (passive) and active poll; devices contributing can be any security level. The gateway publishes information securely outbound through a conduit (with a hardware data diode in the SL4 ideal realization) to whatever the zone's consumers are. The gateway is identical at every zone; the operator defines what counts as a zone.
+      - generic [ref=e235]:
+        - paragraph [ref=e236]: § A l'interieur de la passerelle
+        - paragraph [ref=e237]:
+          - text: "La passerelle est partitionnee en interne en quatre cotes :"
+          - strong [ref=e238]: entrant
+          - text: (cote ACS), une
+          - strong [ref=e239]: DMZ interne
+          - text: ","
+          - strong [ref=e240]: sortant
+          - text: (cote IT), et une
+          - strong [ref=e241]: interface de gestion
+          - text: "sur un port physique distinct. L'entrant et le sortant ne peuvent pas conduire directement l'un vers l'autre. Tout trafic transverse passe par la DMZ. La NIC cote ACS est passive : pas de TX sur la pile IP, pas d'ecouteur, meme quand elle partage le sous-reseau de gestion via VLAN."
+        - paragraph [ref=e242]:
+          - text: Le
+          - strong [ref=e243]: lac de donnees local
+          - text: vit dans la DMZ. Tout ce que la passerelle capture, classe ou audite y atterrit. Le bus en vol qui relie les roles ne perdure rien ; il transporte les messages entre conteneurs vivants et les oublie. Le lac est la source de verite sur la passerelle. Les publicateurs sortants lisent depuis le lac. Une passerelle deconnectee de l'amont continue d'enregistrer, continue de repondre aux requetes locales, continue d'attester. Quand l'amont revient, elle siphonne.
+        - figure "IIA Box internal architecture diagram" [ref=e245]:
+          - 'img "The Box — CIAD internal partitioning Control and Information Architecture Diagram of the IIA box. Bottom: ACS domain (Managed Trust, SRP). Above that: the inbound zone with collectors, witness/IDS, IO master, and local data lake. Center: internal DMZ with in-flight bus, audit chain, and attestation aggregator. Right: outbound zone with edge publisher, structured query API, and mTLS tunnel. Top: IT domain (Zero Trust, CIA). Management interface on its own NIC, local-network only. All cross-side traffic transits the DMZ. ACS NIC is passive, RX-only." [ref=e246]':
+            - generic [ref=e247]:
+              - generic [ref=e249]: ACS DOMAIN · Managed Trust · SRP
+              - generic [ref=e251]: Wired control & sensing
+              - generic [ref=e252]: PLC · SCADA · sensors · OPC UA · Modbus · EtherNet/IP
+              - generic [ref=e254]: Wireless IO sensing
+              - generic [ref=e255]: LoRaWAN · LPWAN · IO-class only, never control
+            - generic [ref=e257]: THE BOX
+            - generic [ref=e258]:
+              - generic [ref=e260]: INBOUND (ACS-facing)
+              - generic [ref=e262]: ot.acs.collect
+              - generic [ref=e263]: protocol-aware collectors
+              - generic [ref=e265]: ot.acs.witness
+              - generic [ref=e266]: IDS · scan · enrichment
+              - generic [ref=e268]: ot.acs.io_master
+              - generic [ref=e269]: independent IO observation
+              - generic [ref=e270]: (attestation)
+              - generic [ref=e272]: ot.acs.lake
+              - generic [ref=e273]: local data lake · source of truth on the box
+            - generic [ref=e274]:
+              - generic [ref=e276]: INTERNAL DMZ
+              - generic [ref=e278]: ot.dmz.bus
+              - generic [ref=e279]: in-flight bus (transient)
+              - generic [ref=e281]: ot.dmz.audit
+              - generic [ref=e282]: audit chain head
+              - generic [ref=e284]: ot.dmz.attest
+              - generic [ref=e285]: attestation aggregator
+              - generic [ref=e286]: all cross-side traffic transits here
+            - generic [ref=e287]:
+              - generic [ref=e289]: OUTBOUND (IT-facing)
+              - generic [ref=e291]: ot.it.publish
+              - generic [ref=e292]: edge publisher
+              - generic [ref=e293]: operator-selected profile
+              - generic [ref=e295]: ot.it.api
+              - generic [ref=e296]: structured query
+              - generic [ref=e297]: mTLS · non-HTTP
+              - generic [ref=e299]: ot.it.tunnel
+              - generic [ref=e300]: outbound mTLS dial-out · no listener · no HTTP
+              - generic [ref=e302]: MANAGEMENT (mgmt NIC · local-net only)
+              - generic [ref=e304]: ot.mgmt.ui
+              - generic [ref=e305]: text generator
+              - generic [ref=e306]: no privileged access
+              - generic [ref=e308]: ot.mgmt.cfg
+              - generic [ref=e309]: parser · validator
+              - generic [ref=e310]: signed artifact (GitOps)
+              - generic [ref=e312]: Operator
+              - generic [ref=e313]: HTTPS · local-net only
+              - generic [ref=e315]: Last-resort console
+              - generic [ref=e316]: serial · TPM-bound · never networked
+            - generic [ref=e319]: IT DOMAIN · Zero Trust · CIA (records · information)
+            - generic [ref=e321]: passive · RX-only
+            - generic [ref=e327]: push / mTLS · no HTTP
+          - generic [ref=e328]: The Box — CIAD internal partitioning · inbound · DMZ · outbound · management
+      - generic [ref=e329]:
+        - paragraph [ref=e330]: § Chaque conversation a un contrat
+        - paragraph [ref=e331]:
+          - text: Toute communication sur la passerelle et a travers ses frontieres est regie par un
+          - strong [ref=e332]: contrat de donnees
+          - text: "explicite : ce qui circule, sous quelle forme, avec quelle authentification, sous quel SLA, avec quelle matrice RACI pour chaque mode de defaillance. L'ensemble complet est le"
+          - strong [ref=e333]: catalogue de contrats
+          - text: ", versionne et decouvrable."
+        - paragraph [ref=e334]:
+          - text: La communication sans contrat est
+          - emphasis [ref=e335]: empechee
+          - text: la ou l'architecture peut imposer la prevention — pas d'entree au catalogue, pas d'identite SPIFFE emise, pas de mTLS, pas de trafic — et
+          - emphasis [ref=e336]: signalee
+          - text: la ou elle ne le peut pas, ce qui concerne surtout les cas d'observation passive en bordure. L'absence de contrat a un quelconque niveau est un defaut de deploiement, pas un etat tolere.
+        - paragraph [ref=e337]:
+          - text: Les contrats de frontiere sont
+          - strong [ref=e338]: bilateraux
+          - text: . L'ACS s'engage a produire la donnee conforme au cahier des charges. L'amont s'engage sur la connectivite, l'authentification, l'accuse de reception, le temps de reponse, la capacite et la reponse a incident. Chaque contrat nomme une matrice RACI pour chaque mode de defaillance et emet une telemetrie d'adherence — recus de qui a tenu quel cote.
+      - generic [ref=e339]:
+        - paragraph [ref=e340]: "§ Attestation : savoir si la prevention fonctionne"
+        - paragraph [ref=e341]:
+          - text: La prevention sans attestation est une histoire qu'on se raconte. La passerelle execute des observateurs independants qui verifient en croise si la prevention fonctionne reellement. Un observateur d'intrusion compare le trafic observe au catalogue de contrats et signale tout ce que le catalogue n'autorise pas — y compris le trafic attendu qui n'apparait pas. La ou le deploiement dispose d'un plan reseau programmable, les conduits n'existent sur le fil que la ou le catalogue le dit. Un
+          - strong [ref=e342]: maitre E/S
+          - text: observe le substrat E/S physique depuis un chemin separe et croise la capture primaire de la passerelle ; l'independance du chemin d'observation est la propriete porteuse. Tous les resultats d'attestation rejoignent la chaine d'audit a la severite d'evenement de securite.
+        - paragraph [ref=e343]:
+          - text: "C'est la reponse stable de l'architecture a la question :"
+          - emphasis [ref=e344]: comment savez-vous que la prevention fonctionne reellement ?
+          - text: Trois observateurs, independants des choses qu'ils observent, emettant sur la meme chaine d'audit que les evenements qu'ils croisent.
+      - generic [ref=e345]:
+        - paragraph [ref=e346]: § La configuration est un artefact signe
+        - paragraph [ref=e347]: "La passerelle accepte la configuration uniquement comme un artefact texte signe consomme par un parseur. Meme motif pour les images de conteneur, le systeme d'exploitation et les jeux de regles. Il n'y a pas de point de terminaison REST qui mute l'etat en cours d'execution. L'interface de gestion optionnelle est un generateur de texte sans acces privilegie ; le parseur est la frontiere de confiance ; l'applicateur s'execute apres verification et validation, puis sort. Chaque transition d'etat est reconstructible depuis la chaine d'audit : hash d'artefact → validation du parseur → appels de l'applicateur → etat avant/apres."
+        - paragraph [ref=e348]: Les mises a jour sont fractales elles aussi. Chaque passerelle a une portee plus large publie un manifeste d'etat voulu pour ses enfants. Les enfants tirent, reconcilient vers l'etat declare, rapportent ce qu'ils executent. Les exploitants autorisent des mises a jour specifiques pour des passerelles specifiques dans des fenetres specifiques via des artefacts d'approbation signes. Les deploiements graduels (canary, par zone, par usine) sont une politique exprimee par les approbations qui sont emises. Les passerelles deconnectees convergent quand elles se reconnectent, au rythme de l'exploitant.
+      - generic [ref=e349]:
+        - paragraph [ref=e350]: § Ce que cela donne
+        - paragraph [ref=e351]: Un fournisseur qui quitte le marche n'echoue pas l'usine. La passerelle a son propre historien et sa propre identite. Il n'y a pas d'amont qui puisse tomber.
+        - paragraph [ref=e352]: Une coupure cloud n'arrete pas la production. Le cloud est un abonne a la passerelle, pas l'inverse. Les operations locales restent locales.
+        - paragraph [ref=e353]:
+          - text: "Le deplacement lateral est borne par ce que le catalogue de contrats autorise et par ce que l'attestation peut voir. L'architecture repond a la question qu'on pose aux exploitants mais qu'ils ne peuvent autrement pas trancher :"
+          - emphasis [ref=e354]: montrez-moi quels conduits existent, qui les a autorises, et comment vous savez qu'ils se comportent bien
+          - text: .
+        - paragraph [ref=e355]:
+          - text: Les agents IA obtiennent un chemin propre, authentifie en mTLS, vers la surface de requete structuree de la passerelle. Le serveur Model Context Protocol qui expose la passerelle aux agents vit
+          - strong [ref=e356]: hors boite
+          - text: a une portee plus large, parce que le transport MCP entre en conflit avec la regle « pas de HTTP a la frontiere ». L'IA n'est pas une nouvelle surface d'attaque ; c'est un abonne lie par la meme grammaire de contrat que tout le reste.
+        - paragraph [ref=e357]: La preuve de conformite est un sous-produit de l'exploitation. Le catalogue de contrats plus les flux d'attestation plus la chaine d'audit de la configuration signee constituent la preuve. Les exploitants publient ; les auditeurs lisent.
+      - generic [ref=e358]:
+        - paragraph [ref=e359]: § L'ordre
+        - paragraph [ref=e360]:
+          - strong [ref=e361]: Connecter d'abord. Modeliser ensuite. IA en troisieme.
+        - paragraph [ref=e362]: Mettre les passerelles en place et faire couler les donnees de facon fiable. Modeliser les donnees — ISA-95 a L3, la colonne vertebrale de modelisation — a une portee plus large, la ou la modelisation a du sens. Confier les donnees modelisees a des agents IA via des serveurs MCP hors boite, a une portee plus large encore.
+        - paragraph [ref=e363]: "La plupart des echecs dans cet espace sont des echecs d'ordre inverse : de l'IA sans modele, des modeles sans connexion fiable, de la connexion sans fondation souveraine. L'architecture refuse l'inversion."
+  - contentinfo [ref=e364]:
+    - generic [ref=e365]:
+      - generic [ref=e366]:
+        - paragraph [ref=e367]: Industrial Independence Alliance
+        - paragraph [ref=e368]: Souverainete operationnelle pour les infrastructures industrielles. Ni un produit. Ni un framework. Le principe architectural, revendique par son nom.
+      - generic [ref=e369]:
+        - paragraph [ref=e370]: Piliers
+        - list [ref=e371]:
+          - listitem [ref=e372]:
+            - link "Le terrain" [ref=e373] [cursor=pointer]:
+              - /url: /fr/field/
+          - listitem [ref=e374]:
+            - link "Le probleme" [ref=e375] [cursor=pointer]:
+              - /url: /fr/problem/
+          - listitem [ref=e376]:
+            - link "Notre position" [ref=e377] [cursor=pointer]:
+              - /url: /fr/claim/
+          - listitem [ref=e378]:
+            - link "Notre philosophie" [ref=e379] [cursor=pointer]:
+              - /url: /fr/philosophy/
+          - listitem [ref=e380]:
+            - link "L'architecture" [ref=e381] [cursor=pointer]:
+              - /url: /fr/architecture/
+          - listitem [ref=e382]:
+            - link "Documentation" [ref=e383] [cursor=pointer]:
+              - /url: /fr/architecture/docs/
+          - listitem [ref=e384]:
+            - link "Contact" [ref=e385] [cursor=pointer]:
+              - /url: /fr/contact/
+      - generic [ref=e386]:
+        - paragraph [ref=e387]: Antecedents cites
+        - list [ref=e388]:
+          - listitem [ref=e389]:
+            - link "SRP Triad — Robert Radvanovsky, Infracritical" [ref=e390] [cursor=pointer]:
+              - /url: https://srpmodel.infracritical.com/srpmodel.php
+          - listitem [ref=e391]:
+            - link "PERA+ — Gary Rathwell, Entercon" [ref=e392] [cursor=pointer]:
+              - /url: https://www.pera.net
+          - listitem [ref=e393]: IEC 62443 · ISA-95
+          - listitem [ref=e394]: Travaux independants. Sans affiliation avec l'Alliance ni entre eux.
+      - generic [ref=e395]:
+        - paragraph [ref=e396]: Implementations
+        - list [ref=e397]:
+          - listitem [ref=e398]:
+            - link "MarlinSpike — successeur de GrassMarlin" [ref=e399] [cursor=pointer]:
+              - /url: https://www.grassmarlin.com
+          - listitem [ref=e400]:
+            - link "Conversational Factory" [ref=e401] [cursor=pointer]:
+              - /url: https://www.conversationalfactory.com
+          - listitem [ref=e402]: Construit sur IIA
+      - generic [ref=e403]:
+        - paragraph [ref=e404]: Editeur
+        - list [ref=e405]:
+          - listitem [ref=e406]: Industrial Independence Alliance
+          - listitem [ref=e407]:
+            - link "github →" [ref=e408] [cursor=pointer]:
+              - /url: https://github.com/industrialindependence/architecture
+    - generic [ref=e409]:
+      - generic [ref=e410]:
+        - paragraph [ref=e411]: Contact rapide
+        - paragraph [ref=e412]:
+          - text: Envoyez un message.
+          - link "Formulaire complet →" [ref=e413] [cursor=pointer]:
+            - /url: /fr/contact/
+      - generic [ref=e415]:
+        - textbox
+        - generic [ref=e416]:
+          - generic [ref=e417]:
+            - generic [ref=e418]: Nom
+            - textbox "Nom" [ref=e419]
+          - generic [ref=e420]:
+            - generic [ref=e421]: E-mail
+            - textbox "E-mail" [ref=e422]
+        - generic [ref=e423]:
+          - generic [ref=e424]: Message
+          - textbox "Message" [ref=e425]
+        - generic [ref=e426]:
+          - button "Envoyer ->" [ref=e427] [cursor=pointer]
+          - status
+    - paragraph [ref=e429]:
+      - text: © 2026 Industrial Independence Alliance ·
+      - link "CC BY-SA 4.0" [ref=e430] [cursor=pointer]:
+        - /url: https://creativecommons.org/licenses/by-sa/4.0/
+      - text: · "Industrial Independence Architecture" et "IIA" sont des marques
+  - generic [ref=e433]:
+    - button "Menu" [ref=e434]:
+      - img [ref=e436]
+      - generic: Menu
+    - button "Inspect" [ref=e440]:
+      - img [ref=e442]
+      - generic: Inspect
+    - button "Audit" [ref=e444]:
+      - img [ref=e446]
+      - generic: Audit
+    - button "Settings" [ref=e449]:
+      - img [ref=e451]
+      - generic: Settings
