@@ -6,7 +6,7 @@
 
 <figure class="twobox-diagram" aria-label="Two-Box Method: SL3 versus SL4 diagram">
   <svg
-    viewBox="0 0 860 330"
+    viewBox="0 0 940 340"
     xmlns="http://www.w3.org/2000/svg"
     role="img"
     aria-labelledby="tb-title tb-desc"
@@ -37,138 +37,140 @@
     </defs>
 
     <!-- ===== DIVIDER ===== -->
-    <line x1="430" y1="16" x2="430" y2="318" stroke="var(--rule-soft)" stroke-width="1" stroke-dasharray="5,4" />
+    <line x1="470" y1="18" x2="470" y2="334" stroke="var(--rule-soft)" stroke-width="1" stroke-dasharray="5,4" />
 
     <!-- ========================================== -->
     <!-- LEFT: SL3                                  -->
     <!-- ========================================== -->
     <g transform="translate(0,0)">
 
-      <text x="215" y="20" class="panel-sl3" text-anchor="middle">SL3 &mdash; software-only segmentation</text>
+      <text x="228" y="24" class="panel-sl3" text-anchor="middle">SL3 &mdash; software-only segmentation</text>
 
       <!-- ACS -->
-      <rect x="30" y="36" width="116" height="60" rx="2"
+      <rect x="20" y="44" width="104" height="60" rx="2"
         fill="var(--bg-elev)" stroke="var(--rule-soft)" stroke-width="1.5" />
-      <text x="88" y="58" class="node-label" text-anchor="middle">ACS</text>
-      <text x="88" y="72" class="node-sub" text-anchor="middle">PLC · SCADA · sensors</text>
-      <text x="88" y="86" class="node-sub" text-anchor="middle">Managed Trust · SRP</text>
+      <text x="72" y="66" class="node-label" text-anchor="middle">ACS</text>
+      <text x="72" y="82" class="node-sub" text-anchor="middle">PLC · SCADA · sensors</text>
+      <text x="72" y="95" class="node-sub" text-anchor="middle">Managed Trust · SRP</text>
 
       <!-- IIA box -->
-      <rect x="168" y="36" width="160" height="120" rx="3"
+      <rect x="168" y="44" width="160" height="124" rx="3"
         fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5" />
-      <text x="248" y="56" class="box-label" text-anchor="middle">IIA box</text>
-      <text x="248" y="70" class="node-sub" text-anchor="middle">inbound · DMZ · outbound · mgmt</text>
+      <text x="248" y="64" class="box-label" text-anchor="middle">IIA box</text>
+      <text x="248" y="78" class="node-sub" text-anchor="middle">inbound · DMZ · outbound · mgmt</text>
 
       <!-- Internal zones indicator -->
-      <rect x="178" y="78" width="60" height="22" rx="1"
+      <rect x="178" y="88" width="64" height="22" rx="1"
         fill="var(--bg-elev)" stroke="var(--rule-soft)" stroke-width="0.8" />
-      <text x="208" y="93" class="zone-mini" text-anchor="middle">inbound</text>
+      <text x="210" y="103" class="zone-mini" text-anchor="middle">inbound</text>
 
-      <rect x="248" y="78" width="60" height="22" rx="1"
+      <rect x="252" y="88" width="64" height="22" rx="1"
         fill="var(--bg-elev)" stroke="var(--rule-soft)" stroke-width="0.8" />
-      <text x="278" y="93" class="zone-mini" text-anchor="middle">DMZ</text>
+      <text x="284" y="103" class="zone-mini" text-anchor="middle">DMZ</text>
 
-      <rect x="178" y="108" width="130" height="22" rx="1"
+      <rect x="178" y="118" width="138" height="22" rx="1"
         fill="var(--bg-elev)" stroke="var(--rule-soft)" stroke-width="0.8" />
-      <text x="243" y="123" class="zone-mini" text-anchor="middle">outbound · mTLS · no HTTP</text>
+      <text x="247" y="133" class="zone-mini" text-anchor="middle">outbound · mTLS · no HTTP</text>
 
       <!-- IT consumer -->
-      <rect x="350" y="36" width="68" height="60" rx="2"
+      <rect x="392" y="44" width="58" height="60" rx="2"
         fill="var(--bg-elev)" stroke="var(--rule-soft)" stroke-width="1" />
-      <text x="384" y="58" class="node-label" text-anchor="middle">IT</text>
-      <text x="384" y="72" class="node-sub" text-anchor="middle">next box</text>
-      <text x="384" y="86" class="node-sub" text-anchor="middle">Zero Trust · CIA</text>
+      <text x="421" y="62" class="node-label" text-anchor="middle">IT</text>
+      <text x="421" y="76" class="node-sub" text-anchor="middle">next box</text>
+      <text x="421" y="88" class="node-sub" text-anchor="middle">Zero Trust</text>
+      <text x="421" y="100" class="node-sub" text-anchor="middle">CIA</text>
 
       <!-- ACS -> box -->
-      <line x1="146" y1="66" x2="168" y2="80" stroke="var(--ink-soft)" stroke-width="1.5" marker-end="url(#t-arrow)" />
-      <text x="100" y="61" class="flow-label">passive · RX-only</text>
+      <line x1="124" y1="70" x2="168" y2="70" stroke="var(--ink-soft)" stroke-width="1.5" marker-end="url(#t-arrow)" />
+      <text x="146" y="62" class="flow-label-sm" text-anchor="middle">passive</text>
+      <text x="146" y="86" class="flow-label-sm" text-anchor="middle">RX-only</text>
 
       <!-- box -> IT (push) -->
-      <line x1="328" y1="70" x2="350" y2="70" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#t-arrow-accent)" />
-      <text x="334" y="64" class="flow-label-sm">push</text>
+      <line x1="328" y1="66" x2="392" y2="66" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#t-arrow-accent)" />
+      <text x="360" y="58" class="flow-label-sm" text-anchor="middle">push</text>
 
       <!-- IT -> box (pull, dashed) -->
-      <line x1="350" y1="80" x2="328" y2="80" stroke="var(--ink-mute)" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#t-arrow-rev)" />
-      <text x="330" y="94" class="flow-label-sm">pull query</text>
+      <line x1="392" y1="86" x2="328" y2="86" stroke="var(--ink-mute)" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#t-arrow-rev)" />
+      <text x="360" y="98" class="flow-label-sm" text-anchor="middle">pull query</text>
 
       <!-- SL3 properties -->
-      <text x="215" y="182" class="prop-label" text-anchor="middle">segmentation + authentication + audit</text>
-      <text x="215" y="198" class="prop-label" text-anchor="middle">bidirectional channels &nbsp;·&nbsp; firewalled + authenticated</text>
-      <text x="215" y="214" class="prop-label" text-anchor="middle">passive ACS NIC &nbsp;·&nbsp; no HTTP at boundary</text>
-      <text x="215" y="230" class="prop-label" text-anchor="middle">IEC 62443 SL3 floor</text>
+      <text x="228" y="210" class="prop-label" text-anchor="middle">segmentation + authentication + audit</text>
+      <text x="228" y="226" class="prop-label" text-anchor="middle">bidirectional channels &nbsp;·&nbsp; firewalled + authenticated</text>
+      <text x="228" y="242" class="prop-label" text-anchor="middle">passive ACS NIC &nbsp;·&nbsp; no HTTP at boundary</text>
+      <text x="228" y="258" class="prop-label" text-anchor="middle">IEC 62443 SL3 floor</text>
 
     </g>
 
     <!-- ========================================== -->
     <!-- RIGHT: SL4                                 -->
     <!-- ========================================== -->
-    <g transform="translate(440,0)">
+    <g transform="translate(470,0)">
 
-      <text x="200" y="20" class="panel-sl4" text-anchor="middle">SL4 &mdash; two boxes &plus; hardware diode</text>
+      <text x="225" y="24" class="panel-sl4" text-anchor="middle">SL4 &mdash; two boxes &plus; hardware diode</text>
 
       <!-- ACS -->
-      <rect x="10" y="36" width="96" height="60" rx="2"
+      <rect x="6" y="44" width="86" height="60" rx="2"
         fill="var(--bg-elev)" stroke="var(--rule-soft)" stroke-width="1.5" />
-      <text x="58" y="58" class="node-label" text-anchor="middle">ACS</text>
-      <text x="58" y="72" class="node-sub" text-anchor="middle">PLC · SCADA</text>
-      <text x="58" y="86" class="node-sub" text-anchor="middle">Managed Trust</text>
+      <text x="49" y="66" class="node-label" text-anchor="middle">ACS</text>
+      <text x="49" y="82" class="node-sub" text-anchor="middle">PLC · SCADA</text>
+      <text x="49" y="96" class="node-sub" text-anchor="middle">Managed Trust</text>
 
       <!-- ACS-side box -->
-      <rect x="118" y="28" width="116" height="76" rx="3"
+      <rect x="122" y="34" width="116" height="84" rx="3"
         fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5" />
-      <text x="176" y="50" class="box-label" text-anchor="middle">ACS-side box</text>
-      <text x="176" y="64" class="node-sub" text-anchor="middle">passive collection</text>
-      <text x="176" y="76" class="node-sub" text-anchor="middle">capture · witness · lake</text>
-      <text x="176" y="88" class="node-sub" text-anchor="middle">audit chain</text>
+      <text x="180" y="54" class="box-label" text-anchor="middle">ACS-side box</text>
+      <text x="180" y="70" class="node-sub" text-anchor="middle">passive collection</text>
+      <text x="180" y="84" class="node-sub" text-anchor="middle">capture · witness · lake</text>
+      <text x="180" y="98" class="node-sub" text-anchor="middle">audit chain</text>
 
       <!-- Diode (hexagon-ish) -->
-      <polygon points="254,48 274,36 294,48 294,76 274,88 254,76"
+      <polygon points="276,52 299,40 322,52 322,80 299,92 276,80"
         fill="var(--bg-elev)" stroke="var(--ink)" stroke-width="2" />
-      <text x="274" y="59" class="diode-label" text-anchor="middle">diode</text>
-      <text x="274" y="71" class="diode-sub" text-anchor="middle">HW</text>
+      <text x="299" y="64" class="diode-label" text-anchor="middle">diode</text>
+      <text x="299" y="76" class="diode-sub" text-anchor="middle">HW</text>
 
       <!-- IT-side box -->
-      <rect x="306" y="28" width="116" height="76" rx="3"
+      <rect x="360" y="34" width="100" height="84" rx="3"
         fill="var(--bg-elev)" stroke="var(--rule-soft)" stroke-width="1.5" />
-      <text x="364" y="50" class="box-label" text-anchor="middle">IT-side box</text>
-      <text x="364" y="64" class="node-sub" text-anchor="middle">diode receiver</text>
-      <text x="364" y="76" class="node-sub" text-anchor="middle">publish · query API</text>
-      <text x="364" y="88" class="node-sub" text-anchor="middle">tunnel</text>
+      <text x="410" y="54" class="box-label" text-anchor="middle">IT-side box</text>
+      <text x="410" y="70" class="node-sub" text-anchor="middle">diode receiver</text>
+      <text x="410" y="84" class="node-sub" text-anchor="middle">publish · query API</text>
+      <text x="410" y="98" class="node-sub" text-anchor="middle">tunnel</text>
 
       <!-- IT consumer -->
-      <rect x="340" y="120" width="80" height="46" rx="2"
+      <rect x="370" y="132" width="80" height="44" rx="2"
         fill="var(--bg-elev)" stroke="var(--rule-soft)" stroke-width="1" />
-      <text x="380" y="140" class="node-label" text-anchor="middle">IT</text>
-      <text x="380" y="154" class="node-sub" text-anchor="middle">Zero Trust · CIA</text>
+      <text x="410" y="152" class="node-label" text-anchor="middle">IT</text>
+      <text x="410" y="166" class="node-sub" text-anchor="middle">Zero Trust · CIA</text>
 
       <!-- ACS -> ACS-side box -->
-      <line x1="106" y1="66" x2="118" y2="66" stroke="var(--ink-soft)" stroke-width="1.5" marker-end="url(#t-arrow)" />
-      <text x="70" y="60" class="flow-label-sm">passive</text>
+      <line x1="92" y1="74" x2="122" y2="74" stroke="var(--ink-soft)" stroke-width="1.5" marker-end="url(#t-arrow)" />
+      <text x="107" y="66" class="flow-label-sm" text-anchor="middle">passive</text>
 
       <!-- ACS-side -> diode (TX-only fiber) -->
-      <line x1="234" y1="62" x2="254" y2="62" stroke="var(--accent)" stroke-width="2" marker-end="url(#t-arrow-accent)" />
-      <text x="236" y="56" class="flow-label-sm">TX only</text>
+      <line x1="238" y1="66" x2="276" y2="66" stroke="var(--accent)" stroke-width="2" marker-end="url(#t-arrow-accent)" />
+      <text x="257" y="54" class="flow-label-sm" text-anchor="middle">TX only</text>
 
       <!-- diode -> IT-side (RX-only fiber) -->
-      <line x1="294" y1="62" x2="306" y2="62" stroke="var(--accent)" stroke-width="2" marker-end="url(#t-arrow-accent)" />
-      <text x="296" y="56" class="flow-label-sm">RX only</text>
+      <line x1="322" y1="66" x2="360" y2="66" stroke="var(--accent)" stroke-width="2" marker-end="url(#t-arrow-accent)" />
+      <text x="341" y="54" class="flow-label-sm" text-anchor="middle">RX only</text>
 
       <!-- No return path annotation -->
-      <text x="274" y="105" class="no-return" text-anchor="middle">no return path</text>
+      <text x="299" y="112" class="no-return" text-anchor="middle">no return path</text>
 
       <!-- IT-side -> IT -->
-      <line x1="380" y1="104" x2="380" y2="120" stroke="var(--ink-soft)" stroke-width="1.5" marker-end="url(#t-arrow)" />
+      <line x1="410" y1="118" x2="410" y2="132" stroke="var(--ink-soft)" stroke-width="1.5" marker-end="url(#t-arrow)" />
 
       <!-- SL4 properties -->
-      <text x="200" y="190" class="prop-label" text-anchor="middle">physically enforced unidirectional flow</text>
-      <text x="200" y="206" class="prop-label" text-anchor="middle">fiber TX-only out &middot; RX-only path impossible in hardware</text>
-      <text x="200" y="222" class="prop-label" text-anchor="middle">same software architecture in both boxes</text>
-      <text x="200" y="238" class="prop-label" text-anchor="middle">IEC 62443 SL4 via diode</text>
+      <text x="225" y="210" class="prop-label" text-anchor="middle">physically enforced unidirectional flow</text>
+      <text x="225" y="226" class="prop-label" text-anchor="middle">fiber TX-only out &middot; RX-only path impossible in hardware</text>
+      <text x="225" y="242" class="prop-label" text-anchor="middle">same software architecture in both boxes</text>
+      <text x="225" y="258" class="prop-label" text-anchor="middle">IEC 62443 SL4 via diode</text>
 
     </g>
 
     <!-- ===== AXIOM ===== -->
-    <text x="430" y="310" class="axiom" text-anchor="middle">
+    <text x="470" y="320" class="axiom" text-anchor="middle">
       Same software architecture in both modes. Only the physical topology changes.
     </text>
 

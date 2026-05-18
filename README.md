@@ -53,7 +53,9 @@ Inside the zone is control system data — the substrate of physical action — 
 
 Devices inside the zone can be any security level. Legacy SCADA at SL 0, modern PLCs at SL 3, consumer-grade IO, IoT sensors — all of it sits inside the zone. The security boundary lives at the gateway, not at every device. With the right engineering, the gateway is the only thing that needs to interface securely outbound.
 
-The gateway witnesses traffic on the ACS substrate passively and actively polls the devices that permit it. Both feed the *decentralized historian* — the local data lake on the gateway, the zone's source of truth. The historian publishes north only over the secure outbound interface. **That secure publish is the only access into the zone from outside it.** No inbound listener. No remote shell. No admin API exposed externally. The only thing external systems see is what the historian publishes — on the operator's terms, at the operator's cadence, under the operator's signature.
+The gateway witnesses traffic on the ACS substrate passively and actively polls the devices that permit it. Both feed the *decentralized historian* — the local data lake on the gateway, the zone's source of truth. **The gateway is the only path into the zone from outside it.** Nothing reaches past it to the ACS substrate — no remote shell to a device, no route onto the control network, no admin API exposed externally. External systems see only what the gateway serves, on the operator's terms, at the operator's cadence, under the operator's signature.
+
+What the gateway's outbound interface *does* is set by the zone's risk tolerance, not fixed by the architecture. SL3 permits a bidirectional interface: the historian publishes north, and a structured query API answers pulls — firewalled, identified, audited, minimized. SL4 requires strictly one-way — a hardware data diode, push-only, no return path. Push-only is the SL4 promise and the posture toward untrusted IT. It is not the universal law of the mesh.
 
 The gateway is identical at every zone. The operator defines what counts as a zone — production cell, plant, site, region, corporate function, anything where data crosses a boundary. There is no required PERA L1–L5 tower; where a zone exists, a gateway exists at its head, and that is the rule.
 
@@ -154,7 +156,7 @@ PERA's SAIC (Safety, Availability, Integrity, Confidentiality) extends CIA by pr
 
 **Heterogeneity is permanent.** 40-year-old PLCs run alongside brand-new VFDs on protocols that predate TCP/IP. The box must accommodate whatever it finds. It observes. It does not prescribe.
 
-**No unit commands another.** Composition is additive. You do not need the parent to function. The parent does not command the child. Data flows north. Control stays local.
+**No unit commands another.** Composition is additive. You do not need the parent to function. The parent does not command the child. A parent can query a child — pull, not only subscribe — between zones of similar security level; querying is data moving north, not control. Data flows north. Control stays local.
 
 ## Data Architecture
 
