@@ -1,6 +1,6 @@
 ---
 // FractalDiagram.astro
-// The IIA Fractal — same unit, deployed wherever a zone publishes outward.
+// The IIA Fractal - same unit, deployed wherever a zone publishes outward.
 // Two panes: the anatomy of one box (left), and where boxes actually appear (right).
 ---
 
@@ -13,11 +13,11 @@
     class="fractal-svg"
     preserveAspectRatio="xMidYMid meet"
   >
-    <title id="fractal-title">The Fractal — a box at the head of every zone, the secure edge gateway</title>
+    <title id="fractal-title">The Fractal - a box at the head of every zone, the secure edge gateway</title>
     <desc id="fractal-desc">
       Two-pane diagram. Left pane shows the internal anatomy of one secure edge gateway:
-      inbound, internal DMZ, outbound, and management partitions, with a local lake — the
-      decentralized historian — as source of truth. Right pane shows the deployment rule:
+      inbound, internal DMZ, outbound, and management partitions, with a local lake - the
+      decentralized historian - as source of truth. Right pane shows the deployment rule:
       every zone has a gateway at its head. Inside the zone are pools of data (process,
       device telemetry, network, asset inventory, event streams, topology) fed by the
       gateway's witness (passive) and active poll. Devices contributing to those pools can
@@ -54,7 +54,7 @@
     <line x1="400" y1="62" x2="400" y2="500" stroke="var(--rule-soft)" stroke-width="1" stroke-dasharray="4,4" />
 
     <!-- ============================================== -->
-    <!-- ===== LEFT PANE — THE UNIT (anatomy) ========= -->
+    <!-- ===== LEFT PANE - THE UNIT (anatomy) ========= -->
     <!-- ============================================== -->
     <g class="pane pane-left">
       <text x="60" y="80" class="pane-eyebrow">The Unit &middot; anatomy</text>
@@ -91,7 +91,7 @@
       <text x="86" y="372" class="part-label">MANAGEMENT</text>
       <text x="86" y="388" class="part-note">local ops UI &middot; signed-artifact ingress only</text>
 
-      <!-- Lake — labelled band at the bottom -->
+      <!-- Lake - labelled band at the bottom -->
       <rect x="76" y="406" width="268" height="44" rx="2"
         fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1" stroke-dasharray="3,2" />
       <text x="86" y="424" class="part-label">LOCAL LAKE &middot; HISTORIAN</text>
@@ -99,7 +99,7 @@
     </g>
 
     <!-- ============================================== -->
-    <!-- ===== RIGHT PANE — THE DEPLOYMENT (where) ==== -->
+    <!-- ===== RIGHT PANE - THE DEPLOYMENT (where) ==== -->
     <!-- ============================================== -->
     <g class="pane pane-right">
       <text x="420" y="80" class="pane-eyebrow">The Deployment &middot; where</text>
@@ -133,7 +133,7 @@
       <text x="688" y="268" class="depl-flow-label">ACS data (SRP)</text>
       <text x="688" y="280" class="depl-flow-sub">witness &middot; active poll</text>
 
-      <!-- ==== Zone — bounded region containing pools of data ==== -->
+      <!-- ==== Zone - bounded region containing pools of data ==== -->
       <rect x="438" y="286" width="322" height="170" rx="3"
         fill="var(--bg)" stroke="var(--rule-soft)" stroke-width="1.2" stroke-dasharray="4,3" />
       <text x="448" y="302" class="depl-band-label">ZONE &middot; OPERATOR-DEFINED</text>
@@ -177,7 +177,7 @@
 
   </svg>
   <figcaption class="diagram-caption mono">
-    The Fractal &mdash; a secure edge gateway at the head of every zone. Inside the zone are pools of data fed by the gateway's witness (passive) and active poll; devices contributing can be any security level. The gateway publishes information securely outbound through a conduit (with a hardware data diode in the SL4 ideal realization) to whatever the zone's consumers are. The gateway is identical at every zone; the operator defines what counts as a zone.
+    The Fractal - a secure edge gateway at the head of every zone. Inside the zone are pools of data fed by the gateway's witness (passive) and active poll; devices contributing can be any security level. The gateway publishes information securely outbound through a conduit (with a hardware data diode in the SL4 ideal realization) to whatever the zone's consumers are. The gateway is identical at every zone; the operator defines what counts as a zone.
   </figcaption>
 </figure>
 

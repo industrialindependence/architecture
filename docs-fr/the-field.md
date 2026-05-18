@@ -2,33 +2,33 @@
 
 L'architecture du README est declarative. Elle dit ce qu'est la boite, ce qu'elle fait et ce qu'elle refuse. Elle ne dit pas a quoi elle sert, au sens des pieces dans lesquelles elle entre et des problemes qu'elle fait cesser d'etre des problemes.
 
-Ce document, si. Le Terrain est l'endroit ou les operations travaillent — des types de lieux, de personnes et de defaillances bien particuliers. C'est le sol vecu qui donne sa forme a l'architecture. L'architecture n'est pas en colere contre tout cela. L'architecture est ce qui rend une grande partie de tout cela inutile.
+Ce document, si. Le Terrain est l'endroit ou les operations travaillent - des types de lieux, de personnes et de defaillances bien particuliers. C'est le sol vecu qui donne sa forme a l'architecture. L'architecture n'est pas en colere contre tout cela. L'architecture est ce qui rend une grande partie de tout cela inutile.
 
 Aucune des scenes ci-dessous n'est hypothetique. Les noms et details identifiants ont ete retires ; les motifs sont conserves. Apres plus de vingt ans a travailler dans ces environnements, les motifs se repetent.
 
 ## Sommaire
 
-- [Partie I — Scenes](#partie-i--scenes)
+- [Partie I - Scenes](#partie-i--scenes)
   - [La cabane dans le champ de mais](#la-cabane-dans-le-champ-de-mais)
   - [Le tiroir verrouille](#le-tiroir-verrouille)
   - [Les deux reseaux](#les-deux-reseaux)
   - [Lusine midstream](#lusine-midstream)
   - [Deux heures du matin](#deux-heures-du-matin)
   - [Le spanning tree](#le-spanning-tree)
-- [Partie II — Les personnes](#partie-ii--les-personnes)
+- [Partie II - Les personnes](#partie-ii--les-personnes)
   - [Les electriciens dusine](#les-electriciens-dusine)
   - [La technicienne de montagne](#la-technicienne-de-montagne)
   - [Lingenieur senior systemes de controle](#lingenieur-senior-systemes-de-controle)
-- [Partie III — La realite organisationnelle](#partie-iii--la-realite-organisationnelle)
+- [Partie III - La realite organisationnelle](#partie-iii--la-realite-organisationnelle)
   - [Linfrastructure invisible](#linfrastructure-invisible)
   - [Le centre de cout et le centre de profit](#le-centre-de-cout-et-le-centre-de-profit)
   - [Le revenu recurrent de lintegrateur](#le-revenu-recurrent-de-lintegrateur)
   - [Aucun siege a la table](#aucun-siege-a-la-table)
-- [Partie IV — Ce a quoi larchitecture repond](#partie-iv--ce-a-quoi-larchitecture-repond)
+- [Partie IV - Ce a quoi larchitecture repond](#partie-iv--ce-a-quoi-larchitecture-repond)
 
 ---
 
-## Partie I — Scenes
+## Partie I - Scenes
 
 ### La cabane dans le champ de mais
 
@@ -44,7 +44,7 @@ Dans une usine, un tiroir ferme a clef dans l'atelier de maintenance contenait p
 
 L'IT le savait. Des tickets existaient. Ils ne se fermaient pas.
 
-> Ce a quoi l'architecture repond : la boite fait tourner les services d'infrastructure de la zone — DHCP, DNS, NTP, partages de fichiers, PKI optionnelle en cellule — et l'operateur la possede. Le modele de configuration est un artefact signe, pas une poussee de politique distante, si bien que l'operateur peut installer ce dont il a besoin pour faire tourner l'usine. Les portables clandestins existent parce que l'infrastructure officielle refuse de faire ce dont les operations ont besoin. La reponse de l'architecture est que l'infrastructure officielle fasse enfin ce qu'il faut.
+> Ce a quoi l'architecture repond : la boite fait tourner les services d'infrastructure de la zone - DHCP, DNS, NTP, partages de fichiers, PKI optionnelle en cellule - et l'operateur la possede. Le modele de configuration est un artefact signe, pas une poussee de politique distante, si bien que l'operateur peut installer ce dont il a besoin pour faire tourner l'usine. Les portables clandestins existent parce que l'infrastructure officielle refuse de faire ce dont les operations ont besoin. La reponse de l'architecture est que l'infrastructure officielle fasse enfin ce qu'il faut.
 
 ### Les deux reseaux
 
@@ -63,7 +63,7 @@ Les operateurs ne faisaient rien de mal. Ils faisaient la seule chose qui leur r
 
 Dans une usine midstream, l'ordinateur principal de conduite etait multi-rattache : une interface sur le reseau de controle, une autre sur un reseau avec internet permanent. Un outil gratuit de support a distance, du genre regulierement abuse par des attaquants, tournait en permanence. Le superviseur l'avait configure pour surveiller l'usine depuis sa tablette a la maison.
 
-La configuration n'etait pas malveillante. Le superviseur etait responsable de la disponibilite. Il avait un outil qui lui permettait de voir l'installation quand il n'etait pas sur site, et il l'utilisait. Que cet outil soit un utilitaire de telemaintenance grand public avec un long historique d'abus n'etait pas son probleme principal — son probleme etait de savoir ce qui se passait quand son telephone sonnait a trois heures du matin.
+La configuration n'etait pas malveillante. Le superviseur etait responsable de la disponibilite. Il avait un outil qui lui permettait de voir l'installation quand il n'etait pas sur site, et il l'utilisait. Que cet outil soit un utilitaire de telemaintenance grand public avec un long historique d'abus n'etait pas son probleme principal - son probleme etait de savoir ce qui se passait quand son telephone sonnait a trois heures du matin.
 
 > Ce a quoi l'architecture repond : la boite comprend un role d'acces distant, avec un agent tunnel sortant qui compose en mTLS vers un broker possede par l'operateur. Il n'y a pas d'ecouteur entrant sur la NIC IT. Le superviseur garde sa capacite tablette-a-la-maison, et l'architecture authentifie la session, identifie le principal, audite l'acces et contraint ce qui peut etre fait. Le superviseur n'a plus besoin d'un utilitaire grand public parce que le chemin legitime fonctionne enfin.
 
@@ -73,7 +73,7 @@ La configuration n'etait pas malveillante. Le superviseur etait responsable de l
   <img src="/field/field-plant-interior.jpg" alt="Interieur d'usine avec escaliers et gaines" loading="lazy" />
 </figure>
 
-La ligne tombe a deux heures du matin. Le technicien de nuit commence par faire des pings parce que c'est ce qu'il sait faire. Il n'atteint pas le switch dans le navigateur — HTTPS uniquement, port non standard, IP mal configuree, ou autre. Il appelle l'ingenieur senior systemes de controle, qui lui decrit la topologie par telephone. Si le probleme est du ressort de ce senior et qu'il peut agir depuis son canape, la ligne repart parfois en trente minutes.
+La ligne tombe a deux heures du matin. Le technicien de nuit commence par faire des pings parce que c'est ce qu'il sait faire. Il n'atteint pas le switch dans le navigateur - HTTPS uniquement, port non standard, IP mal configuree, ou autre. Il appelle l'ingenieur senior systemes de controle, qui lui decrit la topologie par telephone. Si le probleme est du ressort de ce senior et qu'il peut agir depuis son canape, la ligne repart parfois en trente minutes.
 
 Souvent, non. Le probleme est cote IT, ou touche un equipement gere par l'IT, ou exige un changement que l'IT doit approuver. Le senior appelle alors le help desk. Le help desk a un SLA. Le SLA dit qu'une personne repondra dans une fenetre donnee. Il ne dit pas que cette personne sera celle qui peut corriger. Le vendredi soir, l'horloge peut tourner tout le week-end sans violer la politique. A 10 000 dollars l'heure de perte de production, le reseau peut couter 600 000 dollars avant que l'ingenieur reseau se connecte le lundi.
 
@@ -89,7 +89,7 @@ L'integrateur qui avait construit le reseau etait parti. Il n'avait pas document
 
 ---
 
-## Partie II — Les personnes
+## Partie II - Les personnes
 
 ### Les electriciens dusine
 
@@ -100,7 +100,7 @@ L'integrateur qui avait construit le reseau etait parti. Il n'avait pas document
   <figcaption>L'operation, les personnes, l'etabli. Les electriciens d'usine demontaient les equipements pour les reparer plutot que les remplacer.</figcaption>
 </figure>
 
-L'un des premiers sites vraiment industriels sur lesquels j'ai travaille etait une exploitation de charbon metallurgique en terrain montagneux, avec usine de traitement, concasseur, briseur et chargement ferroviaire. Trois electriciens d'usine. Les meilleurs parmi les meilleurs. Leur capacite a depanner n'importe quoi — mecanique, electrique, reseau, peu importe — venait de gens qui trouvaient plus interessant de corriger eux-memes le probleme que d'attendre quelqu'un d'autre.
+L'un des premiers sites vraiment industriels sur lesquels j'ai travaille etait une exploitation de charbon metallurgique en terrain montagneux, avec usine de traitement, concasseur, briseur et chargement ferroviaire. Trois electriciens d'usine. Les meilleurs parmi les meilleurs. Leur capacite a depanner n'importe quoi - mecanique, electrique, reseau, peu importe - venait de gens qui trouvaient plus interessant de corriger eux-memes le probleme que d'attendre quelqu'un d'autre.
 
 Il m'a fallu gagner leur confiance avant qu'ils me laissent aider. Une fois cela fait, nous parlions tous les jours. Le site tournait parce qu'ils le faisaient tourner. La technologie, y compris la plus recente pour l'epoque, fonctionnait parce que les personnes les plus proches d'elle etaient aussi celles qui savaient la reparer.
 
@@ -134,7 +134,7 @@ Il n'est pas un heros par choix. Il l'est par accumulation. Vingt ans a etre cel
 
 ---
 
-## Partie III — La realite organisationnelle
+## Partie III - La realite organisationnelle
 
 ### Linfrastructure invisible
 
@@ -169,21 +169,21 @@ Ce n'est pas toujours une combine deliberee. Les integrateurs travaillent avec d
 
 Dans la plupart des grandes organisations, il y a un CIO, un CTO et un CISO. Tous trois representent les interets IT au niveau executif. Il n'y a generalement pas de chief operations technology officer equivalent.
 
-Quand le comite executif discute d'infrastructure, le CIO parle au nom de la technologie. Le responsable d'usine, le directeur operations, l'ingenieur controle senior — ils ne sont pas dans la salle. Les decisions sur les reseaux, la securite, les fournisseurs ou les budgets descendent ensuite jusqu'au plancher comme des faits accomplis. Les operations decouvrent ces decisions lorsque leurs consequences arrivent.
+Quand le comite executif discute d'infrastructure, le CIO parle au nom de la technologie. Le responsable d'usine, le directeur operations, l'ingenieur controle senior - ils ne sont pas dans la salle. Les decisions sur les reseaux, la securite, les fournisseurs ou les budgets descendent ensuite jusqu'au plancher comme des faits accomplis. Les operations decouvrent ces decisions lorsque leurs consequences arrivent.
 
 > Ce a quoi l'architecture repond : l'architecture existe *comme* position des operations. C'est un artefact documente, citable, public, qu'elles peuvent apporter en comite executif et dire : voici ce dont nous avons besoin, voici comment cela fonctionne, voici ce que cela coute, voici ce que cela rapporte. Ce n'est pas un pitch editeur. Ce n'est pas un livrable de consultant. C'est une specification CC BY-SA 4.0 que les operations peuvent utiliser comme terrain d'argument.
 
 ---
 
-## Partie IV — Ce a quoi larchitecture repond
+## Partie IV - Ce a quoi larchitecture repond
 
 La boite est faconnee par Le Terrain. Les scenes ne sont pas de la colere. Ce ne sont pas des griefs. Ce sont des conditions. Les operations industrielles existent dans ces conditions, chaque jour, dans chaque usine, dans chaque industrie. Ces conditions ne disparaitront pas. L'architecture est ce qui fait qu'elles cessent largement de compter.
 
 **La connectivite est un luxe.** La cabane est dans un champ de mais. La mine etait dans les montagnes. Beaucoup d'operations sont cellulaires, satellitaires ou totalement deconnectees pendant des heures ou des jours. L'unite fonctionne seule, indefiniment. Si la connectivite existe, elle se compose vers le haut. Si elle tombe, rien ne change sur site.
 
-**Les operations construisent l'infrastructure dont elles ont besoin.** Toujours. Le tiroir verrouille, le routeur grand public, l'outil de support a distance permanent, la cabane du champ — ce ne sont pas des echecs de conformite. Ce sont les operations qui font ce qu'il reste a faire. La reponse de l'architecture est de leur donner une infrastructure officielle qui fait deja ce qu'il faut.
+**Les operations construisent l'infrastructure dont elles ont besoin.** Toujours. Le tiroir verrouille, le routeur grand public, l'outil de support a distance permanent, la cabane du champ - ce ne sont pas des echecs de conformite. Ce sont les operations qui font ce qu'il reste a faire. La reponse de l'architecture est de leur donner une infrastructure officielle qui fait deja ce qu'il faut.
 
-**L'operateur possede le substrat.** C'est la revendication porteuse. La boite, les donnees, l'historien, l'audit, la configuration, les contrats — tout cela vit sur le materiel de l'operateur, en sa possession, sous son controle. Les editeurs sont des consommateurs, pas des gatekeepers. Les integrateurs sont des constructeurs, pas des proprietaires-bailleurs. L'IT est un pair a une interface connue, pas une autorite superieure. Le substrat appartient a ceux qui travaillent dessus.
+**L'operateur possede le substrat.** C'est la revendication porteuse. La boite, les donnees, l'historien, l'audit, la configuration, les contrats - tout cela vit sur le materiel de l'operateur, en sa possession, sous son controle. Les editeurs sont des consommateurs, pas des gatekeepers. Les integrateurs sont des constructeurs, pas des proprietaires-bailleurs. L'IT est un pair a une interface connue, pas une autorite superieure. Le substrat appartient a ceux qui travaillent dessus.
 
 **L'ingenieur senior n'est pas un point unique de defaillance.** Configuration declarative. Catalogues decouvrables. La figure du heros est remplacee par le motif documente. Quand l'ingenieur senior part a la retraite, l'usine continue de fonctionner.
 

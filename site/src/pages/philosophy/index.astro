@@ -13,29 +13,29 @@ const principles = locale === 'fr'
       {
         n: '00',
         title: "La physique l'emporte sur l'information",
-        body: "Les systemes de controle agissent sur la physique. L'information est l'enregistrement qui suit. Traiter l'ACS comme de l'information est un mauvais point de depart — chaque decision architecturale en aval herite de cette erreur."
+        body: "Les systemes de controle agissent sur la physique. L'information est l'enregistrement qui suit. Traiter l'ACS comme de l'information est un mauvais point de depart - chaque decision architecturale en aval herite de cette erreur."
       },
       {
         n: '01',
         title: 'Securite. Fiabilite. Performance. Dans cet ordre.',
-        body: "SRP gouverne le substrat ACS. La securite n'est pas un addendum ; c'est ce que le systeme physique protege. La fiabilite et la performance sont des proprietes de ce systeme. Les modeles centres sur l'information — CIA, AIC, SAIC — sont les mauvais outils pour ce qui agit sur la physique. D'apres Robert Radvanovsky, Infracritical.",
+        body: "SRP gouverne le substrat ACS. La securite n'est pas un addendum ; c'est ce que le systeme physique protege. La fiabilite et la performance sont des proprietes de ce systeme. Les modeles centres sur l'information - CIA, AIC, SAIC - sont les mauvais outils pour ce qui agit sur la physique. D'apres Robert Radvanovsky, Infracritical.",
         cite: { label: 'srpmodel.infracritical.com', href: 'https://srpmodel.infracritical.com/srpmodel.php' }
       },
       {
         n: '02',
         title: 'La realite operationnelle dicte la conception',
-        body: "Les environnements industriels ne sont pas des datacenters. Il n'existe pas de reseau OT unique — un site industriel possede de nombreux reseaux de controle, chacun avec sa propre entite de gestion. Il n'existe pas de directeur executif unique de l'OT. Les 4R de PERA+ — Response, Resolution, Reliability, Resilience — determinent ou les applications doivent vivre. Les conceptions reseau, le materiel, le logiciel, les historiens et les services IP de zone (DHCP, DNS, NTP, fichiers) doivent etre decentralises pour correspondre au substrat qu'ils servent. D'apres Gary Workman, Two-Box Method (RTA, 2022).",
+        body: "Les environnements industriels ne sont pas des datacenters. Il n'existe pas de reseau OT unique - un site industriel possede de nombreux reseaux de controle, chacun avec sa propre entite de gestion. Il n'existe pas de directeur executif unique de l'OT. Les 4R de PERA+ - Response, Resolution, Reliability, Resilience - determinent ou les applications doivent vivre. Les conceptions reseau, le materiel, le logiciel, les historiens et les services IP de zone (DHCP, DNS, NTP, fichiers) doivent etre decentralises pour correspondre au substrat qu'ils servent. D'apres Gary Workman, Two-Box Method (RTA, 2022).",
         cite: { label: 'pera.net', href: 'https://www.pera.net' }
       },
       {
         n: '03',
         title: "La complexite est l'ennemie de la fiabilite",
-        body: "Un OT robuste est simple, previsible, deterministe. Chaque dependance, fonctionnalite ou chemin de communication supplementaire introduit de la fragilite et augmente la surface d'attaque. L'objectif est de concevoir des systemes faciles a comprendre, a maintenir et a securiser — justement parce qu'il y a moins a comprendre, maintenir et securiser."
+        body: "Un OT robuste est simple, previsible, deterministe. Chaque dependance, fonctionnalite ou chemin de communication supplementaire introduit de la fragilite et augmente la surface d'attaque. L'objectif est de concevoir des systemes faciles a comprendre, a maintenir et a securiser - justement parce qu'il y a moins a comprendre, maintenir et securiser."
       },
       {
         n: '04',
         title: 'La securite est une propriete architecturale',
-        body: "La posture la plus efficace pour l'OT est une separation deliberée et maitrisee des reseaux non fiables, en particulier de l'environnement IT de l'entreprise. PERA+ formule cela par « secure interfaces, not integration ». IIA rejette entierement le cadre de la « convergence IT/OT » — il n'y a pas de fusion a concevoir, seulement une interface a faire respecter. La rupture culturelle s'est aggravee lorsque les reseaux ont ete relies par des infrastructures partagees au lieu de passer par des passerelles ; une passerelle est un terminal avec un seul proprietaire. La vraie securite est integree, jamais boulonnee apres coup, et ne s'achete pas."
+        body: "La posture la plus efficace pour l'OT est une separation deliberée et maitrisee des reseaux non fiables, en particulier de l'environnement IT de l'entreprise. PERA+ formule cela par « secure interfaces, not integration ». IIA rejette entierement le cadre de la « convergence IT/OT » - il n'y a pas de fusion a concevoir, seulement une interface a faire respecter. La rupture culturelle s'est aggravee lorsque les reseaux ont ete relies par des infrastructures partagees au lieu de passer par des passerelles ; une passerelle est un terminal avec un seul proprietaire. La vraie securite est integree, jamais boulonnee apres coup, et ne s'achete pas."
       },
       {
         n: '05',
@@ -45,36 +45,36 @@ const principles = locale === 'fr'
       {
         n: '06',
         title: 'Donner du pouvoir au praticien',
-        body: "L'actif le plus precieux est la connaissance des praticiens qui conçoivent, implementent et maintiennent ces systemes. Les normes doivent etre adaptables au terrain. L'experience pratique avant les certifications editeur. L'Alliance existe pour rendre accessibles des normes comme IEC 62443 — pour les rendre a ceux qui exploitent reellement l'usine."
+        body: "L'actif le plus precieux est la connaissance des praticiens qui conçoivent, implementent et maintiennent ces systemes. Les normes doivent etre adaptables au terrain. L'experience pratique avant les certifications editeur. L'Alliance existe pour rendre accessibles des normes comme IEC 62443 - pour les rendre a ceux qui exploitent reellement l'usine."
       }
     ]
   : [
       {
         n: '00',
         title: 'Physics overrides information',
-        body: 'Control systems act on physics. Information is the record that follows. Treating ACS as information is the wrong starting point — every architectural decision downstream inherits the mistake.'
+        body: 'Control systems act on physics. Information is the record that follows. Treating ACS as information is the wrong starting point - every architectural decision downstream inherits the mistake.'
       },
       {
         n: '01',
         title: 'Safety. Reliability. Performance. In that order.',
-        body: 'SRP governs the ACS substrate. Safety is not an addendum; it is what the physical system protects. Reliability and Performance are properties of that system. Information-centric models — CIA, AIC, SAIC — are the wrong tools for what acts on physics. After Robert Radvanovsky, Infracritical.',
+        body: 'SRP governs the ACS substrate. Safety is not an addendum; it is what the physical system protects. Reliability and Performance are properties of that system. Information-centric models - CIA, AIC, SAIC - are the wrong tools for what acts on physics. After Robert Radvanovsky, Infracritical.',
         cite: { label: 'srpmodel.infracritical.com', href: 'https://srpmodel.infracritical.com/srpmodel.php' }
       },
       {
         n: '02',
         title: 'Operational reality dictates design',
-        body: 'Industrial environments are not data centers. There is no singular OT network — a manufacturing site has many control networks (stamping, body, paint, general assembly; the equivalents in food, water, oil and gas), each with its own management entity. There is no executive director of OT. PERA+\'s 4Rs — Response, Resolution, Reliability, Resilience — determine where applications belong. Network designs, hardware, software, historians, and zone IP services (DHCP, DNS, NTP, file) must be decentralized to match the substrate they serve. After Gary Workman, Two-Box Method (RTA, 2022).',
+        body: 'Industrial environments are not data centers. There is no singular OT network - a manufacturing site has many control networks (stamping, body, paint, general assembly; the equivalents in food, water, oil and gas), each with its own management entity. There is no executive director of OT. PERA+\'s 4Rs - Response, Resolution, Reliability, Resilience - determine where applications belong. Network designs, hardware, software, historians, and zone IP services (DHCP, DNS, NTP, file) must be decentralized to match the substrate they serve. After Gary Workman, Two-Box Method (RTA, 2022).',
         cite: { label: 'pera.net', href: 'https://www.pera.net' }
       },
       {
         n: '03',
         title: 'Complexity is the enemy of Reliability',
-        body: 'Robust OT is simple, predictable, deterministic. Every additional dependency, feature, or communication path introduces fragility and increases attack surface. The goal is systems that are easy to understand, easy to maintain, and easy to secure — by virtue of having less to understand, maintain, and secure.'
+        body: 'Robust OT is simple, predictable, deterministic. Every additional dependency, feature, or communication path introduces fragility and increases attack surface. The goal is systems that are easy to understand, easy to maintain, and easy to secure - by virtue of having less to understand, maintain, and secure.'
       },
       {
         n: '04',
         title: 'Security is an architectural property',
-        body: 'The most effective posture for OT is deliberate, managed separation from untrusted networks, especially the enterprise IT environment. PERA+ articulates this as "secure interfaces, not integration." IIA rejects "IT/OT convergence" as a frame entirely — there is no merger to design, only an interface to enforce. Cultural rupture escalated when networks were linked through shared infrastructure (switches, L3 routers spanning the boundary) instead of through gateways; a gateway is an end device with one owner. True security is built in, not bolted on, and never bought.'
+        body: 'The most effective posture for OT is deliberate, managed separation from untrusted networks, especially the enterprise IT environment. PERA+ articulates this as "secure interfaces, not integration." IIA rejects "IT/OT convergence" as a frame entirely - there is no merger to design, only an interface to enforce. Cultural rupture escalated when networks were linked through shared infrastructure (switches, L3 routers spanning the boundary) instead of through gateways; a gateway is an end device with one owner. True security is built in, not bolted on, and never bought.'
       },
       {
         n: '05',
@@ -84,7 +84,7 @@ const principles = locale === 'fr'
       {
         n: '06',
         title: 'Empower the practitioner',
-        body: 'The most valuable asset is the knowledge of practitioners who design, implement, and maintain these systems. Standards must be field-ready. Practical experience over vendor certifications. The Alliance exists to make standards like IEC 62443 accessible — to restore them to the people who actually operate the plant.'
+        body: 'The most valuable asset is the knowledge of practitioners who design, implement, and maintain these systems. Standards must be field-ready. Practical experience over vendor certifications. The Alliance exists to make standards like IEC 62443 accessible - to restore them to the people who actually operate the plant.'
       }
     ];
 ---
@@ -118,8 +118,8 @@ const principles = locale === 'fr'
         <h2>{locale === 'fr' ? 'L’erreur de la derniere decennie.' : 'The mistake of the last decade.'}</h2>
         <p>
           {locale === 'fr'
-            ? <Fragment>Les modeles du domaine de l'information — <strong>CIA</strong> et ses derives — ont ete importes de l'IT d'entreprise et appliques a des systemes qui operent sur des processus physiques. L'architecture est devenue fragile. La securite est devenue performative. Le modele pousse par les editeurs promettait une integration sans couture ; ce qu'il a livre, c'est une complexite extractive et une surface d'attaque inutile.</Fragment>
-            : <Fragment>Information-domain models — <strong>CIA</strong> and its derivatives — were imported from enterprise IT and applied to systems that operate on physical processes. Architecture got fragile. Security got performative. The vendor-driven model promised seamless integration; what it delivered was extractive complexity and unnecessary attack surface.</Fragment>}
+            ? <Fragment>Les modeles du domaine de l'information - <strong>CIA</strong> et ses derives - ont ete importes de l'IT d'entreprise et appliques a des systemes qui operent sur des processus physiques. L'architecture est devenue fragile. La securite est devenue performative. Le modele pousse par les editeurs promettait une integration sans couture ; ce qu'il a livre, c'est une complexite extractive et une surface d'attaque inutile.</Fragment>
+            : <Fragment>Information-domain models - <strong>CIA</strong> and its derivatives - were imported from enterprise IT and applied to systems that operate on physical processes. Architecture got fragile. Security got performative. The vendor-driven model promised seamless integration; what it delivered was extractive complexity and unnecessary attack surface.</Fragment>}
         </p>
         <p>
           {locale === 'fr' ? "La correction est en amont de l'architecture : posez correctement le substrat, et le reste suit." : 'The correction is upstream of the architecture: get the substrate right, and the rest follows.'}
@@ -142,7 +142,7 @@ const principles = locale === 'fr'
             <dt>CIA</dt>
             <dd>
               <strong>{locale === 'fr' ? 'Confidentialite, Integrite, Disponibilite.' : 'Confidentiality, Integrity, Availability.'}</strong>
-              {locale === 'fr' ? ' Gouverne l’information — des enregistrements, historiquement situes par nature.' : ' Governs information — records, historical by nature.'}
+              {locale === 'fr' ? ' Gouverne l’information - des enregistrements, historiquement situes par nature.' : ' Governs information - records, historical by nature.'}
             </dd>
           </div>
           <div class="vocab-row">
@@ -178,13 +178,13 @@ const principles = locale === 'fr'
         <div class="saic-prose">
           <p>
             {locale === 'fr'
-              ? <Fragment>SAIC prend la triade du domaine de l'information — Disponibilite, Integrite, Confidentialite — et y prepend la securite. La structure trahit le geste : la securite est ajoutee, pas fondatrice. Le modele est juste pour des systemes IT qui touchent une <em>information</em> critique pour la securite — historiens, magasins d'audit, tableaux de bord destines au regulateur. Pour eux, SAIC est le bon cadre.</Fragment>
-              : <Fragment>SAIC takes the information-domain triad — Availability, Integrity, Confidentiality — and prepends Safety. The structure betrays the move: Safety is bolted on, not foundational. The model is right for IT systems that touch safety-critical <em>information</em> — historians, audit stores, regulator-facing dashboards. For those, SAIC is the correct frame.</Fragment>}
+              ? <Fragment>SAIC prend la triade du domaine de l'information - Disponibilite, Integrite, Confidentialite - et y prepend la securite. La structure trahit le geste : la securite est ajoutee, pas fondatrice. Le modele est juste pour des systemes IT qui touchent une <em>information</em> critique pour la securite - historiens, magasins d'audit, tableaux de bord destines au regulateur. Pour eux, SAIC est le bon cadre.</Fragment>
+              : <Fragment>SAIC takes the information-domain triad - Availability, Integrity, Confidentiality - and prepends Safety. The structure betrays the move: Safety is bolted on, not foundational. The model is right for IT systems that touch safety-critical <em>information</em> - historians, audit stores, regulator-facing dashboards. For those, SAIC is the correct frame.</Fragment>}
           </p>
           <p>
             {locale === 'fr'
-              ? <Fragment>Etendu vers le bas pour gouverner l'ACS lui-meme, il echoue. L'ACS n'opere pas sur des enregistrements. Il opere sur l'action et la physique — une vanne qui bouge, un verrouillage qui s'enclenche, une boucle qui se ferme dans son temps requis. <strong>La fiabilite et la performance sont des proprietes du systeme physique. La securite est ce que le systeme physique protege.</strong> C'est un substrat different de l'information. Il lui faut un modele different.</Fragment>
-              : <Fragment>Extended downward to govern the ACS itself, it fails. The ACS does not operate on records. It operates on action and physics — a valve that moves, an interlock that latches, a loop that closes within its required time. <strong>Reliability and Performance are properties of the physical system. Safety is what the physical system protects.</strong> That is a different substrate than information. It needs a different model.</Fragment>}
+              ? <Fragment>Etendu vers le bas pour gouverner l'ACS lui-meme, il echoue. L'ACS n'opere pas sur des enregistrements. Il opere sur l'action et la physique - une vanne qui bouge, un verrouillage qui s'enclenche, une boucle qui se ferme dans son temps requis. <strong>La fiabilite et la performance sont des proprietes du systeme physique. La securite est ce que le systeme physique protege.</strong> C'est un substrat different de l'information. Il lui faut un modele different.</Fragment>
+              : <Fragment>Extended downward to govern the ACS itself, it fails. The ACS does not operate on records. It operates on action and physics - a valve that moves, an interlock that latches, a loop that closes within its required time. <strong>Reliability and Performance are properties of the physical system. Safety is what the physical system protects.</strong> That is a different substrate than information. It needs a different model.</Fragment>}
           </p>
         </div>
         <div class="saic-card">
@@ -192,7 +192,7 @@ const principles = locale === 'fr'
             {locale === 'fr' ? '« La securite vient en premier. Toujours. »' : '“Safety comes first. Always.”'}
           </p>
           <p class="saic-attrib mono">
-            &mdash; {locale === 'fr' ? 'La triade SRP,' : 'The SRP Triad,'}<br />Robert Radvanovsky, Infracritical
+            - {locale === 'fr' ? 'La triade SRP,' : 'The SRP Triad,'}<br />Robert Radvanovsky, Infracritical
           </p>
           <a href="https://srpmodel.infracritical.com/srpmodel.php" rel="noopener" class="saic-link mono">
             {locale === 'fr' ? 'Lire la source' : 'Read the source'} &rarr;
@@ -243,8 +243,8 @@ const principles = locale === 'fr'
       </p>
       <p class="thesis-line dim">
         {locale === 'fr'
-          ? <Fragment>L'installation qui depend d'une connectivite externe pour la visibilite de base du procede, l'acces a l'historien, la surveillance de securite ou l'infrastructure IP du reseau de cellule lui-meme (DHCP, DNS, NTP, fichiers) n'est pas souveraine. L'historien est le cas porteur : un historien centralise — possede par un editeur, hors site, joignable seulement quand le WAN tient — est un echec de souverainete par conception. IIA place un <strong>historien decentralise</strong> dans chaque zone : les donnees de l'operateur, le substrat de l'operateur, l'audit de l'operateur, completement operants sans cloud. IIA fournit le motif architectural qui fait de la souverainete l'etat par defaut plutot que l'aspiration.</Fragment>
-          : <Fragment>The facility that depends on external connectivity for basic process visibility, historian access, security monitoring, or the IP infrastructure of the cell network itself (DHCP, DNS, NTP, file) is not sovereign. The historian is the load-bearing case: a centralized historian — vendor-owned, off-site, reachable only when the WAN is up — is a sovereignty failure by design. IIA places a <strong>decentralized historian</strong> at every zone: the operator's data, the operator's substrate, the operator's audit, working complete without the cloud. IIA provides the architectural pattern that makes sovereignty the default rather than the aspiration.</Fragment>}
+          ? <Fragment>L'installation qui depend d'une connectivite externe pour la visibilite de base du procede, l'acces a l'historien, la surveillance de securite ou l'infrastructure IP du reseau de cellule lui-meme (DHCP, DNS, NTP, fichiers) n'est pas souveraine. L'historien est le cas porteur : un historien centralise - possede par un editeur, hors site, joignable seulement quand le WAN tient - est un echec de souverainete par conception. IIA place un <strong>historien decentralise</strong> dans chaque zone : les donnees de l'operateur, le substrat de l'operateur, l'audit de l'operateur, completement operants sans cloud. IIA fournit le motif architectural qui fait de la souverainete l'etat par defaut plutot que l'aspiration.</Fragment>
+          : <Fragment>The facility that depends on external connectivity for basic process visibility, historian access, security monitoring, or the IP infrastructure of the cell network itself (DHCP, DNS, NTP, file) is not sovereign. The historian is the load-bearing case: a centralized historian - vendor-owned, off-site, reachable only when the WAN is up - is a sovereignty failure by design. IIA places a <strong>decentralized historian</strong> at every zone: the operator's data, the operator's substrate, the operator's audit, working complete without the cloud. IIA provides the architectural pattern that makes sovereignty the default rather than the aspiration.</Fragment>}
       </p>
       <HistorianDiagram />
       <a href={withLocale('/architecture/', locale)} class="thesis-cta mono">
@@ -261,38 +261,38 @@ const principles = locale === 'fr'
       </p>
       <ul class="lineage-list">
         <li>
-          <strong>SRP Triad</strong> &mdash; Robert Radvanovsky / Infracritical.
+          <strong>SRP Triad</strong> - Robert Radvanovsky / Infracritical.
           {locale === 'fr' ? ' Le fondement du modele de substrat ACS.' : ' The foundation of the ACS substrate model.'}
           <a href="https://srpmodel.infracritical.com/srpmodel.php" rel="noopener">srpmodel.infracritical.com</a>
         </li>
         <li>
-          <strong>PERA+</strong> &mdash; Gary Rathwell / Entercon.
+          <strong>PERA+</strong> - Gary Rathwell / Entercon.
           {locale === 'fr' ? ' L’architecture de reference pour l’organisation de l’entreprise industrielle ; source des 4R, des conventions de diagrammes CIAD/CIND et de la position « secure interfaces, not integration ».' : ' The reference architecture for industrial enterprise organization; source of the 4Rs, the CIAD/CIND diagram conventions, and the "secure interfaces, not integration" stance.'}
           <a href="https://www.pera.net" rel="noopener">pera.net</a>
         </li>
         <li>
-          <strong>{locale === 'fr' ? 'La methode deux-boites' : 'The Two-Box Method'}</strong> &mdash; John Rinaldi &amp; Gary Workman.
+          <strong>{locale === 'fr' ? 'La methode deux-boites' : 'The Two-Box Method'}</strong> - John Rinaldi &amp; Gary Workman.
           {locale === 'fr' ? ' L’articulation canonique de la segmentation ACS/IT imposee physiquement.' : ' The canonical articulation of physically enforced ACS/IT segmentation.'}
           <em>{locale === 'fr' ? "The Everyman's Guide to EtherNet/IP Network Design" : 'The Everyman\'s Guide to EtherNet/IP Network Design'}</em> (RTA, 2022).
         </li>
         <li>
-          <strong>IEC&nbsp;62443</strong> &mdash; {locale === 'fr' ? 'cybersecurite pour l’automatisation industrielle.' : 'cybersecurity for industrial automation.'}
+          <strong>IEC&nbsp;62443</strong> - {locale === 'fr' ? 'cybersecurite pour l’automatisation industrielle.' : 'cybersecurity for industrial automation.'}
           {locale === 'fr' ? ' SL1–SL4, FR1–FR7. L’Architecture vise un plancher SL3 / SL4 via diode.' : ' SL1–SL4, FR1–FR7. The Architecture targets SL3 floor / SL4 via diode.'}
         </li>
         <li>
-          <strong>ISA-95</strong> &mdash; {locale === 'fr' ? 'la charpente canonique de modelisation des donnees IT↔ACS.' : 'the canonical IT↔ACS data-modeling backbone.'}
+          <strong>ISA-95</strong> - {locale === 'fr' ? 'la charpente canonique de modelisation des donnees IT↔ACS.' : 'the canonical IT↔ACS data-modeling backbone.'}
         </li>
       </ul>
 
       <p class="lineage-impl-eyebrow mono">&sect; {locale === 'fr' ? 'Implementations de reference' : 'Reference implementations'}</p>
       <ul class="lineage-list lineage-impl">
         <li>
-          <strong>MarlinSpike</strong> &mdash; {locale === 'fr' ? 'le successeur maintenu et multi-utilisateur du GrassMarlin de la NSA.' : 'the maintained, multi-user successor to NSA’s GrassMarlin.'}
+          <strong>MarlinSpike</strong> - {locale === 'fr' ? 'le successeur maintenu et multi-utilisateur du GrassMarlin de la NSA.' : 'the maintained, multi-user successor to NSA’s GrassMarlin.'}
           {locale === 'fr' ? ' Atelier open source de topologie OT/ICS passive. Les captures entrent, zero paquet ne sort.' : ' Open-source passive OT/ICS topology workbench. Captures in, zero packets out.'}
           <a href="https://www.grassmarlin.com" rel="noopener">grassmarlin.com &rarr;</a>
         </li>
         <li>
-          <strong>Conversational Factory</strong> &mdash; {locale === 'fr' ? 'plateforme OT en lecture seule.' : 'read-only OT platform.'}
+          <strong>Conversational Factory</strong> - {locale === 'fr' ? 'plateforme OT en lecture seule.' : 'read-only OT platform.'}
           {locale === 'fr' ? ' DPI temoin sur le fil sur 34 protocoles, lac de donnees medallion, surface de requete i3X v1 + MCP pour operateurs et clients IA, chaque reponse liee a une chaine d’audit append-only.' : ' Wire-witness DPI across 34 protocols, medallion data lake, i3X v1 + MCP query surface for operators and AI clients, every answer bound to an append-only audit chain.'}
           <a href="https://www.conversationalfactory.com" rel="noopener">conversationalfactory.com &rarr;</a>
         </li>

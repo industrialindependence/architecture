@@ -1,6 +1,6 @@
 # Our Claim
 
-The Field describes the rooms operations works in. The Problem describes what stands in the way. This document describes what we claim — what operations is owed, what must be owned, what has to be taken back, what has to be formalized, what has to be named.
+The Field describes the rooms operations works in. The Problem describes what stands in the way. This document describes what we claim - what operations is owed, what must be owned, what has to be taken back, what has to be formalized, what has to be named.
 
 These are not requests. They are the working terms for a substrate operations can answer for. The architecture is what makes them deliverable.
 
@@ -34,7 +34,7 @@ Operations is not at war with IT. The point is not opposition. The point is that
 - **Control of the OT network.** OT switches under OT management. Not an extension of the enterprise switch fabric. Not VLANs the control engineer cannot see and cannot reach.
 - **Control of patch windows.** Updates to OT hardware happen on operations' schedule, against operations' intended-state manifest, with operations' approval. Not on IT's quarterly compliance cycle. A thirty-second reboot of a switch is invisible in an office and catastrophic on a conveyor.
 - **Control of vendor remote access.** Every inbound path to the ACS is a contracted conduit through the operator's box, identified, authenticated, audited. No IT-issued credentials terminate inside the ACS.
-- **Control of the OT compute.** The historian, the engineering workstations, the HMIs, the gateway boxes — owned by operations, on operations' hardware, on operations' substrate. Not in an IT data center the operator cannot enter.
+- **Control of the OT compute.** The historian, the engineering workstations, the HMIs, the gateway boxes - owned by operations, on operations' hardware, on operations' substrate. Not in an IT data center the operator cannot enter.
 - **The boundary itself.** The line between IT and OT was drawn by IT in most plants. It is redrawn by the architecture, on terms operations can articulate and defend.
 
 ## SLAs that match production
@@ -79,8 +79,8 @@ Policy can be revised in a meeting. Architecture is harder to revise. Architectu
 The conflation is the source of most of the trouble. Three substrates have been treated as one. Each has a different physics, a different time horizon, a different correct security model.
 
 - **IT** is the information domain. Records. History. Confidentiality, Integrity, Availability. CIA is the right model. Industry knows how to operate here.
-- **OT** is the operations-technology domain. It includes ACS but is broader — supervisory systems, MES, historians for already-information data, BI pipelines, operator workstations, asset management. Much of OT is closer to IT than to ACS, but with different timeliness and reliability requirements. SAIC is sometimes the right model for OT systems that handle safety-critical information.
-- **ACS** (Automation and Control Systems) is the substrate that acts on physics. Valves. Interlocks. Loops. SRP — Safety, Reliability, Performance — is the right model. Information-domain triads are the wrong substrate, not the wrong order. After Robert Radvanovsky, Infracritical.
+- **OT** is the operations-technology domain. It includes ACS but is broader - supervisory systems, MES, historians for already-information data, BI pipelines, operator workstations, asset management. Much of OT is closer to IT than to ACS, but with different timeliness and reliability requirements. SAIC is sometimes the right model for OT systems that handle safety-critical information.
+- **ACS** (Automation and Control Systems) is the substrate that acts on physics. Valves. Interlocks. Loops. SRP - Safety, Reliability, Performance - is the right model. Information-domain triads are the wrong substrate, not the wrong order. After Robert Radvanovsky, Infracritical.
 
 A discipline that treats these three as one discipline gives bad advice in two rooms out of three. Operations holds to the vocabulary, the standards, and the organizational charts that recognize the difference.
 

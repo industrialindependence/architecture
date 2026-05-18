@@ -41,7 +41,7 @@ export function withLocale(pathname: string, locale: Locale): string {
 }
 
 export function detectLocale(request: Request, cookieLocale?: string | null): Locale {
-  // 1. Explicit cookie always wins — the user has chosen.
+  // 1. Explicit cookie always wins - the user has chosen.
   const explicit = normalizeLocale(cookieLocale);
   if (cookieLocale === 'fr' || cookieLocale === 'en') return explicit;
 
@@ -58,7 +58,7 @@ export function detectLocale(request: Request, cookieLocale?: string | null): Lo
     if (firstPref && firstPref !== '*' && firstPref !== 'und') {
       if (firstPref.startsWith('fr')) return 'fr';
       if (firstPref.startsWith('en')) return 'en';
-      // Some other primary language — fall through to geo (e.g., Arabic-speaking
+      // Some other primary language - fall through to geo (e.g., Arabic-speaking
       // Algerian user with ar-DZ; geo will route them to /fr/ since DZ is a
       // Francophone-administered country and French is the lingua franca of the
       // local industrial sector).

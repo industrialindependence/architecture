@@ -20,7 +20,7 @@ const sources = [
     title: 'The Field',
     url: `${SITE}/field/`,
     blurb:
-      'Pillar I. Where operations works. Specific kinds of places, specific kinds of people, specific kinds of failures — the lived ground the architecture is shaped by.',
+      'Pillar I. Where operations works. Specific kinds of places, specific kinds of people, specific kinds of failures - the lived ground the architecture is shaped by.',
     file: join(repoRoot, 'docs/the-field.md')
   },
   {
@@ -73,30 +73,30 @@ async function readMaybe(file) {
   return (await readFile(file, 'utf8')).trim();
 }
 
-// llms.txt — index file
+// llms.txt - index file
 const indexLines = [
   '# Industrial Independence Alliance',
   '',
-  '> Operational sovereignty for industrial infrastructure. The Alliance publishes its position in five pillars: The Field (where operations works), The Problem (what stands in the way), Our Claim (what operations is owed), Our Philosophy (how we think about it), and The Architecture (Industrial Independence Architecture, IIA — the technical spec).',
+  '> Operational sovereignty for industrial infrastructure. The Alliance publishes its position in five pillars: The Field (where operations works), The Problem (what stands in the way), Our Claim (what operations is owed), Our Philosophy (how we think about it), and The Architecture (Industrial Independence Architecture, IIA - the technical spec).',
   '',
   'This file follows the llms.txt convention (https://llmstxt.org). The full concatenated documentation is at <' + SITE + '/llms-full.txt>.',
   '',
-  '## Read — The Pillars',
+  '## Read - The Pillars',
   '',
-  `- [The Field (Pillar I — observation)](${SITE}/field/): Where operations works. The lived ground the architecture is shaped by. Specific kinds of places, specific kinds of people, specific kinds of failures, and the architectural response to each.`,
-  `- [The Problem (Pillar II — observation)](${SITE}/problem/): What stands in the way. The market, IT, and the field’s own gatekeepers. The 80% problem, closed stacks, reference architectures as security theater, IT-managed engineering workstations, integrator opacity, the compliance economy, IT cadence imposed on OT, knowledge withheld by senior practitioners.`,
-  `- [Our Claim (Pillar III — position)](${SITE}/claim/): What operations is owed. What must be owned, taken back, formalized. SLAs that match production, bilateral contracts with IT, separation as architecture, recognition of IT / OT / ACS as different substrates, the reintroduction of engineering.`,
-  `- [Our Philosophy (Pillar IV — position)](${SITE}/philosophy/): The principles that follow from the substrate distinction. The SRP Triad as foundation; SAIC critiqued as "Safety as afterthought"; seven principles from "physics overrides information" through "empower the practitioner."`,
-  `- [The Architecture (Pillar V — artifact)](${SITE}/architecture/): The canonical statement. The principle, the domain boundary, the two-box method, the unit, the fractal, design constraints, prior art, data architecture, standards alignment, the thesis.`,
+  `- [The Field (Pillar I - observation)](${SITE}/field/): Where operations works. The lived ground the architecture is shaped by. Specific kinds of places, specific kinds of people, specific kinds of failures, and the architectural response to each.`,
+  `- [The Problem (Pillar II - observation)](${SITE}/problem/): What stands in the way. The market, IT, and the field’s own gatekeepers. The 80% problem, closed stacks, reference architectures as security theater, IT-managed engineering workstations, integrator opacity, the compliance economy, IT cadence imposed on OT, knowledge withheld by senior practitioners.`,
+  `- [Our Claim (Pillar III - position)](${SITE}/claim/): What operations is owed. What must be owned, taken back, formalized. SLAs that match production, bilateral contracts with IT, separation as architecture, recognition of IT / OT / ACS as different substrates, the reintroduction of engineering.`,
+  `- [Our Philosophy (Pillar IV - position)](${SITE}/philosophy/): The principles that follow from the substrate distinction. The SRP Triad as foundation; SAIC critiqued as "Safety as afterthought"; seven principles from "physics overrides information" through "empower the practitioner."`,
+  `- [The Architecture (Pillar V - artifact)](${SITE}/architecture/): The canonical statement. The principle, the domain boundary, the two-box method, the unit, the fractal, design constraints, prior art, data architecture, standards alignment, the thesis.`,
   '',
-  '## Read — Supporting Documentation',
+  '## Read - Supporting Documentation',
   '',
   `- [Glossary](${SITE}/architecture/docs/glossary/): Vocabulary used across the documentation.`,
   '',
   '## Standards & lineage',
   '',
-  '- [SRP Triad — Robert Radvanovsky / Infracritical](https://srpmodel.infracritical.com/srpmodel.php): Safety, Reliability, Performance. The foundation of the ACS substrate model.',
-  '- [PERA+ — Gary Rathwell / Entercon](https://www.pera.net): Reference architecture for industrial enterprise organization; the 4Rs, CIAD/CIND, "secure interfaces, not integration."',
+  '- [SRP Triad - Robert Radvanovsky / Infracritical](https://srpmodel.infracritical.com/srpmodel.php): Safety, Reliability, Performance. The foundation of the ACS substrate model.',
+  '- [PERA+ - Gary Rathwell / Entercon](https://www.pera.net): Reference architecture for industrial enterprise organization; the 4Rs, CIAD/CIND, "secure interfaces, not integration."',
   '- [IEC 62443](https://www.iec.ch/cyber-security/iec-62443): Cybersecurity for industrial automation. SL1–SL4, FR1–FR7.',
   '- [ISA-95](https://www.isa.org/standards-and-publications/isa-standards/isa-95): The IT↔ACS data-modeling backbone.',
   '',
@@ -110,11 +110,11 @@ const indexLines = [
 await mkdir(publicDir, { recursive: true });
 await writeFile(join(publicDir, 'llms.txt'), indexLines.join('\n'));
 
-// llms-full.txt — concatenated content
+// llms-full.txt - concatenated content
 const fullParts = [
-  '# Industrial Independence Alliance — Full Documentation',
+  '# Industrial Independence Alliance - Full Documentation',
   '',
-  '> The Alliance publishes The Philosophy (why) and The Architecture — Industrial Independence Architecture, IIA (how). This file is the concatenation of every public document.',
+  '> The Alliance publishes The Philosophy (why) and The Architecture - Industrial Independence Architecture, IIA (how). This file is the concatenation of every public document.',
   '',
   `Source: ${SITE}/llms-full.txt`,
   `Index:  ${SITE}/llms.txt`,

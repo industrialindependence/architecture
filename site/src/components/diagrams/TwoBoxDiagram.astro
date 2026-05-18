@@ -1,6 +1,6 @@
 ---
 // TwoBoxDiagram.astro
-// The Two-Box Method — SL3 (one box) vs SL4 (two boxes + hardware diode).
+// The Two-Box Method - SL3 (one box) vs SL4 (two boxes + hardware diode).
 // Responsive SVG, CSS variables, accessible.
 ---
 
@@ -13,12 +13,12 @@
     class="twobox-svg"
     preserveAspectRatio="xMidYMid meet"
   >
-    <title id="tb-title">The Two-Box Method — SL3 vs SL4</title>
+    <title id="tb-title">The Two-Box Method - SL3 vs SL4</title>
     <desc id="tb-desc">
       Side-by-side comparison of SL3 and SL4 deployment modes.
       SL3 (left): a single IIA box at the boundary, software-only segmentation,
       passive ACS NIC, bidirectional channels firewalled and authenticated.
-      SL4 (right): two IIA boxes with a hardware data diode between them —
+      SL4 (right): two IIA boxes with a hardware data diode between them -
       fiber TX-only in one direction, fiber RX-only in the other,
       physically enforced unidirectional flow.
       The software architecture is identical in both modes; only the physical topology changes.
@@ -44,7 +44,7 @@
     <!-- ========================================== -->
     <g transform="translate(0,0)">
 
-      <text x="228" y="24" class="panel-sl3" text-anchor="middle">SL3 &mdash; software-only segmentation</text>
+      <text x="228" y="24" class="panel-sl3" text-anchor="middle">SL3 - software-only segmentation</text>
 
       <!-- ACS -->
       <rect x="20" y="44" width="104" height="60" rx="2"
@@ -106,7 +106,7 @@
     <!-- ========================================== -->
     <g transform="translate(470,0)">
 
-      <text x="225" y="24" class="panel-sl4" text-anchor="middle">SL4 &mdash; two boxes &plus; hardware diode</text>
+      <text x="225" y="24" class="panel-sl4" text-anchor="middle">SL4 - two boxes &plus; hardware diode</text>
 
       <!-- ACS -->
       <rect x="6" y="44" width="86" height="60" rx="2"
@@ -176,7 +176,7 @@
 
   </svg>
   <figcaption class="diagram-caption mono">
-    The Two-Box Method &mdash; SL3 (software segmentation) vs SL4 (hardware diode) &middot; credited: Rinaldi &amp; Workman, RTA 2022
+    The Two-Box Method - SL3 (software segmentation) vs SL4 (hardware diode) &middot; credited: Rinaldi &amp; Workman, RTA 2022
   </figcaption>
 </figure>
 

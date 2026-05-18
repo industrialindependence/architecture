@@ -1,6 +1,6 @@
-# Industrial Independence Alliance — Full Documentation
+# Industrial Independence Alliance - Full Documentation
 
-> The Alliance publishes The Philosophy (why) and The Architecture — Industrial Independence Architecture, IIA (how). This file is the concatenation of every public document.
+> The Alliance publishes The Philosophy (why) and The Architecture - Industrial Independence Architecture, IIA (how). This file is the concatenation of every public document.
 
 Source: https://industrialindependence.org/llms-full.txt
 Index:  https://industrialindependence.org/llms.txt
@@ -12,39 +12,39 @@ Site:   https://industrialindependence.org/
 
 *Source: https://industrialindependence.org/field/*
 
-_Pillar I. Where operations works. Specific kinds of places, specific kinds of people, specific kinds of failures — the lived ground the architecture is shaped by._
+_Pillar I. Where operations works. Specific kinds of places, specific kinds of people, specific kinds of failures - the lived ground the architecture is shaped by._
 
 # The Field
 
 The architecture in the README is declarative. It says what the box is, what it does, and what it refuses. It does not say what it is *for*, in the sense of which rooms it walks into and which problems it stops being problems.
 
-This document does. The Field is where operations works — specific kinds of places, specific kinds of people, specific kinds of failures. It is the lived ground the architecture is shaped by. The architecture is not angry at any of this. The architecture is what makes most of it stop being necessary.
+This document does. The Field is where operations works - specific kinds of places, specific kinds of people, specific kinds of failures. It is the lived ground the architecture is shaped by. The architecture is not angry at any of this. The architecture is what makes most of it stop being necessary.
 
 None of the scenes below are hypothetical. Names and identifying details have been removed; the patterns are kept. After more than two decades working in these environments, the patterns repeat.
 
 ## Contents
 
-- [Part I — Scenes](#part-i--scenes)
+- [Part I - Scenes](#part-i--scenes)
   - [The Shack in the Corn Field](#the-shack-in-the-corn-field)
   - [The Locked Drawer](#the-locked-drawer)
   - [The Two Networks](#the-two-networks)
   - [The Midstream Plant](#the-midstream-plant)
   - [Two AM](#two-am)
   - [The Spanning Tree](#the-spanning-tree)
-- [Part II — People](#part-ii--people)
+- [Part II - People](#part-ii--people)
   - [The Plant Electricians](#the-plant-electricians)
   - [The Mountain Tech](#the-mountain-tech)
   - [The Senior Control System Engineer](#the-senior-control-system-engineer)
-- [Part III — The Organizational Reality](#part-iii--the-organizational-reality)
+- [Part III - The Organizational Reality](#part-iii--the-organizational-reality)
   - [The Invisible Infrastructure](#the-invisible-infrastructure)
   - [The Cost Center and the Profit Center](#the-cost-center-and-the-profit-center)
   - [The Integrator's Recurring Revenue](#the-integrators-recurring-revenue)
   - [No Seat at the Table](#no-seat-at-the-table)
-- [Part IV — What the Architecture Answers](#part-iv--what-the-architecture-answers)
+- [Part IV - What the Architecture Answers](#part-iv--what-the-architecture-answers)
 
 ---
 
-## Part I — Scenes
+## Part I - Scenes
 
 ### The Shack in the Corn Field
 
@@ -64,7 +64,7 @@ The official, dedicated, ruggedized plant laptop the company issued to the opera
 
 IT knows. There are tickets open about it. The tickets do not close.
 
-> What the architecture answers: the box runs the zone's own infrastructure services — DHCP, DNS, NTP, file shares, optional in-cell PKI — and the operator owns it. The configuration model is a signed artifact, not a remote-managed policy push, so the operator can install what the operator needs to run the plant. The unauthorized laptops in the locked drawer exist because the official infrastructure refuses to do what operations needs. The architecture's answer is to make the official infrastructure do what operations needs.
+> What the architecture answers: the box runs the zone's own infrastructure services - DHCP, DNS, NTP, file shares, optional in-cell PKI - and the operator owns it. The configuration model is a signed artifact, not a remote-managed policy push, so the operator can install what the operator needs to run the plant. The unauthorized laptops in the locked drawer exist because the official infrastructure refuses to do what operations needs. The architecture's answer is to make the official infrastructure do what operations needs.
 
 ### The Two Networks
 
@@ -83,9 +83,9 @@ The operators are not doing anything wrong. They are doing the only thing left. 
   <figcaption>A process plant of the kind referenced below. Specific facility unidentified.</figcaption>
 </figure>
 
-A midstream plant I visited carries a meaningful share of the natural gas that flows through one of the major regional pipelines. The primary computer controlling the plant was multi-homed when I saw it — one interface on the control network, one on a network with always-on internet. A free remote-support utility, of a kind commonly abused by attackers, was running on the computer at all times. The plant supervisor had configured it so he could check on the plant from a tablet while he was at home.
+A midstream plant I visited carries a meaningful share of the natural gas that flows through one of the major regional pipelines. The primary computer controlling the plant was multi-homed when I saw it - one interface on the control network, one on a network with always-on internet. A free remote-support utility, of a kind commonly abused by attackers, was running on the computer at all times. The plant supervisor had configured it so he could check on the plant from a tablet while he was at home.
 
-The configuration was not malicious. The supervisor was responsible for plant uptime. He had a tool that let him watch the plant when he was not on site, and he used it. The fact that the tool was a popular remote-access utility with a long history of being abused was not his concern — his concern was being able to see what was happening when his phone rang at three in the morning.
+The configuration was not malicious. The supervisor was responsible for plant uptime. He had a tool that let him watch the plant when he was not on site, and he used it. The fact that the tool was a popular remote-access utility with a long history of being abused was not his concern - his concern was being able to see what was happening when his phone rang at three in the morning.
 
 This is not unusual. Most plants have intentionally installed backdoors so plant personnel can troubleshoot, pull reports, and check status remotely. They exist because the legitimate remote-access path is either too restricted, too slow, or doesn't exist at all.
 
@@ -97,7 +97,7 @@ This is not unusual. Most plants have intentionally installed backdoors so plant
   <img src="/field/field-plant-interior.jpg" alt="Industrial plant interior with steel stairs and ductwork" loading="lazy" />
 </figure>
 
-Production line goes down at two in the morning. The plant engineer suspects the network. The night-shift technician begins by pinging the addresses he knows, because pinging is what he knows how to do. He cannot reach the switch through a browser — the switch is HTTPS-only, or the port is non-standard, or his laptop's IP is wrong for the segment. He cannot reach the next switch either. He cannot find anyone who can answer the question of why.
+Production line goes down at two in the morning. The plant engineer suspects the network. The night-shift technician begins by pinging the addresses he knows, because pinging is what he knows how to do. He cannot reach the switch through a browser - the switch is HTTPS-only, or the port is non-standard, or his laptop's IP is wrong for the segment. He cannot reach the next switch either. He cannot find anyone who can answer the question of why.
 
 He calls the senior control system engineer. The senior engineer is the one who configured the switches when the line was built. He walks the technician through the topology by phone. If the problem is something the senior engineer can fix from his couch, the line is back up in thirty minutes. Sometimes it is.
 
@@ -121,7 +121,7 @@ The integrator that built the network had moved on. They had not documented the 
 
 ---
 
-## Part II — People
+## Part II - People
 
 ### The Plant Electricians
 
@@ -134,11 +134,11 @@ The integrator that built the network had moved on. They had not documented the 
 
 The first deeply industrial site I worked at was a metallurgical coal operation in mountainous country, with a process plant, crusher, breaker, and rail loadout. Winters there hit thirty below. The drive to the nearest town with a hospital was hours either direction. The plant handled its own technology. Three plant electricians, eventually best friends. The best of the best.
 
-Their ability to troubleshoot anything — mechanical, electrical, network, whatever — was the kind you only find in people who have decided that fixing the thing is more interesting than waiting for someone else to fix it. They broke equipment down to repair it on the bench rather than replacing it. They could read a fault from a description over the two-way radio. They examined the *why* of every problem. They had hideouts throughout the job site — a shipping container in the corner of a yard with a lounge inside, an alcove formed by the warehouse wall and storage with a tarp and a grill — because they did not want to be involved with everyone else's bullshit, and they were treated as untouchable by the rest of the operation, and they were correct to be.
+Their ability to troubleshoot anything - mechanical, electrical, network, whatever - was the kind you only find in people who have decided that fixing the thing is more interesting than waiting for someone else to fix it. They broke equipment down to repair it on the bench rather than replacing it. They could read a fault from a description over the two-way radio. They examined the *why* of every problem. They had hideouts throughout the job site - a shipping container in the corner of a yard with a lounge inside, an alcove formed by the warehouse wall and storage with a tarp and a grill - because they did not want to be involved with everyone else's bullshit, and they were treated as untouchable by the rest of the operation, and they were correct to be.
 
 I had to earn their trust before they would let me help. Once I had it, we were in daily contact. I cannot imagine how I would have been effective otherwise. They were the operators. The mine ran because they ran. The technology, including what was bleeding-edge at the time, worked because the people closest to it were also the people who could fix it.
 
-> What the architecture answers: the operator is named. The architecture is for them. Not for the integrator, not for IT, not for the vendor. The plant electricians were the architecture before anyone wrote it down — they owned the substrate, they understood the substrate, they fixed the substrate when the substrate broke, and they earned trust before they granted it. The box is the artifact form of what those operators already were as people. Empower the practitioner. Restore the standards to the people who actually operate the plant. (Alliance Philosophy #06.)
+> What the architecture answers: the operator is named. The architecture is for them. Not for the integrator, not for IT, not for the vendor. The plant electricians were the architecture before anyone wrote it down - they owned the substrate, they understood the substrate, they fixed the substrate when the substrate broke, and they earned trust before they granted it. The box is the artifact form of what those operators already were as people. Empower the practitioner. Restore the standards to the people who actually operate the plant. (Alliance Philosophy #06.)
 
 ### The Mountain Tech
 
@@ -151,7 +151,7 @@ The IT technician at one of the sister sites in that same coal operation was abo
 
 I tried to replace another colleague who left not long after I arrived. I could not. I never found anyone before the mine went bankrupt. The reason was simple, and it is the same reason most plants do not have on-site technical staff. IT people do not want to work in the mountains. They do not want to off-road to a mine in a blizzard. They do not want to climb a ninety-foot roof to install a wireless bridge. They do not want surly operators smoking cigarettes and cussing them out while they work. They want stable power, multiple internet connections, a comfortable chair, and a wide SLA. To the right person, the mine is heaven. To most IT hires, it is a nightmare.
 
-She was the exception that proved the rule. She had IT skills and operational temperament at the same time — comfortable with isolation, with physical danger, with direct confrontation, with working under pressure. She could troubleshoot a network problem while a foreman was breathing down her neck about production. She went on, after the mine closed, to do crisis education work in remote communities — same challenging environments, same comfort with unpredictable situations. Effective tech people are often not "tech people."
+She was the exception that proved the rule. She had IT skills and operational temperament at the same time - comfortable with isolation, with physical danger, with direct confrontation, with working under pressure. She could troubleshoot a network problem while a foreman was breathing down her neck about production. She went on, after the mine closed, to do crisis education work in remote communities - same challenging environments, same comfort with unpredictable situations. Effective tech people are often not "tech people."
 
 > What the architecture answers: the architecture is for the people who are already in the mountains. It does not assume an office. It does not assume always-on backhaul. It does not assume a help desk down the hall. It assumes one person, on site, with the tools to do the work themselves and the documentation to do it correctly. It assumes the network has to be legible to whoever walks up to it. The architecture is what gets handed to those operators, and the architecture is what works in their hands.
 
@@ -170,7 +170,7 @@ He is not a hero by choice. He is a hero by accumulation. Twenty years of being 
 
 ---
 
-## Part III — The Organizational Reality
+## Part III - The Organizational Reality
 
 ### The Invisible Infrastructure
 
@@ -179,11 +179,11 @@ He is not a hero by choice. He is a hero by accumulation. Twenty years of being 
   <figcaption>An automotive line of the kind whose two hundred long-distance interlocks ride invisible IT-owned infrastructure.</figcaption>
 </figure>
 
-The canonical EtherNet/IP design guide for discrete manufacturing — *The Everyman's Guide to EtherNet/IP Network Design*, by John Rinaldi and Gary Workman, drawn from Workman's career architecting control networks at a major automotive manufacturer — argues strongly against VLANs in control networks. The book says VLANs make things more difficult to configure and maintain. Its own implementation examples, however, include automotive plants with two hundred or more long-distance interlocks spanning a square mile, with EtherNet/IP traffic given priority guarantees across the enterprise network.
+The canonical EtherNet/IP design guide for discrete manufacturing - *The Everyman's Guide to EtherNet/IP Network Design*, by John Rinaldi and Gary Workman, drawn from Workman's career architecting control networks at a major automotive manufacturer - argues strongly against VLANs in control networks. The book says VLANs make things more difficult to configure and maintain. Its own implementation examples, however, include automotive plants with two hundred or more long-distance interlocks spanning a square mile, with EtherNet/IP traffic given priority guarantees across the enterprise network.
 
 Read the examples carefully. The traffic being prioritized was being prioritized by IT, using DSCP markings, across VLANs the control engineer did not see and did not control. A bug in an early PLC firmware that mishandled DSCP markings is how the existence of the markings became visible from the OT side. The simple, isolated control network of the book's mental model was, in reality, sophisticated IT-owned infrastructure that the OT side was a consumer of.
 
-The book is not wrong about what was wanted. It wanted a network that did what control needed it to do, that the control engineer did not have to think about, and that did not interfere with the work. That outcome was achieved. It was achieved because the organization happened to have IT running good infrastructure underneath operations, invisibly. Most plants do not have that. Most plants have neither the IT capability to run that infrastructure invisibly well, nor the OT ownership to run it themselves, and so they end up with the worst of both — invisible infrastructure that does not work.
+The book is not wrong about what was wanted. It wanted a network that did what control needed it to do, that the control engineer did not have to think about, and that did not interfere with the work. That outcome was achieved. It was achieved because the organization happened to have IT running good infrastructure underneath operations, invisibly. Most plants do not have that. Most plants have neither the IT capability to run that infrastructure invisibly well, nor the OT ownership to run it themselves, and so they end up with the worst of both - invisible infrastructure that does not work.
 
 > What the architecture answers: the box owns the substrate that operations depends on. Not invisibly. Legibly. Every conduit is contracted. Every contract is in the catalog. The catalog is queryable. The operator does not consume IT infrastructure they cannot see. The operator owns the infrastructure they need, and the integration with IT happens at a known interface, on known terms.
 
@@ -207,31 +207,31 @@ This is not, in most cases, a deliberate scheme. Integrators operate on thin mar
 
 But the market forces also create the incentive structure. An integrator who hands over a fully documented, fully transferable deployment has no recurring revenue from that customer. An integrator who leaves the deployment opaque has recurring revenue forever. The disciplined integrator gets out-competed on price by the integrator who leaves the deployment opaque, because the up-front bid looks the same and the back-end costs are not visible until two months in. The discipline does not get rewarded.
 
-> What the architecture answers: the box is built so that opacity is not an option. Configuration is a signed declarative artifact in a constrained grammar. The contract catalog is mandatory and discoverable. The audit chain is hash-chained and queryable. Integrators can still build the deployment, and good ones should — but they cannot leave the deployment in a state where only they can read it. The architecture takes the lever of opacity out of the integrator's hand. The plant can fire the integrator the day the deployment is signed off, hire a different one in six months, and the second integrator can read what the first one built.
+> What the architecture answers: the box is built so that opacity is not an option. Configuration is a signed declarative artifact in a constrained grammar. The contract catalog is mandatory and discoverable. The audit chain is hash-chained and queryable. Integrators can still build the deployment, and good ones should - but they cannot leave the deployment in a state where only they can read it. The architecture takes the lever of opacity out of the integrator's hand. The plant can fire the integrator the day the deployment is signed off, hire a different one in six months, and the second integrator can read what the first one built.
 
 ### No Seat at the Table
 
 In most large organizations there is a chief information officer, a chief technology officer, and a chief information security officer. All three represent IT interests at the executive level. There is no chief operations technology officer. There is no equivalent.
 
-When the executive committee discusses infrastructure, the CIO speaks for technology. The plant manager, the operations director, the senior controls engineer — they are not at the meeting. Decisions about networks, about security, about vendor selection, about budgets, get made by people whose worldview is shaped by enterprise IT. The decisions cascade down to the plant floor as facts on the ground. Operations finds out about the decisions when the consequences arrive.
+When the executive committee discusses infrastructure, the CIO speaks for technology. The plant manager, the operations director, the senior controls engineer - they are not at the meeting. Decisions about networks, about security, about vendor selection, about budgets, get made by people whose worldview is shaped by enterprise IT. The decisions cascade down to the plant floor as facts on the ground. Operations finds out about the decisions when the consequences arrive.
 
-This is not because anyone is being excluded on purpose. It is because the organizational chart never developed a place for operations technology leadership. Operations is run by people whose primary discipline is the physical process — chemistry, metallurgy, mechanical engineering, electrical work. They are not in the boardroom. They are in the plant. The boardroom never noticed they were missing.
+This is not because anyone is being excluded on purpose. It is because the organizational chart never developed a place for operations technology leadership. Operations is run by people whose primary discipline is the physical process - chemistry, metallurgy, mechanical engineering, electrical work. They are not in the boardroom. They are in the plant. The boardroom never noticed they were missing.
 
 > What the architecture answers: the architecture exists *as* operations' position. It is a documented, citable, public artifact that operations can bring to the executive committee and say: this is what we need, this is how it works, this is what it costs, this is what it returns. The architecture is not a vendor pitch. It is not a consultant deliverable. It is a CC BY-SA 4.0 specification, claimed by name, that operations can use as the ground they argue from. The plant manager who does not have a seat at the table still has the architecture.
 
 ---
 
-## Part IV — What the Architecture Answers
+## Part IV - What the Architecture Answers
 
 The box is shaped by The Field. The scenes are not anger. They are not grievance. They are conditions. Industrial operations exists in these conditions, every day, in every plant, in every industry. The conditions are not going away. The architecture is what makes most of them stop mattering.
 
 **Connectivity is a luxury.** The shack is in a corn field. The mine was in the mountains. Most of the operations the architecture serves are remote, satellite-dependent, cellular-dependent, or fully disconnected from upstream for hours or days at a time. The unit works alone, indefinitely. If connectivity exists, it composes upward. If it drops, nothing changes on site.
 
-**Operations builds the infrastructure operations needs.** Always. The locked drawer, the consumer router, the always-on remote-support utility, the corn-field shack — these are not failures of compliance. They are operations doing the only thing left to do. The architecture's response is to give operations infrastructure that already does what operations needs, so the shadow infrastructure stops being necessary.
+**Operations builds the infrastructure operations needs.** Always. The locked drawer, the consumer router, the always-on remote-support utility, the corn-field shack - these are not failures of compliance. They are operations doing the only thing left to do. The architecture's response is to give operations infrastructure that already does what operations needs, so the shadow infrastructure stops being necessary.
 
-**The operator owns the substrate.** This is the load-bearing claim. The box, the data, the historian, the audit, the configuration, the contracts — all of it lives on the operator's hardware, in the operator's possession, under the operator's control. Vendors are consumers, not gatekeepers. Integrators are builders, not landlords. IT is a peer at a known interface, not a controlling authority above. The substrate belongs to the people who run on it.
+**The operator owns the substrate.** This is the load-bearing claim. The box, the data, the historian, the audit, the configuration, the contracts - all of it lives on the operator's hardware, in the operator's possession, under the operator's control. Vendors are consumers, not gatekeepers. Integrators are builders, not landlords. IT is a peer at a known interface, not a controlling authority above. The substrate belongs to the people who run on it.
 
-**The senior engineer is not a single point of failure.** Distributed competency. Declarative configuration. Discoverable catalogs. The hero pattern is replaced by the documented pattern. When the senior engineer retires — and they will, all of them, in the next ten years — the plant still works.
+**The senior engineer is not a single point of failure.** Distributed competency. Declarative configuration. Discoverable catalogs. The hero pattern is replaced by the documented pattern. When the senior engineer retires - and they will, all of them, in the next ten years - the plant still works.
 
 **The boundary is enforced by architecture.** Not by policy. Not by trust. Not by handshake agreement. The box terminates Zero Trust on the IT side and begins Managed Trust on the ACS side, and the transition is enforced by the unit's three-side internal partitioning, by the kernel firewall, by the workload identity system, by the contract catalog, and by the absence of any HTTP listener on either external NIC. Policy can change. Architecture is harder to change. The architecture is what makes the boundary durable.
 
@@ -259,7 +259,7 @@ _Pillar II. What stands in the way. The market sells dependence; IT inherits ent
 
 # The Problem
 
-The field is not sovereign because too many actors benefit from it not being sovereign. The market sells the dependence. IT inherits enterprise patterns and enforces them across a substrate they were not built for. The field's own senior practitioners — the ones who could teach the next generation — too often will not.
+The field is not sovereign because too many actors benefit from it not being sovereign. The market sells the dependence. IT inherits enterprise patterns and enforces them across a substrate they were not built for. The field's own senior practitioners - the ones who could teach the next generation - too often will not.
 
 The problem is everyone with a stake in operations remaining dependent. That includes the vendors, the integrators, the consultants, the auditors, the IT departments that have been handed OT to manage, and the senior engineers in the plant who would rather be the one who knew than train the one who comes next.
 
@@ -279,13 +279,13 @@ This document is plain about all three.
 
 ## The 80% problem
 
-Roughly 80% of cyber attacks on operational technology now originate in the corporate IT network. The figure shows up in vendor reports (Rockwell Automation, Dragos, Fortinet) with variation in the exact percentage but consistency in the direction. The attack does not begin on the plant floor. It begins on a help-desk laptop, a phishing email, a compromised VPN appliance, a stolen Active Directory credential — and it ends with a pipeline shut down, a steel mill idle, a meat-processing plant offline.
+Roughly 80% of cyber attacks on operational technology now originate in the corporate IT network. The figure shows up in vendor reports (Rockwell Automation, Dragos, Fortinet) with variation in the exact percentage but consistency in the direction. The attack does not begin on the plant floor. It begins on a help-desk laptop, a phishing email, a compromised VPN appliance, a stolen Active Directory credential - and it ends with a pipeline shut down, a steel mill idle, a meat-processing plant offline.
 
 This is the consequence of what the industry has been selling, IT has been wiring in, and operations has been allowing for the last decade. Industry research finds the resulting state of typical converged deployments:
 
 - **44%** of OT assessments show shared credentials between IT and OT.
 - **77%** show improper network segmentation.
-- **17%** of organizations run a shared Active Directory domain across IT and OT — the most common vector for lateral movement.
+- **17%** of organizations run a shared Active Directory domain across IT and OT - the most common vector for lateral movement.
 - **70%** of OT attacks now begin in IT.
 
 The 80% problem is the bridges working as designed.
@@ -294,7 +294,7 @@ The 80% problem is the bridges working as designed.
 
 ## What the market sells
 
-The dominant automation vendors set the terms of the field. Protocols, configuration tools, engineering software, certification programs, support contracts — the vendor owns the stack and rents it back. The pattern is consistent across the major players.
+The dominant automation vendors set the terms of the field. Protocols, configuration tools, engineering software, certification programs, support contracts - the vendor owns the stack and rents it back. The pattern is consistent across the major players.
 
 ### Closed stacks
 
@@ -307,13 +307,13 @@ The dominant automation vendors set the terms of the field. Protocols, configura
 
 Every major automation vendor publishes a reference architecture. Siemens PCS 7, Rockwell/Cisco CPwE, Schneider EcoStruxure. The diagrams are clean. The zone boundaries are crisp. The IEC 62443 stamps are on the cover page. The vendors hold the certifications.
 
-The implementation guidance, read carefully, violates the standard the cover page claims to implement. Siemens PCS 7 Compendium Part F page 17 acknowledges that its own example configuration is "a negative example from a security point of view" — and then builds the next 189 pages of guidance on top of that negative example. Schneider's documentation acknowledges that flat network architectures aid malicious lateral movement — while providing reference architectures that produce exactly such configurations. CPwE documents end-to-end connectivity across zones 0 through 6, with engineering workstations spanning multiple zones simultaneously.
+The implementation guidance, read carefully, violates the standard the cover page claims to implement. Siemens PCS 7 Compendium Part F page 17 acknowledges that its own example configuration is "a negative example from a security point of view" - and then builds the next 189 pages of guidance on top of that negative example. Schneider's documentation acknowledges that flat network architectures aid malicious lateral movement - while providing reference architectures that produce exactly such configurations. CPwE documents end-to-end connectivity across zones 0 through 6, with engineering workstations spanning multiple zones simultaneously.
 
-The vendor *can* implement the standard. The certification proves it. The documentation tells the operator to do something else. The certification on the cover page does the marketing work; the diagrams on the inside pages do the lock-in work. When the audit fails, the operator pays for remediation — back to the same vendor.
+The vendor *can* implement the standard. The certification proves it. The documentation tells the operator to do something else. The certification on the cover page does the marketing work; the diagrams on the inside pages do the lock-in work. When the audit fails, the operator pays for remediation - back to the same vendor.
 
 ### Integrators and the opacity premium
 
-Most plants did not build their own networks. An integrator built the network. The integrator delivered a working system, billed the project, and moved on. The plant inherited a network that worked — and a configuration the plant could not read.
+Most plants did not build their own networks. An integrator built the network. The integrator delivered a working system, billed the project, and moved on. The plant inherited a network that worked - and a configuration the plant could not read.
 
 The structure rewards opacity. Up-front bids are competitive; integrators win on price. Margin is recovered later, on service calls. A fully documented, transferable deployment generates no service calls. A deployment that only the integrator can read generates service calls forever. The disciplined integrator who hands over passwords, documentation, and training loses the bid to the integrator who does not.
 
@@ -331,7 +331,7 @@ Active Directory was designed to manage who can read a corporate file share. It 
 
 ### The engineering workstation as the trojan horse
 
-The workstation that programs the PLC is "managed" by IT — domain-joined, IT-patched, IT-antivirus, IT-monitored, IT-trusted. It is also directly connected to the OT network, because the engineer needs to program PLCs. It is trusted by IT because IT manages it. It is trusted by OT because the engineer needs it. Neither side secures it for what it actually is — a bridge between two substrates, with two threat models, and no single owner.
+The workstation that programs the PLC is "managed" by IT - domain-joined, IT-patched, IT-antivirus, IT-monitored, IT-trusted. It is also directly connected to the OT network, because the engineer needs to program PLCs. It is trusted by IT because IT manages it. It is trusted by OT because the engineer needs it. Neither side secures it for what it actually is - a bridge between two substrates, with two threat models, and no single owner.
 
 The Stuxnet and Triton attack patterns did not need to know Modbus or PROFINET. They needed the workstation. Patches arrive on IT's cadence; engineering software is validated by the vendor for specific older versions; the mismatch produces months-long windows of vulnerability. Every dual-homed PLC scales the same pattern down.
 
@@ -361,24 +361,24 @@ This part is the one the field does not like to hear, and is the one operations 
 
 A significant share of the institutional knowledge that runs industrial networks lives in the heads of senior practitioners who have decided, consciously or not, that they will not pass it on. The reasons are individual. The pattern is industry-wide.
 
-- **The hero by hoarding.** The senior engineer is exhausted, indispensable, irreplaceable — and the indispensability is the source of their job security. Training a successor is, in this incentive structure, a path to becoming dispensable. So the training does not happen.
+- **The hero by hoarding.** The senior engineer is exhausted, indispensable, irreplaceable - and the indispensability is the source of their job security. Training a successor is, in this incentive structure, a path to becoming dispensable. So the training does not happen.
 - **The undocumented configuration.** The switch configuration that only the senior engineer can read. The PLC program with no comments and a logic that requires a tribal-knowledge translation. The custom integration that exists only because one person knew how to make it work. None of this is documented. Most of it could be.
 - **The refusal to mentor.** A young technician shows up wanting to learn. The senior practitioner gives them busywork instead of the work, withholds access to the things that would actually teach them, treats every question as an imposition. The young technician leaves. The field calls it a labor shortage. It is also a teaching shortage.
 - **The gatekeeper as identity.** Knowing the thing nobody else knows becomes the practitioner's identity at work. Letting that identity dilute by spreading the knowledge is, for some people, indistinguishable from letting the self dilute. They will not do it.
 
-This is not every senior practitioner. The Reality describes the ones who taught — the plant electricians, the mountain tech, the senior engineers whose competence is paired with willingness to share it. They exist, and where they exist, the field is alive. But where they are absent, the field is hollowing out, and the architecture has to be designed for the world where the gatekeeper will not teach.
+This is not every senior practitioner. The Reality describes the ones who taught - the plant electricians, the mountain tech, the senior engineers whose competence is paired with willingness to share it. They exist, and where they exist, the field is alive. But where they are absent, the field is hollowing out, and the architecture has to be designed for the world where the gatekeeper will not teach.
 
-The architecture's answer is to make the substrate self-documenting, so that gatekeeping by people is impossible. Configuration is a signed declarative artifact in a constrained grammar — readable by anyone with the standard's documentation. The contract catalog is mandatory and discoverable. The audit chain is hash-chained and queryable. The role catalog can be enumerated from any operator's workstation. The knowledge is in the substrate, not in the head. The senior engineer can retire, refuse to teach, or simply die — and the next operator can still read what the architecture is doing.
+The architecture's answer is to make the substrate self-documenting, so that gatekeeping by people is impossible. Configuration is a signed declarative artifact in a constrained grammar - readable by anyone with the standard's documentation. The contract catalog is mandatory and discoverable. The audit chain is hash-chained and queryable. The role catalog can be enumerated from any operator's workstation. The knowledge is in the substrate, not in the head. The senior engineer can retire, refuse to teach, or simply die - and the next operator can still read what the architecture is doing.
 
 ---
 
 ## What this produces
 
 - **The 80% problem.** Catalogued above.
-- **The skills cliff.** Senior practitioners retire without successors. Vendor certifications occupy the labor market in their place — bound to specific stacks, expiring on schedules, non-portable. Engineering as a discipline is underrepresented at the boardroom level.
+- **The skills cliff.** Senior practitioners retire without successors. Vendor certifications occupy the labor market in their place - bound to specific stacks, expiring on schedules, non-portable. Engineering as a discipline is underrepresented at the boardroom level.
 - **The compliance economy.** A self-sustaining industry of consultants, auditors, certifiers, training providers, GRC tooling. Compliance is not security. The most-cited industrial incidents of the last five years happened to organizations that had passed audits, held certifications, and paid for consulting.
 - **Standards-as-paywall.** Individual IEC 62443 documents cost around $470 each; the complete series runs over $2,000. The engineers actually implementing the standard cannot afford copies of it.
-- **The hidden cost of doing nothing.** Manufacturing downtime averages around $88,000 per hour; specific industries run far higher. A weekend outage at a plant running at $10K/hour conservative loss is $600,000+. Insurance markets are tightening, excluding what they cannot underwrite — which is most uncatalogued OT exposure. The number on the page is what it costs to not change. Operations is not asking for new spending; operations is asking for the cost of doing nothing to be put on the balance sheet honestly.
+- **The hidden cost of doing nothing.** Manufacturing downtime averages around $88,000 per hour; specific industries run far higher. A weekend outage at a plant running at $10K/hour conservative loss is $600,000+. Insurance markets are tightening, excluding what they cannot underwrite - which is most uncatalogued OT exposure. The number on the page is what it costs to not change. Operations is not asking for new spending; operations is asking for the cost of doing nothing to be put on the balance sheet honestly.
 
 ---
 
@@ -392,7 +392,7 @@ The result is the industry as it stands. Plants buy closed stacks because the cl
 
 Nobody decided this. It is what happens when no one is positioned to refuse it.
 
-The architecture exists to give the operator a position to refuse from. Not by going to war with vendors, IT, or anyone else in the field. By being able to buy from the market on the operator's terms — open standards, open protocols, signed configuration, contracted boundaries, attested operation — and walk away from anything that does not meet those terms. By being able to read the substrate without a vendor's permission, without an integrator's safe, without a senior engineer's goodwill.
+The architecture exists to give the operator a position to refuse from. Not by going to war with vendors, IT, or anyone else in the field. By being able to buy from the market on the operator's terms - open standards, open protocols, signed configuration, contracted boundaries, attested operation - and walk away from anything that does not meet those terms. By being able to read the substrate without a vendor's permission, without an integrator's safe, without a senior engineer's goodwill.
 
 ---
 
@@ -420,7 +420,7 @@ _Pillar III. What operations is owed. What must be owned, taken back, formalized
 
 # Our Claim
 
-The Field describes the rooms operations works in. The Problem describes what stands in the way. This document describes what we claim — what operations is owed, what must be owned, what has to be taken back, what has to be formalized, what has to be named.
+The Field describes the rooms operations works in. The Problem describes what stands in the way. This document describes what we claim - what operations is owed, what must be owned, what has to be taken back, what has to be formalized, what has to be named.
 
 These are not requests. They are the working terms for a substrate operations can answer for. The architecture is what makes them deliverable.
 
@@ -454,7 +454,7 @@ Operations is not at war with IT. The point is not opposition. The point is that
 - **Control of the OT network.** OT switches under OT management. Not an extension of the enterprise switch fabric. Not VLANs the control engineer cannot see and cannot reach.
 - **Control of patch windows.** Updates to OT hardware happen on operations' schedule, against operations' intended-state manifest, with operations' approval. Not on IT's quarterly compliance cycle. A thirty-second reboot of a switch is invisible in an office and catastrophic on a conveyor.
 - **Control of vendor remote access.** Every inbound path to the ACS is a contracted conduit through the operator's box, identified, authenticated, audited. No IT-issued credentials terminate inside the ACS.
-- **Control of the OT compute.** The historian, the engineering workstations, the HMIs, the gateway boxes — owned by operations, on operations' hardware, on operations' substrate. Not in an IT data center the operator cannot enter.
+- **Control of the OT compute.** The historian, the engineering workstations, the HMIs, the gateway boxes - owned by operations, on operations' hardware, on operations' substrate. Not in an IT data center the operator cannot enter.
 - **The boundary itself.** The line between IT and OT was drawn by IT in most plants. It is redrawn by the architecture, on terms operations can articulate and defend.
 
 ## SLAs that match production
@@ -499,8 +499,8 @@ Policy can be revised in a meeting. Architecture is harder to revise. Architectu
 The conflation is the source of most of the trouble. Three substrates have been treated as one. Each has a different physics, a different time horizon, a different correct security model.
 
 - **IT** is the information domain. Records. History. Confidentiality, Integrity, Availability. CIA is the right model. Industry knows how to operate here.
-- **OT** is the operations-technology domain. It includes ACS but is broader — supervisory systems, MES, historians for already-information data, BI pipelines, operator workstations, asset management. Much of OT is closer to IT than to ACS, but with different timeliness and reliability requirements. SAIC is sometimes the right model for OT systems that handle safety-critical information.
-- **ACS** (Automation and Control Systems) is the substrate that acts on physics. Valves. Interlocks. Loops. SRP — Safety, Reliability, Performance — is the right model. Information-domain triads are the wrong substrate, not the wrong order. After Robert Radvanovsky, Infracritical.
+- **OT** is the operations-technology domain. It includes ACS but is broader - supervisory systems, MES, historians for already-information data, BI pipelines, operator workstations, asset management. Much of OT is closer to IT than to ACS, but with different timeliness and reliability requirements. SAIC is sometimes the right model for OT systems that handle safety-critical information.
+- **ACS** (Automation and Control Systems) is the substrate that acts on physics. Valves. Interlocks. Loops. SRP - Safety, Reliability, Performance - is the right model. Information-domain triads are the wrong substrate, not the wrong order. After Robert Radvanovsky, Infracritical.
 
 A discipline that treats these three as one discipline gives bad advice in two rooms out of three. Operations holds to the vocabulary, the standards, and the organizational charts that recognize the difference.
 
@@ -532,60 +532,60 @@ _Pillar IV. How we think about the substrate. The distinction (control systems a
 
 # The Philosophy
 
-> Control systems act on physics, not on information. The Industrial Independence Alliance publishes the principles that follow from this distinction and the architecture that operationalizes them. The SRP Triad (Safety, Reliability, Performance — after Robert Radvanovsky, Infracritical) governs the ACS substrate. CIA governs information. SAIC is not a peer; Safety is not an addendum.
+> Control systems act on physics, not on information. The Industrial Independence Alliance publishes the principles that follow from this distinction and the architecture that operationalizes them. The SRP Triad (Safety, Reliability, Performance - after Robert Radvanovsky, Infracritical) governs the ACS substrate. CIA governs information. SAIC is not a peer; Safety is not an addendum.
 
 ## The substrate distinction
 
-Information-domain models — **CIA** and its derivatives — were imported from enterprise IT and applied to systems that operate on physical processes. Architecture got fragile. Security got performative. The vendor-driven model promised seamless integration; what it delivered was extractive complexity and unnecessary attack surface.
+Information-domain models - **CIA** and its derivatives - were imported from enterprise IT and applied to systems that operate on physical processes. Architecture got fragile. Security got performative. The vendor-driven model promised seamless integration; what it delivered was extractive complexity and unnecessary attack surface.
 
 The correction is upstream of the architecture: get the substrate right, and the rest follows.
 
 ## The vocabulary
 
-- **SRP** — Safety, Reliability, Performance. Governs the ACS substrate. After Robert Radvanovsky, Infracritical. Source: <https://srpmodel.infracritical.com/srpmodel.php>.
-- **CIA** — Confidentiality, Integrity, Availability. Governs information — records, historical by nature.
-- **SAIC** — Safety prepended to AIC. Right for IT systems handling safety-critical information. Wrong if extended downward to govern the ACS itself.
-- **Zero Trust ↔ Managed Trust** — PERA+'s framing for the IT/ACS boundary transition. After Gary Rathwell, Entercon. Source: <https://www.pera.net>.
+- **SRP** - Safety, Reliability, Performance. Governs the ACS substrate. After Robert Radvanovsky, Infracritical. Source: <https://srpmodel.infracritical.com/srpmodel.php>.
+- **CIA** - Confidentiality, Integrity, Availability. Governs information - records, historical by nature.
+- **SAIC** - Safety prepended to AIC. Right for IT systems handling safety-critical information. Wrong if extended downward to govern the ACS itself.
+- **Zero Trust ↔ Managed Trust** - PERA+'s framing for the IT/ACS boundary transition. After Gary Rathwell, Entercon. Source: <https://www.pera.net>.
 
 ## Why SAIC fails as an OT model
 
-SAIC takes the information-domain triad — Availability, Integrity, Confidentiality — and prepends Safety. The structure betrays the move: Safety is bolted on, not foundational. The model is right for IT systems that touch safety-critical information — historians, audit stores, regulator-facing dashboards. For those, SAIC is the correct frame.
+SAIC takes the information-domain triad - Availability, Integrity, Confidentiality - and prepends Safety. The structure betrays the move: Safety is bolted on, not foundational. The model is right for IT systems that touch safety-critical information - historians, audit stores, regulator-facing dashboards. For those, SAIC is the correct frame.
 
-Extended downward to govern the ACS itself, it fails. The ACS does not operate on records. It operates on action and physics — a valve that moves, an interlock that latches, a loop that closes within its required time. **Reliability and Performance are properties of the physical system. Safety is what the physical system protects.** That is a different substrate than information. It needs a different model.
+Extended downward to govern the ACS itself, it fails. The ACS does not operate on records. It operates on action and physics - a valve that moves, an interlock that latches, a loop that closes within its required time. **Reliability and Performance are properties of the physical system. Safety is what the physical system protects.** That is a different substrate than information. It needs a different model.
 
-> "Safety comes first. Always." — The SRP Triad, Robert Radvanovsky, Infracritical.
+> "Safety comes first. Always." - The SRP Triad, Robert Radvanovsky, Infracritical.
 
 ## The principles
 
 Seven principles. Not negotiable. Principle 00 names the substrate. Principles 01–06 follow from it.
 
-### 00 — Physics overrides information
+### 00 - Physics overrides information
 
-Control systems act on physics. Information is the record that follows. Treating ACS as information is the wrong starting point — every architectural decision downstream inherits the mistake.
+Control systems act on physics. Information is the record that follows. Treating ACS as information is the wrong starting point - every architectural decision downstream inherits the mistake.
 
-### 01 — Safety. Reliability. Performance. In that order.
+### 01 - Safety. Reliability. Performance. In that order.
 
-SRP governs the ACS substrate. Safety is not an addendum; it is what the physical system protects. Reliability and Performance are properties of that system. Information-centric models — CIA, AIC, SAIC — are the wrong tools for what acts on physics. After Robert Radvanovsky, Infracritical. <https://srpmodel.infracritical.com/srpmodel.php>
+SRP governs the ACS substrate. Safety is not an addendum; it is what the physical system protects. Reliability and Performance are properties of that system. Information-centric models - CIA, AIC, SAIC - are the wrong tools for what acts on physics. After Robert Radvanovsky, Infracritical. <https://srpmodel.infracritical.com/srpmodel.php>
 
-### 02 — Operational reality dictates design
+### 02 - Operational reality dictates design
 
-Industrial environments are not data centers. There is no singular OT network — a manufacturing site has many control networks (stamping, body, paint, general assembly; the equivalents in food, water, oil and gas), each with its own management entity. There is no executive director of OT. PERA+'s 4Rs — Response, Resolution, Reliability, Resilience — determine where applications belong. Network designs, hardware, software, historians, and zone IP services (DHCP, DNS, NTP, file) must be decentralized to match the substrate they serve. After Gary Workman, Two-Box Method (RTA, 2022). <https://www.pera.net>
+Industrial environments are not data centers. There is no singular OT network - a manufacturing site has many control networks (stamping, body, paint, general assembly; the equivalents in food, water, oil and gas), each with its own management entity. There is no executive director of OT. PERA+'s 4Rs - Response, Resolution, Reliability, Resilience - determine where applications belong. Network designs, hardware, software, historians, and zone IP services (DHCP, DNS, NTP, file) must be decentralized to match the substrate they serve. After Gary Workman, Two-Box Method (RTA, 2022). <https://www.pera.net>
 
-### 03 — Complexity is the enemy of Reliability
+### 03 - Complexity is the enemy of Reliability
 
-Robust OT is simple, predictable, deterministic. Every additional dependency, feature, or communication path introduces fragility and increases attack surface. The goal is systems that are easy to understand, easy to maintain, and easy to secure — by virtue of having less to understand, maintain, and secure.
+Robust OT is simple, predictable, deterministic. Every additional dependency, feature, or communication path introduces fragility and increases attack surface. The goal is systems that are easy to understand, easy to maintain, and easy to secure - by virtue of having less to understand, maintain, and secure.
 
-### 04 — Security is an architectural property
+### 04 - Security is an architectural property
 
-The most effective posture for OT is deliberate, managed separation from untrusted networks, especially the enterprise IT environment. PERA+ articulates this as *"secure interfaces, not integration."* IIA rejects "IT/OT convergence" as a frame entirely — there is no merger to design, only an interface to enforce. Cultural rupture escalated when networks were linked through shared infrastructure (switches, L3 routers spanning the boundary) instead of through gateways; a gateway is an end device with one owner. True security is built in, not bolted on, and never bought.
+The most effective posture for OT is deliberate, managed separation from untrusted networks, especially the enterprise IT environment. PERA+ articulates this as *"secure interfaces, not integration."* IIA rejects "IT/OT convergence" as a frame entirely - there is no merger to design, only an interface to enforce. Cultural rupture escalated when networks were linked through shared infrastructure (switches, L3 routers spanning the boundary) instead of through gateways; a gateway is an end device with one owner. True security is built in, not bolted on, and never bought.
 
-### 05 — Every boundary is formalized
+### 05 - Every boundary is formalized
 
 Data flows that exit the ACS are documented, limited, and governed by bilateral contracts with explicit RACI matrices for every failure mode. These conduits are security perimeters requiring the same rigor as external interfaces. Informal "visibility" requests that bypass this process are attacks on the architecture, intentional or not.
 
-### 06 — Empower the practitioner
+### 06 - Empower the practitioner
 
-The most valuable asset is the knowledge of practitioners who design, implement, and maintain these systems. Standards must be field-ready. Practical experience over vendor certifications. The Alliance exists to make standards like IEC 62443 accessible — to restore them to the people who actually operate the plant.
+The most valuable asset is the knowledge of practitioners who design, implement, and maintain these systems. Standards must be field-ready. Practical experience over vendor certifications. The Alliance exists to make standards like IEC 62443 accessible - to restore them to the people who actually operate the plant.
 
 ## The thesis
 
@@ -593,11 +593,11 @@ Industrial independence is not a technology position. It is an **operational sov
 
 ## Lineage & standards
 
-- **SRP Triad** — Robert Radvanovsky / Infracritical. The foundation of the ACS substrate model. <https://srpmodel.infracritical.com/srpmodel.php>
-- **PERA+** — Gary Rathwell / Entercon. The reference architecture for industrial enterprise organization; source of the 4Rs, the CIAD/CIND diagram conventions, and the "secure interfaces, not integration" stance. <https://www.pera.net>
-- **The Two-Box Method** — John Rinaldi & Gary Workman. The canonical articulation of physically enforced ACS/IT segmentation. *The Everyman's Guide to EtherNet/IP Network Design* (RTA, 2022).
-- **IEC 62443** — Cybersecurity for industrial automation. SL1–SL4, FR1–FR7. The Architecture targets SL3 floor / SL4 via diode.
-- **ISA-95** — The canonical IT↔ACS data-modeling backbone.
+- **SRP Triad** - Robert Radvanovsky / Infracritical. The foundation of the ACS substrate model. <https://srpmodel.infracritical.com/srpmodel.php>
+- **PERA+** - Gary Rathwell / Entercon. The reference architecture for industrial enterprise organization; source of the 4Rs, the CIAD/CIND diagram conventions, and the "secure interfaces, not integration" stance. <https://www.pera.net>
+- **The Two-Box Method** - John Rinaldi & Gary Workman. The canonical articulation of physically enforced ACS/IT segmentation. *The Everyman's Guide to EtherNet/IP Network Design* (RTA, 2022).
+- **IEC 62443** - Cybersecurity for industrial automation. SL1–SL4, FR1–FR7. The Architecture targets SL3 floor / SL4 via diode.
+- **ISA-95** - The canonical IT↔ACS data-modeling backbone.
 
 ---
 
@@ -611,9 +611,9 @@ _Pillar V. The canonical statement of Industrial Independence Architecture. A se
 
 **An architectural principle for industrial infrastructure.**
 
-*Published by the [Industrial Independence Alliance](https://industrialindependence.org/). The Architecture (this repo) is the consequence of [the Philosophy](https://industrialindependence.org/philosophy/) — read that first if you want the why.*
+*Published by the [Industrial Independence Alliance](https://industrialindependence.org/). The Architecture (this repo) is the consequence of [the Philosophy](https://industrialindependence.org/philosophy/) - read that first if you want the why.*
 
-*New to industrial automation, ICS, or operational technology? Start with [the Architecture page](https://industrialindependence.org/architecture/) — it builds the vocabulary used here.*
+*New to industrial automation, ICS, or operational technology? Start with [the Architecture page](https://industrialindependence.org/architecture/) - it builds the vocabulary used here.*
 
 IIA is the deliberate abstraction of a convergence pattern that exists in adjacent domains, named and applied for the first time to automation and control systems. It is not a product. It is not a framework. It is the architectural principle, claimed by name.
 
@@ -648,9 +648,9 @@ The unit is the **secure edge gateway**. Colloquially: the box.
 
 One secure edge gateway per zone. Runs the complete ACS infrastructure stack for that zone: zone IP services (DHCP, DNS, NTP, file/config shares, optional in-cell PKI), data collection, the zone's **decentralized historian**, security monitoring, asset inventory, intrusion detection, visualization, API, remote access, VPN, message brokering, protocol translation. Everything needed to operate, monitor, and secure the zone.
 
-The gateway has two physical realizations. The **single-box** realization is one self-contained unit at the boundary (SL3, the floor). The **two-box + diode** realization splits the gateway into an **inside box** on the ACS side and an **outside subscriber** on the IT side, with a hardware data diode between them — the inside box publishes to the outside subscriber, and consumers access the outside subscriber (SL4, the ideal). Both realizations run the same software, same configuration model, same operator experience. The architectural element is the gateway; the physical topology determines the security level achieved. The Two-Box Method below covers the realizations in detail.
+The gateway has two physical realizations. The **single-box** realization is one self-contained unit at the boundary (SL3, the floor). The **two-box + diode** realization splits the gateway into an **inside box** on the ACS side and an **outside subscriber** on the IT side, with a hardware data diode between them - the inside box publishes to the outside subscriber, and consumers access the outside subscriber (SL4, the ideal). Both realizations run the same software, same configuration model, same operator experience. The architectural element is the gateway; the physical topology determines the security level achieved. The Two-Box Method below covers the realizations in detail.
 
-The architecture is hardware-independent and scale-invariant. The secure edge gateway is a logical unit, realizable as an appliance, a server, a cluster, or a virtualized stack. Sizing is application- and scale-dependent — the box has run on less than 1GB of RAM with capability tradeoffs and scales up as the workload demands.
+The architecture is hardware-independent and scale-invariant. The secure edge gateway is a logical unit, realizable as an appliance, a server, a cluster, or a virtualized stack. Sizing is application- and scale-dependent - the box has run on less than 1GB of RAM with capability tradeoffs and scales up as the workload demands.
 
 Every component selection, every protocol choice, every data flow decision traces back to one question: does this gateway work completely alone with no link? If yes, it ships. If no, it doesn't belong on the gateway.
 
@@ -658,13 +658,15 @@ Every component selection, every protocol choice, every data flow decision trace
 
 A **secure edge gateway** at the head of every zone.
 
-Inside the zone is control system data — the substrate of physical action — governed by SRP. At the gateway, that data crosses the boundary and becomes information, governed by CIA, published securely outbound to whatever the zone's consumers are: another zone, a plant, a partner, a regulator, the internet.
+Inside the zone is control system data - the substrate of physical action - governed by SRP. At the gateway, that data crosses the boundary and becomes information, governed by CIA, published securely outbound to whatever the zone's consumers are: another zone, a plant, a partner, a regulator, the internet.
 
-Devices inside the zone can be any security level. Legacy SCADA at SL 0, modern PLCs at SL 3, consumer-grade IO, IoT sensors — all of it sits inside the zone. The security boundary lives at the gateway, not at every device. With the right engineering, the gateway is the only thing that needs to interface securely outbound.
+Devices inside the zone can be any security level. Legacy SCADA at SL 0, modern PLCs at SL 3, consumer-grade IO, IoT sensors - all of it sits inside the zone. The security boundary lives at the gateway, not at every device. With the right engineering, the gateway is the only thing that needs to interface securely outbound.
 
-The gateway witnesses traffic on the ACS substrate passively and actively polls the devices that permit it. Both feed the *decentralized historian* — the local data lake on the gateway, the zone's source of truth. The historian publishes north only over the secure outbound interface. **That secure publish is the only access into the zone from outside it.** No inbound listener. No remote shell. No admin API exposed externally. The only thing external systems see is what the historian publishes — on the operator's terms, at the operator's cadence, under the operator's signature.
+The gateway witnesses traffic on the ACS substrate passively and actively polls the devices that permit it. Both feed the *decentralized historian* - the local data lake on the gateway, the zone's source of truth. **The gateway is the only path into the zone from outside it.** Nothing reaches past it to the ACS substrate - no remote shell to a device, no route onto the control network, no admin API exposed externally. External systems see only what the gateway serves, on the operator's terms, at the operator's cadence, under the operator's signature.
 
-The gateway is identical at every zone. The operator defines what counts as a zone — production cell, plant, site, region, corporate function, anything where data crosses a boundary. There is no required PERA L1–L5 tower; where a zone exists, a gateway exists at its head, and that is the rule.
+What the gateway's outbound interface *does* is set by the zone's risk tolerance, not fixed by the architecture. SL3 permits a bidirectional interface: the historian publishes north, and a structured query API answers pulls - firewalled, identified, audited, minimized. SL4 requires strictly one-way - a hardware data diode, push-only, no return path. Push-only is the SL4 promise and the posture toward untrusted IT. It is not the universal law of the mesh.
+
+The gateway is identical at every zone. The operator defines what counts as a zone - production cell, plant, site, region, corporate function, anything where data crosses a boundary. There is no required PERA L1–L5 tower; where a zone exists, a gateway exists at its head, and that is the rule.
 
 The cloud is not a special architecture. A central historian is a gateway with broader scope. A regional aggregator is a gateway with broader scope. The fractal does not collapse at the top.
 
@@ -699,15 +701,15 @@ external consumers  (internet · partner · regulator · plant · whoever)
 
 ![The Fractal: a secure edge gateway at the head of every zone, with mixed-SL devices inside and secure publish out](docs/fractal.png)
 
-Each gateway works with no upstream connectivity. No cloud, no corporate network, no internet. It is the complete system for its zone. If connectivity exists, it composes upward. If it drops, nothing changes on site — the gateway runs locally with 30 days of buffered data, and when the link returns, the mesh reconverges.
+Each gateway works with no upstream connectivity. No cloud, no corporate network, no internet. It is the complete system for its zone. If connectivity exists, it composes upward. If it drops, nothing changes on site - the gateway runs locally with 30 days of buffered data, and when the link returns, the mesh reconverges.
 
 Each gateway meshes with adjacent gateways. If a gateway can see another gateway, data routes through. If a gateway can see a gateway that can see a gateway that can see the cloud, data gets there. The mesh finds the path. The constraint is that no gateway depends on another being available.
 
-Sovereignty does not mean isolation. Each gateway's historian is the decentralized historian for its zone — the operator's data, on the operator's substrate, working complete without the cloud. Historians on adjacent gateways can know about each other without becoming dependent on each other. Awareness is mutual. Dependency is not. The centralized-historian pattern that came before — vendor-owned, off-site, reachable only when the WAN is up — is a sovereignty failure by design.
+Sovereignty does not mean isolation. Each gateway's historian is the decentralized historian for its zone - the operator's data, on the operator's substrate, working complete without the cloud. Historians on adjacent gateways can know about each other without becoming dependent on each other. Awareness is mutual. Dependency is not. The centralized-historian pattern that came before - vendor-owned, off-site, reachable only when the WAN is up - is a sovereignty failure by design.
 
 IIA is distributed, not federated. Every gateway is operated by one operator, under one set of rules. A federation would be independent parties exchanging data by treaty; IIA is one operator running a mesh of their own gateways.
 
-The hard problems are distributed systems problems. When a gateway reconnects after thirty days off the mesh, the parent has thirty days of state from other paths — convergence at the boundary is conflict resolution, not transport. Schema evolution happens across gateways running different firmware with no coordinated maintenance window. Collection profiles differ by scope: a production-zone gateway and a corporate gateway are the same unit, not the same configuration. The architecture makes these problems tractable. It does not eliminate them.
+The hard problems are distributed systems problems. When a gateway reconnects after thirty days off the mesh, the parent has thirty days of state from other paths - convergence at the boundary is conflict resolution, not transport. Schema evolution happens across gateways running different firmware with no coordinated maintenance window. Collection profiles differ by scope: a production-zone gateway and a corporate gateway are the same unit, not the same configuration. The architecture makes these problems tractable. It does not eliminate them.
 
 ## The Domain Boundary
 
@@ -731,13 +733,13 @@ This boundary maps directly to PERA's articulation: it is where the IT *Zero Tru
 
 The canonical articulation of physically enforced ACS/IT segmentation predates IIA. John Rinaldi and Gary Workman documented it in *[The Everyman's Guide to EtherNet/IP Network Design](https://www.amazon.com/EVERYMANS-GUIDE-ETHERNET-NETWORK-DESIGN/dp/B0B7PSHK7J)* (Real Time Automation, 2022), drawn from Workman's experience architecting EtherNet/IP networks at General Motors.
 
-The pattern is two boxes and a hardware data diode. The **inside box** sits in the ACS zone — witnesses traffic, polls devices that permit it, hosts the decentralized historian. A **hardware data diode** — a unidirectional optical link with no return path — sits between. The **outside box**, the **outside subscriber**, sits in the IT zone; it receives published data over the diode and is what consumers connect to. Compromise of the outside box cannot reach the inside. Compromise of the IT network cannot reach the ACS network. The boundary is enforced by physics, not by policy.
+The pattern is two boxes and a hardware data diode. The **inside box** sits in the ACS zone - witnesses traffic, polls devices that permit it, hosts the decentralized historian. A **hardware data diode** - a unidirectional optical link with no return path - sits between. The **outside box**, the **outside subscriber**, sits in the IT zone; it receives published data over the diode and is what consumers connect to. Compromise of the outside box cannot reach the inside. Compromise of the IT network cannot reach the ACS network. The boundary is enforced by physics, not by policy.
 
 The secure edge gateway is the architectural element. It has two physical realizations governed by the same software architecture.
 
-**Single-box (SL3, the floor).** One unit at the boundary. The ACS-facing interface is passive — no IP stack transmit, no listeners. The unit is internally partitioned into inbound, internal DMZ, and outbound; default-deny kernel firewall conduits between zones, mTLS authentication at every internal hop. Outbound is push-only on an operator-selected edge profile, plus a structured query API on mTLS for pull. No HTTP listener at the external boundary in any direction. Reaches Security Level 3 against motivated adversaries with ACS-specific skills.
+**Single-box (SL3, the floor).** One unit at the boundary. The ACS-facing interface is passive - no IP stack transmit, no listeners. The unit is internally partitioned into inbound, internal DMZ, and outbound; default-deny kernel firewall conduits between zones, mTLS authentication at every internal hop. Outbound is push-only on an operator-selected edge profile, plus a structured query API on mTLS for pull. No HTTP listener at the external boundary in any direction. Reaches Security Level 3 against motivated adversaries with ACS-specific skills.
 
-**Two-box + diode (SL4, the ideal).** The inside box on the ACS side. A hardware data diode between. The outside subscriber on the IT side. The inside box publishes to the outside subscriber over the diode; consumers access the outside subscriber, never the inside. Same software, same configuration model, same operator experience. The architecture does not change. Only the physical topology does — and the topology buys SL4 by physics rather than policy. This is the architecturally preferred configuration where the deployment can support it.
+**Two-box + diode (SL4, the ideal).** The inside box on the ACS side. A hardware data diode between. The outside subscriber on the IT side. The inside box publishes to the outside subscriber over the diode; consumers access the outside subscriber, never the inside. Same software, same configuration model, same operator experience. The architecture does not change. Only the physical topology does - and the topology buys SL4 by physics rather than policy. This is the architecturally preferred configuration where the deployment can support it.
 
 SL3 does not promise unidirectional flow. SL3 promises a hardened, segmented, authenticated, audited boundary. Unidirectional flow is the SL4 property, reached only via hardware data diode and physical one-way separation. The software architecture is invariant across both realizations; the physical topology is what determines the security level achieved.
 
@@ -751,11 +753,11 @@ IIA is shaped by the realities of automation and control system environments, no
 
 **Connectivity is a luxury, not a given.** Production floors, wellheads, substations, feed lots, and remote facilities operate on cellular, satellite, or no backhaul at all. The unit must be the complete system indefinitely, not a thin client waiting for a cloud to come back.
 
-**The zone provides its own infrastructure services.** DHCP, DNS, NTP, file/config shares, time sync, optional in-cell PKI — every IP-infrastructure service the cell network needs to be a network. A cell that depends on corporate DHCP fails when the WAN fails. A cell with corporate DNS as primary loses name resolution on the next enterprise outage. A cell whose HMIs read configs from a corporate fileserver loses HMI capability when that share goes offline. The box runs these services for its zone so disconnection from upstream is operationally invisible to the process. After Gary Workman, *[The Everyman's Guide to EtherNet/IP Network Design](https://www.amazon.com/EVERYMANS-GUIDE-ETHERNET-NETWORK-DESIGN/dp/B0B7PSHK7J)* (Real Time Automation, 2022).
+**The zone provides its own infrastructure services.** DHCP, DNS, NTP, file/config shares, time sync, optional in-cell PKI - every IP-infrastructure service the cell network needs to be a network. A cell that depends on corporate DHCP fails when the WAN fails. A cell with corporate DNS as primary loses name resolution on the next enterprise outage. A cell whose HMIs read configs from a corporate fileserver loses HMI capability when that share goes offline. The box runs these services for its zone so disconnection from upstream is operationally invisible to the process. After Gary Workman, *[The Everyman's Guide to EtherNet/IP Network Design](https://www.amazon.com/EVERYMANS-GUIDE-ETHERNET-NETWORK-DESIGN/dp/B0B7PSHK7J)* (Real Time Automation, 2022).
 
-**Safety, Reliability, Performance, not Confidentiality, Integrity, Availability.** The issue is not ordering, it is category. CIA, AIC, and their derivatives describe properties of *information* — and information is historical by nature, a record of what already happened. ACS does not operate on records. ACS operates on action and physics: a valve that moves, an interlock that latches, a loop that closes within its required time. Reliability and Performance in SRP are properties of the physical system. Safety is the property the physical system protects. The correct priority ordering for ACS, as articulated by Robert Radvanovsky at Infracritical ([srpmodel.infracritical.com](https://srpmodel.infracritical.com/srpmodel.php)), is SRP: Safety first, then Reliability, then Performance. A security tool that compromises any of these is not a security tool. Every function on the box must degrade gracefully and never interfere with the process it monitors.
+**Safety, Reliability, Performance, not Confidentiality, Integrity, Availability.** The issue is not ordering, it is category. CIA, AIC, and their derivatives describe properties of *information* - and information is historical by nature, a record of what already happened. ACS does not operate on records. ACS operates on action and physics: a valve that moves, an interlock that latches, a loop that closes within its required time. Reliability and Performance in SRP are properties of the physical system. Safety is the property the physical system protects. The correct priority ordering for ACS, as articulated by Robert Radvanovsky at Infracritical ([srpmodel.infracritical.com](https://srpmodel.infracritical.com/srpmodel.php)), is SRP: Safety first, then Reliability, then Performance. A security tool that compromises any of these is not a security tool. Every function on the box must degrade gracefully and never interfere with the process it monitors.
 
-PERA's SAIC (Safety, Availability, Integrity, Confidentiality) extends CIA by prepending Safety. It is the right frame for IT systems that touch safety-critical *information* — historians, audit stores, regulator-facing dashboards. SAIC does not extend down to govern the ACS itself. The ACS is upstream of SAIC, governed by SRP. What crosses the domain boundary is the moment data becomes information.
+PERA's SAIC (Safety, Availability, Integrity, Confidentiality) extends CIA by prepending Safety. It is the right frame for IT systems that touch safety-critical *information* - historians, audit stores, regulator-facing dashboards. SAIC does not extend down to govern the ACS itself. The ACS is upstream of SAIC, governed by SRP. What crosses the domain boundary is the moment data becomes information.
 
 **The edge is where value is physically created.** The PLC closing a loop, the VFD controlling a motor, the sensor reading a level. Intelligence belongs at the point of production, not centralized upstream.
 
@@ -763,13 +765,13 @@ PERA's SAIC (Safety, Availability, Integrity, Confidentiality) extends CIA by pr
 
 **Heterogeneity is permanent.** 40-year-old PLCs run alongside brand-new VFDs on protocols that predate TCP/IP. The box must accommodate whatever it finds. It observes. It does not prescribe.
 
-**No unit commands another.** Composition is additive. You do not need the parent to function. The parent does not command the child. Data flows north. Control stays local.
+**No unit commands another.** Composition is additive. You do not need the parent to function. The parent does not command the child. A parent can query a child - pull, not only subscribe - between zones of similar security level; querying is data moving north, not control. Data flows north. Control stays local.
 
 ## Data Architecture
 
 The box is internally partitioned into three sides plus a management interface.
 
-The "internal DMZ" here is a partition inside the box. It is not the conventional IT-OT DMZ at PERA L3.5 — that one separates IT-touching-control from IT-not-touching-control, governed end-to-end by IT. IIA's DMZ is the boundary between SRP-governed inbound capture and CIA-governed outbound publishing, inside one operator-owned unit.
+The "internal DMZ" here is a partition inside the box. It is not the conventional IT-OT DMZ at PERA L3.5 - that one separates IT-touching-control from IT-not-touching-control, governed end-to-end by IT. IIA's DMZ is the boundary between SRP-governed inbound capture and CIA-governed outbound publishing, inside one operator-owned unit.
 
 ![The Box: CIAD-style conceptual diagram of internal partitioning, zones, and external surfaces](docs/box-architecture.png)
 
@@ -820,13 +822,13 @@ The box's external surface is engineered for minimum runtime exposure:
 - **Edge profile is operator-selectable per deployment.** MQTT + Sparkplug B is appropriate at the controller↔area-broker level (PERA L1/L2). Above L2, OPC UA pub/sub, structured query on mTLS, or batch-write to a BI lake (Iceberg / Delta / DuckLake on object store) are typically the better fit. The architecture spec does not pick.
 - **The local data lake is the source of truth on the box.** All inbound capture, classification output, audit, events, and time-series land there. Outbound publishers siphon from the lake; the in-flight bus is transient.
 - **Minimum runtime surface.** Every listener, daemon, and outbound connection exists because it was designed and engineered for a specific operational purpose. The OS image is built so disabled services cannot be turned on at runtime.
-- **Configuration is a signed artifact, not a live API.** The box has no REST endpoint that mutates running state. Declarative state in, signed-and-validated, applied or rejected — GitOps for an air-gapped industrial appliance.
+- **Configuration is a signed artifact, not a live API.** The box has no REST endpoint that mutates running state. Declarative state in, signed-and-validated, applied or rejected - GitOps for an air-gapped industrial appliance.
 
-Inside the automation cell, data is ACS: time-critical, process-relevant, governed by SRP. The box observes passively and stores locally. At the boundary, the box transforms process data into information and publishes it north under IT rules. Outbound is bidirectional only when authenticated, identified, audited, and minimized — and never via HTTP.
+Inside the automation cell, data is ACS: time-critical, process-relevant, governed by SRP. The box observes passively and stores locally. At the boundary, the box transforms process data into information and publishes it north under IT rules. Outbound is bidirectional only when authenticated, identified, audited, and minimized - and never via HTTP.
 
-**Every communication is governed by an explicit data contract.** Internal (between containers, between zones) and external (every connection that exits the ACS, including device-level exchanges). The full set is the **contract catalog** — versioned, discoverable. Contractless communication is *prevented* where the architecture can enforce it and *flagged* where it cannot. Contracts at the boundary are **bilateral**: ACS commits to producing per spec; upstream commits to connectivity, authentication, capacity, and incident response. Each contract names a **RACI** matrix for every failure mode. The box emits **adherence telemetry** under `ot.contract.*` — receipts of who held up which side. Contractlessness at any layer is a deployment defect.
+**Every communication is governed by an explicit data contract.** Internal (between containers, between zones) and external (every connection that exits the ACS, including device-level exchanges). The full set is the **contract catalog** - versioned, discoverable. Contractless communication is *prevented* where the architecture can enforce it and *flagged* where it cannot. Contracts at the boundary are **bilateral**: ACS commits to producing per spec; upstream commits to connectivity, authentication, capacity, and incident response. Each contract names a **RACI** matrix for every failure mode. The box emits **adherence telemetry** under `ot.contract.*` - receipts of who held up which side. Contractlessness at any layer is a deployment defect.
 
-**Attestation observes prevention.** Every prevention mechanism may leak; the architecture assumes this. The network IDS doubles as a contract-attestation observer — it compares observed traffic against the catalog and flags policy leaks. An **IO master** independently observes the physical IO substrate (analog IO, fieldbus, industrial Ethernet) and cross-checks against the box's primary capture; discrepancies indicate substrate-level deviation. Attestation findings emit under `ot.attestation.*`. When prevention and attestation agree, the operator has evidence of compliance. When they disagree, the operator has evidence of where to look.
+**Attestation observes prevention.** Every prevention mechanism may leak; the architecture assumes this. The network IDS doubles as a contract-attestation observer - it compares observed traffic against the catalog and flags policy leaks. An **IO master** independently observes the physical IO substrate (analog IO, fieldbus, industrial Ethernet) and cross-checks against the box's primary capture; discrepancies indicate substrate-level deviation. Attestation findings emit under `ot.attestation.*`. When prevention and attestation agree, the operator has evidence of compliance. When they disagree, the operator has evidence of where to look.
 
 ## Prior Art
 
@@ -838,25 +840,25 @@ The pattern exists elsewhere. It has never been named or applied deliberately to
 
 **Integrated NAS (Synology):** One box does storage, backup, containers, VPN, surveillance, media. Complete system, works offline, scales by adding another unit.
 
-These are expressions of the same convergence pattern: self-contained sovereign unit, identical at every deployment point, scales by composition, works without upstream dependency. IIA inherits that pattern and extends it. The new claim is not convergence — convergence is precedented. The pattern is *appliance* convergence, not IT/OT convergence — IIA rejects the IT/OT convergence frame in agreement with PERA+'s "secure interfaces, not integration." The new claim is that the unit enforces two different governance models across a single boundary: SRP inside the automation cell, CIA outside. None of the prior art does this because none of it sits at a boundary where data classification and governance flip.
+These are expressions of the same convergence pattern: self-contained sovereign unit, identical at every deployment point, scales by composition, works without upstream dependency. IIA inherits that pattern and extends it. The new claim is not convergence - convergence is precedented. The pattern is *appliance* convergence, not IT/OT convergence - IIA rejects the IT/OT convergence frame in agreement with PERA+'s "secure interfaces, not integration." The new claim is that the unit enforces two different governance models across a single boundary: SRP inside the automation cell, CIA outside. None of the prior art does this because none of it sits at a boundary where data classification and governance flip.
 
-PERA+ articulates the same first principle from the standards side: *"creating secure interfaces rather than attempting to merge or integrate IT and Industrial Automation and Control Systems."* IIA inherits this stance and operationalizes it as a single appliance. The historical wound this addresses: integration escalated when networks were linked through shared infrastructure — switches and L3 routers spanning the IT/ACS boundary — instead of through gateways. A gateway is an end device with one owner. Shared infrastructure has two owners and one reality. IIA is the gateway promoted to the unit of architecture.
+PERA+ articulates the same first principle from the standards side: *"creating secure interfaces rather than attempting to merge or integrate IT and Industrial Automation and Control Systems."* IIA inherits this stance and operationalizes it as a single appliance. The historical wound this addresses: integration escalated when networks were linked through shared infrastructure - switches and L3 routers spanning the IT/ACS boundary - instead of through gateways. A gateway is an end device with one owner. Shared infrastructure has two owners and one reality. IIA is the gateway promoted to the unit of architecture.
 
-IIA applies the convergence to the full ACS stack — collection, processing, storage, visualization, security, API — and applies the boundary enforcement at the seam between ACS and IT. One unit. Every zone. Identical.
+IIA applies the convergence to the full ACS stack - collection, processing, storage, visualization, security, API - and applies the boundary enforcement at the seam between ACS and IT. One unit. Every zone. Identical.
 
 ## Standards
 
 IIA does not derive from any single standard. It is the physical instantiation of what multiple standards describe abstractly, because they share the same first principles: sovereign, independent, autonomous operation in safe and reliable efforts to achieve a shared goal.
 
-**PERA+** (pera.net), maintained by Gary Rathwell at Entercon, defines the reference architecture for industrial enterprise organization: hierarchical levels (typically L0 through L5 or higher), zone boundaries, and the **4Rs** — Response, Resolution, Reliability, Resilience — that determine where applications belong in the architecture. IIA implements physically at every level what PERA+ describes structurally. The 4Rs are why the box buffers high-fidelity data locally and aggregates downsampled data centrally; response time tolerances loosen and resolution requirements coarsen as data moves up the levels.
+**PERA+** (pera.net), maintained by Gary Rathwell at Entercon, defines the reference architecture for industrial enterprise organization: hierarchical levels (typically L0 through L5 or higher), zone boundaries, and the **4Rs** - Response, Resolution, Reliability, Resilience - that determine where applications belong in the architecture. IIA implements physically at every level what PERA+ describes structurally. The 4Rs are why the box buffers high-fidelity data locally and aggregates downsampled data centrally; response time tolerances loosen and resolution requirements coarsen as data moves up the levels.
 
-**ISA-95** is the canonical IT↔ACS interface model, particularly for process industries. Where the box transforms ACS data into information and publishes it north, ISA-95 describes the data model the broader-scope consumer expects. IIA does not enforce ISA-95 at the edge — schema modeling lives at broader scope — but the box is engineered to feed ISA-95-modeled consumers without friction.
+**ISA-95** is the canonical IT↔ACS interface model, particularly for process industries. Where the box transforms ACS data into information and publishes it north, ISA-95 describes the data model the broader-scope consumer expects. IIA does not enforce ISA-95 at the edge - schema modeling lives at broader scope - but the box is engineered to feed ISA-95-modeled consumers without friction.
 
 **IEC 62443** defines the cybersecurity management system, security levels, and component requirements the box satisfies at the zone level, ordered by SRP priority: zone segmentation enforcement protecting safety-critical process boundaries, continuous passive asset inventory and network monitoring preserving operational reliability, and role-based access control with full audit logging (all data time-series, all access logged, session recording) without degrading system performance.
 
 IIA documentation uses PERA+'s **CIAD** (Control and Information Architecture Diagram, conceptual block diagram, drawn during Conceptual Engineering) and **CIND** (Control and Information Network Diagram, network detail with SL1–SL4 annotations, drawn during Preliminary Engineering) conventions for reference deployments. This makes IIA deployments legible to any control engineer working within the PERA framework.
 
-Architectural roles inside the gateway are named with a *leaf-first*, hierarchical, hyphenated convention that aligns with DNS and ISA-95 — `<role>.<gateway>.<work-unit>.<work-center>.<area>.<site>.local`. Specifications use short labels (`witness`, `lake`, `publish`, etc.) and operators extend them rightward at deployment time. The architecture requires the convention, not any particular naming substrate; operators may realize it on a DNS zone, an LDAP tree, a UNS hierarchy, or their own asset registry. The convention is enumerated in [`docs/glossary.md`](docs/glossary.md).
+Architectural roles inside the gateway are named with a *leaf-first*, hierarchical, hyphenated convention that aligns with DNS and ISA-95 - `<role>.<gateway>.<work-unit>.<work-center>.<area>.<site>.local`. Specifications use short labels (`witness`, `lake`, `publish`, etc.) and operators extend them rightward at deployment time. The architecture requires the convention, not any particular naming substrate; operators may realize it on a DNS zone, an LDAP tree, a UNS hierarchy, or their own asset registry. The convention is enumerated in [`docs/glossary.md`](docs/glossary.md).
 
 The convergence is not coincidental. These standards arrive at the same place because they are built on the same observation: the unit of industrial operation is the zone, the zone must be self-sufficient, and any dependency on external systems for basic function is an architectural failure. IIA is the first deliberate physical instantiation of that observation. The standards are the formal description of it.
 
@@ -866,11 +868,11 @@ The underserved triangle. Every manufacturer below the top of the demand curve. 
 
 They are also the ones without stable internet. Rural. Remote. Satellite or cellular backhaul at best. Any architecture that assumes connectivity is an architecture that does not work for them.
 
-Their network person, if they have one, knows IP and maybe subnetting. They do not know packets. They do not know CVEs. They do not care about CVEs — and they are right not to. Those are not OT's responsibilities. OT's responsibilities are an accurate asset inventory, a network it can see, an audit trail of what happened, and a process that runs reliably. The tools to do those things, *as OT operational tools owned and operated by OT*, do not exist.
+Their network person, if they have one, knows IP and maybe subnetting. They do not know packets. They do not know CVEs. They do not care about CVEs - and they are right not to. Those are not OT's responsibilities. OT's responsibilities are an accurate asset inventory, a network it can see, an audit trail of what happened, and a process that runs reliably. The tools to do those things, *as OT operational tools owned and operated by OT*, do not exist.
 
-The alternatives (Claroty, Nozomi) are IT security tools retroactively pointed at OT networks — $50-100K/year, $100-150K professional services. They give an IT security team partial visibility into an ACS environment they do not operate. They are not what OT is supposed to have. They are what gets deployed because the thing OT is supposed to have does not exist.
+The alternatives (Claroty, Nozomi) are IT security tools retroactively pointed at OT networks - $50-100K/year, $100-150K professional services. They give an IT security team partial visibility into an ACS environment they do not operate. They are not what OT is supposed to have. They are what gets deployed because the thing OT is supposed to have does not exist.
 
-IIA is that thing. Asset inventory, network monitoring, audit, historian, secure interfaces — operator-owned, zone-deployed, operational rather than overlaid. Affordable because the architecture does not depend on a cloud subscription, a permanent integrator, or a single-vendor stack. And legible: the architecture restores standards like IEC 62443 to the practitioners who actually operate the plant — field-ready, not vendor-mediated.
+IIA is that thing. Asset inventory, network monitoring, audit, historian, secure interfaces - operator-owned, zone-deployed, operational rather than overlaid. Affordable because the architecture does not depend on a cloud subscription, a permanent integrator, or a single-vendor stack. And legible: the architecture restores standards like IEC 62443 to the practitioners who actually operate the plant - field-ready, not vendor-mediated.
 
 ## The Thesis
 
@@ -882,15 +884,15 @@ IIA provides the architectural pattern that makes sovereignty the default rather
 
 ## Further Reading
 
-The Alliance publishes its position in five pillars. This README is the fifth — *The Architecture*. The first four ground it:
+The Alliance publishes its position in five pillars. This README is the fifth - *The Architecture*. The first four ground it:
 
-- [`docs/the-field.md`](docs/the-field.md) — **The Field.** Where operations works. Specific kinds of places, specific kinds of people, specific kinds of failures — the lived ground the architecture is shaped by. The answer to "what is this *for*."
-- [`docs/the-problem.md`](docs/the-problem.md) — **The Problem.** What stands in the way. The market sells the dependence; IT inherits enterprise patterns and enforces them on a substrate they were not built for; the field's own gatekeepers will not teach. Plain about all three.
-- [`docs/our-claim.md`](docs/our-claim.md) — **Our Claim.** What operations is owed. What must be owned, taken back, formalized. SLAs that match production, bilateral contracts with IT, separation as architecture, recognition of IT / OT / ACS as different, the reintroduction of engineering.
+- [`docs/the-field.md`](docs/the-field.md) - **The Field.** Where operations works. Specific kinds of places, specific kinds of people, specific kinds of failures - the lived ground the architecture is shaped by. The answer to "what is this *for*."
+- [`docs/the-problem.md`](docs/the-problem.md) - **The Problem.** What stands in the way. The market sells the dependence; IT inherits enterprise patterns and enforces them on a substrate they were not built for; the field's own gatekeepers will not teach. Plain about all three.
+- [`docs/our-claim.md`](docs/our-claim.md) - **Our Claim.** What operations is owed. What must be owned, taken back, formalized. SLAs that match production, bilateral contracts with IT, separation as architecture, recognition of IT / OT / ACS as different, the reintroduction of engineering.
 
 Supporting architectural documentation:
 
-- [`docs/glossary.md`](docs/glossary.md) — vocabulary used across the documentation. Domain terms (ACS, IT, SRP, CIA, SAIC), architectural terms (the box, fractal, contract catalog, attestation, IO master), and the standards IIA aligns with (PERA+, IEC 62443, ISA-95, CESMII i3X, MCP, Zenoh).
+- [`docs/glossary.md`](docs/glossary.md) - vocabulary used across the documentation. Domain terms (ACS, IT, SRP, CIA, SAIC), architectural terms (the box, fractal, contract catalog, attestation, IO master), and the standards IIA aligns with (PERA+, IEC 62443, ISA-95, CESMII i3X, MCP, Zenoh).
 
 The canonical implementation specification (partitioning, contract grammar, attestation, configuration, updates, sample contracts, and the SL3 / SL4 mappings to IEC 62443 foundational requirements) is maintained privately. Operators implementing IIA can request access through the Alliance.
 
@@ -920,41 +922,41 @@ Standards and protocols are listed where they carry architectural weight in IIA.
 
 **4Rs.** Response, Resolution, Reliability, Resilience. PERA+'s criteria for placing applications at the right level of an industrial enterprise. Response time tolerances loosen and resolution requirements coarsen as data moves up the levels; the 4Rs are why the box buffers high-fidelity data locally and aggregates downsampled data centrally.
 
-**ACS.** Automation and Control Systems. The domain where data acts on or controls a physical process. Governed by SRP. The line between ACS and IT is drawn by the criticality of the data — its time sensitivity and its relationship to the physical process — not by network topology, org chart, or vendor label.
+**ACS.** Automation and Control Systems. The domain where data acts on or controls a physical process. Governed by SRP. The line between ACS and IT is drawn by the criticality of the data - its time sensitivity and its relationship to the physical process - not by network topology, org chart, or vendor label.
 
-**Active poll.** A method by which the secure edge gateway acquires data from devices inside the zone: the gateway opens a session with the device — typically over a control-network protocol the device speaks (Modbus, EtherNet/IP, OPC UA, S7, etc.) — and reads tags, registers, or state on a configured cadence. Active poll requires the device to permit it and the operator to authorize it (credentials, allowed scopes). Where active poll is unavailable (the device does not support it, refuses, or cannot be safely interrupted), *witness* (passive observation) is the floor. Both feed the decentralized historian.
+**Active poll.** A method by which the secure edge gateway acquires data from devices inside the zone: the gateway opens a session with the device - typically over a control-network protocol the device speaks (Modbus, EtherNet/IP, OPC UA, S7, etc.) - and reads tags, registers, or state on a configured cadence. Active poll requires the device to permit it and the operator to authorize it (credentials, allowed scopes). Where active poll is unavailable (the device does not support it, refuses, or cannot be safely interrupted), *witness* (passive observation) is the floor. Both feed the decentralized historian.
 
-**Adherence telemetry.** The receipts a box emits proving how well a contract is being held — by the box and by the upstream consumer. Records connectivity, delivery, authentication, schema, quota, reconciliation, audit verification, SLA breaches, and contract violations. Emitted under `contract.*`. Architecture specifies the shape; operator publishes the values.
+**Adherence telemetry.** The receipts a box emits proving how well a contract is being held - by the box and by the upstream consumer. Records connectivity, delivery, authentication, schema, quota, reconciliation, audit verification, SLA breaches, and contract violations. Emitted under `contract.*`. Architecture specifies the shape; operator publishes the values.
 
-**Approval artifact.** A signed authorization that permits specific boxes to apply specific staged updates within specific time windows. Supports per-box, per-fleet, two-person integrity (FR2 SR 2.4), and maintenance-window-conditional rollouts. Rollout strategy — canary, percentage, per-zone, per-plant — is operator policy expressed via which approval artifacts get issued to which boxes when.
+**Approval artifact.** A signed authorization that permits specific boxes to apply specific staged updates within specific time windows. Supports per-box, per-fleet, two-person integrity (FR2 SR 2.4), and maintenance-window-conditional rollouts. Rollout strategy - canary, percentage, per-zone, per-plant - is operator policy expressed via which approval artifacts get issued to which boxes when.
 
 **Attestation.** Independent observation that validates whether prevention is actually working. Three layers: SDN-policy attestation (where SDN is deployed), IDS as policy-leak observer, and the IO master observing the physical substrate. Findings emit under `attestation.*` and route to the audit chain at the same severity as security events. The standing answer to "how do you know prevention is actually working?"
 
 **Boundary contract.** A specialization of *data contract* at every connection that exits the ACS. Bilateral: the ACS side commits to data inventory, freshness, resolution, retention, ordering, delivery, reconnect behavior, version evolution, authentication, and audit binding. The upstream side commits to connectivity, authentication, acknowledgment, query response time, schema accommodation, capacity, and incident response. A *RACI matrix* names accountable parties for every failure mode.
 
-**Secure edge gateway.** The canonical architectural element. A self-contained unit deployed at the head of every zone, serving as the secure boundary between control system data inside (governed by SRP) and information published outward (governed by CIA). Witnesses traffic on the ACS substrate, actively polls devices that permit it, hosts the zone's decentralized historian, and publishes securely outbound to whatever the zone's consumers are. Devices inside the zone can be any security level; the security boundary lives at the gateway, not at every device. The secure outbound publish is the only access into the zone from outside. Identical at every zone; only scope changes. Internally partitioned into inbound, internal DMZ, and outbound, plus a management interface. Logical, not physical: realizable as a commodity-hardware appliance, multi-host cluster, virtualized stack, or hyperscale deployment. The architecture invariants travel across all realizations. Has two physical configurations: **single-box (SL3, the floor)** and **two-box + diode (SL4, the ideal)**. See *Two-Box Method*.
+**Secure edge gateway.** The canonical architectural element. A self-contained unit deployed at the head of every zone, serving as the secure boundary between control system data inside (governed by SRP) and information published outward (governed by CIA). Witnesses traffic on the ACS substrate, actively polls devices that permit it, hosts the zone's decentralized historian, and publishes securely outbound to whatever the zone's consumers are. Devices inside the zone can be any security level; the security boundary lives at the gateway, not at every device. The gateway is the only path into the zone from outside; nothing reaches past it to the ACS substrate. Its outbound interface is bidirectional at SL3 (publish plus a structured query/pull API, firewalled and identified and audited) and strictly one-way at SL4 (hardware data diode). Identical at every zone; only scope changes. Internally partitioned into inbound, internal DMZ, and outbound, plus a management interface. Logical, not physical: realizable as a commodity-hardware appliance, multi-host cluster, virtualized stack, or hyperscale deployment. The architecture invariants travel across all realizations. Has two physical configurations: **single-box (SL3, the floor)** and **two-box + diode (SL4, the ideal)**. See *Two-Box Method*.
 
 **The box / The unit.** Colloquial shorthand for *secure edge gateway*. Used in narrative or informal contexts; the canonical term in formal architectural contexts is *secure edge gateway*.
 
 **Inside box.** In the two-box realization of the secure edge gateway, the unit on the ACS side. Witnesses traffic, actively polls devices that permit it, hosts the decentralized historian for the zone, and publishes outbound across the hardware data diode to the outside subscriber. The inside box is never directly reachable from outside the zone.
 
-**Outside box / outside subscriber.** In the two-box realization of the secure edge gateway, the unit on the IT side. Receives published data from the inside box across the hardware data diode and is what consumers connect to. Compromise of the outside subscriber cannot reach the inside box — physics, not policy, prevents the return path. "Outside subscriber" is the role-precise name; "outside box" is the colloquial.
+**Outside box / outside subscriber.** In the two-box realization of the secure edge gateway, the unit on the IT side. Receives published data from the inside box across the hardware data diode and is what consumers connect to. Compromise of the outside subscriber cannot reach the inside box - physics, not policy, prevents the return path. "Outside subscriber" is the role-precise name; "outside box" is the colloquial.
 
 **Data diode.** Hardware unidirectional optical link with no return path. Sits between the inside box and the outside subscriber in the two-box realization. Buys SL4 by physics: nothing the outside box receives can travel back to the inside.
 
-**CESMII i3X.** The preferred standardized query interface at the L2↔L3 boundary. OpenAPI under the hood. v1 covers time-series and static-state queries; transactional and method semantics are punted to v2 — use a separate transactional channel for MES/MOM-class flows. Source: CESMII (Clean Energy Smart Manufacturing Innovation Institute). Deployed via soft-launch / alpha-with-vendors model. IIA treats i3X as load-bearing alongside MQTT, OPC UA, and Sparkplug B.
+**CESMII i3X.** The preferred standardized query interface at the L2↔L3 boundary. OpenAPI under the hood. v1 covers time-series and static-state queries; transactional and method semantics are punted to v2 - use a separate transactional channel for MES/MOM-class flows. Source: CESMII (Clean Energy Smart Manufacturing Innovation Institute). Deployed via soft-launch / alpha-with-vendors model. IIA treats i3X as load-bearing alongside MQTT, OPC UA, and Sparkplug B.
 
 **Choreograph.** Verb for telemetry flows: fire-and-forget on the edge profile, no acknowledgment expected at the publisher. Time-series, events, and asset state changes are choreographed. The box's edge publisher handles them. Paired with *orchestrate*; mixing the two in one pipeline is a recurring failure mode.
 
-**CIA.** Confidentiality, Integrity, Availability. The vocabulary for *information* — records, historical by nature. Governs IT systems and ACS data once it has crossed the domain boundary and become information. Not the right substrate for ACS itself; ACS is upstream of CIA, governed by SRP. (See *SAIC* for PERA's safety-prepended extension of CIA used at the IT side of safety-relevant information stores.)
+**CIA.** Confidentiality, Integrity, Availability. The vocabulary for *information* - records, historical by nature. Governs IT systems and ACS data once it has crossed the domain boundary and become information. Not the right substrate for ACS itself; ACS is upstream of CIA, governed by SRP. (See *SAIC* for PERA's safety-prepended extension of CIA used at the IT side of safety-relevant information stores.)
 
 **CIAD.** Control and Information Architecture Diagram. PERA+'s conceptual block diagram drawn during Conceptual Engineering. IIA reference deployments use CIADs to communicate architecture at the conceptual level.
 
 **CIND.** Control and Information Network Diagram. PERA+'s network detail diagram drawn during Preliminary Engineering, with SL1–SL4 annotations. IIA reference deployments use CINDs to communicate network detail.
 
-**Consumer.** The recipient of information published by a secure edge gateway. Two kinds, and only two: (1) **another gateway at broader scope** — the fractal case, where a zone gateway publishes to a plant gateway, a plant gateway publishes to a site gateway, and so on; (2) **an authorized external system** — an enterprise application, a BI/analytics lake, an AI/ML platform, a regulator-facing dashboard, a partner integration. Both kinds connect to the gateway's outbound interface (the outside subscriber in the two-box realization). Neither reaches back into the zone — the gateway is the only access in or out. The operator authorizes each consumer explicitly via the contract catalog; uncontracted consumers do not exist on the wire.
+**Consumer.** The recipient of information published by a secure edge gateway. Two kinds, and only two: (1) **another gateway at broader scope** - the fractal case, where a zone gateway publishes to a plant gateway, a plant gateway publishes to a site gateway, and so on; (2) **an authorized external system** - an enterprise application, a BI/analytics lake, an AI/ML platform, a regulator-facing dashboard, a partner integration. Both kinds connect to the gateway's outbound interface (the outside subscriber in the two-box realization). Neither reaches back into the zone - the gateway is the only access in or out. The operator authorizes each consumer explicitly via the contract catalog; uncontracted consumers do not exist on the wire.
 
-**Configuration as signed artifact.** The box accepts configuration only as a signed, constrained-grammar text document consumed by a parser, never as a live API. Same pattern as image admission and OS updates. The management UI is a text generator with no privileged access. The parser is the trust boundary. The applier is a gated internal call set that executes when a verified-and-validated artifact is staged, then exits. The box has no live mutation channels — image, OS, and configuration are all artifact-in flows. Pattern is GitOps for an air-gapped industrial appliance.
+**Configuration as signed artifact.** The box accepts configuration only as a signed, constrained-grammar text document consumed by a parser, never as a live API. Same pattern as image admission and OS updates. The management UI is a text generator with no privileged access. The parser is the trust boundary. The applier is a gated internal call set that executes when a verified-and-validated artifact is staged, then exits. The box has no live mutation channels - image, OS, and configuration are all artifact-in flows. Pattern is GitOps for an air-gapped industrial appliance.
 
 **Contract catalog.** The deployment's full set of data contracts. Versioned. Discoverable via the structured query API. Communication without a contract entry is a deployment defect: it is *prevented* where the architecture can enforce it (kernel firewall + workload identity + admission policy + mTLS cooperate to refuse uncontracted traffic) and *flagged* where prevention is not possible (passive ACS observation, broadcast, legacy protocols).
 
@@ -964,15 +966,15 @@ Standards and protocols are listed where they carry architectural weight in IIA.
 
 **Edge profile.** The outbound publisher protocol the box speaks at a given deployment. Operator-selectable. The architecture is profile-agnostic and names no default. MQTT + Sparkplug B is appropriate at controller↔area-broker (PERA L1/L2). Above L2, OPC UA pub/sub, structured query on mTLS, or batch-write to a BI lake (Iceberg / Delta / DuckLake on object store) is typically the better fit.
 
-**Fractal.** The IIA deployment property: a box at the head of every zone — the secure edge gateway. Inside the zone is control system data governed by SRP; at the box, it becomes information governed by CIA and is published securely outbound to whatever the zone's consumers are. Devices inside the zone can be any security level — the security boundary lives at the gateway, not at every device. The box witnesses traffic on the ACS substrate and actively polls devices that permit it; both feed the decentralized historian on the box. **The secure outbound publish is the only access into the zone from outside it.** The unit is identical at every zone; the operator defines what counts as a zone, and there is no required PERA L1–L5 tower. Centralized collection — corporate, regional, or cloud — is not a different architecture; it is the same unit at broader scope. The fractal does not collapse at the top. Update orchestration is also fractal: each box at broader scope manages its children's updates.
+**Fractal.** The IIA deployment property: a box at the head of every zone - the secure edge gateway. Inside the zone is control system data governed by SRP; at the box, it becomes information governed by CIA and is published securely outbound to whatever the zone's consumers are. Devices inside the zone can be any security level - the security boundary lives at the gateway, not at every device. The box witnesses traffic on the ACS substrate and actively polls devices that permit it; both feed the decentralized historian on the box. **The gateway is the only path into the zone from outside it; nothing reaches past it to the ACS substrate. Outbound-interface direction is the zone's risk tolerance: bidirectional at SL3 (a parent gateway can query a child, not only subscribe), strictly one-way at SL4 via hardware data diode.** The unit is identical at every zone; the operator defines what counts as a zone, and there is no required PERA L1–L5 tower. Centralized collection - corporate, regional, or cloud - is not a different architecture; it is the same unit at broader scope. The fractal does not collapse at the top. Update orchestration is also fractal: each box at broader scope manages its children's updates.
 
 **IEC 62443.** Industrial cybersecurity standard. Defines security levels (SL1–SL4) and foundational requirements (FR1–FR7). IIA targets SL3 floor in software-only mode and SL4 via the two-box mode with hardware data diode.
 
 **Inter-box mesh substrate.** Distinct architectural role from the in-box bus and the edge publisher. Enables a box at one scope to query or subscribe to a box at another scope, across the fractal. Optional: explicit upstream-pull patterns work without it. Eclipse Zenoh's federated routers fit this role natively; cascading MQTT brokers and custom mTLS overlays are alternatives.
 
-**IO master.** A role: an independent IO substrate observer running in its own zone with its own SPIFFE identity and attestation key. Cross-checks readings from the box's primary capture against an independent observation channel covering analog IO, fieldbus, and industrial Ethernet. Independence of the observation path is the load-bearing property — sharing a NIC or switch port or software stack with the primary defeats the attestation. Findings emit under `attestation.io`.
+**IO master.** A role: an independent IO substrate observer running in its own zone with its own SPIFFE identity and attestation key. Cross-checks readings from the box's primary capture against an independent observation channel covering analog IO, fieldbus, and industrial Ethernet. Independence of the observation path is the load-bearing property - sharing a NIC or switch port or software stack with the primary defeats the attestation. Findings emit under `attestation.io`.
 
-**ISA-95.** The canonical IT↔ACS interface model, particularly for process industries. Describes the data model the broader-scope consumer expects when ACS data crosses the boundary and becomes information. IIA does not enforce ISA-95 at the edge — schema modeling lives at broader scope — but the box is engineered to feed ISA-95-modeled consumers without friction.
+**ISA-95.** The canonical IT↔ACS interface model, particularly for process industries. Describes the data model the broader-scope consumer expects when ACS data crosses the boundary and becomes information. IIA does not enforce ISA-95 at the edge - schema modeling lives at broader scope - but the box is engineered to feed ISA-95-modeled consumers without friction.
 
 **Managed Trust.** PERA's framing for the ACS side of the domain boundary. Every device and process is known, identified, and accountable to the operational manager. The box terminates Zero Trust on the IT side and begins Managed Trust on the ACS side.
 
@@ -982,7 +984,7 @@ Standards and protocols are listed where they carry architectural weight in IIA.
 
 **OPC UA.** Industrial pub/sub and request/response protocol. Common edge profile choice above L2. Used by the box for both passive ACS-side observation and outbound publishing depending on deployment.
 
-**Orchestrate.** Verb for transactional flows: synchronous, acknowledged, traceable end-to-end. MES/MOM operations, work-order acks, and recipe downloads are orchestrated. Goes through the structured query API or a dedicated transactional channel — never the edge publisher. Paired with *choreograph*.
+**Orchestrate.** Verb for transactional flows: synchronous, acknowledged, traceable end-to-end. MES/MOM operations, work-order acks, and recipe downloads are orchestrated. Goes through the structured query API or a dedicated transactional channel - never the edge publisher. Paired with *choreograph*.
 
 **Parser as trust boundary.** The constrained, non-Turing-complete grammar parser that admits configuration onto the box. The same architectural role for configuration that container-runtime admission is for workloads, and that cosign verification is for images. Operator-chosen format (CUE, KCL, Dhall, JSON-Schema-validated JSON, etc.). Small enough to be auditable; Turing-complete grammar loses the security property.
 
@@ -990,11 +992,11 @@ Standards and protocols are listed where they carry architectural weight in IIA.
 
 **RACI matrix.** In a *boundary contract*, the named accountable parties for every failure mode. Responsible, Accountable, Consulted, Informed. The mechanism by which "ACS is never the side without receipts" is operationalized.
 
-**SAIC.** Safety, Availability, Integrity, Confidentiality. PERA's extension of CIA, prepending Safety. The right frame for IT systems that touch safety-critical *information* — historians, audit stores, regulator-facing dashboards. Does not govern the ACS itself. SRP and SAIC are not variants of one ordering; they describe different substrates.
+**SAIC.** Safety, Availability, Integrity, Confidentiality. PERA's extension of CIA, prepending Safety. The right frame for IT systems that touch safety-critical *information* - historians, audit stores, regulator-facing dashboards. Does not govern the ACS itself. SRP and SAIC are not variants of one ordering; they describe different substrates.
 
-**SDN policy plane.** An optional prevention layer (recommended where available): programmable network policy compiled from the contract catalog and enforced on the fabric. Where deployed, conduits exist on the wire only where the catalog authorizes. Cilium/eBPF on appliance scope; OVN-class on multi-host. Non-SDN deployments are fine — they rely on the host-layer prevention triad (kernel firewall + SPIFFE + admission) plus mTLS plus the IDS attestation observer being able to alert. The architecture's hard requirement is that *some* network-plane attestation can alert; SDN strengthens prevention but does not replace attestation.
+**SDN policy plane.** An optional prevention layer (recommended where available): programmable network policy compiled from the contract catalog and enforced on the fabric. Where deployed, conduits exist on the wire only where the catalog authorizes. Cilium/eBPF on appliance scope; OVN-class on multi-host. Non-SDN deployments are fine - they rely on the host-layer prevention triad (kernel firewall + SPIFFE + admission) plus mTLS plus the IDS attestation observer being able to alert. The architecture's hard requirement is that *some* network-plane attestation can alert; SDN strengthens prevention but does not replace attestation.
 
-**Security Level (SL1–SL4).** IEC 62443's grading of cybersecurity capability. IIA software-only mode targets SL3 (segmentation + authentication + audit + push-only outbound on the operator-selected edge profile). IIA two-box mode reaches SL4 via hardware data diode and physical one-way separation. SL1 and SL2 are SL3 with controls relaxed by deployment policy, not separate products. SL3 does *not* enforce unidirectional flow — that is the SL4 promise.
+**Security Level (SL1–SL4).** IEC 62443's grading of cybersecurity capability. IIA software-only mode targets SL3 (segmentation + authentication + audit + push-only outbound on the operator-selected edge profile). IIA two-box mode reaches SL4 via hardware data diode and physical one-way separation. SL1 and SL2 are SL3 with controls relaxed by deployment policy, not separate products. SL3 does *not* enforce unidirectional flow - that is the SL4 promise.
 
 **Sovereignty.** The unit is the complete system for its zone and works with no upstream connectivity. Sovereignty is not isolation: historians on adjacent boxes can know about each other without becoming dependent on each other. Awareness is mutual; dependency is not. The constraint is "no dependency," not "no awareness."
 
@@ -1008,9 +1010,9 @@ Standards and protocols are listed where they carry architectural weight in IIA.
 
 **Update orchestration (fractal).** Each box at broader scope manages its children's updates: publishes intended-state manifest (OS image hash, config hash, rule-set hashes, approval artifacts), receives reported state (running hashes, attestation, audit). No global update server; the fleet's source of truth lives at whatever scope the operator manages from. Children pull manifests on a cadence, reconcile to declared state, and report back. Pull-only, mTLS, no inbound listener, no outbound HTTP. Disconnected boxes converge on intended state when reconnected, at operator pace via still-valid approvals.
 
-**Role addressing.** The naming convention for architectural roles on the secure edge gateway. Spec form: a short, lowercase, hyphenated label (`witness`, `lake`, `io-master`, `diode-in`, `bus`, `audit`, `attest`, `publish`, `api`, `tunnel`, `ui`, `cfg`). Deployment form: a *leaf-first* hierarchical name extending rightward through the gateway identity and the operator's ISA-95 hierarchy — `<role>.<gateway>.<work-unit>.<work-center>.<area>.<site>.local`. The convention is leaf-first to match how DNS resolves and how ISA-95 hierarchies are conventionally written. **The architecture requires the convention, not a DNS implementation**; operators may realize it on a Semantic DNS zone, an LDAP tree, a UNS hierarchy, or their own asset registry. Partition (`acs / dmz / it / mgmt`) is a documented attribute of each role, not part of the FQDN. Event-channel topics (`attestation.*`, `contract.*`, `security.*`) use root-first ordering to match broker conventions and are a separate axis from role addressing.
+**Role addressing.** The naming convention for architectural roles on the secure edge gateway. Spec form: a short, lowercase, hyphenated label (`witness`, `lake`, `io-master`, `diode-in`, `bus`, `audit`, `attest`, `publish`, `api`, `tunnel`, `ui`, `cfg`). Deployment form: a *leaf-first* hierarchical name extending rightward through the gateway identity and the operator's ISA-95 hierarchy - `<role>.<gateway>.<work-unit>.<work-center>.<area>.<site>.local`. The convention is leaf-first to match how DNS resolves and how ISA-95 hierarchies are conventionally written. **The architecture requires the convention, not a DNS implementation**; operators may realize it on a Semantic DNS zone, an LDAP tree, a UNS hierarchy, or their own asset registry. Partition (`acs / dmz / it / mgmt`) is a documented attribute of each role, not part of the FQDN. Event-channel topics (`attestation.*`, `contract.*`, `security.*`) use root-first ordering to match broker conventions and are a separate axis from role addressing.
 
-**Witness.** The secure edge gateway's passive observation role on the ACS substrate. The ACS-facing NIC is RX-only (no IP stack transmit, no listeners); it observes traffic via mirror port, network tap, or equivalent passive capture. Witness produces records from what it sees on the wire — protocol headers, packet flows, control-network conversations, broadcast traffic. Unlike *active poll*, witness requires no cooperation from the devices in the zone and cannot be refused. **Witness is the floor**: it is always available and is what makes brownfield deployment viable on substrates where active poll is impossible or unsafe. Active poll is added on top where the device permits and the operator authorizes. Both feed the decentralized historian. Role identifier: `witness` (partition: acs).
+**Witness.** The secure edge gateway's passive observation role on the ACS substrate. The ACS-facing NIC is RX-only (no IP stack transmit, no listeners); it observes traffic via mirror port, network tap, or equivalent passive capture. Witness produces records from what it sees on the wire - protocol headers, packet flows, control-network conversations, broadcast traffic. Unlike *active poll*, witness requires no cooperation from the devices in the zone and cannot be refused. **Witness is the floor**: it is always available and is what makes brownfield deployment viable on substrates where active poll is impossible or unsafe. Active poll is added on top where the device permits and the operator authorizes. Both feed the decentralized historian. Role identifier: `witness` (partition: acs).
 
 **Zenoh.** Eclipse open-source pub/sub plus queryable plus federated-router protocol. Distinctive in IIA because it can fill multiple roles on one protocol: edge publisher (pub/sub), structured query API (queryables), in-flight bus, and inter-box mesh substrate (cross-scope routing across the fractal). No rebirth-storm or QoS-1/2-degraded-integrity pathology. Apache 2.0.
 

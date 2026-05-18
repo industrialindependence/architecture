@@ -1,4 +1,4 @@
-// Industrial Independence Architecture — The Box
+// Industrial Independence Architecture - The Box
 // CIAD-style conceptual diagram of internal partitioning, zones, and external surfaces.
 // Render: dot -Tpng box-architecture.dot -o box-architecture.png
 
@@ -10,7 +10,7 @@ digraph IIA {
     ranksep=0.75,
     fontname="Helvetica",
     labelloc=t,
-    label=<<b>Industrial Independence Architecture — The Box</b><br/><font point-size="11">CIAD-style conceptual diagram</font>>,
+    label=<<b>Industrial Independence Architecture - The Box</b><br/><font point-size="11">CIAD-style conceptual diagram</font>>,
     fontsize=18,
     bgcolor="white"
   ];
@@ -32,7 +32,7 @@ digraph IIA {
     ];
 
     lorawan [
-      label=<<b>Wireless IO sensing</b><br/><font point-size="9">LoRaWAN sensors · LPWAN<br/>via LoRaWAN gateway / network server<br/><i>IO-class data only — never control</i></font>>,
+      label=<<b>Wireless IO sensing</b><br/><font point-size="9">LoRaWAN sensors · LPWAN<br/>via LoRaWAN gateway / network server<br/><i>IO-class data only - never control</i></font>>,
       fillcolor="#f0e0a0",
       width=4.0
     ];
@@ -127,7 +127,7 @@ digraph IIA {
 
   // ============= EDGES =============
 
-  // ACS NIC — passive (wired)
+  // ACS NIC - passive (wired)
   plc -> collect    [label="ACS NIC\npassive · RX-only", fontcolor="#a07020"];
   plc -> witness    [label="mirror port", fontcolor="#a07020"];
   plc -> io_master  [label="independent\ntap / interface", fontcolor="#a07020", style=bold];

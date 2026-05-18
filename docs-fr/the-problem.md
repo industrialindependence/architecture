@@ -1,6 +1,6 @@
 # Le probleme
 
-Le terrain n'est pas souverain parce que trop d'acteurs profitent du fait qu'il ne le soit pas. Le marche vend la dependance. L'IT herite de modeles d'entreprise et les impose sur un substrat pour lequel ils n'ont pas ete construits. Les propres praticiens seniors du terrain — ceux qui pourraient former la generation suivante — trop souvent ne le font pas.
+Le terrain n'est pas souverain parce que trop d'acteurs profitent du fait qu'il ne le soit pas. Le marche vend la dependance. L'IT herite de modeles d'entreprise et les impose sur un substrat pour lequel ils n'ont pas ete construits. Les propres praticiens seniors du terrain - ceux qui pourraient former la generation suivante - trop souvent ne le font pas.
 
 Le probleme, c'est tout le monde qui a interet a ce que les operations restent dependantes. Cela inclut les editeurs, les integrateurs, les consultants, les auditeurs, les equipes IT a qui l'on a confie l'OT, et les ingenieurs seniors de l'usine qui preferent rester celui qui savait plutot que former celui qui arrive ensuite.
 
@@ -20,13 +20,13 @@ Ce document parle clairement des trois.
 
 ## Le probleme des 80 %
 
-Environ 80 % des cyberattaques contre les technologies operationnelles proviennent des reseaux IT corporate. Le chiffre apparait dans des rapports editeurs avec des variations de pourcentage exactes, mais une direction stable. L'attaque ne commence pas sur le plancher de production. Elle commence sur un portable de help desk, un e-mail de phishing, un VPN compromis, un identifiant Active Directory vole — et elle se termine par un pipeline arrete, une aciérie a l'arret, une usine agroalimentaire hors ligne.
+Environ 80 % des cyberattaques contre les technologies operationnelles proviennent des reseaux IT corporate. Le chiffre apparait dans des rapports editeurs avec des variations de pourcentage exactes, mais une direction stable. L'attaque ne commence pas sur le plancher de production. Elle commence sur un portable de help desk, un e-mail de phishing, un VPN compromis, un identifiant Active Directory vole - et elle se termine par un pipeline arrete, une aciérie a l'arret, une usine agroalimentaire hors ligne.
 
 C'est la consequence de ce que l'industrie vend, de ce que l'IT cable et de ce que les operations ont laisse s'installer depuis une decennie. Les recherches de terrain montrent l'etat type des deploiements converges :
 
 - **44 %** des evaluations OT montrent des identifiants partages entre IT et OT.
 - **77 %** montrent une segmentation reseau incorrecte.
-- **17 %** des organisations executent un domaine Active Directory partage entre IT et OT — le vecteur lateral le plus courant.
+- **17 %** des organisations executent un domaine Active Directory partage entre IT et OT - le vecteur lateral le plus courant.
 - **70 %** des attaques OT commencent maintenant dans l'IT.
 
 Le probleme des 80 % est celui de ponts qui fonctionnent exactement comme ils ont ete concus.
@@ -35,7 +35,7 @@ Le probleme des 80 % est celui de ponts qui fonctionnent exactement comme ils on
 
 ## Ce que le marche vend
 
-Les grands fournisseurs d'automatisation fixent les termes du terrain. Protocoles, outils de configuration, logiciels d'ingenierie, programmes de certification, contrats de support — l'editeur possede la pile et la loue en retour. Le motif est constant chez les grands acteurs.
+Les grands fournisseurs d'automatisation fixent les termes du terrain. Protocoles, outils de configuration, logiciels d'ingenierie, programmes de certification, contrats de support - l'editeur possede la pile et la loue en retour. Le motif est constant chez les grands acteurs.
 
 ### Piles fermees
 
@@ -48,13 +48,13 @@ Les grands fournisseurs d'automatisation fixent les termes du terrain. Protocole
 
 Tous les grands fournisseurs publient des architectures de reference. Les diagrammes sont propres. Les frontieres de zone sont nettes. Les tampons IEC 62443 sont sur la couverture. Les fournisseurs detiennent les certifications.
 
-Les guides d'implementation, lus attentivement, violent pourtant la norme que la couverture pretend mettre en oeuvre. La page 17 du compendium Siemens PCS 7 Part F reconnait que son propre exemple est « un exemple negatif d'un point de vue securitaire » — puis construit 189 pages de guide sur cet exemple negatif. D'autres documents reconnaissent qu'une architecture plate facilite le mouvement lateral malveillant tout en publiant des schemas qui y conduisent. CPwE documente des connectivites de bout en bout au travers de multiples zones avec des postes d'ingenierie qui les traversent simultanement.
+Les guides d'implementation, lus attentivement, violent pourtant la norme que la couverture pretend mettre en oeuvre. La page 17 du compendium Siemens PCS 7 Part F reconnait que son propre exemple est « un exemple negatif d'un point de vue securitaire » - puis construit 189 pages de guide sur cet exemple negatif. D'autres documents reconnaissent qu'une architecture plate facilite le mouvement lateral malveillant tout en publiant des schemas qui y conduisent. CPwE documente des connectivites de bout en bout au travers de multiples zones avec des postes d'ingenierie qui les traversent simultanement.
 
-Le fournisseur *peut* implementer la norme. La certification le prouve. La documentation dit a l'operateur de faire autre chose. La certification sur la couverture fait le travail marketing ; les diagrammes des pages interieures font le travail de verrouillage. Lorsque l'audit echoue, c'est l'operateur qui paie la remediation — au meme fournisseur.
+Le fournisseur *peut* implementer la norme. La certification le prouve. La documentation dit a l'operateur de faire autre chose. La certification sur la couverture fait le travail marketing ; les diagrammes des pages interieures font le travail de verrouillage. Lorsque l'audit echoue, c'est l'operateur qui paie la remediation - au meme fournisseur.
 
 ### Integrateurs et prime a l'opacite
 
-La plupart des usines n'ont pas construit leur reseau elles-memes. Un integrateur l'a fait. L'integrateur a livre un systeme fonctionnel, facture le projet, puis est parti. L'usine a herite d'un reseau qui marchait — et d'une configuration qu'elle ne pouvait pas lire.
+La plupart des usines n'ont pas construit leur reseau elles-memes. Un integrateur l'a fait. L'integrateur a livre un systeme fonctionnel, facture le projet, puis est parti. L'usine a herite d'un reseau qui marchait - et d'une configuration qu'elle ne pouvait pas lire.
 
 La structure recompense l'opacite. Les offres initiales sont competitives ; les integrateurs gagnent au prix. La marge se recupere ensuite sur les interventions de service. Un deploiement totalement documente et transferables ne genere pas d'intervention. Un deploiement que seul l'integrateur peut lire en genere pour toujours. L'integrateur discipline qui remet les mots de passe, la documentation et la formation perd l'appel d'offres face a celui qui ne le fait pas.
 
@@ -72,7 +72,7 @@ Active Directory a ete concu pour gerer qui peut lire un partage de fichiers. Il
 
 ### Le poste d'ingenierie comme cheval de Troie
 
-Le poste qui programme le PLC est « gere » par l'IT — joint au domaine, patche IT, antivirus IT, supervise IT, confiance IT. Il est aussi directement connecte au reseau OT, parce que l'ingenieur doit programmer les PLC. Il est digne de confiance pour l'IT parce que l'IT le gere. Il est digne de confiance pour l'OT parce que l'ingenieur en a besoin. Aucun des deux mondes ne le securise pour ce qu'il est reellement : un pont entre deux substrats, avec deux modeles de menace, et sans proprietaire unique.
+Le poste qui programme le PLC est « gere » par l'IT - joint au domaine, patche IT, antivirus IT, supervise IT, confiance IT. Il est aussi directement connecte au reseau OT, parce que l'ingenieur doit programmer les PLC. Il est digne de confiance pour l'IT parce que l'IT le gere. Il est digne de confiance pour l'OT parce que l'ingenieur en a besoin. Aucun des deux mondes ne le securise pour ce qu'il est reellement : un pont entre deux substrats, avec deux modeles de menace, et sans proprietaire unique.
 
 ### La cadence de patch IT imposee a lOT
 
@@ -100,24 +100,24 @@ C'est la partie que le terrain n'aime pas entendre, et c'est pourtant celle que 
 
 Une part importante de la connaissance institutionnelle qui fait tourner les reseaux industriels vit dans la tete de praticiens seniors qui ont decide, consciemment ou non, de ne pas la transmettre. Les raisons sont individuelles. Le motif est industriel.
 
-- **Le heros par retention.** L'ingenieur senior est epuisé, indispensable, irremplacable — et cette indispensabilite est aussi sa securite d'emploi. Former un successeur est, dans cette structure d'incitations, un chemin vers le fait de devenir remplaçable. Donc la formation n'a pas lieu.
+- **Le heros par retention.** L'ingenieur senior est epuisé, indispensable, irremplacable - et cette indispensabilite est aussi sa securite d'emploi. Former un successeur est, dans cette structure d'incitations, un chemin vers le fait de devenir remplaçable. Donc la formation n'a pas lieu.
 - **La configuration non documentee.** La configuration du switch que seul le senior peut lire. Le programme PLC sans commentaires et avec une logique qui exige une traduction tribale. L'integration custom qui n'existe que parce qu'une personne savait la faire fonctionner. Rien de tout cela n'est documente. Presque tout pourrait l'etre.
 - **Le refus de mentorat.** Un jeune technicien arrive en voulant apprendre. Le praticien senior lui donne des taches d'occupation plutot que le vrai travail, lui cache l'acces a ce qui lui apprendrait reellement, traite chaque question comme une nuisance. Le jeune technicien s'en va. Le terrain appelle cela une penurie de main-d'oeuvre. C'est aussi une penurie d'enseignement.
 - **Le gardien comme identite.** Savoir la chose que personne d'autre ne sait devient l'identite du praticien au travail. Laisser cette identite se diluer en partageant la connaissance ressemble, pour certains, a laisser se diluer le soi. Ils ne le feront pas.
 
 Ce n'est pas vrai de tous les praticiens seniors. The Reality decrit aussi ceux qui ont enseigne. Ils existent, et la ou ils existent, le terrain vit. Mais la ou ils manquent, le terrain se creuse, et l'architecture doit etre concue pour le monde ou le gardien n'enseignera pas.
 
-La reponse de l'architecture est de rendre le substrat auto-documentant, de sorte que le gatekeeping humain devienne impossible. La configuration est un artefact declaratif signe dans une grammaire contrainte — lisible par quiconque dispose de la documentation de la norme. Le catalogue de contrats est obligatoire et decouvrable. La chaine d'audit est liee par hachage et interrogeable. Le catalogue de roles peut etre enumere depuis n'importe quel poste operateur. Le savoir est dans le substrat, pas dans la tete. L'ingenieur senior peut partir a la retraite, refuser d'enseigner ou simplement mourir — l'operateur suivant peut toujours lire ce que fait l'architecture.
+La reponse de l'architecture est de rendre le substrat auto-documentant, de sorte que le gatekeeping humain devienne impossible. La configuration est un artefact declaratif signe dans une grammaire contrainte - lisible par quiconque dispose de la documentation de la norme. Le catalogue de contrats est obligatoire et decouvrable. La chaine d'audit est liee par hachage et interrogeable. Le catalogue de roles peut etre enumere depuis n'importe quel poste operateur. Le savoir est dans le substrat, pas dans la tete. L'ingenieur senior peut partir a la retraite, refuser d'enseigner ou simplement mourir - l'operateur suivant peut toujours lire ce que fait l'architecture.
 
 ---
 
 ## Ce que cela produit
 
 - **Le probleme des 80 %.** Decrit plus haut.
-- **La falaise des competences.** Les praticiens seniors partent sans successeurs. Les certifications editeurs occupent le marche du travail a leur place — liees a des piles specifiques, expirant selon un calendrier, non portables. L'ingenierie comme discipline est sous-representee au niveau du board.
+- **La falaise des competences.** Les praticiens seniors partent sans successeurs. Les certifications editeurs occupent le marche du travail a leur place - liees a des piles specifiques, expirant selon un calendrier, non portables. L'ingenierie comme discipline est sous-representee au niveau du board.
 - **L'economie de la conformite.** Une industrie auto-entretenue de consultants, auditeurs, certificateurs, fournisseurs de formation, outils GRC. La conformite n'est pas la securite. Les incidents industriels les plus cites des dernieres annees ont frappe des organisations ayant passe des audits, detenu des certifications et paye du conseil.
 - **Les normes comme paywall.** Les documents IEC 62443 individuels coutent cher ; la serie complete coute plus encore. Les ingenieurs qui doivent mettre la norme en oeuvre n'ont souvent pas les moyens d'y acceder.
-- **Le cout cache de l'inaction.** Le downtime de fabrication se chiffre en dizaines de milliers de dollars par heure. Un week-end de panne sur un site a 10 k$/h de perte conservative fait plus de 600 k$. Les marches de l'assurance se durcissent et excluent ce qu'ils ne savent pas souscrire — c'est-a-dire l'essentiel de l'exposition OT non cataloguee. Le nombre sur la page, c'est le cout de ne pas changer.
+- **Le cout cache de l'inaction.** Le downtime de fabrication se chiffre en dizaines de milliers de dollars par heure. Un week-end de panne sur un site a 10 k$/h de perte conservative fait plus de 600 k$. Les marches de l'assurance se durcissent et excluent ce qu'ils ne savent pas souscrire - c'est-a-dire l'essentiel de l'exposition OT non cataloguee. Le nombre sur la page, c'est le cout de ne pas changer.
 
 ---
 
@@ -129,7 +129,7 @@ Chaque acteur fait ce que l'incitation en face de lui recompense. Chacun fait ce
 
 Le resultat est l'industrie telle qu'elle existe. Personne n'a decide cela seul. C'est ce qui arrive quand personne n'est en position de le refuser.
 
-L'architecture existe pour donner a l'operateur une position de refus. Pas pour entrer en guerre avec les editeurs, l'IT ou qui que ce soit d'autre. Mais pour pouvoir acheter au marche selon les termes de l'operateur — standards ouverts, protocoles ouverts, configuration signee, frontieres contractuelles, operation attestee — et s'eloigner de tout ce qui ne respecte pas ces termes. Pour pouvoir lire le substrat sans permission fournisseur, sans coffre d'integrateur, sans bonne volonte d'un senior.
+L'architecture existe pour donner a l'operateur une position de refus. Pas pour entrer en guerre avec les editeurs, l'IT ou qui que ce soit d'autre. Mais pour pouvoir acheter au marche selon les termes de l'operateur - standards ouverts, protocoles ouverts, configuration signee, frontieres contractuelles, operation attestee - et s'eloigner de tout ce qui ne respecte pas ces termes. Pour pouvoir lire le substrat sans permission fournisseur, sans coffre d'integrateur, sans bonne volonte d'un senior.
 
 ---
 

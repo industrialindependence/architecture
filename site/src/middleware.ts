@@ -17,7 +17,7 @@ function isSkippablePath(pathname: string): boolean {
     || /\.[a-z0-9]+$/i.test(pathname);
 }
 
-// Read the iia_lang cookie strictly from the INCOMING request headers — not via
+// Read the iia_lang cookie strictly from the INCOMING request headers - not via
 // context.cookies.get(), which also returns cookies set earlier in the same request.
 // During a rewrite from /fr/* to /*, pass 1 sets cookie=fr; pass 2's cookies.get()
 // would see that fresh value and loop the redirect. This avoids the leak.
@@ -39,7 +39,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
   context.locals.pagePath = pagePath;
 
   // If a prior middleware pass in this request already pinned the locale (we are
-  // inside a rewrite from /fr/*), just render — do not re-evaluate redirects.
+  // inside a rewrite from /fr/*), just render - do not re-evaluate redirects.
   if (context.locals.locale === 'fr' || context.locals.locale === 'en') {
     return next();
   }

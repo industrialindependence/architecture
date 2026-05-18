@@ -33,8 +33,8 @@ const { locale = 'en' } = Astro.props as { locale?: 'en' | 'fr' };
     <div class="footer-block">
       <p class="block-label mono">{locale === 'fr' ? 'Antecedents cites' : 'Prior art cited'}</p>
       <ul>
-        <li><a href="https://srpmodel.infracritical.com/srpmodel.php" rel="noopener">SRP Triad &mdash; Robert Radvanovsky, Infracritical</a></li>
-        <li><a href="https://www.pera.net" rel="noopener">PERA+ &mdash; Gary Rathwell, Entercon</a></li>
+        <li><a href="https://srpmodel.infracritical.com/srpmodel.php" rel="noopener">SRP Triad - Robert Radvanovsky, Infracritical</a></li>
+        <li><a href="https://www.pera.net" rel="noopener">PERA+ - Gary Rathwell, Entercon</a></li>
         <li>IEC&nbsp;62443 &middot; ISA-95</li>
         <li class="dim">{locale === 'fr' ? "Travaux independants. Sans affiliation avec l'Alliance ni entre eux." : 'Independent works. Not affiliated with the Alliance or with each other.'}</li>
       </ul>
@@ -43,7 +43,7 @@ const { locale = 'en' } = Astro.props as { locale?: 'en' | 'fr' };
     <div class="footer-block">
       <p class="block-label mono">{locale === 'fr' ? 'Implementations' : 'Implementations'}</p>
       <ul>
-        <li><a href="https://www.grassmarlin.com" rel="noopener">MarlinSpike &mdash; {locale === 'fr' ? 'successeur de GrassMarlin' : 'GrassMarlin successor'}</a></li>
+        <li><a href="https://www.grassmarlin.com" rel="noopener">MarlinSpike - {locale === 'fr' ? 'successeur de GrassMarlin' : 'GrassMarlin successor'}</a></li>
         <li><a href="https://www.conversationalfactory.com" rel="noopener">Conversational Factory</a></li>
         <li class="dim">{locale === 'fr' ? 'Construit sur IIA' : 'Built on IIA'}</li>
       </ul>

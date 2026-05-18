@@ -28,11 +28,11 @@ const locale = (Astro.locals.locale ?? 'en') as 'en' | 'fr';
       </p>
 
       <ul class="onward">
-        <li><a href={withLocale('/', locale)}>{locale === 'fr' ? 'Accueil' : 'Landing'}</a> &mdash; {locale === 'fr' ? 'les deux portes' : 'the two doors'}</li>
-        <li><a href={withLocale('/philosophy/', locale)}>{locale === 'fr' ? 'La philosophie' : 'The Philosophy'}</a> &mdash; {locale === 'fr' ? 'SRP, la distinction de substrat, les sept principes' : 'SRP, the substrate distinction, the seven principles'}</li>
-        <li><a href={withLocale('/architecture/', locale)}>{locale === 'fr' ? "L'architecture" : 'The Architecture'}</a> &mdash; {locale === 'fr' ? 'Industrial Independence Architecture, la declaration canonique' : 'Industrial Independence Architecture, the canonical statement'}</li>
-        <li><a href={withLocale('/architecture/docs/', locale)}>{locale === 'fr' ? 'Documentation' : 'Documentation'}</a> &mdash; {locale === 'fr' ? 'introduction, architecture interne, contrats, MCP, glossaire' : 'introduction, internal architecture, contracts, MCP, glossary'}</li>
-        <li><a href={withLocale('/contact/', locale)}>{locale === 'fr' ? 'Contact' : 'Contact'}</a> &mdash; {locale === 'fr' ? 'questions, corrections, deploiements' : 'questions, corrections, deployments'}</li>
+        <li><a href={withLocale('/', locale)}>{locale === 'fr' ? 'Accueil' : 'Landing'}</a> - {locale === 'fr' ? 'les deux portes' : 'the two doors'}</li>
+        <li><a href={withLocale('/philosophy/', locale)}>{locale === 'fr' ? 'La philosophie' : 'The Philosophy'}</a> - {locale === 'fr' ? 'SRP, la distinction de substrat, les sept principes' : 'SRP, the substrate distinction, the seven principles'}</li>
+        <li><a href={withLocale('/architecture/', locale)}>{locale === 'fr' ? "L'architecture" : 'The Architecture'}</a> - {locale === 'fr' ? 'Industrial Independence Architecture, la declaration canonique' : 'Industrial Independence Architecture, the canonical statement'}</li>
+        <li><a href={withLocale('/architecture/docs/', locale)}>{locale === 'fr' ? 'Documentation' : 'Documentation'}</a> - {locale === 'fr' ? 'introduction, architecture interne, contrats, MCP, glossaire' : 'introduction, internal architecture, contracts, MCP, glossary'}</li>
+        <li><a href={withLocale('/contact/', locale)}>{locale === 'fr' ? 'Contact' : 'Contact'}</a> - {locale === 'fr' ? 'questions, corrections, deploiements' : 'questions, corrections, deployments'}</li>
       </ul>
 
       <p class="nf-footnote mono">

@@ -31,7 +31,7 @@ const pages = [
   { slug: 'introduction',  eyebrow: 'Documentation · 01',                title: 'Introduction.',                                           subtitle: 'For readers new to industrial automation, ICS, or OT.' },
   { slug: 'internal-architecture', eyebrow: 'Documentation · 02',        title: 'Internal Architecture.',  break: 'Internal|Architecture', subtitle: 'The canonical implementation specification.' },
   { slug: 'sample-contracts',      eyebrow: 'Documentation · 03',        title: 'Sample Data Contracts.',  break: 'Sample Data|Contracts',  subtitle: 'Six worked contracts across the IIA contract catalog.' },
-  { slug: 'mcp-single-box',        eyebrow: 'Documentation · 04',        title: 'MCP — Single Box Quickstart.', break: 'MCP — Single Box|Quickstart', subtitle: 'The smallest AI-agent consumption deployment.' },
+  { slug: 'mcp-single-box',        eyebrow: 'Documentation · 04',        title: 'MCP - Single Box Quickstart.', break: 'MCP - Single Box|Quickstart', subtitle: 'The smallest AI-agent consumption deployment.' },
   { slug: 'glossary',              eyebrow: 'Documentation · 05',        title: 'Glossary.',                                               subtitle: 'Vocabulary used across IIA documentation.' }
 ];
 

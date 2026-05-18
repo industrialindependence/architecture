@@ -1,6 +1,6 @@
 # The Problem
 
-The field is not sovereign because too many actors benefit from it not being sovereign. The market sells the dependence. IT inherits enterprise patterns and enforces them across a substrate they were not built for. The field's own senior practitioners — the ones who could teach the next generation — too often will not.
+The field is not sovereign because too many actors benefit from it not being sovereign. The market sells the dependence. IT inherits enterprise patterns and enforces them across a substrate they were not built for. The field's own senior practitioners - the ones who could teach the next generation - too often will not.
 
 The problem is everyone with a stake in operations remaining dependent. That includes the vendors, the integrators, the consultants, the auditors, the IT departments that have been handed OT to manage, and the senior engineers in the plant who would rather be the one who knew than train the one who comes next.
 
@@ -20,13 +20,13 @@ This document is plain about all three.
 
 ## The 80% problem
 
-Roughly 80% of cyber attacks on operational technology now originate in the corporate IT network. The figure shows up in vendor reports (Rockwell Automation, Dragos, Fortinet) with variation in the exact percentage but consistency in the direction. The attack does not begin on the plant floor. It begins on a help-desk laptop, a phishing email, a compromised VPN appliance, a stolen Active Directory credential — and it ends with a pipeline shut down, a steel mill idle, a meat-processing plant offline.
+Roughly 80% of cyber attacks on operational technology now originate in the corporate IT network. The figure shows up in vendor reports (Rockwell Automation, Dragos, Fortinet) with variation in the exact percentage but consistency in the direction. The attack does not begin on the plant floor. It begins on a help-desk laptop, a phishing email, a compromised VPN appliance, a stolen Active Directory credential - and it ends with a pipeline shut down, a steel mill idle, a meat-processing plant offline.
 
 This is the consequence of what the industry has been selling, IT has been wiring in, and operations has been allowing for the last decade. Industry research finds the resulting state of typical converged deployments:
 
 - **44%** of OT assessments show shared credentials between IT and OT.
 - **77%** show improper network segmentation.
-- **17%** of organizations run a shared Active Directory domain across IT and OT — the most common vector for lateral movement.
+- **17%** of organizations run a shared Active Directory domain across IT and OT - the most common vector for lateral movement.
 - **70%** of OT attacks now begin in IT.
 
 The 80% problem is the bridges working as designed.
@@ -35,7 +35,7 @@ The 80% problem is the bridges working as designed.
 
 ## What the market sells
 
-The dominant automation vendors set the terms of the field. Protocols, configuration tools, engineering software, certification programs, support contracts — the vendor owns the stack and rents it back. The pattern is consistent across the major players.
+The dominant automation vendors set the terms of the field. Protocols, configuration tools, engineering software, certification programs, support contracts - the vendor owns the stack and rents it back. The pattern is consistent across the major players.
 
 ### Closed stacks
 
@@ -48,13 +48,13 @@ The dominant automation vendors set the terms of the field. Protocols, configura
 
 Every major automation vendor publishes a reference architecture. Siemens PCS 7, Rockwell/Cisco CPwE, Schneider EcoStruxure. The diagrams are clean. The zone boundaries are crisp. The IEC 62443 stamps are on the cover page. The vendors hold the certifications.
 
-The implementation guidance, read carefully, violates the standard the cover page claims to implement. Siemens PCS 7 Compendium Part F page 17 acknowledges that its own example configuration is "a negative example from a security point of view" — and then builds the next 189 pages of guidance on top of that negative example. Schneider's documentation acknowledges that flat network architectures aid malicious lateral movement — while providing reference architectures that produce exactly such configurations. CPwE documents end-to-end connectivity across zones 0 through 6, with engineering workstations spanning multiple zones simultaneously.
+The implementation guidance, read carefully, violates the standard the cover page claims to implement. Siemens PCS 7 Compendium Part F page 17 acknowledges that its own example configuration is "a negative example from a security point of view" - and then builds the next 189 pages of guidance on top of that negative example. Schneider's documentation acknowledges that flat network architectures aid malicious lateral movement - while providing reference architectures that produce exactly such configurations. CPwE documents end-to-end connectivity across zones 0 through 6, with engineering workstations spanning multiple zones simultaneously.
 
-The vendor *can* implement the standard. The certification proves it. The documentation tells the operator to do something else. The certification on the cover page does the marketing work; the diagrams on the inside pages do the lock-in work. When the audit fails, the operator pays for remediation — back to the same vendor.
+The vendor *can* implement the standard. The certification proves it. The documentation tells the operator to do something else. The certification on the cover page does the marketing work; the diagrams on the inside pages do the lock-in work. When the audit fails, the operator pays for remediation - back to the same vendor.
 
 ### Integrators and the opacity premium
 
-Most plants did not build their own networks. An integrator built the network. The integrator delivered a working system, billed the project, and moved on. The plant inherited a network that worked — and a configuration the plant could not read.
+Most plants did not build their own networks. An integrator built the network. The integrator delivered a working system, billed the project, and moved on. The plant inherited a network that worked - and a configuration the plant could not read.
 
 The structure rewards opacity. Up-front bids are competitive; integrators win on price. Margin is recovered later, on service calls. A fully documented, transferable deployment generates no service calls. A deployment that only the integrator can read generates service calls forever. The disciplined integrator who hands over passwords, documentation, and training loses the bid to the integrator who does not.
 
@@ -72,7 +72,7 @@ Active Directory was designed to manage who can read a corporate file share. It 
 
 ### The engineering workstation as the trojan horse
 
-The workstation that programs the PLC is "managed" by IT — domain-joined, IT-patched, IT-antivirus, IT-monitored, IT-trusted. It is also directly connected to the OT network, because the engineer needs to program PLCs. It is trusted by IT because IT manages it. It is trusted by OT because the engineer needs it. Neither side secures it for what it actually is — a bridge between two substrates, with two threat models, and no single owner.
+The workstation that programs the PLC is "managed" by IT - domain-joined, IT-patched, IT-antivirus, IT-monitored, IT-trusted. It is also directly connected to the OT network, because the engineer needs to program PLCs. It is trusted by IT because IT manages it. It is trusted by OT because the engineer needs it. Neither side secures it for what it actually is - a bridge between two substrates, with two threat models, and no single owner.
 
 The Stuxnet and Triton attack patterns did not need to know Modbus or PROFINET. They needed the workstation. Patches arrive on IT's cadence; engineering software is validated by the vendor for specific older versions; the mismatch produces months-long windows of vulnerability. Every dual-homed PLC scales the same pattern down.
 
@@ -102,24 +102,24 @@ This part is the one the field does not like to hear, and is the one operations 
 
 A significant share of the institutional knowledge that runs industrial networks lives in the heads of senior practitioners who have decided, consciously or not, that they will not pass it on. The reasons are individual. The pattern is industry-wide.
 
-- **The hero by hoarding.** The senior engineer is exhausted, indispensable, irreplaceable — and the indispensability is the source of their job security. Training a successor is, in this incentive structure, a path to becoming dispensable. So the training does not happen.
+- **The hero by hoarding.** The senior engineer is exhausted, indispensable, irreplaceable - and the indispensability is the source of their job security. Training a successor is, in this incentive structure, a path to becoming dispensable. So the training does not happen.
 - **The undocumented configuration.** The switch configuration that only the senior engineer can read. The PLC program with no comments and a logic that requires a tribal-knowledge translation. The custom integration that exists only because one person knew how to make it work. None of this is documented. Most of it could be.
 - **The refusal to mentor.** A young technician shows up wanting to learn. The senior practitioner gives them busywork instead of the work, withholds access to the things that would actually teach them, treats every question as an imposition. The young technician leaves. The field calls it a labor shortage. It is also a teaching shortage.
 - **The gatekeeper as identity.** Knowing the thing nobody else knows becomes the practitioner's identity at work. Letting that identity dilute by spreading the knowledge is, for some people, indistinguishable from letting the self dilute. They will not do it.
 
-This is not every senior practitioner. The Reality describes the ones who taught — the plant electricians, the mountain tech, the senior engineers whose competence is paired with willingness to share it. They exist, and where they exist, the field is alive. But where they are absent, the field is hollowing out, and the architecture has to be designed for the world where the gatekeeper will not teach.
+This is not every senior practitioner. The Reality describes the ones who taught - the plant electricians, the mountain tech, the senior engineers whose competence is paired with willingness to share it. They exist, and where they exist, the field is alive. But where they are absent, the field is hollowing out, and the architecture has to be designed for the world where the gatekeeper will not teach.
 
-The architecture's answer is to make the substrate self-documenting, so that gatekeeping by people is impossible. Configuration is a signed declarative artifact in a constrained grammar — readable by anyone with the standard's documentation. The contract catalog is mandatory and discoverable. The audit chain is hash-chained and queryable. The role catalog can be enumerated from any operator's workstation. The knowledge is in the substrate, not in the head. The senior engineer can retire, refuse to teach, or simply die — and the next operator can still read what the architecture is doing.
+The architecture's answer is to make the substrate self-documenting, so that gatekeeping by people is impossible. Configuration is a signed declarative artifact in a constrained grammar - readable by anyone with the standard's documentation. The contract catalog is mandatory and discoverable. The audit chain is hash-chained and queryable. The role catalog can be enumerated from any operator's workstation. The knowledge is in the substrate, not in the head. The senior engineer can retire, refuse to teach, or simply die - and the next operator can still read what the architecture is doing.
 
 ---
 
 ## What this produces
 
 - **The 80% problem.** Catalogued above.
-- **The skills cliff.** Senior practitioners retire without successors. Vendor certifications occupy the labor market in their place — bound to specific stacks, expiring on schedules, non-portable. Engineering as a discipline is underrepresented at the boardroom level.
+- **The skills cliff.** Senior practitioners retire without successors. Vendor certifications occupy the labor market in their place - bound to specific stacks, expiring on schedules, non-portable. Engineering as a discipline is underrepresented at the boardroom level.
 - **The compliance economy.** A self-sustaining industry of consultants, auditors, certifiers, training providers, GRC tooling. Compliance is not security. The most-cited industrial incidents of the last five years happened to organizations that had passed audits, held certifications, and paid for consulting.
 - **Standards-as-paywall.** Individual IEC 62443 documents cost around $470 each; the complete series runs over $2,000. The engineers actually implementing the standard cannot afford copies of it.
-- **The hidden cost of doing nothing.** Manufacturing downtime averages around $88,000 per hour; specific industries run far higher. A weekend outage at a plant running at $10K/hour conservative loss is $600,000+. Insurance markets are tightening, excluding what they cannot underwrite — which is most uncatalogued OT exposure. The number on the page is what it costs to not change. Operations is not asking for new spending; operations is asking for the cost of doing nothing to be put on the balance sheet honestly.
+- **The hidden cost of doing nothing.** Manufacturing downtime averages around $88,000 per hour; specific industries run far higher. A weekend outage at a plant running at $10K/hour conservative loss is $600,000+. Insurance markets are tightening, excluding what they cannot underwrite - which is most uncatalogued OT exposure. The number on the page is what it costs to not change. Operations is not asking for new spending; operations is asking for the cost of doing nothing to be put on the balance sheet honestly.
 
 ---
 
@@ -133,7 +133,7 @@ The result is the industry as it stands. Plants buy closed stacks because the cl
 
 Nobody decided this. It is what happens when no one is positioned to refuse it.
 
-The architecture exists to give the operator a position to refuse from. Not by going to war with vendors, IT, or anyone else in the field. By being able to buy from the market on the operator's terms — open standards, open protocols, signed configuration, contracted boundaries, attested operation — and walk away from anything that does not meet those terms. By being able to read the substrate without a vendor's permission, without an integrator's safe, without a senior engineer's goodwill.
+The architecture exists to give the operator a position to refuse from. Not by going to war with vendors, IT, or anyone else in the field. By being able to buy from the market on the operator's terms - open standards, open protocols, signed configuration, contracted boundaries, attested operation - and walk away from anything that does not meet those terms. By being able to read the substrate without a vendor's permission, without an integrator's safe, without a senior engineer's goodwill.
 
 ---
 

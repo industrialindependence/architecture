@@ -1,6 +1,6 @@
 # Notre position
 
-Le Terrain decrit les pieces dans lesquelles les operations travaillent. Le Probleme decrit ce qui fait obstacle. Ce document decrit ce que nous revendiquons — ce qui est du aux operations, ce qui doit etre possede, ce qui doit etre repris, ce qui doit etre formalise, ce qui doit etre nomme.
+Le Terrain decrit les pieces dans lesquelles les operations travaillent. Le Probleme decrit ce qui fait obstacle. Ce document decrit ce que nous revendiquons - ce qui est du aux operations, ce qui doit etre possede, ce qui doit etre repris, ce qui doit etre formalise, ce qui doit etre nomme.
 
 Ce ne sont pas des demandes. Ce sont les termes operatoires d'un substrat dont les operations peuvent repondre. L'architecture est ce qui les rend livrables.
 
@@ -34,7 +34,7 @@ Les operations ne sont pas en guerre avec l'IT. Le sujet n'est pas l'opposition.
 - **Le controle du reseau OT.** Les commutateurs OT sous gestion OT. Pas une extension de la fabrique de commutation de l'entreprise. Pas des VLAN que l'ingenieur controle ne peut ni voir ni atteindre.
 - **Le controle des fenetres de patch.** Les mises a jour du materiel OT se font selon le calendrier des operations, contre leur manifeste d'etat intentionnel, avec leur approbation. Pas sur le cycle trimestriel de conformite de l'IT. Un redemarrage de trente secondes d'un switch est invisible dans un bureau et catastrophique sur un convoyeur.
 - **Le controle de l'acces distant fournisseur.** Chaque chemin entrant vers l'ACS est un conduit contractuel a travers la boite de l'operateur, identifie, authentifie, audite. Aucun identifiant emis par l'IT ne se termine a l'interieur de l'ACS.
-- **Le controle du calcul OT.** L'historien, les postes d'ingenierie, les IHM, les boites passerelles — possedes par les operations, sur le materiel des operations, sur le substrat des operations. Pas dans un datacenter IT que l'operateur ne peut meme pas penetrer.
+- **Le controle du calcul OT.** L'historien, les postes d'ingenierie, les IHM, les boites passerelles - possedes par les operations, sur le materiel des operations, sur le substrat des operations. Pas dans un datacenter IT que l'operateur ne peut meme pas penetrer.
 - **La frontiere elle-meme.** La ligne entre IT et OT a ete tracee par l'IT dans la plupart des usines. Elle est retracee par l'architecture, selon des termes que les operations peuvent articuler et defendre.
 
 ## Des SLA qui correspondent a la production
@@ -79,8 +79,8 @@ Une politique peut etre revisee en reunion. L'architecture est plus difficile a 
 La confusion est la source d'une grande partie des problemes. Trois substrats ont ete traites comme s'ils n'en formaient qu'un. Chacun a une physique differente, un horizon temporel different, un bon modele de securite different.
 
 - **IT** est le domaine de l'information. Des enregistrements. De l'historique. Confidentialite, Integrite, Disponibilite. CIA est le bon modele. L'industrie sait fonctionner ici.
-- **OT** est le domaine des technologies operationnelles. Il inclut l'ACS mais est plus large — systemes de supervision, MES, historiens pour des donnees deja-information, pipelines BI, postes operateur, gestion d'actifs. Une grande partie de l'OT est plus proche de l'IT que de l'ACS, mais avec des exigences de temporalite et de fiabilite differentes. SAIC est parfois le bon modele pour les systemes OT qui manipulent une information critique pour la securite.
-- **ACS** (Automation and Control Systems) est le substrat qui agit sur la physique. Vannes. Verrouillages. Boucles. SRP — Securite, Fiabilite, Performance — est le bon modele. Les triades du domaine de l'information reposent sur le mauvais substrat, pas dans le mauvais ordre. D'apres Robert Radvanovsky, Infracritical.
+- **OT** est le domaine des technologies operationnelles. Il inclut l'ACS mais est plus large - systemes de supervision, MES, historiens pour des donnees deja-information, pipelines BI, postes operateur, gestion d'actifs. Une grande partie de l'OT est plus proche de l'IT que de l'ACS, mais avec des exigences de temporalite et de fiabilite differentes. SAIC est parfois le bon modele pour les systemes OT qui manipulent une information critique pour la securite.
+- **ACS** (Automation and Control Systems) est le substrat qui agit sur la physique. Vannes. Verrouillages. Boucles. SRP - Securite, Fiabilite, Performance - est le bon modele. Les triades du domaine de l'information reposent sur le mauvais substrat, pas dans le mauvais ordre. D'apres Robert Radvanovsky, Infracritical.
 
 Une discipline qui traite ces trois choses comme une seule discipline donne de mauvais conseils dans deux salles sur trois. Les operations s'en tiennent au vocabulaire, aux normes et aux organigrammes qui reconnaissent cette difference.
 

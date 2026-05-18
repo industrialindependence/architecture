@@ -41,13 +41,13 @@ function rewriteUrl(url) {
     return `${PILLAR_SLUGS.get(siblingDocMatch[1])}${siblingDocMatch[2] ?? ''}`;
   }
 
-  // Images in docs/ — flatten to /diagrams/
+  // Images in docs/ - flatten to /diagrams/
   const imgMatch = url.match(/^\.?\/?([a-z0-9-]+\.png)$/i);
   if (imgMatch && IMAGE_NAMES.has(imgMatch[1])) {
     return `/diagrams/${imgMatch[1]}`;
   }
 
-  // .dot source files — flatten to /diagrams/
+  // .dot source files - flatten to /diagrams/
   const dotMatch = url.match(/^\.?\/?([a-z0-9-]+\.dot)$/i);
   if (dotMatch) {
     return `/diagrams/${dotMatch[1]}`;

@@ -1,4 +1,4 @@
-// IIA — Two-Box Method: SL3 (software-only) vs SL4 (two-box with hardware diode)
+// IIA - Two-Box Method: SL3 (software-only) vs SL4 (two-box with hardware diode)
 // Render: dot -Tpng two-box-method.dot -o two-box-method.png
 
 digraph TwoBoxMethod {
@@ -9,7 +9,7 @@ digraph TwoBoxMethod {
     ranksep=0.7,
     fontname="Helvetica",
     labelloc=t,
-    label=<<b>The Two-Box Method — SL3 vs SL4</b><br/><font point-size="11">same architecture, different physical topology</font>>,
+    label=<<b>The Two-Box Method - SL3 vs SL4</b><br/><font point-size="11">same architecture, different physical topology</font>>,
     fontsize=18,
     bgcolor="white"
   ];
@@ -18,7 +18,7 @@ digraph TwoBoxMethod {
 
   // ============= SL3 =============
   subgraph cluster_sl3 {
-    label=<<b>SL3 — software-only mode</b><br/><font point-size="9">single box at the boundary</font>>;
+    label=<<b>SL3 - software-only mode</b><br/><font point-size="9">single box at the boundary</font>>;
     style="rounded,filled";
     fillcolor="#f3f8f3";
     color="#5a8a5a";
@@ -46,7 +46,7 @@ digraph TwoBoxMethod {
 
   // ============= SL4 =============
   subgraph cluster_sl4 {
-    label=<<b>SL4 — two-box with hardware data diode</b><br/><font point-size="9">physical one-way separation</font>>;
+    label=<<b>SL4 - two-box with hardware data diode</b><br/><font point-size="9">physical one-way separation</font>>;
     style="rounded,filled";
     fillcolor="#f3f3f8";
     color="#5a5a8a";

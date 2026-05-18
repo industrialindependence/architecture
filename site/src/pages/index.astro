@@ -20,6 +20,13 @@ const readLabel = locale === 'fr' ? 'Lire ->' : 'Read ->';
 >
   <section class="landing-hero">
     <div class="container landing-hero-inner">
+      <span class="hero-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24">
+          <rect x="2.5" y="2.5" width="19" height="19" rx="1.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+          <rect x="7" y="7" width="10" height="10" rx="0.8" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" />
+          <rect x="10.5" y="10.5" width="3" height="3" rx="0.4" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" />
+        </svg>
+      </span>
       <p class="eyebrow mono">Industrial Independence Alliance</p>
       <h1 class="display">
         {locale === 'fr' ? 'Souverainete operationnelle' : 'Operational sovereignty'}<br />{locale === 'fr' ? 'pour les infrastructures industrielles' : 'for industrial infrastructure'}<span class="dot">.</span>
@@ -50,8 +57,8 @@ const readLabel = locale === 'fr' ? 'Lire ->' : 'Read ->';
             <h2 class="pillar-title">{locale === 'fr' ? 'Le terrain' : 'The Field'}<span class="dot">.</span></h2>
             <p class="pillar-blurb">
               {locale === 'fr'
-                ? "Le lieu du travail d'exploitation. Des types de lieux, de personnes et de defaillances bien concrets — le terrain vecu qui donne sa forme a l'architecture."
-                : 'Where operations works. Specific kinds of places, specific kinds of people, specific kinds of failures — the lived ground the architecture is shaped by.'}
+                ? "Le lieu du travail d'exploitation. Des types de lieux, de personnes et de defaillances bien concrets - le terrain vecu qui donne sa forme a l'architecture."
+                : 'Where operations works. Specific kinds of places, specific kinds of people, specific kinds of failures - the lived ground the architecture is shaped by.'}
             </p>
             <span class="pillar-cta mono">{readLabel}</span>
           </a>
@@ -98,8 +105,8 @@ const readLabel = locale === 'fr' ? 'Lire ->' : 'Read ->';
             <h2 class="pillar-title">{locale === 'fr' ? 'Notre philosophie' : 'Our Philosophy'}<span class="dot">.</span></h2>
             <p class="pillar-blurb">
               {locale === 'fr'
-                ? "Notre facon de penser le substrat. SRP — Securite, Fiabilite, Performance — gouverne l'ACS. L'information est gouvernee par CIA. Sept principes en decoulent."
-                : 'How we think about the substrate. SRP — Safety, Reliability, Performance — governs the ACS. Information is governed by CIA. Seven principles follow.'}
+                ? "Notre facon de penser le substrat. SRP - Securite, Fiabilite, Performance - gouverne l'ACS. L'information est gouvernee par CIA. Sept principes en decoulent."
+                : 'How we think about the substrate. SRP - Safety, Reliability, Performance - governs the ACS. Information is governed by CIA. Seven principles follow.'}
             </p>
             <ul class="pillar-meta mono">
               <li>SRP Triad &middot; <span class="dim">{locale === 'fr' ? 'd’apres Robert Radvanovsky / Infracritical' : 'after Robert Radvanovsky / Infracritical'}</span></li>
@@ -137,8 +144,8 @@ const readLabel = locale === 'fr' ? 'Lire ->' : 'Read ->';
       <p class="fractal-eyebrow mono">&sect; {locale === 'fr' ? 'Le fractal' : 'The fractal'}</p>
       <p class="fractal-intro">
         {locale === 'fr'
-          ? "Une boite a la tete de chaque zone — la passerelle de bordure securisee. A l'interieur se trouvent les donnees du systeme de controle ; a la boite, elles deviennent de l'information pour les consommateurs. Les dispositifs internes peuvent etre a n'importe quel niveau de securite. La meme unite a chaque zone, quelle que soit l'echelle."
-          : 'A box at the head of every zone — the secure edge gateway. Inside is control system data; at the box it becomes information for consumers. Devices inside can be any security level. The same unit at every zone, regardless of scope.'}
+          ? "Une boite a la tete de chaque zone - la passerelle de bordure securisee. A l'interieur se trouvent les donnees du systeme de controle ; a la boite, elles deviennent de l'information pour les consommateurs. Les dispositifs internes peuvent etre a n'importe quel niveau de securite. La meme unite a chaque zone, quelle que soit l'echelle."
+          : 'A box at the head of every zone - the secure edge gateway. Inside is control system data; at the box it becomes information for consumers. Devices inside can be any security level. The same unit at every zone, regardless of scope.'}
       </p>
       <FractalDiagram />
     </div>
@@ -198,6 +205,21 @@ const readLabel = locale === 'fr' ? 'Lire ->' : 'Read ->';
     border-bottom: 1px solid var(--rule-soft);
   }
   .landing-hero-inner { max-width: 60rem; }
+  .hero-mark {
+    display: block;
+    color: var(--accent);
+    line-height: 0;
+    margin: 0 0 2rem;
+  }
+  .hero-mark svg {
+    display: block;
+    width: clamp(96px, 13vw, 176px);
+    height: auto;
+  }
+  @media (max-width: 640px) {
+    .hero-mark { margin-bottom: 1.5rem; }
+    .hero-mark svg { width: 84px; }
+  }
   .eyebrow {
     text-transform: uppercase;
     letter-spacing: 0.18em;
